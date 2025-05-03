@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PublicController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(): Response
+    public function home(): Response
     {
         return $this->render('public/home.html.twig');
     }
