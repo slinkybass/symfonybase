@@ -32,10 +32,10 @@ class Config
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $appKeywords = null;
 
-	public function __toString(): string
-	{
-		return $this->appName ?? '';
-	}
+    public function __toString(): string
+    {
+        return $this->appName ?? '';
+    }
 
     public function getId(): ?int
     {
