@@ -1,3 +1,7 @@
+app:
+  messages:
+    userDeactivated: Tu cuenta está desactivada.
+    userUnverified: Tu cuenta de correo electrónico no está confirmada. Por favor revisa tu bandeja de entrada y haz click en el enlace que te hemos enviado.
 admin:
   home:
     title: Inicio
