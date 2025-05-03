@@ -5,7 +5,7 @@ namespace App\Entity\Enums;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-enum UserGender: int implements TranslatableInterface
+enum UserGender: string implements TranslatableInterface
 {
     case male = 'male';
     case female = 'female';
