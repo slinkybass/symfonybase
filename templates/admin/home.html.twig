@@ -1,9 +1,11 @@
 {% extends ea.templatePath('layout') %}
 
-{% block page_title %}
-    {{ app.session.get('config').appName }} - {{ 'admin.home.title'|trans }}
-{% endblock page_title %}
+{% block content_title %}
+    {{ 'admin.home.title'|trans }}
+{% endblock %}
+
+{% block content_header %}{% endblock %}
 
 {% block main %}
     
-{% endblock main %}
+{% endblock %}
