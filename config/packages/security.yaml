@@ -16,6 +16,14 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            form_login:
+                login_path: login
+                check_path: login
+            logout:
+                path: /logout
+            remember_me:
+                secret: '%kernel.secret%'
+            switch_user: { role: ROLE_ADMIN }
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
