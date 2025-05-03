@@ -30,9 +30,11 @@ class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
+		$session = $this->container->get('request_stack')->getSession();
+
 		$dashboard = Dashboard::new();
 
-        $dashboard->setTitle($this->translator->trans('app.title'));
+        $dashboard->setTitle($session->get('config')->appName);
 
         return $dashboard;
     }

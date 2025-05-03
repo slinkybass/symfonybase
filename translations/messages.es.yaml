@@ -1,5 +1,3 @@
-app:
-  title: SymfonyBase
 admin:
   home:
     title: Inicio

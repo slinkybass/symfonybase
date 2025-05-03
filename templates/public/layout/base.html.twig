@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	{% set page_title_block_output %}{% block page_title %}{% endblock %}{% endset %}
 
-	<title>{{ page_title_block_output|striptags|raw }}</title>
+	<title>{{ app.session.get('config').appName }} - {{ page_title_block_output|striptags|raw }}</title>
 </head>
 {% block body %}
 	<body class="{% block body_class %}{% endblock %}">
