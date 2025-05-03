@@ -5,11 +5,11 @@ namespace App\Entity\Enums;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-enum UserGender: string implements TranslatableInterface
+enum UserGender: int implements TranslatableInterface
 {
-    case male = 'male';
-    case female = 'female';
-    case nobinary = 'nobinary';
+    case male = 1;
+    case female = 2;
+    case nobinary = 3;
 
     private static function getTranslateChain(): string
     {
