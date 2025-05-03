@@ -34,7 +34,8 @@ class DashboardController extends AbstractDashboardController
 
 		$dashboard = Dashboard::new();
 
-        $dashboard->setTitle($session->get('config')->appName);
+		$dashboard->setTitle('<img src="' . $session->get('config')->appLogo . '" class="mx-auto d-block">');
+		$dashboard->setFaviconPath($session->get('config')->appFavicon);
 
         return $dashboard;
     }

@@ -7,6 +7,9 @@
 	{% set page_title_block_output %}{% block page_title %}{% endblock %}{% endset %}
 
 	<title>{{ app.session.get('config').appName }} - {{ page_title_block_output|striptags|raw }}</title>
+	{% block head_favicon %}
+		<link rel="shortcut icon" href="{{ asset(app.session.get('config').appFavicon) }}">
+	{% endblock %}
 </head>
 {% block body %}
 	<body class="{% block body_class %}{% endblock %}">
