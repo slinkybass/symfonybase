@@ -33,6 +33,9 @@ class Config
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $appKeywords = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $appTimezone = null;
+
     public function __toString(): string
     {
         return $this->appName ?? '';
@@ -111,6 +114,18 @@ class Config
     public function setAppKeywords(?string $appKeywords): static
     {
         $this->appKeywords = $appKeywords;
+
+        return $this;
+    }
+
+    public function getAppTimezone(): ?string
+    {
+        return $this->appTimezone;
+    }
+
+    public function setAppTimezone(?string $appTimezone): static
+    {
+        $this->appTimezone = $appTimezone;
 
         return $this;
     }

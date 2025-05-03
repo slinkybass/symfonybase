@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Locale;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -52,6 +53,17 @@ class DashboardController extends AbstractDashboardController
 
         return $dashboard;
     }
+
+	public function configureCrud(): Crud
+	{
+		$session = $this->container->get('request_stack')->getSession();
+
+		$crud = Crud::new();
+
+		$crud->setTimezone($session->get('config')->appTimezone);
+
+		return $crud;
+	}
 
     public function configureMenuItems(): iterable
     {

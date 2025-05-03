@@ -22,6 +22,7 @@ entities:
       appFavicon: Icono
       appDescription: Descripción
       appKeywords: Palabras clave
+      appTimezone: Zona horaria
   admin:
     singular: Administrador
     plural: Administradores
