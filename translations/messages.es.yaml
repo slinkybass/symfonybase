@@ -1,0 +1,8 @@
+app:
+  title: SymfonyBase
+admin:
+  home:
+    title: Inicio
+public:
+  home:
+    title: Inicio

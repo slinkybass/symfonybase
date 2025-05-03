@@ -8,15 +8,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
     private AdminUrlGenerator $adminUrlGenerator;
+    private TranslatorInterface $translator;
 
-    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(AdminUrlGenerator $adminUrlGenerator, TranslatorInterface $translator)
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
+        $this->translator = $translator;
     }
 
     public function index(): Response
@@ -29,7 +32,7 @@ class DashboardController extends AbstractDashboardController
     {
 		$dashboard = Dashboard::new();
 
-        $dashboard->setTitle('SymfonyBase');
+        $dashboard->setTitle($this->translator->trans('app.title'));
 
         return $dashboard;
     }
