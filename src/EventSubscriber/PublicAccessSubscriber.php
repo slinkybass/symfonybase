@@ -26,8 +26,8 @@ class PublicAccessSubscriber implements EventSubscriberInterface
 	public function onKernelRequest(RequestEvent $event)
 	{
 		$user = $this->security->getUser();
-		$request = $event->getRequest();
-		$routeName = $request->attributes->get('_route');
+		$userIsAdmin = $user && $this->authorizationChecker->isGranted('ROLE_ADMIN');
+		$routeName = $event->getRequest()->attributes->get('_route');
 		$availablePublicRoutesForAdmins = [];
 
 		if ($routeName) {
@@ -36,7 +36,7 @@ class PublicAccessSubscriber implements EventSubscriberInterface
 				$controllerName = strstr(substr(strrchr($routePath, '\\'), 1), '::', true);
 				if ($controllerName) {
 					if (($controllerName == "PublicController" || $controllerName == "AuthController") && $user) {
-						if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+						if ($userIsAdmin) {
 							if (!in_array($routeName, $availablePublicRoutesForAdmins)) {
 								$event->setResponse(new RedirectResponse($this->router->generate('admin')));
 							}
