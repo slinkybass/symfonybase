@@ -35,10 +35,8 @@ class CreateUsersCommand extends Command
 
 	private function roles(OutputInterface $output): void
 	{
-		$roleSuperAdminExists = $this->em->getRepository(Role::class)->findOneBy([
-			'name' => "ROLE_SUPERADMIN"
-		]);
-		if (!$roleSuperAdminExists) {
+		$roleSuperAdmin = $this->em->getRepository(Role::class)->get("ROLE_SUPERADMIN");
+		if (!$roleSuperAdmin) {
 			$roleSuperAdmin = new Role();
 			$roleSuperAdmin->setName('ROLE_SUPERADMIN');
 			$roleSuperAdmin->setDisplayName('Superadmin');
@@ -62,10 +60,8 @@ class CreateUsersCommand extends Command
 			$output->writeln('<bg=green;options=bold>CREATED ROLE_SUPERADMIN</>');
 		}
 
-		$roleAdminExists = $this->em->getRepository(Role::class)->findOneBy([
-			'name' => "ROLE_ADMIN"
-		]);
-		if (!$roleAdminExists) {
+		$roleAdmin = $this->em->getRepository(Role::class)->get("ROLE_ADMIN");
+		if (!$roleAdmin) {
 			$roleAdmin = new Role();
 			$roleAdmin->setDisplayName('Admin');
 			$roleAdmin->setName('ROLE_ADMIN');
@@ -74,10 +70,8 @@ class CreateUsersCommand extends Command
 			$output->writeln('<bg=green;options=bold>CREATED ROLE_ADMIN</>');
 		}
 
-		$roleUserExists = $this->em->getRepository(Role::class)->findOneBy([
-			'name' => "ROLE_USER"
-		]);
-		if (!$roleUserExists) {
+		$roleUser = $this->em->getRepository(Role::class)->get("ROLE_USER");
+		if (!$roleUser) {
 			$roleUser = new Role();
 			$roleUser->setDisplayName('User');
 			$roleUser->setName('ROLE_USER');
@@ -91,30 +85,23 @@ class CreateUsersCommand extends Command
 
 	private function users(OutputInterface $output): void
 	{
-		$roleSuperAdmin = $this->em->getRepository(Role::class)->findOneBy([
-			'name' => "ROLE_SUPERADMIN"
-		]);
-		$superAdmins = $this->em->getRepository(User::class)->findBy([
-			'role' => $roleSuperAdmin
-		]);
+		$superAdmins = $this->em->getRepository(User::class)->findByRole("ROLE_SUPERADMIN");
 		if (!count($superAdmins)) {
+			$roleSuperAdmin = $this->em->getRepository(Role::class)->get("ROLE_SUPERADMIN");
+
 			$superAdmin = new User();
 			$superAdmin->setName('Superadmin');
 			$superAdmin->setEmail('superadmin@superadmin.com');
 			$superAdmin->setRole($roleSuperAdmin);
 			$superAdmin->setPassword($this->passwordHasher->hashPassword($superAdmin, 'superadmin'));
-			$output->writeln('<bg=green;options=bold>CREATED USER superadmin@superadmin.com</>');
 			$this->em->persist($superAdmin);
 			$output->writeln('<bg=green;options=bold>CREATED USER superadmin@superadmin.com</>');
 		}
 
-        $roleAdmin = $this->em->getRepository(Role::class)->findOneBy([
-            'name' => "ROLE_ADMIN"
-        ]);
-		$admins = $this->em->getRepository(User::class)->findBy([
-			'role' => $roleSuperAdmin
-		]);
+		$admins = $this->em->getRepository(User::class)->findByRole("ROLE_ADMIN");
 		if (!count($admins)) {
+			$roleAdmin = $this->em->getRepository(Role::class)->get("ROLE_ADMIN");
+
 			$admin = new User();
 			$admin->setName('Admin');
 			$admin->setEmail('admin@admin.com');

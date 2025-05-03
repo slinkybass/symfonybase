@@ -15,4 +15,12 @@ class RoleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Role::class);
     }
+
+    public function get(string $name): ?Role
+    {
+		return $this->createQueryBuilder('r')
+            ->where('r.name = :name')
+            ->setParameter('name', $name)
+			->getQuery()->getOneOrNullResult();
+    }
 }

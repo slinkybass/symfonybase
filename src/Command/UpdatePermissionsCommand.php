@@ -31,9 +31,7 @@ class UpdatePermissionsCommand extends Command
 
 	private function permissions(OutputInterface $output): void
 	{
-		$roleSuperAdmin = $this->em->getRepository(Role::class)->findOneBy([
-			'name' => "ROLE_SUPERADMIN"
-		]);
+		$roleSuperAdmin = $this->em->getRepository(Role::class)->get("ROLE_SUPERADMIN");
 		if ($roleSuperAdmin) {
 			$permissions = array();
 			$filesInsideCrudsFolder = array_diff(scandir(__DIR__ . '/../Controller/Admin/Cruds'), array('..', '.'));
