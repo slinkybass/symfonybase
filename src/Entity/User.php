@@ -39,8 +39,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $birthdate = null;
 
-    #[ORM\Column(enumType: Enums\UserGender::class, nullable: true)]
-    private ?Enums\UserGender $gender = null;
+    #[ORM\Column(enumType: Enum\UserGender::class, nullable: true)]
+    private ?Enum\UserGender $gender = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
@@ -183,12 +183,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGender(): ?Enums\UserGender
+    public function getGender(): ?Enum\UserGender
     {
         return $this->gender;
     }
 
-    public function setGender(?Enums\UserGender $gender): static
+    public function setGender(?Enum\UserGender $gender): static
     {
         $this->gender = $gender;
 
