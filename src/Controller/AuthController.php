@@ -26,6 +26,7 @@ final class AuthController extends AbstractController
 			'last_username' => $authenticationUtils->getLastUsername(),
 			'translation_domain' => 'admin',
 			'favicon_path' => $session->get('config')->appFavicon,
+			'page_title' => $this->translator->trans('login_page.sign_in', [], 'EasyAdminBundle'),
 			'csrf_token_intention' => 'authenticate',
 			'target_path' => $this->generateUrl('home'),
 			'username_label' => $this->translator->trans('entities.user.fields.email'),
