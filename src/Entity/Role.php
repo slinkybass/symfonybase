@@ -89,6 +89,28 @@ class Role
         return $this;
     }
 
+    public function getPermission($name): ?bool
+    {
+        return $this->permissions[$name] ?? false;
+    }
+
+    public function isUp($role): ?bool
+    {
+        if ($role == $this) {
+            return true;
+        }
+        $hasPermissions = $this->getPermissions() && count($this->getPermissions()) > 0;
+        if (!$hasPermissions) {
+            return false;
+        }
+        foreach ($this->getPermissions() as $permissionName => $permissionValue) {
+            if (!$permissionValue && $role->getPermission($permissionName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function getUsers(): Collection
     {
         return $this->users;

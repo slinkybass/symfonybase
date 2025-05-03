@@ -148,6 +148,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+	public function hasPermission($permission): ?bool
+	{
+		return $this->role->getPermission($permission);
+	}
+
+	public function hasPermissionCrud($crud): ?bool
+	{
+		return $this->hasPermission('crud' . ucfirst($crud));
+	}
+
+	public function hasPermissionAction($action, $crud): ?bool
+	{
+		return $this->hasPermission('crud' . ucfirst($crud) . ucfirst($action));
+	}
+
     public function getName(): ?string
     {
         return $this->name;
