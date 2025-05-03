@@ -49,10 +49,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $avatar = null;
 
     #[ORM\Column]
-    private ?bool $active = null;
+    private ?bool $active = true;
 
     #[ORM\Column]
-    private ?bool $verified = null;
+    private ?bool $verified = true;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
