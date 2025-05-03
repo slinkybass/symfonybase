@@ -4,3 +4,57 @@ admin:
 public:
   home:
     title: Inicio
+entities:
+  config:
+    singular: Configuración
+    plural: Configuración
+    sections:
+      data: Datos de la aplicación
+    fields:
+      id: ID
+      appName: Nombre
+      appColor: Color principal
+      appLogo: Logo
+      appFavicon: Icono
+      appDescription: Descripción
+      appKeywords: Palabras clave
+  admin:
+    singular: Administrador
+    plural: Administradores
+  user:
+    singular: Usuario
+    plural: Usuarios
+    sections:
+      data: Datos de usuario
+      password: Contraseña
+    actions:
+      impersonate: Impersonar
+      accesses: Accesos
+    fields:
+      email: Email
+      password: Contraseña
+      repeatPassword: Repetir contraseña
+      name: Nombre
+      lastname: Apellidos
+      birthdate: Fecha de nacimiento
+      age: Edad
+      gender: Género
+      genders:
+        male: Masculino
+        female: Femenino
+        nobinary: No binario
+      phone: Teléfono
+      avatar: Avatar
+      active: Activo
+      verified: Verificado
+      createdAt: Fecha de alta
+  role:
+    singular: Rol
+    plural: Roles
+    sections:
+      data: Datos de rol
+    fields:
+      name: Nombre ID
+      displayName: Nombre
+      isAdmin: ¿Es administrador?
+      permissions: Permisos
