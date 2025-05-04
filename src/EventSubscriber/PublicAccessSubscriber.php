@@ -26,23 +26,31 @@ class PublicAccessSubscriber implements EventSubscriberInterface
 	public function onKernelRequest(RequestEvent $event)
 	{
 		$user = $this->security->getUser();
+		$request = $event->getRequest();
+		$session = $request->getSession();
+		$routeName = $request->attributes->get('_route');
+		$availablePublicRoutes = [];
+
 		$userIsAdmin = $user && $this->authorizationChecker->isGranted('ROLE_ADMIN');
-		$routeName = $event->getRequest()->attributes->get('_route');
-		$availablePublicRoutesForAdmins = [];
+		$routeAvailable = in_array($routeName, $availablePublicRoutes);
 
 		if ($routeName) {
 			$routePath = $this->router->getRouteCollection()->get($routeName)->getDefault('_controller');
 			if ($routePath) {
 				$controllerName = strstr(substr(strrchr($routePath, '\\'), 1), '::', true);
 				if ($controllerName) {
-					if (($controllerName == "PublicController" || $controllerName == "AuthController") && $user) {
+					$redirect = null;
+
+					if ($controllerName == "PublicController" && !$routeAvailable) {
 						if ($userIsAdmin) {
-							if (!in_array($routeName, $availablePublicRoutesForAdmins)) {
-								$event->setResponse(new RedirectResponse($this->router->generate('admin')));
-							}
-						} else {
-							$event->setResponse(new RedirectResponse($this->router->generate('home')));
+							$redirect = $this->router->generate('admin');
+						} elseif (!$session->get('config')->enablePublic) {
+							$redirect = $this->router->generate('login');
 						}
+					}
+
+					if ($redirect) {
+						$event->setResponse(new RedirectResponse($redirect));
 					}
 				}
 			}

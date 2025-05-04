@@ -36,6 +36,9 @@ class Config
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $appTimezone = null;
 
+    #[ORM\Column]
+    private ?bool $enablePublic = false;
+
     public function __toString(): string
     {
         return $this->appName ?? '';
@@ -126,6 +129,18 @@ class Config
     public function setAppTimezone(?string $appTimezone): static
     {
         $this->appTimezone = $appTimezone;
+
+        return $this;
+    }
+
+    public function isEnablePublic(): ?bool
+    {
+        return $this->enablePublic;
+    }
+
+    public function setEnablePublic(bool $enablePublic): static
+    {
+        $this->enablePublic = $enablePublic;
 
         return $this;
     }

@@ -26,6 +26,7 @@ class ConfigSubscriber implements EventSubscriberInterface
 		$this->config->appDescription = 'Created with Symfony';
 		$this->config->appKeywords = 'symfony, application';
 		$this->config->appTimezone = 'Europe/Madrid';
+		$this->config->enablePublic = false;
 	}
 
 	public function onKernelRequest(RequestEvent $event): void
@@ -40,6 +41,7 @@ class ConfigSubscriber implements EventSubscriberInterface
 			$this->config->appDescription = $dcConfig->getAppDescription() ?? $this->config->appDescription;
 			$this->config->appKeywords = $dcConfig->getAppKeywords() ?? $this->config->appKeywords;
 			$this->config->appTimezone = $dcConfig->getAppTimezone() ?? $this->config->appTimezone;
+			$this->config->enablePublic = $dcConfig->isEnablePublic() ?? $this->config->enablePublic;
 		}
 		$request->getSession()->set('config', $this->config);
 	}

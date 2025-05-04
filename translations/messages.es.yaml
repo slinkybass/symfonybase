@@ -23,6 +23,7 @@ entities:
       appDescription: Descripción
       appKeywords: Palabras clave
       appTimezone: Zona horaria
+      enablePublic: Habilitar zona pública
   admin:
     singular: Administrador
     plural: Administradores
