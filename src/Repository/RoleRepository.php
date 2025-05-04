@@ -18,9 +18,9 @@ class RoleRepository extends ServiceEntityRepository
 
     public function get(string $name): ?Role
     {
-		return $this->createQueryBuilder('r')
+        return $this->createQueryBuilder('r')
             ->where('r.name = :name')
             ->setParameter('name', $name)
-			->getQuery()->getOneOrNullResult();
+            ->getQuery()->getOneOrNullResult();
     }
 }

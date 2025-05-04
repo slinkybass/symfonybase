@@ -35,10 +35,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findByRole(string $roleName): mixed
     {
-		return $this->createQueryBuilder('u')
+        return $this->createQueryBuilder('u')
             ->innerJoin('u.role', 'r')
             ->where('r.name = :roleName')
             ->setParameter('roleName', $roleName)
-			->getQuery()->getResult();
+            ->getQuery()->getResult();
     }
 }

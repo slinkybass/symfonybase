@@ -140,7 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = array($this->role->getName());
+        $roles = [$this->role->getName()];
         if ($this->role->isAdmin()) {
             $roles[] = 'ROLE_ADMIN';
         }
@@ -148,20 +148,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-	public function hasPermission($permission): ?bool
-	{
-		return $this->role->getPermission($permission);
-	}
+    public function hasPermission($permission): ?bool
+    {
+        return $this->role->getPermission($permission);
+    }
 
-	public function hasPermissionCrud($crud): ?bool
-	{
-		return $this->hasPermission('crud' . ucfirst($crud));
-	}
+    public function hasPermissionCrud($crud): ?bool
+    {
+        return $this->hasPermission('crud' . ucfirst($crud));
+    }
 
-	public function hasPermissionAction($action, $crud): ?bool
-	{
-		return $this->hasPermission('crud' . ucfirst($crud) . ucfirst($action));
-	}
+    public function hasPermissionAction($action, $crud): ?bool
+    {
+        return $this->hasPermission('crud' . ucfirst($crud) . ucfirst($action));
+    }
 
     public function getName(): ?string
     {
