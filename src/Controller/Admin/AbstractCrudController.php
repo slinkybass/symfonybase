@@ -195,19 +195,25 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
 	public function hasPermission($permission): bool
 	{
-		return $this->getUser()->hasPermission($permission);
+		/** @var User $user */
+		$user = $this->getUser();
+		return $user->hasPermission($permission);
 	}
 
 	public function hasPermissionCrud($crud = null): bool
 	{
+		/** @var User $user */
+		$user = $this->getUser();
 		$crud = $crud ?? $this->currentCrud();
-		return $this->getUser()->hasPermissionCrud($crud);
+		return $user->hasPermissionCrud($crud);
 	}
 
 	public function hasPermissionAction($action, $crud = null): bool
 	{
+		/** @var User $user */
+		$user = $this->getUser();
 		$crud = $crud ?? $this->currentCrud();
-		return $this->getUser()->hasPermissionAction($action, $crud);
+		return $user->hasPermissionAction($action, $crud);
 	}
 
 	public function transEntitySingular($entity = null): string
