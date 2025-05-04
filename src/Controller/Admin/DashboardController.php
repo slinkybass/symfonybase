@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use function Symfony\Component\Translation\t;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -13,18 +14,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
     private AdminUrlGenerator $adminUrlGenerator;
-    private TranslatorInterface $translator;
 
-    public function __construct(AdminUrlGenerator $adminUrlGenerator, TranslatorInterface $translator)
+    public function __construct(AdminUrlGenerator $adminUrlGenerator)
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
-        $this->translator = $translator;
     }
 
     public function index(): Response
@@ -84,9 +82,9 @@ class DashboardController extends AbstractDashboardController
 
 		$menuItems = array();
 		if ($this->isGranted('IS_IMPERSONATOR')) {
-			$menuItems[] = MenuItem::linkToExitImpersonation($this->translator->trans('user.exit_impersonation', [], 'EasyAdminBundle'), 'icon ti ti-user-x');
+			$menuItems[] = MenuItem::linkToExitImpersonation(t('user.exit_impersonation', [], 'EasyAdminBundle'), 'icon ti ti-user-x');
 		} else {
-			$menuItems[] = MenuItem::linkToLogout($this->translator->trans('user.sign_out', [], 'EasyAdminBundle'), 'icon ti ti-logout');
+			$menuItems[] = MenuItem::linkToLogout(t('user.sign_out', [], 'EasyAdminBundle'), 'icon ti ti-logout');
 		}
 		$userMenu->setMenuItems($menuItems);
 
