@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use function Symfony\Component\Translation\t;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Locale;
@@ -44,7 +45,7 @@ class DashboardController extends AbstractDashboardController
 		$locales = array();
 		foreach ($localesStr as $localeStr) {
             if ($localeStr) {
-                $locales[] = Locale::new($localeStr, ucfirst(Languages::getName($localeStr)) . ' (' . $localeStr . ')', 'icon ti ti-language');
+                $locales[] = Locale::new($localeStr, ucfirst(Languages::getName($localeStr)) . ' (' . $localeStr . ')', 'language');
             }
 		}
 		if (count($locales) > 1) {
@@ -65,9 +66,18 @@ class DashboardController extends AbstractDashboardController
 		return $crud;
 	}
 
+	public function configureAssets(): Assets
+	{
+		$assets = Assets::new();
+
+		$assets->useCustomIconSet('tabler');
+
+		return $assets;
+	}
+
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Dashboard', 'home');
     }
 
 	public function configureUserMenu(UserInterface $userInterface): UserMenu
@@ -82,9 +92,9 @@ class DashboardController extends AbstractDashboardController
 
 		$menuItems = array();
 		if ($this->isGranted('IS_IMPERSONATOR')) {
-			$menuItems[] = MenuItem::linkToExitImpersonation(t('user.exit_impersonation', [], 'EasyAdminBundle'), 'icon ti ti-user-x');
+			$menuItems[] = MenuItem::linkToExitImpersonation(t('user.exit_impersonation', [], 'EasyAdminBundle'), 'user-x');
 		} else {
-			$menuItems[] = MenuItem::linkToLogout(t('user.sign_out', [], 'EasyAdminBundle'), 'icon ti ti-logout');
+			$menuItems[] = MenuItem::linkToLogout(t('user.sign_out', [], 'EasyAdminBundle'), 'logout');
 		}
 		$userMenu->setMenuItems($menuItems);
 
