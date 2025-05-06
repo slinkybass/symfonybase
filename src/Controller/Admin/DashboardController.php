@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -101,4 +103,47 @@ class DashboardController extends AbstractDashboardController
 
         return $userMenu;
     }
+
+	public function configureActions(): Actions
+	{
+		$actions = Actions::new();
+
+		$actions->addBatchAction(Action::BATCH_DELETE);
+		$actions->update(Crud::PAGE_INDEX, Action::BATCH_DELETE, function (Action $action) {return $action->setIcon('trash');});
+
+		$actions->add(Crud::PAGE_INDEX, Action::NEW);
+		$actions->add(Crud::PAGE_INDEX, Action::DETAIL);
+		$actions->add(Crud::PAGE_INDEX, Action::EDIT);
+		$actions->add(Crud::PAGE_INDEX, Action::DELETE);
+		$actions->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {return $action->setIcon('plus');});
+		$actions->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {return $action->setIcon('eye');});
+		$actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {return $action->setIcon('edit');});
+		$actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {return $action->setIcon('trash');});
+
+		$actions->add(Crud::PAGE_NEW, Action::INDEX);
+		$actions->add(Crud::PAGE_NEW, Action::SAVE_AND_RETURN);
+		$actions->update(Crud::PAGE_NEW, Action::INDEX, function (Action $action) {return $action->setIcon('chevron-left');});
+		$actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) {return $action->setIcon('device-floppy');});
+
+		$actions->add(Crud::PAGE_DETAIL, Action::INDEX);
+		$actions->add(Crud::PAGE_DETAIL, Action::DELETE);
+		$actions->add(Crud::PAGE_DETAIL, Action::EDIT);
+		$actions->update(Crud::PAGE_DETAIL, Action::INDEX, function (Action $action) {return $action->setIcon('chevron-left');});
+		$actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) {return $action->setIcon('trash');});
+		$actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) {return $action->setIcon('edit');});
+
+		$actions->add(Crud::PAGE_EDIT, Action::INDEX);
+		$actions->add(Crud::PAGE_EDIT, Action::DELETE);
+		$actions->add(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN);
+		$actions->update(Crud::PAGE_EDIT, Action::INDEX, function (Action $action) {return $action->setIcon('chevron-left');});
+		$actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) {return $action->setIcon('trash');});
+		$actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) {return $action->setIcon('device-floppy');});
+			
+		$actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE]);
+		$actions->reorder(Crud::PAGE_NEW, [Action::INDEX, Action::SAVE_AND_RETURN]);
+		$actions->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::DELETE, Action::EDIT]);
+		$actions->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DELETE, Action::SAVE_AND_RETURN]);
+
+		return $actions;
+	}
 }
