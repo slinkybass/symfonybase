@@ -8,6 +8,10 @@
 		{% block head_favicon %}
 			<link rel="shortcut icon" href="{{ asset(app.session.get('config').appFavicon) }}">
 		{% endblock %}
+		{% block importmap %}
+			{{ importmap('app') }}
+			{{ importmap('public') }}
+		{% endblock %}
 	</head>
 	{% block body %}
 		<body class="{% block body_class %}{% endblock %}">

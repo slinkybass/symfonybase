@@ -13,7 +13,15 @@
  */
 return [
     'app' => [
-        'path' => './assets/app.js',
+        'path' => './assets/js/app.js',
+        'entrypoint' => true,
+    ],
+    'admin' => [
+        'path' => './assets/js/admin.js',
+        'entrypoint' => true,
+    ],
+    'public' => [
+        'path' => './assets/js/public.js',
         'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [

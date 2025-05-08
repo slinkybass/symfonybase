@@ -78,6 +78,8 @@ class DashboardController extends AbstractDashboardController
         $assets = Assets::new();
 
         $assets->useCustomIconSet('tabler');
+        $assets->addAssetMapperEntry('app');
+        $assets->addAssetMapperEntry('admin');
 
         return $assets;
     }
