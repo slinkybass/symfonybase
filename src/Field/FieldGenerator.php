@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
@@ -60,12 +61,14 @@ class FieldGenerator extends AbstractType
 
 	public static function id(string $name)
 	{
-		return IdField::new($name);
+		return IdField::new($name)
+			->setColumns(12);
 	}
 
 	public static function text(string $name)
 	{
-		return TextField::new($name);
+		return TextField::new($name)
+			->setColumns(12);
 	}
 
 	public static function hidden(string $name)
@@ -75,116 +78,172 @@ class FieldGenerator extends AbstractType
 
 	public static function slug(string $name)
 	{
-		return SlugField::new($name);
+		return SlugField::new($name)
+			->setColumns(12);
 	}
 
 	public static function textarea(string $name)
 	{
-		return TextareaField::new($name);
+		return TextareaField::new($name)
+			->setColumns(12);
 	}
 
 	public static function texteditor(string $name)
 	{
-		return TextEditorField::new($name);
+		return TextEditorField::new($name)
+			->setColumns(12);
 	}
 
 	public static function codeeditor(string $name)
 	{
-		return CodeEditorField::new($name);
+		return CodeEditorField::new($name)
+			->setColumns(12);
 	}
 
 	public static function choice(string $name)
 	{
-		return ChoiceField::new($name);
+		return ChoiceField::new($name)
+			->setColumns(12);
+	}
+
+	public static function choiceMutiple(string $name)
+	{
+		return ChoiceField::new($name)
+			->allowMultipleChoices()
+			->setColumns(12);
+	}
+
+	public static function choiceExpanded(string $name)
+	{
+		return ChoiceField::new($name)
+			->renderExpanded()
+			->setColumns(12);
+	}
+
+	public static function choiceExpandedMutiple(string $name)
+	{
+		return ChoiceField::new($name)
+			->renderExpanded()
+			->allowMultipleChoices()
+			->setColumns(12);
 	}
 
 	public static function checkbox(string $name)
 	{
-		return BooleanField::new($name);
+		return BooleanField::new($name)
+			->setColumns(12);
 	}
 
 	public static function switch(string $name)
 	{
-		return BooleanField::new($name)->renderAsSwitch();
+		return BooleanField::new($name)
+			->renderAsSwitch()
+			->setColumns(12);
 	}
 
 	public static function email(string $name)
 	{
-		return EmailField::new($name);
+		return EmailField::new($name)
+			->setColumns(12);
 	}
 
 	public static function phone(string $name)
 	{
-		return TelephoneField::new($name);
+		return TelephoneField::new($name)
+			->setColumns(12);
 	}
 
 	public static function url(string $name)
 	{
-		return UrlField::new($name);
+		return UrlField::new($name)
+			->setColumns(12);
 	}
 
 	public static function date(string $name)
 	{
-		return DateField::new($name);
+		return DateField::new($name)
+			->setColumns(12);
 	}
 
 	public static function datetime(string $name)
 	{
-		return DateTimeField::new($name);
+		return DateTimeField::new($name)
+			->setColumns(12);
 	}
 
 	public static function time(string $name)
 	{
-		return TimeField::new($name);
+		return TimeField::new($name)
+			->setColumns(12);
 	}
 
 	public static function timezone(string $name)
 	{
-		return TimezoneField::new($name);
+		return TimezoneField::new($name)
+			->setColumns(12);
 	}
 
-	public static function number(string $name)
+	public static function float(string $name)
 	{
-		return NumberField::new($name);
+		return NumberField::new($name)
+			->setNumDecimals(2)
+			->setFormTypeOption('html5', true)
+			->setColumns(12);
+	}
+
+	public static function integer(string $name)
+	{
+		return IntegerField::new($name)
+			->setColumns(12);
 	}
 
 	public static function percent(string $name)
 	{
-		return PercentField::new($name);
+		return PercentField::new($name)
+			->setColumns(12);
 	}
 
 	public static function money(string $name)
 	{
-		return MoneyField::new($name);
+		return MoneyField::new($name)
+			->setCurrency('EUR')
+			->setStoredAsCents(false)
+			->setColumns(12);
 	}
 
 	public static function color(string $name)
 	{
-		return ColorField::new($name);
+		return ColorField::new($name)
+			->setColumns(12);
 	}
 
 	public static function array(string $name)
 	{
-		return ArrayField::new($name);
+		return ArrayField::new($name)
+			->setColumns(12);
 	}
 
 	public static function collection(string $name)
 	{
-		return CollectionField::new($name);
+		return CollectionField::new($name)
+			->setColumns(12);
 	}
 
 	public static function association(string $name)
 	{
-		return AssociationField::new($name);
+		return AssociationField::new($name)
+			->setColumns(12);
 	}
 
 	public static function image(string $name)
 	{
-		return ImageField::new($name);
+		return ImageField::new($name)
+			->setColumns(12);
 	}
 
 	public static function avatar(string $name)
 	{
-		return AvatarField::new($name);
+		return AvatarField::new($name)
+			->setColumns(12);
 	}
 }
