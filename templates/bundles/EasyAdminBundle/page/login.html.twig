@@ -1,7 +1,7 @@
 {% extends '@!EasyAdmin/page/login.html.twig' %}
 
 {% block page_title %}
-    {{ app.session.get('config').appName }} - {{ page_title is defined ? page_title|raw : (ea.hasContext ? ea.dashboardTitle|raw : '') }}
+	{{ app.session.get('config').appName }} - {{ page_title is defined ? page_title|raw : (ea.hasContext ? ea.dashboardTitle|raw : '') }}
 {% endblock %}
 
 {% block header_logo %}{% endblock %}
