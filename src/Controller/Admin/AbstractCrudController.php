@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -9,20 +10,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController as EasyAbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use function Symfony\Component\Translation\t;
 
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
-    public $em;
-    public $adminUrlGenerator;
     public $transEntity;
 
-    public function __construct(EntityManagerInterface $em, AdminUrlGenerator $adminUrlGenerator)
+    public function __construct()
     {
-        $this->em = $em;
-        $this->adminUrlGenerator = $adminUrlGenerator;
-        $this->transEntity = $this->transEntity ?? $this->currentCrud();
+        $this->transEntity = $this->transEntity ?? $this->crud();
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -46,7 +45,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         if (!$this->hasPermissionCrud()) {
-            if ($this->getUser() !== $this->entity()) {
+            if ($this->user() !== $this->entity()) {
                 $actions = Actions::new();
             } else {
                 $actions->remove(Crud::PAGE_DETAIL, Action::INDEX);
@@ -117,29 +116,53 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $actions;
     }
 
-    public function currentCrud(): string
+    public function em(): EntityManagerInterface
     {
-        $className = get_called_class();
+        return $this->container->get('doctrine')->getManager();
+    }
+
+    public function adminUrl(): AdminUrlGenerator
+    {
+        return $this->container->get(AdminUrlGenerator::class);
+    }
+
+    public function request(): RequestStack
+    {
+        return $this->container->get('request_stack');
+    }
+
+    public function session(): ?Session
+    {
+        return $this->request()?->getSession();
+    }
+
+    public function config(): ?\stdClass
+    {
+        return $this->session()?->get('config');
+    }
+
+    public function user(): ?User
+    {
+        return $this->getUser();
+    }
+
+    public function entity(): ?object
+    {
+        return $this->getContext()?->getEntity()?->getInstance();
+    }
+
+    public function crud(): string
+    {
+        $className = $this->getEntityFqcn();
         $crudClassNameParts = explode('\\', $className);
         $crudClassName = end($crudClassNameParts);
         $crud = str_replace('CrudController', '', $crudClassName);
         return lcfirst($crud);
     }
 
-    public function entityId(): ?int
+    public function action(): ?string
     {
-        return filter_input(INPUT_GET, EA::ENTITY_ID, FILTER_SANITIZE_URL);
-    }
-
-    public function entity(): ?object
-    {
-        $entityId = $this->entityId();
-        return $entityId ? $this->em->getRepository($this->getEntityFqcn())->find($entityId) : null;
-    }
-
-    public function crudAction(): ?string
-    {
-        return filter_input(INPUT_GET, EA::CRUD_ACTION, FILTER_SANITIZE_URL);
+        return $this->getContext()?->getCrud()?->getCurrentAction();
     }
 
     public function filters($withHiddenFilters = false): array
@@ -187,32 +210,19 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters[$name] ?? null;
     }
 
-    public function config(): ?object
-    {
-        return $this->container->get('request_stack')->getSession()->get('config');
-    }
-
     public function hasPermission($permission): bool
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        return $user->hasPermission($permission);
+        return $this->user()->hasPermission($permission);
     }
 
     public function hasPermissionCrud($crud = null): bool
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $crud = $crud ?? $this->currentCrud();
-        return $user->hasPermissionCrud($crud);
+        return $this->user()->hasPermissionCrud($crud ?? $this->crud());
     }
 
     public function hasPermissionAction($action, $crud = null): bool
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $crud = $crud ?? $this->currentCrud();
-        return $user->hasPermissionAction($action, $crud);
+        return $this->user()->hasPermissionAction($action, $crud ?? $this->crud());
     }
 
     public function transEntitySingular($entity = null): string
