@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Config;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -22,16 +24,18 @@ use function Symfony\Component\Translation\t;
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
-    private AdminUrlGenerator $adminUrlGenerator;
+    private $em;
+    private $adminUrl;
 
-    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(EntityManagerInterface $em, AdminUrlGenerator $adminUrl)
     {
-        $this->adminUrlGenerator = $adminUrlGenerator;
+        $this->em = $em;
+        $this->adminUrl = $adminUrl;
     }
 
     public function index(): Response
     {
-        $url = $this->adminUrlGenerator->setRoute('admin_home')->generateUrl();
+        $url = $this->adminUrl->setRoute('admin_home')->generateUrl();
         return $this->redirect($url);
     }
 
@@ -80,7 +84,15 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'home');
+        /** @var User $user */
+        $user = $this->getUser();
+        $config = $this->em->getRepository(Config::class)->get();
+
+        if ($user->hasPermissionCrud('config')) {
+            $configLink = MenuItem::linkToCrud(t('entities.config.singular'), 'settings', Config::class)->setController(Cruds\ConfigCrudController::class);
+            $configLink = $config ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $configLink->setAction(Crud::PAGE_NEW);
+            yield $configLink;
+        }
     }
 
     public function configureUserMenu(UserInterface $userInterface): UserMenu
