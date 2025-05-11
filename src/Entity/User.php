@@ -60,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string
     {
-        return $this->email;
+        return $this->getFullName();
     }
 
     public function getId(): ?int
@@ -185,6 +185,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastname = $lastname;
 
         return $this;
+    }
+
+    public function getFullName()
+    {
+        return $this->name . ($this->lastname ? ' ' . $this->lastname : '');
     }
 
     public function getBirthdate(): ?\DateTime
