@@ -153,7 +153,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
     public function crud(): string
     {
-        $className = $this->getEntityFqcn();
+        $className = get_class($this);
         $crudClassNameParts = explode('\\', $className);
         $crudClassName = end($crudClassNameParts);
         $crud = str_replace('CrudController', '', $crudClassName);
