@@ -33,4 +33,19 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    '@tabler/core' => [
+        'version' => '1.2.0',
+    ],
+    '@tabler/core/dist/css/tabler.min.css' => [
+        'version' => '1.2.0',
+        'type' => 'css',
+    ],
+    '@tabler/core/dist/css/tabler-flags.min.css' => [
+        'version' => '1.2.0',
+        'type' => 'css',
+    ],
+    '@tabler/core/dist/css/tabler-vendors.min.css' => [
+        'version' => '1.2.0',
+        'type' => 'css',
+    ],
 ];

@@ -47,6 +47,8 @@ class DashboardController extends AbstractDashboardController
 
         $dashboard->setTitle('<img src="' . $session->get('config')->appLogo . '" class="mx-auto d-block">');
         $dashboard->setFaviconPath($session->get('config')->appFavicon);
+        $dashboard->setDefaultColorScheme('light');
+        $dashboard->renderContentMaximized();
 
         $localesStr = explode('|', $this->getParameter('locales'));
         $locales = [];
@@ -123,7 +125,7 @@ class DashboardController extends AbstractDashboardController
         $actions = Actions::new();
 
         $actions->addBatchAction(Action::BATCH_DELETE);
-        $actions->update(Crud::PAGE_INDEX, Action::BATCH_DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger'); });
+        $actions->update(Crud::PAGE_INDEX, Action::BATCH_DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger text-white'); });
 
         $actions->add(Crud::PAGE_INDEX, Action::NEW);
         $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
@@ -132,7 +134,7 @@ class DashboardController extends AbstractDashboardController
         $actions->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) { return $action->setIcon('plus'); });
         $actions->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) { return $action->setIcon('eye'); });
         $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) { return $action->setIcon('edit'); });
-        $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger'); });
+        $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) { return $action->setIcon('trash'); });
 
         $actions->add(Crud::PAGE_NEW, Action::INDEX);
         $actions->add(Crud::PAGE_NEW, Action::SAVE_AND_RETURN);
@@ -143,14 +145,14 @@ class DashboardController extends AbstractDashboardController
         $actions->add(Crud::PAGE_DETAIL, Action::DELETE);
         $actions->add(Crud::PAGE_DETAIL, Action::EDIT);
         $actions->update(Crud::PAGE_DETAIL, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left'); });
-        $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger'); });
+        $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger text-white'); });
         $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) { return $action->setIcon('edit'); });
 
         $actions->add(Crud::PAGE_EDIT, Action::INDEX);
         $actions->add(Crud::PAGE_EDIT, Action::DELETE);
         $actions->add(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN);
         $actions->update(Crud::PAGE_EDIT, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left'); });
-        $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger'); });
+        $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger text-white'); });
         $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) { return $action->setIcon('device-floppy')->addCssClass('btn-success'); });
 
         $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE]);

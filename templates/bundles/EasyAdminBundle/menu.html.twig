@@ -1,0 +1,69 @@
+<nav id="sidebar-menu" class="collapse navbar-collapse">
+    {% block main_menu_before %}{% endblock %}
+    <ul class="navbar-nav pt-lg-3">
+        {% block main_menu %}
+            {% for menuItem in ea.mainMenu.items %}
+                {% block menu_item %}
+                    {% set is_submenu_item_with_no_items = menuItem.type == constant('EasyCorp\\Bundle\\EasyAdminBundle\\Dto\\MenuItemDto::TYPE_SUBMENU') and not menuItem.hasSubItems %}
+                    {% if not is_submenu_item_with_no_items %}
+                        <li class="{{ menuItem.isMenuSection ? 'nav-header' : 'nav-item' }} {{ menuItem.hasSubItems ? 'dropdown' }} {{ menuItem.isSelected ? 'active' }} {{ menuItem.isExpanded ? 'expanded' }}">
+                            {{ _self.render_menu_item(menuItem) }}
+                            {% if menuItem.hasSubItems %}
+                                <div class="dropdown-menu {{ menuItem.isExpanded ? 'show' }}">
+                                    {% for menuSubItem in menuItem.subItems %}
+                                        {% block menu_subitem %}
+                                            {{ _self.render_menu_item(menuSubItem) }}
+                                        {% endblock menu_subitem %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endblock menu_item %}
+            {% endfor %}
+        {% endblock main_menu %}
+    </ul>
+    {% block main_menu_after %}{% endblock %}
+</nav>
+
+{% macro render_html_attributes(item) %}
+    {% for attribute_name, attribute_value in item.htmlAttributes %}
+        {{ attribute_name }}="{{ attribute_value|e('html') }}"
+    {% endfor %}
+{% endmacro %}
+
+{% macro render_menu_item(item) %}
+    {% if item.isMenuSection %}
+        <span {{ _self.render_html_attributes(item) }}>
+            {% if item.icon is not empty %}
+                <span class="nav-link-icon">
+                    <twig:ea:Icon name="{{ item.icon }}" />
+                </span>
+            {% endif %}
+            <span class="{{ item.cssClass }}">
+                {{ item.label|trans|raw }}
+            </span>
+            {% if item.badge %}
+                <span class="badge badge-sm ms-auto {{ item.badge.cssClass }}" {{ _self.render_html_attributes(item.badge) }} style="{{ item.badge.htmlStyle }}">
+                    {{ item.badge.content }}
+                </span>
+            {% endif %}
+        </span>
+    {% else %}
+        <a href="{{ item.linkUrl }}" class="nav-link {{ item.hasSubItems ? 'dropdown-toggle' }} {{ item.cssClass }}" target="{{ item.linkTarget }}" rel="{{ item.linkRel }}" {{ _self.render_html_attributes(item) }}>
+            {% if item.icon is not empty %}
+                <span class="nav-link-icon">
+                    <twig:ea:Icon name="{{ item.icon }}" />
+                </span>
+            {% endif %}
+            <span class="nav-link-title">
+                {{ item.label|trans|raw }}
+            </span>
+            {% if item.hasVisibleBadge %}
+                <span class="badge badge-sm ms-auto {{ item.badge.cssClass }}" {{ _self.render_html_attributes(item.badge) }} style="{{ item.badge.htmlStyle }}">
+                    {{ item.badge.content }}
+                </span>
+            {% endif %}
+        </a>
+    {% endif %}
+{% endmacro %}

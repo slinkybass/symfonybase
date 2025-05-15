@@ -1,0 +1,6 @@
+/* Sidebar */
+aside {
+    .navbar-brand img {
+        max-height: 32px;
+    }
+}
