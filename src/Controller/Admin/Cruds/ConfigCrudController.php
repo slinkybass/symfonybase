@@ -37,26 +37,26 @@ class ConfigCrudController extends AbstractCrudController
         $entity = $this->entity();
 
         $dataPanel = FieldGenerator::panel($this->transEntitySection())->setIcon('settings');
-		$appName = FieldGenerator::text('appName')->setLabel($this->transEntityField('appName'))->setColumns(6);
-		$appColor = FieldGenerator::color('appColor')->setLabel($this->transEntityField('appColor'))->setColumns(6);
-		$appLogo = FieldGenerator::text('appLogo')->setLabel($this->transEntityField('appLogo'))->setColumns(6);
-		$appFavicon = FieldGenerator::text('appFavicon')->setLabel($this->transEntityField('appFavicon'))->setColumns(6);
-		$appTimezone = FieldGenerator::timezone('appTimezone')->setLabel($this->transEntityField('appTimezone'))->setColumns(6);
+        $appName = FieldGenerator::text('appName')->setLabel($this->transEntityField('appName'))->setColumns(6);
+        $appColor = FieldGenerator::color('appColor')->setLabel($this->transEntityField('appColor'))->setColumns(6);
+        $appLogo = FieldGenerator::text('appLogo')->setLabel($this->transEntityField('appLogo'))->setColumns(6);
+        $appFavicon = FieldGenerator::text('appFavicon')->setLabel($this->transEntityField('appFavicon'))->setColumns(6);
+        $appTimezone = FieldGenerator::timezone('appTimezone')->setLabel($this->transEntityField('appTimezone'))->setColumns(6);
         $enablePublic = FieldGenerator::switch('enablePublic')->setLabel($this->transEntityField('enablePublic'))->setColumns(12);
-		$appDescription = FieldGenerator::textarea('appDescription')->setLabel($this->transEntityField('appDescription'))->setColumns(6);
-		$appKeywords = FieldGenerator::textarea('appKeywords')->setLabel($this->transEntityField('appKeywords'))->setColumns(6);
+        $appDescription = FieldGenerator::textarea('appDescription')->setLabel($this->transEntityField('appDescription'))->setColumns(6);
+        $appKeywords = FieldGenerator::textarea('appKeywords')->setLabel($this->transEntityField('appKeywords'))->setColumns(6);
 
         yield $dataPanel;
-		yield $appName;
-		yield $appColor;
-		yield $appLogo;
-		yield $appFavicon;
-		yield $appTimezone;
+        yield $appName;
+        yield $appColor;
+        yield $appLogo;
+        yield $appFavicon;
+        yield $appTimezone;
         yield $enablePublic;
-		if (($entity && $entity->isEnablePublic() && $pageName == Crud::PAGE_DETAIL) || $pageName !== Crud::PAGE_DETAIL) {
-			yield $appDescription;
-			yield $appKeywords;
-		}
+        if (($entity && $entity->isEnablePublic() && $pageName == Crud::PAGE_DETAIL) || $pageName !== Crud::PAGE_DETAIL) {
+            yield $appDescription;
+            yield $appKeywords;
+        }
     }
 
     public function configureActions(Actions $actions): Actions
@@ -73,7 +73,7 @@ class ConfigCrudController extends AbstractCrudController
             $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE, function (Action $action) use ($hasPermissionEdit) {
                 return $action
                     ->setIcon('device-floppy')
-					->addCssClass('btn-success')
+                    ->addCssClass('btn-success')
                     ->setLabel(t('action.save', [], 'EasyAdminBundle'))
                     ->displayIf(static function () use ($hasPermissionEdit) {
                         return $hasPermissionEdit;
