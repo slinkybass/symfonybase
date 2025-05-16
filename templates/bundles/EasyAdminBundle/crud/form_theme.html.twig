@@ -91,3 +91,29 @@
         </{{ element|default('label') }}>
     {%- endif -%}
 {%- endblock form_label %}
+
+{% block ea_filters_widget %}
+    {% set applied_filters = ea.request.query.all()['filters']|default([])|keys %}
+
+    {% for field in form %}
+        <div class="col-12">
+            <div class="form-check filter-field px-3" data-filter-property="{{ field.vars.name }}">
+                <div class="filter-heading" id="filter-heading-{{ loop.index }}">
+                    <div class="form-switch">
+                        <input id="filter-checkbox-{{ loop.index }}" type="checkbox" class="form-check-input filter-checkbox" {% if field.vars.name in applied_filters %}checked{% endif %}>
+                        <button type="button" class="d-none" data-bs-toggle="collapse" href="#filter-content-{{ loop.index }}" aria-expanded="{{ field.vars.name in applied_filters ? 'true' : 'false' }}" aria-controls="filter-content-{{ loop.index }}"></button>
+                        <label class="checkbox-switch form-check-label" for="filter-checkbox-{{ loop.index }}"
+                            {% for name, value in field.vars.label_attr|default([]) %}{{ name }}="{{ value|e('html') }}" {% endfor %}>
+                            {{ field.vars.label|default(field.vars.name|humanize)|trans(domain = ea.i18n.translationDomain) }}
+                        </label>
+                    </div>
+                </div>
+                <div id="filter-content-{{ loop.index }}" class="filter-content collapse {% if field.vars.name in applied_filters %}show{% endif %}" aria-labelledby="filter-heading-{{ loop.index }}">
+                    <div class="form-widget my-3 ms-3">
+                        {{ form_widget(field) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock ea_filters_widget %}
