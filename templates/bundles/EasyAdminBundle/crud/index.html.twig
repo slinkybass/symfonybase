@@ -2,6 +2,10 @@
 
 {% set has_batch_actions = batch_actions|length > 0 %}
 {% block page_actions %}
+    {% if filters|length > 0 or has_batch_actions or global_actions|length > 0 %}
+        <div class="btn-list justify-content-end">
+    {% endif %}
+
     {% if filters|length > 0 %}
         <div class="datagrid-filters">
             {% block filters %}
@@ -36,6 +40,10 @@
             </div>
         {% endif %}
     {% endblock %}
+
+    {% if filters|length > 0 or has_batch_actions or global_actions|length > 0 %}
+        </div>
+    {% endif %}
 {% endblock page_actions %}
 
 {% block main %}
