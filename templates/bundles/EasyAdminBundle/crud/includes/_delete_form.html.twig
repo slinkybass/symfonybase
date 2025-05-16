@@ -8,7 +8,7 @@
 <div id="modal-delete" class="modal modal-blur fade" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-			<div class="modal-status bg-danger"></div>
+            <div class="modal-status bg-danger"></div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'action.close'|trans({}, 'EasyAdminBundle') }}"></button>
             <div class="modal-body text-center py-4">
                 <twig:ux:icon class="text-warning" name="tabler:alert-triangle" height="72" />
@@ -19,7 +19,6 @@
                 <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">
                     <twig:ux:icon class="icon" name="tabler:x" /> {{ 'action.cancel'|trans([], 'EasyAdminBundle') }}
                 </button>
-
                 <button type="button" data-bs-dismiss="modal" class="btn btn-danger" id="modal-delete-button" form="delete-form">
                     <twig:ux:icon class="icon" name="tabler:trash" /> {{ 'action.delete'|trans([], 'EasyAdminBundle') }}
                 </button>
