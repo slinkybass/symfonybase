@@ -15,7 +15,7 @@
                         <twig:ux:icon class="icon" name="tabler:filter" /> {{ t('filter.title', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}{% if applied_filters %} <span class="action-filters-button-count">({{ applied_filters|length }})</span>{% endif %}
                     </a>
                     {% if applied_filters %}
-                        <a href="{{ ea_url().unset('filters').setAction('index') }}" class="btn btn-secondary action-filters-reset">
+                        <a href="{{ ea_url().unset('filters').setAction('index') }}" class="btn btn-secondary btn-icon action-filters-reset">
                             <twig:ux:icon class="icon" name="tabler:x" />
                         </a>
                     {% endif %}
