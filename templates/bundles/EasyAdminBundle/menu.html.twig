@@ -12,7 +12,7 @@
                                 <div class="dropdown-menu {{ menuItem.isExpanded ? 'show' }}">
                                     {% for menuSubItem in menuItem.subItems %}
                                         {% block menu_subitem %}
-                                            {{ _self.render_menu_item(menuSubItem) }}
+                                            {{ _self.render_menu_item(menuSubItem, true) }}
                                         {% endblock menu_subitem %}
                                     {% endfor %}
                                 </div>
@@ -32,7 +32,7 @@
     {% endfor %}
 {% endmacro %}
 
-{% macro render_menu_item(item) %}
+{% macro render_menu_item(item, isChild = false) %}
     {% if item.isMenuSection %}
         <span {{ _self.render_html_attributes(item) }}>
             {% if item.icon is not empty %}
@@ -50,7 +50,10 @@
             {% endif %}
         </span>
     {% else %}
-        <a href="{{ item.linkUrl }}" class="nav-link {{ item.hasSubItems ? 'dropdown-toggle' }} {{ item.cssClass }}" target="{{ item.linkTarget }}" rel="{{ item.linkRel }}" {{ _self.render_html_attributes(item) }}>
+        <a {% if item.hasSubItems %}role="button"{% else %}href="{{ item.linkUrl }}"{% endif %}
+            class="{{ isChild ? 'dropdown-item gap-0' : 'nav-link' }} {{ item.hasSubItems ? 'dropdown-toggle' }} {{ item.cssClass }}"
+            {% if item.hasSubItems %}data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ ea.mainMenu.isExpanded(item) ? 'true' : 'false' }}"{% endif %}
+            target="{{ item.linkTarget }}" rel="{{ item.linkRel }}" {{ _self.render_html_attributes(item) }}>
             {% if item.icon is not empty %}
                 <span class="nav-link-icon">
                     <twig:ea:Icon name="{{ item.icon }}" />
