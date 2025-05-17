@@ -42,11 +42,12 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         $session = $this->container->get('request_stack')->getSession();
+        $configSession = $session->get('config');
 
         $dashboard = Dashboard::new();
 
-        $dashboard->setTitle('<img src="' . $session->get('config')->appLogo . '" class="mx-auto d-block">');
-        $dashboard->setFaviconPath($session->get('config')->appFavicon);
+        $dashboard->setTitle('<img src="' . $configSession->appLogo . '" class="mx-auto d-block">');
+        $dashboard->setFaviconPath($configSession->appFavicon);
         $dashboard->setDefaultColorScheme('light');
         $dashboard->renderContentMaximized();
 
@@ -67,10 +68,11 @@ class DashboardController extends AbstractDashboardController
     public function configureCrud(): Crud
     {
         $session = $this->container->get('request_stack')->getSession();
+        $configSession = $session->get('config');
 
         $crud = Crud::new();
 
-        $crud->setTimezone($session->get('config')->appTimezone);
+        $crud->setTimezone($configSession->appTimezone);
 
         return $crud;
     }
