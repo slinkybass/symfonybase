@@ -35,7 +35,6 @@ entities:
       password: Contraseña
     actions:
       impersonate: Impersonar
-      accesses: Accesos
     fields:
       email: Email
       password: Contraseña
@@ -43,7 +42,6 @@ entities:
       name: Nombre
       lastname: Apellidos
       birthdate: Fecha de nacimiento
-      age: Edad
       gender: Género
       genders:
         male: Masculino
