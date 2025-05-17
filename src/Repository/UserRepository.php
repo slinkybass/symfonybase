@@ -4,41 +4,46 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    public function findByRole(string $roleName): mixed
     {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
-        }
-
-        $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
+        return $this->findByRoleQB($roleName)
+            ->getQuery()->getResult();
     }
 
-    public function findByRole(string $roleName): mixed
+    public function findByRoleQB(string $roleName): QueryBuilder
     {
         return $this->createQueryBuilder('u')
             ->innerJoin('u.role', 'r')
-            ->where('r.name = :roleName')
-            ->setParameter('roleName', $roleName)
+            ->where('u.verified = true')
+            ->andWhere('r.name = :roleName')
+            ->setParameter('roleName', $roleName);
+    }
+
+    public function findAdmins(bool $isAdmin = true): mixed
+    {
+        return $this->findAdminsQB($isAdmin)
             ->getQuery()->getResult();
+    }
+
+    public function findAdminsQB(bool $isAdmin = true): QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.role', 'r')
+            ->where('u.verified = true')
+            ->andWhere('r.isAdmin = :isAdmin')
+            ->setParameter('isAdmin', $isAdmin);
     }
 }
