@@ -1,0 +1,7 @@
+{% extends "@!EasyAdmin/crud/new.html.twig" %}
+
+{% block head_javascript %}
+	{% block importmap %}
+		{{ include('@EasyAdmin/includes/_importmap.html.twig', { assets: ea.assets.assetMapperAssets ?? [] }, with_context = false) }}
+	{% endblock %}
+{% endblock head_javascript %}
