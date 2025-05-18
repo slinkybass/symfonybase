@@ -28,13 +28,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RoleCrudController extends AbstractCrudController
 {
     private $rolePermissions;
-    private $translator;
 
-    public function __construct(RolePermissions $rolePermissions, TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, RolePermissions $rolePermissions)
     {
-        parent::__construct();
+        parent::__construct($translator);
         $this->rolePermissions = $rolePermissions;
-        $this->translator = $translator;
     }
 
     public static function getEntityFqcn(): string

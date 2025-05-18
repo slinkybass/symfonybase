@@ -30,17 +30,16 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
-use function Symfony\Component\Translation\t;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminCrudController extends AbstractCrudController
 {
     private $passwordHasher;
     private $rolePermissions;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher, RolePermissions $rolePermissions)
+    public function __construct(TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher, RolePermissions $rolePermissions)
     {
-        parent::__construct();
+        parent::__construct($translator);
         $this->passwordHasher = $passwordHasher;
         $this->rolePermissions = $rolePermissions;
     }

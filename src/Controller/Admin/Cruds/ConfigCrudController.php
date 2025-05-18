@@ -11,8 +11,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-use function Symfony\Component\Translation\t;
-
 class ConfigCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -67,7 +65,7 @@ class ConfigCrudController extends AbstractCrudController
             $actions->remove(Crud::PAGE_NEW, Action::INDEX);
             $actions->remove(Crud::PAGE_DETAIL, Action::INDEX);
             $actions->remove(Crud::PAGE_EDIT, Action::INDEX);
-    
+
             $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) {
                 return $action->displayIf(fn () => true);
             });

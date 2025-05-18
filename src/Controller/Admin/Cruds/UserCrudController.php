@@ -28,14 +28,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserCrudController extends AbstractCrudController
 {
     private $passwordHasher;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher)
     {
-        parent::__construct();
+        parent::__construct($translator);
         $this->passwordHasher = $passwordHasher;
     }
 

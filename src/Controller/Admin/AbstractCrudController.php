@@ -12,15 +12,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController as EasyAbs
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
-
-use function Symfony\Component\Translation\t;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
+    public $translator;
     public $transEntity;
 
-    public function __construct()
+    public function __construct(TranslatorInterface $translator)
     {
+        $this->translator = $translator;
         $this->transEntity = $this->transEntity ?? $this->crud();
     }
 
@@ -32,7 +33,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $entity = $this->entity();
         if ($entity) {
             $pageTitle = $this->transEntitySingular() . ': ' . $entity;
-            $editTitle = t('page_title.edit', ['%entity_label_singular%' => $pageTitle], 'EasyAdminBundle');
+            $editTitle = $this->translator->trans('page_title.edit', ['%entity_label_singular%' => $pageTitle], 'EasyAdminBundle');
             $crud->setPageTitle(Crud::PAGE_DETAIL, $pageTitle);
             $crud->setPageTitle(Crud::PAGE_EDIT, $editTitle);
         }
@@ -237,30 +238,30 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     public function transEntitySingular($entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return t('entities.' . $entity . '.singular');
+        return $this->translator->trans('entities.' . $entity . '.singular');
     }
 
     public function transEntityPlural($entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return t('entities.' . $entity . '.plural');
+        return $this->translator->trans('entities.' . $entity . '.plural');
     }
 
     public function transEntitySection($section = 'data', $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return t('entities.' . $entity . '.sections.' . $section);
+        return $this->translator->trans('entities.' . $entity . '.sections.' . $section);
     }
 
     public function transEntityAction($action, $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return t('entities.' . $entity . '.actions.' . $action);
+        return $this->translator->trans('entities.' . $entity . '.actions.' . $action);
     }
 
     public function transEntityField($field, $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return t('entities.' . $entity . '.fields.' . $field);
+        return $this->translator->trans('entities.' . $entity . '.fields.' . $field);
     }
 }
