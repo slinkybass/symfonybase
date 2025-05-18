@@ -236,23 +236,13 @@ class RoleCrudController extends AbstractCrudController
             $role = $event->getData();
             $form = $event->getForm();
 
-            $permissions = [];
-            $filesInsideCrudsFolder = array_diff(scandir(__DIR__), ['..', '.']);
-            foreach ($filesInsideCrudsFolder as $fileName) {
-                $crudName = str_replace('CrudController.php', '', $fileName);
-                if (!preg_match('/CrudController.php$/', $fileName)) {
-                    continue;
-                }
-                $permName = 'crud' . ucfirst($crudName);
-                $permissions[$permName] = $form->has($permName) ? $form->get($permName)->getData() : false;
-                $actionNames = [Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE];
-                $actionNames = $crudName == "Config" ? [Action::EDIT] : $actionNames;
-                foreach ($actionNames as $actionName) {
-                    $subPermName = 'crud' . $crudName . ucfirst($actionName);
-                    $permissions[$subPermName] = $form->has($subPermName) ? $form->get($subPermName)->getData() : false;
-                }
-            }
-            $role->setPermissions($permissions);
+            $crudPermissions = $this->rolePermissions->getCrudPermissions();
+            $crudPermissionsValues = [];
+            $this->rolePermissions->loopPermissions($crudPermissions, function ($permission) use (&$crudPermissionsValues, $form) {
+                $crudPermissionsValues[$permission] = $form->has($permission) ? $form->get($permission)->getData() : false;
+            });
+
+            $role->setPermissions($crudPermissionsValues);
         });
     }
 
