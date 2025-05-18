@@ -103,7 +103,7 @@
 
         <div class="page">
             {% block wrapper %}
-                <aside class="navbar navbar-vertical navbar-expand-lg">
+                <aside class="navbar navbar-transparent navbar-vertical navbar-expand-lg">
                     {% block sidebar %}
                         <div class="container-fluid">
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,7 +132,7 @@
 
                 {% block content_top_header %}
                     {% set has_search = ea.crud is not null and ea.crud.isSearchEnabled %}
-                    <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none">
+                    <header class="navbar navbar-transparent navbar-expand-md d-none d-lg-flex d-print-none">
                         <div class="container-xl">
                             {% block search_wrapper %}
                                 <div>
