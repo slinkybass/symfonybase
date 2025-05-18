@@ -6,7 +6,7 @@
                 {% block menu_item %}
                     {% set is_submenu_item_with_no_items = menuItem.type == constant('EasyCorp\\Bundle\\EasyAdminBundle\\Dto\\MenuItemDto::TYPE_SUBMENU') and not menuItem.hasSubItems %}
                     {% if not is_submenu_item_with_no_items %}
-                        <li class="{{ menuItem.isMenuSection ? 'nav-header' : 'nav-item' }} {{ menuItem.hasSubItems ? 'dropdown' }} {{ menuItem.isSelected ? 'active' }} {{ menuItem.isExpanded ? 'expanded' }}">
+                        <li class="{{ menuItem.isMenuSection ? 'nav-header' : 'nav-item' }} {{ menuItem.hasSubItems ? 'dropdown' }} {{ menuItem.isSelected or menuItem.isExpanded ? 'active' }}">
                             {{ _self.render_menu_item(menuItem) }}
                             {% if menuItem.hasSubItems %}
                                 <div class="dropdown-menu {{ menuItem.isExpanded ? 'show' }}">
