@@ -139,4 +139,23 @@ class RolePermissions
         }
         $tree[$permission] = [];
     }
+
+    /**
+     * Recursively traverses a multi-level permissions array and applies a callback to each permission.
+     *
+     * @param array       $permissions a nested array of permissions in a tree-like structure
+     * @param callable    $callback    A function to be called for each permission. It receives the permission and its parent.
+     * @param string|null $parent      the parent permission of the current level (null for root)
+     *
+     * @return void
+     */
+    public function loopPermissions(array $permissions, callable $callback, ?string $parent = null)
+    {
+        foreach ($permissions as $permission => $childrenPermissions) {
+            $callback($permission, $parent);
+            if (is_array($childrenPermissions)) {
+                $this->loopPermissions($childrenPermissions, $callback, $permission);
+            }
+        }
+    }
 }

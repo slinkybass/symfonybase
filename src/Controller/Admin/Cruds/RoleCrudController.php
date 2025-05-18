@@ -59,7 +59,7 @@ class RoleCrudController extends AbstractCrudController
         $permissionsPanel = FieldGenerator::panel($this->transEntitySection('permissions'))->setIcon('lock');
         $crudPermissions = $this->rolePermissions->getCrudPermissions();
         $crudPermissionsFields = [];
-        $this->loopRecursiveArray($crudPermissions, function ($permission, $parentPermission) use (&$crudPermissionsFields) {
+        $this->rolePermissions->loopPermissions($crudPermissions, function ($permission, $parentPermission) use (&$crudPermissionsFields) {
             $crudPermissionsFields[] = $this->generatePermissionField($permission, $permission, $parentPermission);
         });
 
@@ -270,15 +270,5 @@ class RoleCrudController extends AbstractCrudController
             ->setHtmlAttribute('data-hf-child', $parentPermission ? 'perm_' . $parentPermission : 'isAdmin')
             ->setHtmlAttribute('data-hf-save-value', 'true');
         return $permission;
-    }
-
-    private function loopRecursiveArray(array $arr, callable $callback, ?string $parent = null)
-    {
-        foreach ($arr as $key => $children) {
-            $callback($key, $parent);
-            if (is_array($children)) {
-                $this->loopRecursiveArray($children, $callback, $key);
-            }
-        }
     }
 }
