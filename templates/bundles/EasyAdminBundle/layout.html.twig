@@ -224,9 +224,9 @@
                                 {% set has_help_message = (ea.crud.helpMessage ?? '') is not empty %}
                                 <section class="page-header d-print-none">
                                     <div class="container-xl">
-                                        <div class="row g-2 align-items-center">
+                                        <div class="row align-items-center">
                                             {% block content_header %}
-                                                <div class="col">
+                                                <div class="col-lg-auto col-12">
                                                     <h3 class="page-title">
                                                         {% block content_title %}{% endblock %}
                                                         {% block content_help %}
