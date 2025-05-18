@@ -1,4 +1,43 @@
 const Admin = (() => {
+	const createSearchHighlight = () => {
+		const searchElement = document.querySelector('.form-action-search [name="query"]');
+		if (null === searchElement) {
+			return;
+		}
+
+		const searchQuery = searchElement.value;
+		if ("" === searchQuery.trim()) {
+			return;
+		}
+
+		// splits a string into tokens, taking into account quoted strings
+		// Example: 'foo "bar baz" qux' => ['foo', 'bar baz', 'qux']
+		const tokenizeString = (string) => {
+			const regex = /"([^"\\]*(\\.[^"\\]*)*)"|\S+/g;
+			const tokens = [];
+			let match;
+
+			while (null !== (match = regex.exec(string))) {
+				tokens.push(match[0].replaceAll('"', "").trim());
+			}
+
+			return tokens;
+		};
+
+		const searchQueryTerms = tokenizeString(searchElement.value);
+		const searchQueryTermsHighlightRegexp = new RegExp(
+			searchQueryTerms
+				// escapes all characters that are special inside a RegExp
+				.map((term) => term.replace(/[|\\{}()[\]^$+*?.-]/g, "\\$&"))
+				.join("|"),
+			"i"
+		);
+
+		const elementsToHighlight = document.querySelectorAll("table tbody td.searchable");
+		const highlighter = new Mark(elementsToHighlight);
+		highlighter.markRegExp(searchQueryTermsHighlightRegexp);
+	};
+
 	const createFilters = () => {
 		const filterButton = document.querySelector(".datagrid-filters .action-filters-button");
 		if (null === filterButton) {
@@ -244,6 +283,7 @@ const Admin = (() => {
 	};
 
 	return {
+		createSearchHighlight,
 		createFilters,
 		createFilterToggles,
 		createBatchActions,

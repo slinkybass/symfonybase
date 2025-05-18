@@ -48,4 +48,7 @@ return [
         'version' => '1.2.0',
         'type' => 'css',
     ],
+    'mark.js' => [
+        'version' => '8.11.1',
+    ],
 ];

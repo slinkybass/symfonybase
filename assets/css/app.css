@@ -6,6 +6,7 @@
     --tblr-font-sans-serif: "Jost";
 }
 
+/* Tables fixes */
 .markdown>table thead th,
 .table thead th {
     font-size: .625rem;
@@ -18,11 +19,17 @@
     }
 }
 
+/* Multilevel dropdown fixes */
 .dropdown-menu .dropdown .dropdown-toggle::after {
     margin-left: auto;
 }
 
-/* Icons */
+/* Mark.js fixes */
+[data-markjs="true"] {
+    padding: 0;
+}
+
+/* Icon fixes */
 span.icon {
     display: inline-block;
     inline-size: 1.25em;
