@@ -56,12 +56,6 @@ class AdminCrudController extends AbstractCrudController
         $crud = parent::configureCrud($crud);
         $crud->setDefaultSort(['name' => 'ASC', 'lastname' => 'ASC']);
 
-        $entity = $this->entity();
-        if ($entity && $entity == $this->getUser()) {
-            $crud->setPageTitle(Crud::PAGE_DETAIL, t('ea.profile.title'));
-            $crud->setPageTitle(Crud::PAGE_EDIT, t('ea.profile.title'));
-        }
-
         return $crud;
     }
 
@@ -71,7 +65,7 @@ class AdminCrudController extends AbstractCrudController
         $user = $this->getUser();
         $entity = $this->entity();
 
-        $dataPanelName = $entity && $entity == $user ? t('ea.profile.data') : $this->transEntitySection('data', 'user');
+        $dataPanelName = $this->transEntitySection('data', 'user');
         $dataPanel = FieldGenerator::panel($dataPanelName)->setIcon('user' . ($this->config()->enablePublic ? '-shield' : ''));
         $fullname = FieldGenerator::text('fullname')->setLabel($this->transEntityField('name', 'user'));
         $name = FieldGenerator::text('name')->setLabel($this->transEntityField('name', 'user'))->setColumns(2);
