@@ -16,6 +16,11 @@ class ConfigRepository extends ServiceEntityRepository
         parent::__construct($registry, Config::class);
     }
 
+    /**
+     * Retrieves the most recently inserted Config entity.
+     *
+     * @return Config|null the latest configuration entity or null if none found
+     */
     public function get(): ?Config
     {
         return $this->createQueryBuilder('c')

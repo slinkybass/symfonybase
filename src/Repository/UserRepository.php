@@ -17,12 +17,26 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * Retrieves all users who belong to a given role.
+     *
+     * @param string $roleName the name of the role
+     *
+     * @return mixed an array of User entities matching the role
+     */
     public function findByRole(string $roleName): mixed
     {
         return $this->findByRoleQB($roleName)
             ->getQuery()->getResult();
     }
 
+    /**
+     * Returns a QueryBuilder instance to find all users who belong to a given role.
+     *
+     * @param string $roleName the name of the role
+     *
+     * @return QueryBuilder a Doctrine QueryBuilder of User entities matching the role
+     */
     public function findByRoleQB(string $roleName): QueryBuilder
     {
         return $this->createQueryBuilder('u')
@@ -32,12 +46,26 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('roleName', $roleName);
     }
 
+    /**
+     * Retrieves all users who have (or don't have) an admin role.
+     *
+     * @param bool $isAdmin whether to filter by admin roles (default: true)
+     *
+     * @return mixed an array of User entities with the specified admin status
+     */
     public function findAdmins(bool $isAdmin = true): mixed
     {
         return $this->findAdminsQB($isAdmin)
             ->getQuery()->getResult();
     }
 
+    /**
+     * Returns a QueryBuilder instance to find all users who have (or don't have) an admin role.
+     *
+     * @param bool $isAdmin whether to filter for admin roles (default: true)
+     *
+     * @return QueryBuilder a Doctrine QueryBuilder of User entities with the specified admin status
+     */
     public function findAdminsQB(bool $isAdmin = true): QueryBuilder
     {
         return $this->createQueryBuilder('u')
