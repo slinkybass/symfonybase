@@ -148,7 +148,16 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
     public function entity(): ?object
     {
-        return $this->getContext()?->getEntity()?->getInstance();
+        $entity = $this->getContext()?->getEntity()?->getInstance();
+        if (is_object($entity)) {
+            return $entity;
+        }
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $entityId = $request->get(EA::ENTITY_ID);
+        if ($entityId) {
+            return $this->em()->getRepository($this->getEntityFqcn())->find($entityId);
+        }
+        return null;
     }
 
     public function crud(): string
