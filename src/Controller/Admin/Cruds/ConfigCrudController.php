@@ -67,17 +67,15 @@ class ConfigCrudController extends AbstractCrudController
             $actions->remove(Crud::PAGE_NEW, Action::INDEX);
             $actions->remove(Crud::PAGE_DETAIL, Action::INDEX);
             $actions->remove(Crud::PAGE_EDIT, Action::INDEX);
-
-            $hasPermissionEdit = $this->hasPermissionAction(Action::EDIT);
-            $actions->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE);
-            $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE, function (Action $action) use ($hasPermissionEdit) {
-                return $action
-                    ->setIcon('device-floppy')
-                    ->addCssClass('btn-success')
-                    ->setLabel(t('action.save', [], 'EasyAdminBundle'))
-                    ->displayIf(static function () use ($hasPermissionEdit) {
-                        return $hasPermissionEdit;
-                    });
+    
+            $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) {
+                return $action->displayIf(fn () => true);
+            });
+            $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) {
+                return $action->displayIf(fn () => true);
+            });
+            $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) {
+                return $action->displayIf(fn () => true);
             });
         }
         return $actions;
