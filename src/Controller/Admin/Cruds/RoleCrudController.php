@@ -60,7 +60,9 @@ class RoleCrudController extends AbstractCrudController
         $crudPermissions = $this->rolePermissions->getCrudPermissions();
         $crudPermissionsFields = [];
         $this->rolePermissions->loopPermissions($crudPermissions, function ($permission, $parentPermission) use (&$crudPermissionsFields) {
-            $crudPermissionsFields[] = $this->generatePermissionField($permission, $permission, $parentPermission);
+            if ($this->hasPermission($permission)) {
+                $crudPermissionsFields[] = $this->generatePermissionField($permission, $permission, $parentPermission);
+            }
         });
 
         $nameUsers = $this->config()->enablePublic && $entity && $entity->isAdmin() ? 'admin' : 'user';
