@@ -1,0 +1,38 @@
+{% trans_default_domain 'EasyAdminBundle' %}
+
+<p class="m-0 text-muted">
+	{% if render_detailed_pagination is defined ? render_detailed_pagination : true %}
+		{{ 'paginator.results'|trans({'%count%': paginator.numResults|format})|raw }}
+	{% endif %}
+</p>
+{% if paginator.hasPreviousPage or paginator.hasNextPage %}
+	<ul class="pagination m-0 ms-auto">
+		<li class="page-item {{ not paginator.hasPreviousPage ? 'disabled' }}">
+			<a class="page-link" href="{{ not paginator.hasPreviousPage ? '#' : paginator.generateUrlForPage(paginator.previousPage) }}" title="{{ 'paginator.previous'|trans }}">
+				<twig:ux:icon class="icon" name="tabler:chevron-left" />
+			</a>
+		</li>
+
+		{% if render_detailed_pagination is defined ? render_detailed_pagination : true %}
+			{% for page in paginator.pageRange %}
+				<li class="page-item {{ page == paginator.currentPage ? 'active' }} {{ page is null ? 'disabled' }}">
+					{% if page is null %}
+						<span class="page-link">&hellip;</span>
+					{% else %}
+						<a class="page-link" href="{{ paginator.generateUrlForPage(page) }}">{{ page }}</a>
+					{% endif %}
+				</li>
+			{% endfor %}
+		{% else %}
+			<li class="page-item active {{ paginator.currentPage is null ? 'disabled' }}">
+				<a class="page-link" href="{{ paginator.generateUrlForPage(paginator.currentPage) }}">{{ paginator.currentPage }}</a>
+			</li>
+		{% endif %}
+
+		<li class="page-item {{ not paginator.hasNextPage ? 'disabled' }}">
+			<a class="page-link" href="{{ not paginator.hasNextPage ? '#' : paginator.generateUrlForPage(paginator.nextPage) }}" title="{{ 'paginator.next'|trans }}">
+				<twig:ux:icon class="icon" name="tabler:chevron-right" />
+			</a>
+		</li>
+	</ul>
+{% endif %}
