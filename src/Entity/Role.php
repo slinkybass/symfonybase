@@ -66,8 +66,24 @@ class Role
     public function setDisplayName(string $displayName): static
     {
         $this->displayName = $displayName;
+        if (!$this->id) {
+            $this->setName("ROLE_" . $this->cleanString($displayName));
+        }
 
         return $this;
+    }
+
+    private function cleanString($text)
+    {
+        // Remove non letter or digits
+        $text = preg_replace('~[^\pL\d]+~u', '', $text);
+        // Transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        // Remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+        // Uppercase
+        $text = strtoupper($text);
+        return $text;
     }
 
     public function isAdmin(): ?bool
