@@ -23,15 +23,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RoleCrudController extends AbstractCrudController
 {
     private $rolePermissions;
+    private $translator;
 
-    public function __construct(RolePermissions $rolePermissions)
+    public function __construct(RolePermissions $rolePermissions, TranslatorInterface $translator)
     {
         parent::__construct();
         $this->rolePermissions = $rolePermissions;
+        $this->translator = $translator;
     }
 
     public static function getEntityFqcn(): string
@@ -61,7 +64,21 @@ class RoleCrudController extends AbstractCrudController
         $crudPermissionsFields = [];
         $this->rolePermissions->loopPermissions($crudPermissions, function ($permission, $parentPermission) use (&$crudPermissionsFields) {
             if ($this->hasPermission($permission)) {
-                $crudPermissionsFields[] = $this->generatePermissionField($permission, $permission, $parentPermission);
+                $entity = lcfirst(preg_split('/(?=[A-Z])/', $permission)[1]);
+                $action = str_replace('crud' . ucfirst($entity), '', $permission);
+                $action = $action ? lcfirst($action) : null;
+
+                $entityLabel = $this->translator->trans('entities.' . $entity . '.plural');
+                if (!$action) {
+                    $permissionLabel = $entityLabel;
+                } elseif (in_array($action, [Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE])) {
+                    $permissionLabel = $this->translator->trans('action.' . $action, [], 'EasyAdminBundle');
+                    $permissionLabel = str_replace(['%entity_label_singular%', '%entity_label_plural%'], [$entityLabel, $entityLabel], $permissionLabel);
+                } else {
+                    $permissionLabel = $this->translator->trans('entities.' . $entity . '.actions.' . $action);
+                }
+
+                $crudPermissionsFields[] = $this->generatePermissionField($permission, $permissionLabel, $parentPermission);
             }
         });
 
@@ -252,6 +269,7 @@ class RoleCrudController extends AbstractCrudController
     {
         $entity = $this->entity();
         $permissionValue = $entity && $entity->getPermission($permission) ? true : false;
+        $label = "<span data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='$permission'>$label</span>";
 
         $permission = FieldGenerator::switch($permission)->setLabel($label)
             ->setFormTypeOption('mapped', false)

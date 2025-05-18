@@ -27,6 +27,8 @@ entities:
   admin:
     singular: Administrador
     plural: Administradores
+    actions:
+      impersonate: Impersonar
   user:
     singular: Usuario
     plural: Usuarios
