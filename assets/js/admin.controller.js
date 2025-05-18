@@ -14,7 +14,7 @@ const Admin = (() => {
 
 		filterButton.addEventListener("click", (event) => {
 			const filterModalBody = filterModal.querySelector(".modal-body");
-			filterModalBody.innerHTML = '<div class="fa-3x px-3 py-3 text-muted text-center"><i class="fas fa-circle-notch fa-spin"></i></div>';
+			filterModalBody.innerHTML = '<div class="w-100 text-center"><div class="spinner-border text-blue" role="status"></div></div>';
 
 			fetch(filterButton.getAttribute("href"))
 				.then((response) => {
