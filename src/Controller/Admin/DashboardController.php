@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Config;
+use App\Entity\Role;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -93,6 +95,28 @@ class DashboardController extends AbstractDashboardController
         /** @var User $user */
         $user = $this->getUser();
         $config = $this->em->getRepository(Config::class)->get();
+        $session = $this->container->get('request_stack')->getSession();
+        $configSession = $session->get('config');
+
+        yield MenuItem::linkToRoute(t('admin.home.title'), 'home', 'admin_home');
+
+        $userItems = [];
+        if ($configSession->enablePublic && $user->hasPermissionCrud('user')) {
+            $userItems[] = MenuItem::linkToCrud(t('entities.user.plural'), 'user', User::class)->setController(Cruds\UserCrudController::class);
+        }
+        if ($user->hasPermissionCrud('admin')) {
+            $label = $configSession->enablePublic ? 'admin' : 'user';
+            $icon = $configSession->enablePublic ? 'user-shield' : 'user';
+            $userItems[] = MenuItem::linkToCrud(t('entities.' . $label . '.plural'), $icon, User::class)->setController(Cruds\AdminCrudController::class);
+        }
+        if ($user->hasPermissionCrud('role')) {
+            $userItems[] = MenuItem::linkToCrud(t('entities.role.plural'), 'lock', Role::class)->setController(Cruds\RoleCrudController::class);
+        }
+        if (count($userItems) == 1) {
+            yield $userItems[0];
+        } elseif (count($userItems) > 1) {
+            yield MenuItem::subMenu(t('entities.user.plural'), 'users')->setSubItems($userItems);
+        }
 
         if ($user->hasPermissionCrud('config')) {
             $configLink = MenuItem::linkToCrud(t('entities.config.singular'), 'settings', Config::class)->setController(Cruds\ConfigCrudController::class);

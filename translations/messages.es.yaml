@@ -57,6 +57,7 @@ entities:
     plural: Roles
     sections:
       data: Datos de rol
+      permissions: Permisos
     fields:
       name: Nombre ID
       displayName: Nombre
