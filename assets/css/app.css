@@ -11,6 +11,13 @@
     font-size: .625rem;
 }
 
+@media (max-width: 767.98px) {
+    .table-mobile-md td {
+        width: auto !important;
+        text-align: start !important;
+    }
+}
+
 .dropdown-menu .dropdown .dropdown-toggle::after {
     margin-left: auto;
 }
