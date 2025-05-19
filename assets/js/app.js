@@ -8,9 +8,20 @@ import "@tabler/core/dist/css/tabler.min.css";
 import "@tabler/core/dist/css/tabler-flags.min.css";
 import "@tabler/core/dist/css/tabler-vendors.min.css";
 
-import App from "./app.controller.js";
+// DirtyForm
+import DirtyForm from "dirty-form";
+window.DirtyForm = DirtyForm;
 
-document.addEventListener("DOMContentLoaded", function () {});
+import App from "./app.controller.js";
+window.App = App;
+
+document.addEventListener("DOMContentLoaded", function () {
+	App.persistSelectedTab();
+	App.createUnsavedFormChangesWarning();
+	App.createFieldsWithErrors();
+	App.setTabAsActive();
+	App.preventMultipleFormSubmission();
+});
 
 // CSS
 import "../css/app.css";

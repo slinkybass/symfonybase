@@ -1,4 +1,20 @@
 const Admin = (() => {
+	const removeHashFormUrl = () => {
+		if (!window.location.href.includes("#")) {
+			return;
+		}
+
+		// remove the hash only in the index page
+		if (!document.querySelector("body").classList.contains("ea-index")) {
+			return;
+		}
+
+		// don't set the hash to '' because that also removes the query parameters
+		const urlParts = window.location.href.split("#");
+		const urlWithoutHash = urlParts[0];
+		window.history.replaceState({}, "", urlWithoutHash);
+	};
+
 	const createSearchHighlight = () => {
 		const searchElement = document.querySelector('.form-action-search [name="query"]');
 		if (null === searchElement) {
@@ -283,6 +299,7 @@ const Admin = (() => {
 	};
 
 	return {
+		removeHashFormUrl,
 		createSearchHighlight,
 		createFilters,
 		createFilterToggles,

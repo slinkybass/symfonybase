@@ -51,4 +51,7 @@ return [
     'mark.js' => [
         'version' => '8.11.1',
     ],
+    'dirty-form' => [
+        'version' => '0.4.0',
+    ],
 ];
