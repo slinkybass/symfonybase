@@ -9,13 +9,22 @@
     {% if filters|length > 0 %}
         <div class="datagrid-filters">
             {% block filters %}
-                {% set applied_filters = ea.request.query.all['filters']|default([])|keys %}
-                <div class="btn-group action-filters">
+                {% set hidden_filters = ea.request.query.all['filters']|default([])['hidden_filters']|default([])|filter(filter => filter)|keys %}
+                {% set applied_filters = ea.request.query.all['filters']|default([])|keys|filter(filter => filter not in hidden_filters and filter != 'hidden_filters') %}
+                {% set noHidden_filters = filters|keys|filter(filter => filter not in hidden_filters) %}
+                <div class="btn-group action-filters {{ noHidden_filters|length == 0 ? 'd-none' : '' }}">
                     <a role="button" data-href="{{ ea_url().setAction('renderFilters') }}" class="btn btn-secondary btn-labeled btn-labeled-right action-filters-button disabled {{ applied_filters ? 'action-filters-applied' }}" data-bs-toggle="modal" data-bs-target="#modal-filters">
                         <twig:ux:icon class="icon" name="tabler:filter" /> {{ t('filter.title', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}{% if applied_filters %} <span class="ms-1 action-filters-button-count">({{ applied_filters|length }})</span>{% endif %}
                     </a>
                     {% if applied_filters %}
-                        <a href="{{ ea_url().unset('filters').setAction('index') }}" class="btn btn-secondary btn-icon action-filters-reset">
+                        {% set filtersUrl = ea_url().unset('filters').setAction('index') %}
+                        {% if hidden_filters %}
+                            {% for hidden_filter in hidden_filters %}
+                                {% set filtersUrl = filtersUrl.set('filters[' ~ hidden_filter ~ ']', ea.request.query.all['filters'][hidden_filter]) %}
+                            {% endfor %}
+                            {% set filtersUrl = filtersUrl.set('filters[hidden_filters]', ea.request.query.all['filters']['hidden_filters']) %}
+                        {% endif %}
+                        <a href="{{ filtersUrl }}" class="btn btn-secondary btn-icon action-filters-reset">
                             <twig:ux:icon class="icon" name="tabler:x" />
                         </a>
                     {% endif %}

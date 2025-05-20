@@ -139,11 +139,12 @@
 {% endblock form_row %}
 
 {% block ea_filters_widget %}
+	{% set hidden_filters = app.request.query.all()['filters']|default([])['hidden_filters']|default([])|filter(filter => filter)|keys %}
     {% set applied_filters = ea.request.query.all()['filters']|default([])|keys %}
 
     {% for field in form %}
         <div class="col-12">
-            <div class="form-check filter-field px-3" data-filter-property="{{ field.vars.name }}">
+            <div class="form-check filter-field px-3 {% if field.vars.name in hidden_filters %}d-none{% endif %}" data-filter-property="{{ field.vars.name }}">
                 <div class="filter-heading" id="filter-heading-{{ loop.index }}">
                     <div class="form-switch">
                         <input id="filter-checkbox-{{ loop.index }}" type="checkbox" class="form-check-input filter-checkbox" {% if field.vars.name in applied_filters %}checked{% endif %}>
