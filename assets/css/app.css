@@ -28,18 +28,3 @@
 [data-markjs] {
     padding: 0;
 }
-
-/* Icon fixes */
-span.icon {
-    display: inline-block;
-    inline-size: 1.25em;
-    text-align: center;
-}
-
-span.icon svg {
-    inline-size: 100%;
-    block-size: 100%;
-    max-block-size: 1em;
-    max-inline-size: 1em;
-    vertical-align: text-top;
-}
