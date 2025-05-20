@@ -14,8 +14,17 @@ entities:
     plural: Configuración
     sections:
       data: Datos de la aplicación
+      privacy: Datos de RGPD
     fields:
-      id: ID
+      enablePublic: Habilitar zona pública
+      enableCookies: Habilitar cookies
+  settings:
+    singular: Ajustes
+    plural: Ajustes
+    sections:
+      data: Datos de la aplicación
+      privacy: Datos de RGPD
+    fields:
       appName: Nombre
       appColor: Color principal
       appLogo: Logo
@@ -23,7 +32,9 @@ entities:
       appDescription: Descripción
       appKeywords: Palabras clave
       appTimezone: Zona horaria
-      enablePublic: Habilitar zona pública
+      senderEmail: Email que enviará los correos electrónicos
+      privacyText: Texto de política y privacidad
+      cookiesText: Texto de política de cookies
   admin:
     singular: Administrador
     plural: Administradores

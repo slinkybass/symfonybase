@@ -11,7 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class ConfigCrudController extends AbstractCrudController
+class SettingsCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
@@ -34,21 +34,37 @@ class ConfigCrudController extends AbstractCrudController
     {
         $entity = $this->entity();
 
-        $dataPanel = FieldGenerator::panel($this->transEntitySection())->setIcon('settings');
-        $enablePublic = FieldGenerator::switch('enablePublic')->setLabel($this->transEntityField('enablePublic'))
-            ->setHtmlAttribute('data-hf-parent', 'enablePublic')
-            ->setColumns(12);
+        $dataPanel = FieldGenerator::panel($this->transEntitySection())->setIcon('tool');
+        $appName = FieldGenerator::text('appName')->setLabel($this->transEntityField('appName'))->setColumns(6);
+        $appColor = FieldGenerator::color('appColor')->setLabel($this->transEntityField('appColor'))->setColumns(6);
+        $appLogo = FieldGenerator::text('appLogo')->setLabel($this->transEntityField('appLogo'))->setColumns(6);
+        $appFavicon = FieldGenerator::text('appFavicon')->setLabel($this->transEntityField('appFavicon'))->setColumns(6);
+        $appTimezone = FieldGenerator::timezone('appTimezone')->setLabel($this->transEntityField('appTimezone'))->setColumns(6);
+        $senderEmail = FieldGenerator::email('senderEmail')->setLabel($this->transEntityField('senderEmail'))->setColumns(6);
+        $appDescription = FieldGenerator::textarea('appDescription')->setLabel($this->transEntityField('appDescription'))->setColumns(6);
+        $appKeywords = FieldGenerator::textarea('appKeywords')->setLabel($this->transEntityField('appKeywords'))->setColumns(6);
 
-        $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))->setIcon('settings');
-        $enableCookies = FieldGenerator::switch('enableCookies')->setLabel($this->transEntityField('enableCookies'))
-            ->setHtmlAttribute('data-hf-child', 'enablePublic')
-            ->setColumns(12);
+        $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))->setIcon('tool');
+        $privacyText = FieldGenerator::texteditor('privacyText')->setLabel($this->transEntityField('privacyText'));
+        $cookiesText = FieldGenerator::texteditor('cookiesText')->setLabel($this->transEntityField('cookiesText'));
 
         yield $dataPanel;
-        yield $enablePublic->renderAsSwitch($pageName !== Crud::PAGE_INDEX);
+        yield $appName;
+        yield $appColor;
+        yield $appLogo;
+        yield $appFavicon;
+        yield $appTimezone;
+        yield $senderEmail;
+        if (!$entity || $entity->isEnablePublic()) {
+            yield $appDescription;
+            yield $appKeywords;
+        }
         if (!$entity || $entity->isEnablePublic()) {
             yield $privacyPanel;
-            yield $enableCookies->renderAsSwitch($pageName !== Crud::PAGE_INDEX);
+            yield $privacyText;
+            if (!$entity || $entity->isEnableCookies()) {
+                yield $cookiesText;
+            }
         }
     }
 

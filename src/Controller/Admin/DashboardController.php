@@ -118,6 +118,12 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::subMenu(t('entities.user.plural'), 'users')->setSubItems($userItems);
         }
 
+        if ($user->hasPermissionCrud('settings')) {
+            $settingsLink = MenuItem::linkToCrud(t('entities.settings.singular'), 'tool', Config::class)->setController(Cruds\SettingsCrudController::class);
+            $settingsLink = $config ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $settingsLink->setAction(Crud::PAGE_NEW);
+            yield $settingsLink;
+        }
+
         if ($user->hasPermissionCrud('config')) {
             $configLink = MenuItem::linkToCrud(t('entities.config.singular'), 'settings', Config::class)->setController(Cruds\ConfigCrudController::class);
             $configLink = $config ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $configLink->setAction(Crud::PAGE_NEW);

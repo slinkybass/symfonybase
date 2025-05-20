@@ -27,6 +27,9 @@ class ConfigSubscriber implements EventSubscriberInterface
         $this->config->appKeywords = 'symfony, application';
         $this->config->appTimezone = 'Europe/Madrid';
         $this->config->enablePublic = false;
+		$this->config->senderEmail = 'israel@garaballu.com';
+		$this->config->privacyText = null;
+		$this->config->cookiesText = null;
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -42,6 +45,9 @@ class ConfigSubscriber implements EventSubscriberInterface
             $this->config->appKeywords = $dcConfig->getAppKeywords() ?? $this->config->appKeywords;
             $this->config->appTimezone = $dcConfig->getAppTimezone() ?? $this->config->appTimezone;
             $this->config->enablePublic = $dcConfig->isEnablePublic() ?? $this->config->enablePublic;
+			$this->config->senderEmail = $dcConfig->getSenderEmail() ?? $this->config->senderEmail;
+            $this->config->privacyText = $dcConfig->getPrivacyText() ?? $this->config->privacyText;
+            $this->config->cookiesText = $dcConfig->getCookiesText() ?? $this->config->cookiesText;
         }
         $request->getSession()->set('config', $this->config);
     }

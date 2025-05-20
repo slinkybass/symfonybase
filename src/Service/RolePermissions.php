@@ -35,6 +35,10 @@ class RolePermissions
         'crudConfigEdit',
         'crudConfigDetail',
         'crudConfigDelete',
+        'crudSettingsNew',
+        'crudSettingsEdit',
+        'crudSettingsDetail',
+        'crudSettingsDelete',
     ];
 
     public function __construct(KernelInterface $kernel)
