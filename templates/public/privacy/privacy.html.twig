@@ -1,0 +1,13 @@
+{% extends "public/layout/base.html.twig" %}
+
+{% block content_title %}
+	{{ 'public.privacy.title'|trans }}
+{% endblock %}
+
+{% block main %}
+	<div class="card card-md">
+		<div class="card-body">
+			{{ app.session.get('config').privacyText|raw }}
+		</div>
+	</div>
+{% endblock %}

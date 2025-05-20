@@ -8,6 +8,10 @@ admin:
 public:
   home:
     title: Inicio
+  privacy:
+    title: Política de privacidad
+  cookies:
+    title: Política de cookies
 entities:
   config:
     singular: Configuración
