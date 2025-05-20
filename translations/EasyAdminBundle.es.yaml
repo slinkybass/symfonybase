@@ -1,0 +1,13 @@
+page_title:
+  detail: "%entity_label_singular%"
+  edit: "Editar %entity_label_singular%"
+  index: "%entity_label_plural%"
+  new: "Crear %entity_label_singular%"
+action:
+  new: "Nuevo"
+  edit: "Editar"
+  index: "Volver"
+  save: "Guardar"
+  create: "Guardar"
+label.null: "Vacío"
+label.form.empty_value: "Vacío"
