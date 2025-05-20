@@ -20,7 +20,9 @@
                         {% set filtersUrl = ea_url().unset('filters').setAction('index') %}
                         {% if hidden_filters %}
                             {% for hidden_filter in hidden_filters %}
-                                {% set filtersUrl = filtersUrl.set('filters[' ~ hidden_filter ~ ']', ea.request.query.all['filters'][hidden_filter]) %}
+                                {% if ea.request.query.all['filters'][hidden_filter] is defined %}
+                                    {% set filtersUrl = filtersUrl.set('filters[' ~ hidden_filter ~ ']', ea.request.query.all['filters'][hidden_filter]) %}
+                                {% endif %}
                             {% endfor %}
                             {% set filtersUrl = filtersUrl.set('filters[hidden_filters]', ea.request.query.all['filters']['hidden_filters']) %}
                         {% endif %}

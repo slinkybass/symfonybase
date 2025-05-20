@@ -181,16 +181,21 @@ class RoleCrudController extends AbstractCrudController
                 });
             });
 
+            $rolesAdmin = $this->em()->getRepository(Role::class)->getAdmin();
+            $rolesUser = $this->em()->getRepository(Role::class)->getAdmin(false);
+
             $hasPermissionToAdmins = $this->hasPermissionCrud('admin');
             $admins = Action::new('admins', $this->transEntityPlural('admin'))->setIcon('user-shield')
-                ->linkToUrl(function ($entity) {
-                    return $this->adminUrl()->setController(AdminCrudController::class)->setAction(Action::INDEX)
-                        ->set(EA::FILTERS, [
+                ->linkToUrl(function ($entity) use ($rolesAdmin) {
+                    $url = $this->adminUrl()->setController(AdminCrudController::class)->setAction(Action::INDEX)
+                        ->setEntityId(null);
+                    if (count($rolesAdmin) > 1) {
+                        $url->set(EA::FILTERS, [
                             'role' => ['comparison' => ComparisonType::EQ, 'value' => $entity->getId()],
                             'hidden_filters' => ['role' => true],
-                        ])
-                        ->setEntityId(null)
-                        ->generateUrl();
+                        ]);
+                    }
+                    return $url->generateUrl();
                 })
                 ->displayIf(static function ($entity) use ($hasPermissionToAdmins) {
                     return $entity->isAdmin() && $hasPermissionToAdmins;
@@ -200,14 +205,16 @@ class RoleCrudController extends AbstractCrudController
 
             $hasPermissionToUsers = $this->hasPermissionCrud('user');
             $users = Action::new('users', $this->transEntityPlural('user'))->setIcon('user')
-                ->linkToUrl(function ($entity) {
-                    return $this->adminUrl()->setController(UserCrudController::class)->setAction(Action::INDEX)
-                        ->set(EA::FILTERS, [
+                ->linkToUrl(function ($entity) use ($rolesUser) {
+                    $url = $this->adminUrl()->setController(UserCrudController::class)->setAction(Action::INDEX)
+                        ->setEntityId(null);
+                    if (count($rolesUser) > 1) {
+                        $url->set(EA::FILTERS, [
                             'role' => ['comparison' => ComparisonType::EQ, 'value' => $entity->getId()],
                             'hidden_filters' => ['role' => true],
-                        ])
-                        ->setEntityId(null)
-                        ->generateUrl();
+                        ]);
+                    }
+                    return $url->generateUrl();
                 })
                 ->displayIf(static function ($entity) use ($hasPermissionToUsers) {
                     return !$entity->isAdmin() && $hasPermissionToUsers;
