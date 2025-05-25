@@ -14,9 +14,9 @@ class ConfigSubscriber implements EventSubscriberInterface
     private $em;
     private $config;
 
-    public function __construct(EntityManagerInterface $entityManager, AssetMapperInterface $assetMapper)
+    public function __construct(EntityManagerInterface $em, AssetMapperInterface $assetMapper)
     {
-        $this->em = $entityManager;
+        $this->em = $em;
 
         $this->config = new \stdClass();
         $this->config->appName = 'Symfony Base';
