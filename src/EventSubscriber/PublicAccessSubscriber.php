@@ -28,33 +28,37 @@ class PublicAccessSubscriber implements EventSubscriberInterface
         $user = $this->security->getUser();
         $request = $event->getRequest();
         $session = $request->getSession();
-        $routeName = $request->attributes->get('_route');
         $availablePublicRoutes = [];
 
-        $userIsAdmin = $user && $this->authorizationChecker->isGranted('ROLE_ADMIN');
-        $routeAvailable = in_array($routeName, $availablePublicRoutes);
+        $routeName = $request->attributes->get('_route');
+        if (!$routeName) {
+            return;
+        }
 
-        if ($routeName) {
-            $routePath = $this->router->getRouteCollection()->get($routeName)->getDefault('_controller');
-            if ($routePath) {
-                $controllerName = strstr(substr(strrchr($routePath, '\\'), 1), '::', true);
-                if ($controllerName) {
-                    $redirect = null;
+        $routePath = $this->router->getRouteCollection()->get($routeName)->getDefault('_controller');
+        if (!$routePath) {
+            return;
+        }
 
-                    if ($controllerName == "PublicController" && !$routeAvailable) {
-                        if ($userIsAdmin) {
-                            $redirect = $this->router->generate('admin');
-                        } elseif (!$session->get('config')->enablePublic) {
-                            $redirect = $this->router->generate('login');
-                        }
-                    }
+        $controllerName = strstr(substr(strrchr($routePath, '\\'), 1), '::', true);
+        if (!$controllerName) {
+            return;
+        }
 
-                    if ($redirect) {
-                        $event->setResponse(new RedirectResponse($redirect));
-                    }
-                }
+        $redirect = null;
+
+        if ($controllerName == "PublicController" && !in_array($routeName, $availablePublicRoutes)) {
+            if ($user && $this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+                $redirect = $this->router->generate('admin');
+            } elseif (!$session->get('config')->enablePublic) {
+                $redirect = $this->router->generate('login');
             }
         }
+
+        if ($redirect) {
+            $event->setResponse(new RedirectResponse($redirect));
+        }
+
         return;
     }
 
