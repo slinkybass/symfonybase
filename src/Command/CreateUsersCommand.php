@@ -4,8 +4,8 @@ namespace App\Command;
 
 use App\Entity\Role;
 use App\Entity\User;
+use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,11 +17,13 @@ class CreateUsersCommand extends Command
 {
     private $em;
     private $passwordHasher;
+    private $rolePermissions;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, RolePermissions $rolePermissions)
     {
         $this->em = $em;
         $this->passwordHasher = $passwordHasher;
+        $this->rolePermissions = $rolePermissions;
 
         parent::__construct();
     }
@@ -41,23 +43,12 @@ class CreateUsersCommand extends Command
             $roleSuperAdmin->setName('ROLE_SUPERADMIN');
             $roleSuperAdmin->setDisplayName('Superadmin');
             $roleSuperAdmin->setIsAdmin(true);
-            $permissions = [];
-            $filesInsideCrudsFolder = array_diff(scandir(__DIR__ . '/../Controller/Admin/Cruds'), ['..', '.']);
-            foreach ($filesInsideCrudsFolder as $fileName) {
-                $crudName = str_replace('CrudController.php', '', $fileName);
-                if (!preg_match('/CrudController.php$/', $fileName)) {
-                    continue;
-                }
-                $permName = 'crud' . ucfirst($crudName);
-                $permissions[$permName] = true;
-                $actionNames = [Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE];
-                $actionNames = $crudName == "Config" ? [Action::EDIT] : $actionNames;
-                foreach ($actionNames as $actionName) {
-                    $subPermName = 'crud' . $crudName . ucfirst($actionName);
-                    $permissions[$subPermName] = true;
-                }
-            }
-            $roleSuperAdmin->setPermissions($permissions);
+            $crudPermissions = $this->rolePermissions->getCrudPermissions();
+            $crudPermissionsValues = [];
+            $this->rolePermissions->loopPermissions($crudPermissions, function ($permission) use (&$crudPermissionsValues) {
+                $crudPermissionsValues[$permission] = true;
+            });
+            $roleSuperAdmin->setPermissions($crudPermissionsValues);
             $this->em->persist($roleSuperAdmin);
             $output->writeln('<bg=green;options=bold>CREATED ROLE_SUPERADMIN</>');
         }
