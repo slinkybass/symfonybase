@@ -12,7 +12,7 @@ import "@tabler/core/dist/css/tabler-vendors.min.css";
 import DirtyForm from "dirty-form";
 window.DirtyForm = DirtyForm;
 
-import App from "./app.controller.js";
+import App from "./controllers/app.js";
 window.App = App;
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -2,7 +2,7 @@
 import Mark from "mark.js";
 window.Mark = Mark;
 
-import Admin from "./admin.controller.js";
+import Admin from "./controllers/admin.js";
 window.Admin = Admin;
 
 document.addEventListener("DOMContentLoaded", function () {

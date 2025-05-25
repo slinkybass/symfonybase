@@ -1,4 +1,4 @@
-import Public from "./public.controller.js";
+import Public from "./controllers/public.js";
 
 document.addEventListener("DOMContentLoaded", function () {});
 
