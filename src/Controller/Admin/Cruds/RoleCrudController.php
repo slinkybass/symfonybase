@@ -60,7 +60,7 @@ class RoleCrudController extends AbstractCrudController
         $permissionsPanel = FieldGenerator::panel($this->transEntitySection('permissions'))->setIcon('lock');
         $crudPermissions = $this->rolePermissions->getCrudPermissions();
         $crudPermissionsFields = [];
-        $this->rolePermissions->loopPermissions($crudPermissions, function ($permission, $parentPermission) use (&$crudPermissionsFields) {
+        $this->rolePermissions->loopPermissions($crudPermissions, function ($permission, $parentPermission, $level) use (&$crudPermissionsFields) {
             if ($this->hasPermission($permission)) {
                 $entity = lcfirst(preg_split('/(?=[A-Z])/', $permission)[1]);
                 $action = str_replace('crud' . ucfirst($entity), '', $permission);
@@ -76,7 +76,7 @@ class RoleCrudController extends AbstractCrudController
                     $permissionLabel = $this->translator->trans('entities.' . $entity . '.actions.' . $action);
                 }
 
-                $crudPermissionsFields[] = $this->generatePermissionField($permission, $permissionLabel, $parentPermission);
+                $crudPermissionsFields[] = $this->generatePermissionField($permission, $permissionLabel, $parentPermission, $level);
             }
         });
 
@@ -270,7 +270,7 @@ class RoleCrudController extends AbstractCrudController
         });
     }
 
-    private function generatePermissionField(string $permission, string $label, ?string $parentPermission = null): FieldInterface
+    private function generatePermissionField(string $permission, string $label, ?string $parentPermission = null, ?int $level = 0): FieldInterface
     {
         $entity = $this->entity();
         $permissionValue = $entity && $entity->getPermission($permission) ? true : false;
@@ -283,7 +283,7 @@ class RoleCrudController extends AbstractCrudController
             ->setFormattedValue($permissionValue)
             ->setHtmlAttribute('data-hf-parent', 'perm_' . $permission)
             ->setHtmlAttribute('data-hf-child', $parentPermission ? 'perm_' . $parentPermission : 'isAdmin')
-            ->setHtmlAttribute('data-hf-save-value', 'true');
+            ->setFormTypeOption('row_attr.style', 'margin-left: ' . ($level * 1.5) . 'rem;');
         return $permission;
     }
 }

@@ -150,15 +150,16 @@ class RolePermissions
      * @param array       $permissions a nested array of permissions in a tree-like structure
      * @param callable    $callback    A function to be called for each permission. It receives the permission and its parent.
      * @param string|null $parent      the parent permission of the current level (null for root)
+     * @param int         $level       the current level in the tree
      *
      * @return void
      */
-    public function loopPermissions(array $permissions, callable $callback, ?string $parent = null)
+    public function loopPermissions(array $permissions, callable $callback, ?string $parent = null, int $level = 0)
     {
         foreach ($permissions as $permission => $childrenPermissions) {
-            $callback($permission, $parent);
+            $callback($permission, $parent, $level);
             if (is_array($childrenPermissions)) {
-                $this->loopPermissions($childrenPermissions, $callback, $permission);
+                $this->loopPermissions($childrenPermissions, $callback, $permission, $level + 1);
             }
         }
     }
