@@ -152,7 +152,7 @@ class RoleCrudController extends AbstractCrudController
             $user = $this->getUser();
             $rolePermissions = $this->rolePermissions;
 
-            $hasPermissionEdit = $this->hasPermissionAction(Action::EDIT);
+            $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
             $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
                     return $hasPermissionEdit && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
@@ -164,7 +164,7 @@ class RoleCrudController extends AbstractCrudController
                 });
             });
 
-            $hasPermissionDelete = $this->hasPermissionAction(Action::DELETE);
+            $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
             $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
                     return $hasPermissionDelete && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));

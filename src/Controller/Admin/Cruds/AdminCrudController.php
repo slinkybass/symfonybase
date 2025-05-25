@@ -179,7 +179,7 @@ class AdminCrudController extends AbstractCrudController
             $user = $this->getUser();
             $rolePermissions = $this->rolePermissions;
 
-            $hasPermissionEdit = $this->hasPermissionAction(Action::EDIT);
+            $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
             $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
                     return ($hasPermissionEdit || $entity === $user) && $rolePermissions->isUp($user->getRole(), $entity->getRole());
@@ -196,7 +196,7 @@ class AdminCrudController extends AbstractCrudController
                 });
             });
 
-            $hasPermissionDelete = $this->hasPermissionAction(Action::DELETE);
+            $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
             $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
                     return $hasPermissionDelete && $entity !== $user && $rolePermissions->isUp($user->getRole(), $entity->getRole());
@@ -213,7 +213,7 @@ class AdminCrudController extends AbstractCrudController
                 });
             });
 
-            $hasPermissionImpersonate = $this->hasPermissionAction('impersonate');
+            $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
             $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate', 'user'))->setIcon('user-search')
                 ->linkToUrl(function ($entity) {
                     return $this->generateUrl('home', ['_switch_user' => $entity->getEmail()]);

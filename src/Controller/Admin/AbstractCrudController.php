@@ -55,7 +55,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
                 $actions->remove(Crud::PAGE_EDIT, Action::DELETE);
             }
         } else {
-            $hasPermissionNew = $this->hasPermissionAction(Action::NEW);
+            $hasPermissionNew = $this->hasPermissionCrudAction(Action::NEW);
             $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) use ($hasPermissionNew) {
                 return $action->displayIf(static function () use ($hasPermissionNew) {
                     return $hasPermissionNew;
@@ -67,14 +67,14 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
                 });
             });
 
-            $hasPermissionDetail = $this->hasPermissionAction(Action::DETAIL);
+            $hasPermissionDetail = $this->hasPermissionCrudAction(Action::DETAIL);
             $actions->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) use ($hasPermissionDetail) {
                 return $action->displayIf(static function () use ($hasPermissionDetail) {
                     return $hasPermissionDetail;
                 });
             });
 
-            $hasPermissionEdit = $this->hasPermissionAction(Action::EDIT);
+            $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
             $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($hasPermissionEdit) {
                 return $action->displayIf(static function () use ($hasPermissionEdit) {
                     return $hasPermissionEdit;
@@ -91,7 +91,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
                 });
             });
 
-            $hasPermissionDelete = $this->hasPermissionAction(Action::DELETE);
+            $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
             $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) use ($hasPermissionDelete) {
                 return $action->displayIf(static function () use ($hasPermissionDelete) {
                     return $hasPermissionDelete;
@@ -230,9 +230,9 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $this->user()->hasPermissionCrud($crud ?? $this->crud());
     }
 
-    public function hasPermissionAction($action, $crud = null): bool
+    public function hasPermissionCrudAction($action, $crud = null): bool
     {
-        return $this->user()->hasPermissionAction($action, $crud ?? $this->crud());
+        return $this->user()->hasPermissionCrudAction($action, $crud ?? $this->crud());
     }
 
     public function transEntitySingular($entity = null): string

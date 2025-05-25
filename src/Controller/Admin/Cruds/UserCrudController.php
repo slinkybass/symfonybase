@@ -93,7 +93,7 @@ class UserCrudController extends AbstractCrudController
             if (count($roles) > 1 && !$this->filterHidden('role')) {
                 yield $role;
             }
-            yield $active->renderAsSwitch($this->hasPermissionAction(Action::EDIT))->addCssClass('w-1');
+            yield $active->renderAsSwitch($this->hasPermissionCrudAction(Action::EDIT))->addCssClass('w-1');
         } elseif ($pageName == Crud::PAGE_DETAIL) {
             yield $dataPanel;
             yield $avatar->setColumns(12);
@@ -156,7 +156,7 @@ class UserCrudController extends AbstractCrudController
         $actions = parent::configureActions($actions);
 
         if ($this->hasPermissionCrud()) {
-            $hasPermissionImpersonate = $this->hasPermissionAction('impersonate');
+            $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
             $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
                 ->linkToUrl(function ($entity) {
                     return $this->generateUrl('home', ['_switch_user' => $entity->getEmail()]);

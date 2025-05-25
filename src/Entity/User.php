@@ -159,7 +159,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->hasPermission('crud' . ucfirst($crud));
     }
 
-    public function hasPermissionAction($action, $crud): ?bool
+    public function hasPermissionCrudAction($action, $crud): ?bool
     {
         return $this->hasPermission('crud' . ucfirst($crud) . ucfirst($action));
     }
