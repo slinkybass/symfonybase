@@ -12,6 +12,9 @@ import "@tabler/core/dist/css/tabler-vendors.min.css";
 import DirtyForm from "dirty-form";
 window.DirtyForm = DirtyForm;
 
+// HierarchyFields
+import "./fields/hierarchyFields.js";
+
 import App from "./controllers/app.js";
 window.App = App;
 
