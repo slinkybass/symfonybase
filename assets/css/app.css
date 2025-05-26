@@ -18,6 +18,18 @@
         text-align: start !important;
     }
 }
+.form-check:has(.form-check-input.disabled),
+.form-check:has(.form-check-input[disabled]),
+.form-check:has(.form-check-input.readonly),
+.form-check:has(.form-check-input[readonly]) {
+	pointer-events: none;
+}
+.form-check:has(.form-check-input.disabled) .form-check-label,
+.form-check:has(.form-check-input[disabled]) .form-check-label,
+.form-check:has(.form-check-input.readonly) .form-check-label,
+.form-check:has(.form-check-input[readonly]) .form-check-label {
+	color: var(--tblr-muted);
+}
 
 /* Multilevel dropdown fixes */
 .dropdown-menu .dropdown .dropdown-toggle::after {
