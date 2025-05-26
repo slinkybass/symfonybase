@@ -133,13 +133,13 @@ class FieldGenerator extends AbstractType
     public static function checkbox(string $name)
     {
         return BooleanField::new($name)
+            ->renderAsSwitch(false)
             ->setColumns(12);
     }
 
     public static function switch(string $name)
     {
         return BooleanField::new($name)
-            ->renderAsSwitch()
             ->setColumns(12);
     }
 
