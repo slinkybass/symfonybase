@@ -17,7 +17,7 @@
     {% set contentWidthClass = contentWidth == 'normal' ? '' : 'layout-fluid' %}
     {% set sidebarWidth = ea.crud.sidebarWidth ?? ea.dashboardSidebarWidth ?? '' %}
     {% set sidebarWidthClass = sidebarWidth == 'normal' ? '' : '' %}
-    {% set darkMode = ea.dashboardHasDarkModeEnabled and (app.request.cookies.get('ea/colorScheme') == 'dark' or ea.dashboardDefaultColorScheme == 'dark') %}
+    {% set darkMode = ea.dashboardHasDarkModeEnabled and (app.request.cookies.get('colorScheme') == 'dark' or ea.dashboardDefaultColorScheme == 'dark') %}
     {% set darkModeClass = darkMode ? 'dark' : 'light' %}
     <body {% block body_attr %}{% endblock %}
         id="{% block body_id %}{% endblock %}"
@@ -25,7 +25,9 @@
         data-bs-theme="{{ darkModeClass }}"
     >
     {% block javascript_page_layout %}{% endblock javascript_page_layout %}
-    {% block javascript_page_color_scheme %}{% endblock javascript_page_color_scheme %}
+    {% block javascript_page_color_scheme %}
+        {{ importmap('page-color-scheme') }}
+    {% endblock javascript_page_color_scheme %}
 
     {% block wrapper_wrapper %}
         {% block flash_messages %}
@@ -51,8 +53,8 @@
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             {% if ea.dashboardHasDarkModeEnabled %}
                                 <label class="dropdown-item form-switch cursor-pointer">
-                                    <twig:ux:icon class="icon" name="tabler:{{ darkMode ? 'sun' : 'moon' }}" />
-                                    <span class="me-2">{{ 'settings.appearance.label'|trans(domain = 'EasyAdminBundle') }} {{ ('settings.appearance.' ~ (darkMode ? 'light' : 'dark'))|trans(domain = 'EasyAdminBundle') }}</span>
+                                    <twig:ux:icon class="icon" name="tabler:moon" />
+                                    <span class="me-2">{{ 'settings.appearance.label'|trans(domain = 'EasyAdminBundle') }} {{ ('settings.appearance.dark')|trans(domain = 'EasyAdminBundle') }}</span>
                                     <input class="form-check-input m-0 ms-auto" type="checkbox" data-color-scheme {% if darkMode %}checked{% endif %}>
                                 </label>
                             {% endif %}

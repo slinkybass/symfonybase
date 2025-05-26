@@ -11,10 +11,16 @@
         {% block importmap %}
             {{ importmap('app') }}
             {{ importmap('public') }}
+            {{ importmap('page-color-scheme') }}
         {% endblock %}
     </head>
+    {% set darkModeClass = app.request.cookies.get('colorScheme') == 'dark' ? 'dark' : 'light' %}
     {% block body %}
-        <body class="{% block body_class %}{% endblock %}">
+        <body {% block body_attr %}{% endblock %}
+            id="{% block body_id %}{% endblock %}"
+            class="{% block body_class %}{% endblock %}"
+            data-bs-theme="{{ darkModeClass }}"
+        >
             {% block main %}{% endblock main %}
         </body>
     {% endblock body %}

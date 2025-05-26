@@ -24,6 +24,10 @@ return [
         'path' => './assets/js/public.js',
         'entrypoint' => true,
     ],
+    'page-color-scheme' => [
+        'path' => './assets/js/app/page-color-scheme.js',
+        'entrypoint' => true,
+    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
