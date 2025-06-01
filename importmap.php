@@ -28,6 +28,10 @@ return [
         'path' => './assets/js/app/page-color-scheme.js',
         'entrypoint' => true,
     ],
+    'form-type-password' => [
+        'path' => './assets/js/fields/form-type-password.js',
+        'entrypoint' => true,
+    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],

@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
@@ -189,6 +190,7 @@ class FieldGenerator extends AbstractType
     {
         return TextField::new($name)
             ->setFormType(PasswordType::class)
+            ->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())
             ->setColumns(12);
     }
 
@@ -199,6 +201,7 @@ class FieldGenerator extends AbstractType
             ->setFormTypeOptions([
                 'type' => PasswordType::class,
             ])
+            ->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())
             ->setColumns(12);
     }
 

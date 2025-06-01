@@ -205,3 +205,28 @@
 		</div>
 	</div>
 {% endblock ea_form_tabpane_group_close_row %}
+
+{% block password_widget %}
+	{% if id ends with '_second' %}
+		{{ parent() }}
+    {% else %}
+		<div class="row g-2">
+			<div class="col">
+				<div class="input-group">
+					{{ parent() }}
+					<button type="button" class="btn btn-icon btn-pass" tabindex="-1">
+						<twig:ux:icon class="icon btn-pass-show" name="tabler:eye" />
+                        <twig:ux:icon class="icon btn-pass-hide d-none" name="tabler:eye-off" />
+					</button>
+				</div>
+			</div>
+            {% if id ends with '_first' %}
+                <div class="col-auto">
+                    <button type="button" class="btn btn-icon btn-pass-generator" tabindex="-1">
+                        <twig:ux:icon class="icon" name="tabler:key" />
+                    </button>
+                </div>
+            {% endif %}
+		</div>
+	{% endif %}
+{% endblock password_widget %}
