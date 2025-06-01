@@ -58,4 +58,11 @@ return [
     'dirty-form' => [
         'version' => '0.4.0',
     ],
+    'sweetalert2' => [
+        'version' => '11.22.0',
+    ],
+    'sweetalert2/dist/sweetalert2.min.css' => [
+        'version' => '11.22.0',
+        'type' => 'css',
+    ],
 ];
