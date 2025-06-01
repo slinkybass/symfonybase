@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}">
+{% set bsTheme = app.request.cookies.get('colorScheme') == 'dark' ? 'dark' : 'light' %}
+<html lang="{{ app.request.locale }}" data-bs-theme="{{ bsTheme }}">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,13 +17,8 @@
         {% block css %}{% endblock %}
     </head>
 
-    {% set bsTheme = app.request.cookies.get('colorScheme') == 'dark' ? 'dark' : 'light' %}
     {% block body %}
-        <body {% block body_attr %}{% endblock %}
-            id="{% block body_id %}{% endblock %}"
-            class="{% block body_class %}{% endblock %}"
-            data-bs-theme="{{ bsTheme }}"
-        >
+        <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}" {% block body_attr %}{% endblock %}>
 		    <div class="page {% block page_class %}{% endblock %}">
                 {% block header %}
                     <header class="navbar navbar-expand-md d-print-none">

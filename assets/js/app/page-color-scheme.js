@@ -26,9 +26,8 @@ class ColorSchemeHandler {
 	}
 
 	#setColorScheme(colorScheme) {
-		document.body.setAttribute("data-bs-theme", colorScheme);
+		document.documentElement.setAttribute("data-bs-theme", colorScheme);
 		this.#setCookie(this.#colorSchemeCookieKey, colorScheme);
-		document.body.style.colorScheme = colorScheme;
 	}
 
 	#setCookie(name, value, days = 365) {
