@@ -18,11 +18,11 @@
     {% set sidebarWidth = ea.crud.sidebarWidth ?? ea.dashboardSidebarWidth ?? '' %}
     {% set sidebarWidthClass = sidebarWidth == 'normal' ? '' : '' %}
     {% set darkMode = ea.dashboardHasDarkModeEnabled and (app.request.cookies.get('colorScheme') == 'dark' or ea.dashboardDefaultColorScheme == 'dark') %}
-    {% set darkModeClass = darkMode ? 'dark' : 'light' %}
+    {% set bsTheme = darkMode ? 'dark' : 'light' %}
     <body {% block body_attr %}{% endblock %}
         id="{% block body_id %}{% endblock %}"
         class="{{ contentWidthClass }} {% block body_class %}{% endblock %}"
-        data-bs-theme="{{ darkModeClass }}"
+        data-bs-theme="{{ bsTheme }}"
     >
     {% block javascript_page_layout %}{% endblock javascript_page_layout %}
     {% block javascript_page_color_scheme %}
