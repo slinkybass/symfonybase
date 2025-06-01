@@ -23,7 +23,7 @@ const Swal = _swal.mixin({
 		denyButton: "btn btn-danger",
 		cancelButton: "btn btn-secondary",
 	},
-	buttonsStyling: false
+	buttonsStyling: false,
 });
 window.Swal = Swal;
 const Toast = Swal.mixin({
@@ -35,7 +35,7 @@ const Toast = Swal.mixin({
 	didOpen: (toast) => {
 		toast.onmouseenter = Swal.stopTimer;
 		toast.onmouseleave = Swal.resumeTimer;
-	}
+	},
 });
 window.Toast = Toast;
 import "sweetalert2/dist/sweetalert2.min.css";
