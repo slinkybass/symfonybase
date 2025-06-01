@@ -18,7 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Intl\Languages;
+use Symfony\Component\Intl\Locales;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use function Symfony\Component\Translation\t;
@@ -57,7 +57,7 @@ class DashboardController extends AbstractDashboardController
         $locales = [];
         foreach ($localesStr as $localeStr) {
             if ($localeStr) {
-                $locales[] = Locale::new($localeStr, ucfirst(Languages::getName($localeStr)) . ' (' . $localeStr . ')', 'language');
+                $locales[] = Locale::new($localeStr, ucfirst(Locales::getName($localeStr)) . ' (' . $localeStr . ')', 'language');
             }
         }
         if (count($locales) > 1) {
