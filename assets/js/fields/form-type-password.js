@@ -6,6 +6,48 @@
  *
  * Description:
  * Manages password field visibility and provides secure password generation.
+ *
+ * Events:
+ * - DOMContentLoaded: Initializes listeners on page load.
+ * - ea.collection.item-added: Re-initializes for dynamically added elements (e.g., EasyAdmin collections).
+ *
+ * Core Functionality:
+ * - Password fields must be inside a container with the class `.input-group`
+ * - Password generators must be inside a container with the class `.form-group`.
+ * - The show/hide toggle button must have the class `.btn-pass`.
+ *   Inside this button, include two elements:
+ *   - `.btn-pass-show` (icon/text for "show" state)
+ *   - `.btn-pass-hide` (icon/text for "hide" state, initially with `d-none` class)
+ * - The password generator button must have the class `.btn-pass-generator`.
+ * - If you have password confirmation fields, their input IDs must be related by
+ *   replacing "first" with "second" in the ID (e.g., `password_first` and `password_second`).
+ *   The plugin syncs values and visibility between these fields.
+ *
+ * HTML Examples:
+ *
+ * Basic password with show/hide toggle:
+ * <div class="input-group">
+ *   <input type="password" minlength="8" maxlength="12">
+ *   <button type="button" class="btn-pass">
+ *     <i class="btn-pass-show"></i>
+ *     <i class="btn-pass-hide d-none"></i>
+ *   </button>
+ * </div>
+ *
+ * Complex password with show/hide toggle and password generator:
+ * <div class="form-group">
+ *   <div class="input-group">
+ *     <input type="password" id="password_first" />
+ *     <button type="button" class="btn-pass">
+ *       <i class="btn-pass-show"></i>
+ *       <i class="btn-pass-hide d-none"></i>
+ *     </button>
+ *   </div>
+ *   <button type="button" class="btn-pass-generator"></button>
+ * </div>
+ * <div class="form-group">
+ *   <input type="password" id="password_second" />
+ * </div>
  */
 
 (function () {
@@ -36,7 +78,7 @@
 
 		document.querySelectorAll(".btn-pass-generator").forEach((btn) => {
 			btn.addEventListener("click", () => {
-				const input = btn.closest(".row").querySelector("input");
+				const input = btn.closest(".form-group").querySelector("input");
 				const input2 = document.getElementById(input.id.replace("first", "second"));
 				const minLength = parseInt(input.getAttribute("minlength")) || parseInt(input2?.getAttribute("minlength")) || undefined;
 				const maxLength = parseInt(input.getAttribute("maxlength")) || parseInt(input2?.getAttribute("maxlength")) || undefined;
