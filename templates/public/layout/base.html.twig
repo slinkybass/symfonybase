@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% set bsTheme = app.request.cookies.get('colorScheme') == 'dark' ? 'dark' : 'light' %}
-<html lang="{{ app.request.locale }}" data-bs-theme="{{ bsTheme }}">
+<html lang="{{ app.request.locale }}" data-bs-theme="{{ bsTheme }}" data-turbo="{{ enable_turbo|default(false) ? 'true' : 'false' }}">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
