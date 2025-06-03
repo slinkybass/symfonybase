@@ -69,6 +69,9 @@ return [
         'version' => '11.22.0',
         'type' => 'css',
     ],
+    'moment/min/moment-with-locales.min.js' => [
+        'version' => '2.30.1',
+    ],
     'tom-select' => [
         'version' => '2.4.3',
     ],

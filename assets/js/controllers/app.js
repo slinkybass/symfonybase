@@ -1,4 +1,8 @@
 const App = (() => {
+	const setMomentLocale = () => {
+		moment.locale(document.querySelector("html")?.getAttribute("lang") ?? "en");
+	};
+
 	const createAutoCompleteFields = () => {
 		const autocomplete = new Autocomplete();
 		document.querySelectorAll('[data-ea-widget="ea-autocomplete"], [data-autocomplete-field]').forEach((autocompleteElement) => {
@@ -216,6 +220,7 @@ const App = (() => {
 	};
 
 	return {
+		setMomentLocale,
 		createAutoCompleteFields,
 		persistSelectedTab,
 		createUnsavedFormChangesWarning,

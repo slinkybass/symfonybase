@@ -36,6 +36,10 @@ const Toast = Swal.mixin({
 window.Toast = Toast;
 import "sweetalert2/dist/sweetalert2.min.css";
 
+// Moment
+import moment from 'moment/min/moment-with-locales.min.js';
+window.moment = moment;
+
 // HierarchyFields
 import "./fields/hierarchyFields.js";
 
@@ -51,6 +55,7 @@ import App from "./controllers/app.js";
 window.App = App;
 
 document.addEventListener("DOMContentLoaded", function () {
+	App.setMomentLocale();
 	App.createAutoCompleteFields();
 	App.persistSelectedTab();
 	App.createUnsavedFormChangesWarning();
