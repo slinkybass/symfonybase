@@ -11,14 +11,6 @@ import "@tabler/core/dist/css/tabler-flags.min.css";
 import DirtyForm from "dirty-form";
 window.DirtyForm = DirtyForm;
 
-// HierarchyFields
-import "./fields/hierarchyFields.js";
-
-// TomSelect
-import Autocomplete from "./fields/autocomplete.js";
-window.Autocomplete = Autocomplete;
-import "tom-select/dist/css/tom-select.bootstrap5.css";
-
 // SweetAlert2
 import _swal from "sweetalert2";
 const Swal = _swal.mixin({
@@ -43,6 +35,14 @@ const Toast = Swal.mixin({
 });
 window.Toast = Toast;
 import "sweetalert2/dist/sweetalert2.min.css";
+
+// HierarchyFields
+import "./fields/hierarchyFields.js";
+
+// TomSelect
+import Autocomplete from "./fields/autocomplete.js";
+window.Autocomplete = Autocomplete;
+import "tom-select/dist/css/tom-select.bootstrap5.css";
 
 // Tabler Vendors
 import "@tabler/core/dist/css/tabler-vendors.min.css";
