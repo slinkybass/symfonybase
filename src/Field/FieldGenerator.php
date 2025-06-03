@@ -89,6 +89,7 @@ class FieldGenerator extends AbstractType
     {
         return TextareaField::new($name)
             ->addAssetMapperEntries(Asset::new('form-type-textarea')->onlyOnForms())
+            ->setHtmlAttribute('data-textarea-field', '')
             ->setColumns(12);
     }
 
