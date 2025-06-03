@@ -64,6 +64,10 @@ return [
         'path' => './assets/js/fields/form-type-password.js',
         'entrypoint' => true,
     ],
+    'form-type-textarea' => [
+        'path' => './assets/js/fields/form-type-textarea.js',
+        'entrypoint' => true,
+    ],
     'form-type-time' => [
         'path' => './assets/js/fields/form-type-time.js',
         'entrypoint' => true,
