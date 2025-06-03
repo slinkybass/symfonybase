@@ -52,8 +52,20 @@ return [
         'path' => './assets/js/app/page-color-scheme.js',
         'entrypoint' => true,
     ],
+    'form-type-date' => [
+        'path' => './assets/js/fields/form-type-date.js',
+        'entrypoint' => true,
+    ],
+    'form-type-datetime' => [
+        'path' => './assets/js/fields/form-type-datetime.js',
+        'entrypoint' => true,
+    ],
     'form-type-password' => [
         'path' => './assets/js/fields/form-type-password.js',
+        'entrypoint' => true,
+    ],
+    'form-type-time' => [
+        'path' => './assets/js/fields/form-type-time.js',
         'entrypoint' => true,
     ],
     'mark.js' => [
@@ -84,5 +96,15 @@ return [
     'tom-select/dist/css/tom-select.bootstrap5.css' => [
         'version' => '2.4.3',
         'type' => 'css',
+    ],
+    'flatpickr' => [
+        'version' => '4.6.13',
+    ],
+    'flatpickr/dist/flatpickr.min.css' => [
+        'version' => '4.6.13',
+        'type' => 'css',
+    ],
+    'flatpickr/dist/l10n/index.js' => [
+        'version' => '4.6.13',
     ],
 ];

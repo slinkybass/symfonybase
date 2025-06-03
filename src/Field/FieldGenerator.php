@@ -165,18 +165,24 @@ class FieldGenerator extends AbstractType
     public static function date(string $name)
     {
         return DateField::new($name)
+            ->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms())
+            ->setHtmlAttribute('data-date-field', '')
             ->setColumns(12);
     }
 
     public static function datetime(string $name)
     {
         return DateTimeField::new($name)
+            ->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms())
+            ->setHtmlAttribute('data-datetime-field', '')
             ->setColumns(12);
     }
 
     public static function time(string $name)
     {
         return TimeField::new($name)
+            ->addAssetMapperEntries(Asset::new('form-type-time')->onlyOnForms())
+            ->setHtmlAttribute('data-time-field', '')
             ->setColumns(12);
     }
 
