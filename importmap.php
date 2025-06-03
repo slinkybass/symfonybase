@@ -12,26 +12,6 @@
  * The "importmap:require" command can be used to add new entries to this file.
  */
 return [
-    'app' => [
-        'path' => './assets/js/app.js',
-        'entrypoint' => true,
-    ],
-    'admin' => [
-        'path' => './assets/js/admin.js',
-        'entrypoint' => true,
-    ],
-    'public' => [
-        'path' => './assets/js/public.js',
-        'entrypoint' => true,
-    ],
-    'page-color-scheme' => [
-        'path' => './assets/js/app/page-color-scheme.js',
-        'entrypoint' => true,
-    ],
-    'form-type-password' => [
-        'path' => './assets/js/fields/form-type-password.js',
-        'entrypoint' => true,
-    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
@@ -55,6 +35,26 @@ return [
     '@tabler/core/dist/css/tabler-vendors.min.css' => [
         'version' => '1.2.0',
         'type' => 'css',
+    ],
+    'app' => [
+        'path' => './assets/js/app.js',
+        'entrypoint' => true,
+    ],
+    'admin' => [
+        'path' => './assets/js/admin.js',
+        'entrypoint' => true,
+    ],
+    'public' => [
+        'path' => './assets/js/public.js',
+        'entrypoint' => true,
+    ],
+    'page-color-scheme' => [
+        'path' => './assets/js/app/page-color-scheme.js',
+        'entrypoint' => true,
+    ],
+    'form-type-password' => [
+        'path' => './assets/js/fields/form-type-password.js',
+        'entrypoint' => true,
     ],
     'mark.js' => [
         'version' => '8.11.1',
