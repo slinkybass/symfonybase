@@ -1,4 +1,11 @@
 const App = (() => {
+	const createAutoCompleteFields = () => {
+		const autocomplete = new Autocomplete();
+		document.querySelectorAll('[data-ea-widget="ea-autocomplete"], [data-autocomplete]').forEach((autocompleteElement) => {
+			autocomplete.create(autocompleteElement);
+		});
+	};
+
 	const persistSelectedTab = () => {
 		// the ID of the selected tab is appended as a hash in the URL to persist it;
 		// if the URL has a hash, try to look for a tab with that ID and show it
@@ -209,6 +216,7 @@ const App = (() => {
 	};
 
 	return {
+		createAutoCompleteFields,
 		persistSelectedTab,
 		createUnsavedFormChangesWarning,
 		createFieldsWithErrors,
