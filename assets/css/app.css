@@ -147,3 +147,116 @@ div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-act
 div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step-line {
 	background: var(--tblr-primary);
 }
+
+/* TinyMCE */
+.tox .tox-dialog__body-content .accessibility-issue--info .tox-form__group h2,
+.tox .tox-dialog__body-nav-item--active,
+.tox .tox-dialog__body-content a,
+.tox .tox-naked-btn {
+	color: var(--tblr-primary) !important;
+}
+
+.tox .tox-dialog__body-content .accessibility-issue--info .tox-icon svg,
+.tox .tox-checkbox__icons .tox-checkbox-icon__indeterminate svg,
+.tox .tox-checkbox__icons .tox-checkbox-icon__checked svg {
+	fill: var(--tblr-primary) !important;
+}
+
+.tox .tox-button:not(.tox-button--naked),
+.tox .tox-button[disabled],
+.tox .tox-collection--list .tox-collection__item--active,
+.tox .tox-insert-table-picker .tox-insert-table-picker__selected,
+.tox .tox-slider__handle {
+	background-color: var(--tblr-primary) !important;
+	color: var(--tblr-primary-fg) !important;
+}
+
+.tox .tox-button:not(.tox-button--naked),
+.tox .tox-button[disabled]:not(.tox-button--naked),
+.tox .tox-dialog__body-nav-item--active,
+.tox .tox-navobj-bordered-focus.tox-navobj-bordered::before,
+.tox .tox-edit-area::before,
+.tox .tox-color-input span:hover:not([aria-disabled=true]),
+.tox .tox-color-input span:focus:not([aria-disabled=true]),
+.tox .tox-textfield:focus,
+.tox .tox-listboxfield .tox-listbox--select:focus,
+.tox .tox-textarea-wrap:focus-within,
+.tox .tox-textarea:focus,
+.tox .tox-custom-editor:focus-within,
+.tox .tox-selectfield select:focus {
+	border-color: var(--tblr-primary) !important;
+}
+
+.tox .tox-dialog__body-content a:focus-visible {
+	outline: 2px solid var(--tblr-primary) !important;
+}
+
+.tox .tox-button::before {
+	box-shadow: inset 0 0 0 1px #fff, 0 0 0 2px var(--tblr-primary) !important;
+}
+
+.tox .tox-button.tox-button--secondary,
+.tox .tox-button[disabled].tox-button--secondary {
+	background-color: var(--tblr-secondary) !important;
+	color: var(--tblr-secondary-fg) !important;
+	border-color: var(--tblr-secondary) !important;
+}
+
+.tox .tox-button.tox-button--secondary::before {
+	box-shadow: inset 0 0 0 1px #fff, 0 0 0 2px var(--tblr-secondary) !important;
+}
+
+.tox input.tox-checkbox__input:focus+.tox-checkbox__icons {
+	box-shadow: inset 0 0 0 1px var(--tblr-primary) !important;
+}
+
+.tox .tox-collection--toolbar .tox-collection__item--active:focus::after,
+.tox .tox-mbtn:focus:not(:disabled)::after,
+.tox .tox-statusbar a:focus-visible::after,
+.tox .tox-statusbar__path-item:focus-visible::after,
+.tox .tox-statusbar__wordcount:focus-visible::after,
+.tox .tox-statusbar__resize-handle:focus-visible::after,
+.tox .tox-tbtn:focus::after,
+.tox .tox-tbtn--enabled:focus::after,
+.tox .tox-number-input:focus::after,
+.tox .tox-number-input .tox-input-wrapper:focus::after,
+.tox .tox-number-input .tox-input-wrapper:has(input:focus)::after,
+.tox .tox-number-input button:focus::after,
+.tox .tox-split-button:focus::after,
+.tox .tox-revisionhistory__sidebar .tox-revisionhistory__revisions:focus::after,
+.tox .tox-revisionhistory__sidebar .tox-revisionhistory__revisions .tox-revisionhistory__card:focus::after {
+	box-shadow: 0 0 0 2px var(--tblr-primary) !important;
+}
+
+.tox .tox-collection--grid .tox-collection__item--active:not(.tox-collection__item--state-disabled):focus::after {
+	box-shadow: 0 0 0 2px var(--tblr-primary) 'inset' !important;
+}
+
+.tox .tox-navobj-bordered-focus.tox-navobj-bordered::before,
+.tox .tox-textfield:focus,
+.tox .tox-listboxfield .tox-listbox--select:focus,
+.tox .tox-textarea-wrap:focus-within,
+.tox .tox-textarea:focus,
+.tox .tox-custom-editor:focus-within,
+.tox .tox-selectfield select:focus {
+	box-shadow: 0 0 0 1px var(--tblr-primary) !important;
+}
+
+.tox .tox-revisionhistory__sidebar .tox-revisionhistory__revisions .tox-revisionhistory__card.tox-revisionhistory__card--selected,
+.tox .tox-collection--toolbar .tox-collection__item--enabled,
+.tox .tox-collection--toolbar .tox-collection__item--enabled.tox-collection__item--active,
+.tox .tox-collection--toolbar .tox-collection__item--enabled.tox-collection__item--active:hover,
+.tox .tox-collection--grid .tox-collection__item--enabled,
+.tox .tox-mbtn--active,
+.tox .tox-mbtn:not(:disabled).tox-mbtn--active:focus,
+.tox .tox-tbtn:active,
+.tox .tox-tbtn--active,
+.tox .tox-tbtn--enabled,
+.tox .tox-tbtn--enabled:hover,
+.tox .tox-tbtn--enabled:focus,
+.tox .tox-number-input button:active,
+.tox .tox-tree .tox-trbtn:active,
+.tox .tox-tree .tox-trbtn--enabled,
+.tox .tox-tree .tox-trbtn--enabled:hover {
+	background-color: var(--tblr-primary-light) !important;
+}

@@ -72,6 +72,10 @@ return [
         'path' => './assets/js/fields/form-type-textarea.js',
         'entrypoint' => true,
     ],
+    'form-type-texteditor' => [
+        'path' => './assets/js/fields/form-type-texteditor.js',
+        'entrypoint' => true,
+    ],
     'form-type-time' => [
         'path' => './assets/js/fields/form-type-time.js',
         'entrypoint' => true,
@@ -117,5 +121,111 @@ return [
     ],
     'slugify' => [
         'version' => '1.6.6',
+    ],
+    'tinymce' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/models/dom/model' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/themes/silver' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/icons/default' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/skins/ui/oxide/skin.min.css' => [
+        'version' => '7.9.1',
+        'type' => 'css',
+    ],
+    'tinymce/plugins/accordion' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/advlist' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/anchor' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/autolink' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/autoresize' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/autosave' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/charmap' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/code' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/codesample' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/directionality' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/emoticons' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/emoticons/js/emojis' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/fullscreen' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/image' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/importcss' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/insertdatetime' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/link' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/lists' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/media' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/nonbreaking' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/pagebreak' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/preview' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/quickbars' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/save' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/searchreplace' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/table' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/visualblocks' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/visualchars' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce/plugins/wordcount' => [
+        'version' => '7.9.1',
+    ],
+    'tinymce-i18n/langs/es.js' => [
+        'version' => '25.6.2',
     ],
 ];
