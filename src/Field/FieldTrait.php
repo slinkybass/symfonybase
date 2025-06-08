@@ -6,6 +6,8 @@ trait FieldTrait
 {
     public const OPTION_MAPPED = 'mapped';
     public const OPTION_REQUIRED = 'required';
+    public const OPTION_DISABLED = 'disabled';
+    public const OPTION_READ_ONLY = 'readonly';
     public const OPTION_DATA = 'data';
     public const OPTION_PLACEHOLDER = 'placeholder';
     public const OPTION_MAX_LENGTH = 'maxlength';
@@ -39,6 +41,20 @@ trait FieldTrait
     public function setRequired(bool $val = true): self
     {
         $this->field->setFormTypeOption(self::OPTION_REQUIRED, $val);
+
+        return $this;
+    }
+
+    public function setDisabled(bool $val = true): self
+    {
+        $this->field->setFormTypeOption(self::OPTION_DISABLED, $val);
+
+        return $this;
+    }
+
+    public function setReadOnly(bool $val = true): self
+    {
+        $this->field->setHtmlAttribute(self::OPTION_READ_ONLY, $val);
 
         return $this;
     }

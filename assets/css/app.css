@@ -17,17 +17,28 @@
         text-align: start !important;
     }
 }
+
+.form-control.disabled,
+.form-control:disabled,
+.form-control.readonly,
+.form-control[readonly] {
+    background-color: var(--tblr-disabled-bg);
+    color: var(--tblr-disabled-color);
+    pointer-events: none;
+}
+
 .form-check:has(.form-check-input.disabled),
 .form-check:has(.form-check-input[disabled]),
 .form-check:has(.form-check-input.readonly),
 .form-check:has(.form-check-input[readonly]) {
-	pointer-events: none;
+    pointer-events: none;
 }
+
 .form-check:has(.form-check-input.disabled) .form-check-label,
 .form-check:has(.form-check-input[disabled]) .form-check-label,
 .form-check:has(.form-check-input.readonly) .form-check-label,
 .form-check:has(.form-check-input[readonly]) .form-check-label {
-	color: var(--tblr-muted);
+    color: var(--tblr-disabled-color);
 }
 
 /* Multilevel dropdown fixes */
