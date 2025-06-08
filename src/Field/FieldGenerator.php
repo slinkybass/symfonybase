@@ -23,7 +23,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Form\AbstractType;
@@ -63,8 +62,7 @@ class FieldGenerator extends AbstractType
 
     public static function text(string $name)
     {
-        return TextField::new($name)
-            ->setColumns(12);
+        return TextField::new($name);
     }
 
     public static function hidden(string $name)
