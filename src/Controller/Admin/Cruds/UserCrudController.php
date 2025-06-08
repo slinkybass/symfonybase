@@ -82,11 +82,10 @@ class UserCrudController extends AbstractCrudController
         $createdAt = FieldGenerator::datetime('createdAt')->setLabel($this->transEntityField('createdAt'))->setColumns(6);
 
         $passwordPanel = FieldGenerator::panel($this->transEntitySection('password'))->setIcon('key');
-        $password = FieldGenerator::confirmPassword('plainPassword')
-            ->setFormTypeOption('first_options.label', $this->transEntityField('password'))
-            ->setFormTypeOption('first_options.attr.minlength', 8)
-            ->setFormTypeOption('second_options.label', $this->transEntityField('repeatPassword'))
-            ->setFormTypeOption('second_options.attr.minlength', 8);
+        $password = FieldGenerator::password('plainPassword')
+            ->repeated()
+            ->setFirstLabel($this->transEntityField('password', 'user'))
+            ->setSecondLabel($this->transEntityField('repeatPassword', 'user'));
 
         if ($pageName == Crud::PAGE_INDEX) {
             yield $avatar->addCssClass('w-1');
