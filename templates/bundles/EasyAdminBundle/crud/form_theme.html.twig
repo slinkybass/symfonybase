@@ -206,6 +206,26 @@
 	</div>
 {% endblock ea_form_tabpane_group_close_row %}
 
+{% block ea_slug_widget %}
+    {% set attr = attr|merge({
+        'data-target': target|split('|')|map(name => form.parent.children[name].vars.id)|json_encode
+    }) %}
+    {% if attr['data-confirm-text'] is defined %}
+        {% set attr = attr|merge({
+            'data-confirm-text': attr['data-confirm-text']|trans
+        }) %}
+    {% endif %}
+
+    <div class="input-group">
+        {{ block('form_widget') }}
+        <button type="button" class="btn btn-icon"
+                data-icon-locked="{{ component('ux:icon', {name: 'tabler:lock', class: 'icon'})|e('html') }}"
+                data-icon-unlocked="{{ component('ux:icon', {name: 'tabler:lock-open', class: 'icon'})|e('html') }}">
+            <twig:ux:icon class="icon" name="tabler:lock" />
+        </button>
+    </div>
+{% endblock %}
+
 {% block password_widget %}
     {% set field = form.vars.ea_vars.field ?? form_parent(form).vars.ea_vars.field %}
 

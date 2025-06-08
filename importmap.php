@@ -64,6 +64,10 @@ return [
         'path' => './assets/js/fields/form-type-password.js',
         'entrypoint' => true,
     ],
+    'form-type-slug' => [
+        'path' => './assets/js/fields/form-type-slug.js',
+        'entrypoint' => true,
+    ],
     'form-type-textarea' => [
         'path' => './assets/js/fields/form-type-textarea.js',
         'entrypoint' => true,
@@ -110,5 +114,8 @@ return [
     ],
     'flatpickr/dist/l10n/index.js' => [
         'version' => '4.6.13',
+    ],
+    'slugify' => [
+        'version' => '1.6.6',
     ],
 ];
