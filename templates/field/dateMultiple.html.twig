@@ -1,0 +1,7 @@
+{% if field.value %}
+	{% for value in field.value %}
+		<time datetime="{{ value|date('c') }}" title="{{ value|date('r') }}">{{ value|format_datetime('long', 'none') }}</time>{% if not loop.last %}<br >{% endif %}
+	{% endfor %}
+{% else %}
+	{{ include(ea.templatePath('label/empty')) }}
+{% endif %}

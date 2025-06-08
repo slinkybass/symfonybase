@@ -2,7 +2,6 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
@@ -11,8 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -25,15 +22,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class FieldGenerator extends AbstractType
 {
@@ -87,10 +80,7 @@ class FieldGenerator extends AbstractType
 
     public static function textarea(string $name)
     {
-        return TextareaField::new($name)
-            ->addAssetMapperEntries(Asset::new('form-type-textarea')->onlyOnForms())
-            ->setHtmlAttribute('data-textarea-field', '')
-            ->setColumns(12);
+        return TextareaField::new($name);
     }
 
     public static function texteditor(string $name)
@@ -166,26 +156,17 @@ class FieldGenerator extends AbstractType
 
     public static function date(string $name)
     {
-        return DateField::new($name)
-            ->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms())
-            ->setHtmlAttribute('data-date-field', '')
-            ->setColumns(12);
+        return DateField::new($name);
     }
 
     public static function datetime(string $name)
     {
-        return DateTimeField::new($name)
-            ->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms())
-            ->setHtmlAttribute('data-datetime-field', '')
-            ->setColumns(12);
+        return DateTimeField::new($name);
     }
 
     public static function time(string $name)
     {
-        return TimeField::new($name)
-            ->addAssetMapperEntries(Asset::new('form-type-time')->onlyOnForms())
-            ->setHtmlAttribute('data-time-field', '')
-            ->setColumns(12);
+        return TimeField::new($name);
     }
 
     public static function timezone(string $name)
@@ -196,21 +177,12 @@ class FieldGenerator extends AbstractType
 
     public static function password(string $name)
     {
-        return TextField::new($name)
-            ->setFormType(PasswordType::class)
-            ->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())
-            ->setColumns(12);
+        return PasswordField::new($name);
     }
 
-    public static function confirmPassword(string $name)
+    public static function repeat(string $name)
     {
-        return TextField::new($name)
-            ->setFormType(RepeatedType::class)
-            ->setFormTypeOptions([
-                'type' => PasswordType::class,
-            ])
-            ->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())
-            ->setColumns(12);
+        return RepeatField::new($name);
     }
 
     public static function float(string $name)
