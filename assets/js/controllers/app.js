@@ -5,7 +5,7 @@ const App = (() => {
 
 	const createAutoCompleteFields = () => {
 		const autocomplete = new Autocomplete();
-		document.querySelectorAll('[data-ea-widget="ea-autocomplete"], [data-autocomplete-field]').forEach((autocompleteElement) => {
+		document.querySelectorAll('[data-ea-widget="ea-autocomplete"], [data-autocomplete-field="true"]').forEach((autocompleteElement) => {
 			autocomplete.create(autocompleteElement);
 		});
 	};

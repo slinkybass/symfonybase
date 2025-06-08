@@ -12,7 +12,7 @@ document.addEventListener("ea.collection.item-added", () => {
 	formTypeTextarea();
 });
 
-window.formTypeTextarea = function formTypeTextarea(selector = "[data-textarea-field]") {
+window.formTypeTextarea = function formTypeTextarea(selector = '[data-textarea-field="true"]') {
 	document.querySelectorAll(selector).forEach((e) => {
 		e.addEventListener("input", function () {
 			autogrow(this);
@@ -21,9 +21,9 @@ window.formTypeTextarea = function formTypeTextarea(selector = "[data-textarea-f
 	});
 
 	function autogrow(field) {
-		const maxHeight = field.hasAttribute("data-textarea-max-height") ? field.getAttribute("data-textarea-max-height") : '200px';
+		const maxHeight = field.hasAttribute("data-textarea-max-height") ? field.getAttribute("data-textarea-max-height") : "200px";
 
-        field.style.overflow = 'hidden';
+		field.style.overflow = "hidden";
 		field.style.resize = "none";
 		field.style.boxSizing = "border-box";
 		field.style.height = "auto";
@@ -36,7 +36,7 @@ window.formTypeTextarea = function formTypeTextarea(selector = "[data-textarea-f
 		}
 
 		if (parseInt(field.style.height.replace("px", "")) > parseInt(maxHeight.replace("px", ""))) {
-			field.style.overflow = 'auto';
+			field.style.overflow = "auto";
 		}
 	}
 };

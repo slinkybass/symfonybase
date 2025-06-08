@@ -18,7 +18,7 @@ import "flatpickr/dist/flatpickr.min.css";
 		formTypeDatetime();
 	});
 
-	window.formTypeDatetime = function formTypeDatetime(selector = "[data-datetime-field]") {
+	window.formTypeDatetime = function formTypeDatetime(selector = '[data-datetime-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
 			const max = e.hasAttribute("max") ? e.getAttribute("max") : null;
 			const min = e.hasAttribute("min") ? e.getAttribute("min") : null;
