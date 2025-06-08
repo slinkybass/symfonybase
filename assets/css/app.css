@@ -2,53 +2,53 @@
 
 :root,
 [data-bs-theme="light"] {
-    --tblr-font-sans-serif: "Jost";
+	--tblr-font-sans-serif: "Jost";
 }
 
 /* Tables fixes */
 .markdown>table thead th,
 .table thead th {
-    font-size: .625rem;
+	font-size: .625rem;
 }
 
 @media (max-width: 767.98px) {
-    .table-mobile-md td {
-        width: auto !important;
-        text-align: start !important;
-    }
+	.table-mobile-md td {
+		width: auto !important;
+		text-align: start !important;
+	}
 }
 
 .form-control.disabled,
 .form-control:disabled,
 .form-control.readonly,
 .form-control[readonly] {
-    background-color: var(--tblr-disabled-bg);
-    color: var(--tblr-disabled-color);
-    pointer-events: none;
+	background-color: var(--tblr-disabled-bg);
+	color: var(--tblr-disabled-color);
+	pointer-events: none;
 }
 
 .form-check:has(.form-check-input.disabled),
 .form-check:has(.form-check-input[disabled]),
 .form-check:has(.form-check-input.readonly),
 .form-check:has(.form-check-input[readonly]) {
-    pointer-events: none;
+	pointer-events: none;
 }
 
 .form-check:has(.form-check-input.disabled) .form-check-label,
 .form-check:has(.form-check-input[disabled]) .form-check-label,
 .form-check:has(.form-check-input.readonly) .form-check-label,
 .form-check:has(.form-check-input[readonly]) .form-check-label {
-    color: var(--tblr-disabled-color);
+	color: var(--tblr-disabled-color);
 }
 
 /* Multilevel dropdown fixes */
 .dropdown-menu .dropdown .dropdown-toggle::after {
-    margin-left: auto;
+	margin-left: auto;
 }
 
 /* Mark.js fixes */
 [data-markjs] {
-    padding: 0;
+	padding: 0;
 }
 
 /* Flatpickr */
@@ -73,17 +73,20 @@
 	background: var(--tblr-primary) !important;
 	border-color: var(--tblr-primary) !important;
 }
-.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
-.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
-.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
+
+.flatpickr-day.selected.startRange+.endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.startRange.startRange+.endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.endRange.startRange+.endRange:not(:nth-child(7n + 1)) {
 	-webkit-box-shadow: -10px 0 0 var(--tblr-primary) !important;
 	box-shadow: -10px 0 0 var(--tblr-primary) !important;
 }
+
 .flatpickr-day.week.selected {
 	border-radius: 0;
 	-webkit-box-shadow: -5px 0 0 var(--tblr-primary), 5px 0 0 var(--tblr-primary) !important;
 	box-shadow: -5px 0 0 var(--tblr-primary), 5px 0 0 var(--tblr-primary) !important;
 }
+
 .flatpickr-months .flatpickr-prev-month:hover svg,
 .flatpickr-months .flatpickr-next-month:hover svg {
 	fill: var(--tblr-primary);
@@ -93,42 +96,54 @@
 div:where(.swal2-container) {
 	z-index: 99999999 !important;
 }
+
 div:where(.swal2-container) div:where(.swal2-actions) {
 	gap: .5rem;
 }
+
 div:where(.swal2-container) div:where(.swal2-loader) {
 	border-color: var(--tblr-primary) transparent var(--tblr-primary) transparent;
 }
+
 div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 	background-color: var(--tblr-primary);
 }
+
 div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus {
 	box-shadow: 0 0 0 3px rgba(var(--tblr-primary-rgb), 0.5);
 }
+
 div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus {
 	box-shadow: 0 0 0 3px rgba(var(--tblr-primary-rgb), 0.5);
 }
+
 div:where(.swal2-container) button:where(.swal2-close):focus {
 	box-shadow: inset 0 0 0 3px rgba(var(--tblr-primary-rgb), 0.5);
 }
+
 div:where(.swal2-container) input:where(.swal2-input):focus,
 div:where(.swal2-container) input:where(.swal2-file):focus,
 div:where(.swal2-container) textarea:where(.swal2-textarea):focus {
 	border: 1px solid var(--tblr-primary-light);
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px rgba(var(--tblr-primary-rgb), 0.5);
 }
+
 div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step {
 	background: var(--tblr-primary);
 }
+
 div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step {
 	background: var(--tblr-primary);
 }
+
 div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step {
 	background: var(--tblr-primary-light);
 }
+
 div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line {
 	background: var(--tblr-primary-light);
 }
+
 div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step-line {
 	background: var(--tblr-primary);
 }
