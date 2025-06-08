@@ -1,5 +1,5 @@
 /**
- * Flatpickr time field
+ * Textarea autogrow field
  *
  * Autor: slinkybass
  * Version: 3.0

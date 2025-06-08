@@ -1,10 +1,3 @@
-/**
- * Slug field
- *
- * Autor: slinkybass
- * Version: 3.0
- */
-
 import slugify from "slugify";
 
 (function () {
