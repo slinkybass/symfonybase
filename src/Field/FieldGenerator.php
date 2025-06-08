@@ -13,14 +13,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
@@ -56,8 +53,7 @@ class FieldGenerator extends AbstractType
 
     public static function id(string $name)
     {
-        return IdField::new($name)
-            ->setColumns(12);
+        return IdField::new($name);
     }
 
     public static function text(string $name)
@@ -72,8 +68,7 @@ class FieldGenerator extends AbstractType
 
     public static function slug(string $name)
     {
-        return SlugField::new($name)
-            ->setColumns(12);
+        return SlugField::new($name);
     }
 
     public static function textarea(string $name)
