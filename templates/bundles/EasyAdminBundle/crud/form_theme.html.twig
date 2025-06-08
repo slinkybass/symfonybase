@@ -207,22 +207,29 @@
 {% endblock ea_form_tabpane_group_close_row %}
 
 {% block password_widget %}
-	{% if form.vars.name == 'second' %}
+    {% set field = form.vars.ea_vars.field ?? form_parent(form).vars.ea_vars.field %}
+
+    {% set render_switch = field ? field.customOptions.get('renderSwitch') ?? true : true %}
+    {% set render_generator = field ? field.customOptions.get('renderGenerator') ?? true : true %}
+
+	{% if form.vars.name == 'second' or (not render_switch and not render_generator) %}
 		{{ parent() }}
     {% else %}
 		<div class="row g-2">
 			<div class="col">
 				<div class="input-group">
 					{{ parent() }}
-					<button type="button" class="btn btn-icon btn-pass"
-                        data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}
-                        tabindex="-1">
-						<twig:ux:icon class="icon btn-pass-show" name="tabler:eye" />
-                        <twig:ux:icon class="icon btn-pass-hide d-none" name="tabler:eye-off" />
-					</button>
+                    {% if render_switch %}
+                        <button type="button" class="btn btn-icon btn-pass"
+                            data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}
+                            tabindex="-1">
+                            <twig:ux:icon class="icon btn-pass-show" name="tabler:eye" />
+                            <twig:ux:icon class="icon btn-pass-hide d-none" name="tabler:eye-off" />
+                        </button>
+                    {% endif %}
 				</div>
 			</div>
-            {% if form.vars.name == 'first' %}
+            {% if form.vars.name == 'first' and render_generator %}
                 <div class="col-auto">
                     <button type="button" class="btn btn-icon btn-pass-generator"
                         data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}
