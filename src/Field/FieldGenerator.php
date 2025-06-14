@@ -7,7 +7,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
@@ -82,8 +81,7 @@ class FieldGenerator extends AbstractType
 
     public static function codeeditor(string $name)
     {
-        return CodeEditorField::new($name)
-            ->setColumns(12);
+        return CodeEditorField::new($name);
     }
 
     public static function choice(string $name)

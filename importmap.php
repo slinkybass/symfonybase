@@ -52,6 +52,10 @@ return [
         'path' => './assets/js/app/page-color-scheme.js',
         'entrypoint' => true,
     ],
+    'form-type-codeeditor' => [
+        'path' => './assets/js/fields/form-type-codeeditor.js',
+        'entrypoint' => true,
+    ],
     'form-type-date' => [
         'path' => './assets/js/fields/form-type-date.js',
         'entrypoint' => true,
@@ -227,5 +231,8 @@ return [
     ],
     'tinymce-i18n/langs/es.js' => [
         'version' => '25.6.2',
+    ],
+    'ace-builds/src-min-noconflict/ace' => [
+        'version' => '1.42.0',
     ],
 ];
