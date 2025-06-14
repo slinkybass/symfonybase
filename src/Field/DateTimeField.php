@@ -147,7 +147,7 @@ class DateTimeField
         return $this;
     }
 
-    public function setFormat(?string $dateFormatOrPattern, ?string $timeFormat = self::FORMAT_NONE): self
+    public function setFormat(?string $dateFormatOrPattern, ?string $timeFormat = DateField::FORMAT_NONE): self
     {
         $this->setCustomOption(DateField::OPTION_DATE_PATTERN, $dateFormatOrPattern);
         $this->setCustomOption(TimeField::OPTION_TIME_PATTERN, $timeFormat);
