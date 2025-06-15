@@ -1,5 +1,5 @@
 /**
- * Codeeditor field
+ * CodeEditor field
  *
  * Autor: slinkybass
  * Version: 3.0
@@ -15,21 +15,21 @@ ace.config.set('workerPath', CDN);
 
 (function () {
 	document.addEventListener("DOMContentLoaded", () => {
-		formTypeCodeeditor();
+		formTypeCodeEditor();
 	});
 	document.addEventListener("ea.collection.item-added", () => {
-		formTypeCodeeditor();
+		formTypeCodeEditor();
 	});
 
-	window.formTypeCodeeditor = function formTypeCodeeditor(selector = '[data-codeeditor-field="true"]') {
+	window.formTypeCodeEditor = function formTypeCodeEditor(selector = '[data-codeeditor-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
-			const theme = e.hasAttribute("data-theme") ? e.getAttribute("data-theme") : "chrome";
-			const language = e.hasAttribute("data-language") ? e.getAttribute("data-language") : "javascript";
-			const tabSize = e.hasAttribute("data-tab-size") ? e.getAttribute("data-tab-size") : 4;
-			const indentWithTabs = e.hasAttribute("data-indent-with-tabs") ? e.getAttribute("data-indent-with-tabs") !== "false" : false;
-			const showLineNumbers = e.hasAttribute("data-show-line-numbers") ? e.getAttribute("data-show-line-numbers") !== "false" : false;
-			const minLines = e.hasAttribute("data-min-lines") ? e.getAttribute("data-min-lines") : null;
-			const maxLines = e.hasAttribute("data-max-lines") ? e.getAttribute("data-max-lines") : null;
+			const theme = e.hasAttribute("data-codeeditor-theme") ? e.getAttribute("data-codeeditor-theme") : "chrome";
+			const language = e.hasAttribute("data-codeeditor-language") ? e.getAttribute("data-codeeditor-language") : "javascript";
+			const tabSize = e.hasAttribute("data-codeeditor-tab-size") ? e.getAttribute("data-codeeditor-tab-size") : 4;
+			const indentWithTabs = e.hasAttribute("data-codeeditor-indent-with-tabs") ? e.getAttribute("data-codeeditor-indent-with-tabs") !== "false" : false;
+			const showLineNumbers = e.hasAttribute("data-codeeditor-show-line-numbers") ? e.getAttribute("data-codeeditor-show-line-numbers") !== "false" : false;
+			const minLines = e.hasAttribute("data-codeeditor-min-lines") ? e.getAttribute("data-codeeditor-min-lines") : null;
+			const maxLines = e.hasAttribute("data-codeeditor-max-lines") ? e.getAttribute("data-codeeditor-max-lines") : null;
 
 			// Clone and hide the original field
 			const clonedE = e.cloneNode(true);

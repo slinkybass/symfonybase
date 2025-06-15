@@ -12,6 +12,10 @@ class TextEditorField
 
     public const OPTION_PLUGIN = 'data-texteditor-field';
 
+    public const OPTION_TEXTEDITOR_RESIZE = 'data-texteditor-resize';
+    public const OPTION_TEXTEDITOR_SPELLCHECK = 'data-texteditor-spellcheck';
+    public const OPTION_TEXTEDITOR_TOOLBAR = 'data-texteditor-toolbar';
+
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -31,6 +35,27 @@ class TextEditorField
     public function plugin(bool $val = true): self
     {
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($val));
+
+        return $this;
+    }
+
+    public function resize(bool $val = true): self
+    {
+        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_RESIZE, json_encode($val));
+
+        return $this;
+    }
+
+    public function spellcheck(bool $val = true): self
+    {
+        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_SPELLCHECK, json_encode($val));
+
+        return $this;
+    }
+
+    public function setToolbar(string $val): self
+    {
+        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_TOOLBAR, $val);
 
         return $this;
     }

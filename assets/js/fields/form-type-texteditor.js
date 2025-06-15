@@ -1,5 +1,5 @@
 /**
- * Texteditor field
+ * TextEditor field
  *
  * Autor: slinkybass
  * Version: 3.0
@@ -45,19 +45,19 @@ import "tinymce/plugins/wordcount";
 
 (function () {
 	document.addEventListener("DOMContentLoaded", () => {
-		formTypeTexteditor();
+		formTypeTextEditor();
 	});
 	document.addEventListener("ea.collection.item-added", () => {
-		formTypeTexteditor();
+		formTypeTextEditor();
 	});
 
-	window.formTypeTexteditor = function formTypeTexteditor(selector = '[data-texteditor-field="true"]') {
+	window.formTypeTextEditor = function formTypeTextEditor(selector = '[data-texteditor-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
-			const resize = e.hasAttribute("data-resize") ? e.getAttribute("data-resize") !== "false" : false;
-			const spellcheck = e.hasAttribute("data-spellcheck") ? e.getAttribute("data-spellcheck") !== "false" : false;
+			const resize = e.hasAttribute("data-texteditor-resize") ? e.getAttribute("data-texteditor-resize") !== "false" : false;
+			const spellcheck = e.hasAttribute("data-texteditor-spellcheck") ? e.getAttribute("data-texteditor-spellcheck") !== "false" : false;
 			const defaultToolbar =
 				"undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table insertfile | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen | print";
-			const toolbar = e.hasAttribute("data-toolbar") ? e.getAttribute("data-toolbar") : defaultToolbar;
+			const toolbar = e.hasAttribute("data-texteditor-toolbar") ? e.getAttribute("data-texteditor-toolbar") : defaultToolbar;
 
 			tinymce.init({
 				plugins: [
