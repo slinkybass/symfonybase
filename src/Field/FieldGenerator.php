@@ -7,7 +7,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -15,9 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Form\AbstractType;
 
 class FieldGenerator extends AbstractType
@@ -120,20 +117,17 @@ class FieldGenerator extends AbstractType
 
     public static function email(string $name)
     {
-        return EmailField::new($name)
-            ->setColumns(12);
+        return EmailField::new($name);
     }
 
     public static function phone(string $name)
     {
-        return TelephoneField::new($name)
-            ->setColumns(12);
+        return TelephoneField::new($name);
     }
 
     public static function url(string $name)
     {
-        return UrlField::new($name)
-            ->setColumns(12);
+        return UrlField::new($name);
     }
 
     public static function date(string $name)
