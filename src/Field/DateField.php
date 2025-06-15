@@ -3,7 +3,6 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -40,7 +39,6 @@ class DateField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms())

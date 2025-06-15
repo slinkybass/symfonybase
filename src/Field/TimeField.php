@@ -3,7 +3,6 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField as EasyField;
 
 class TimeField
@@ -20,7 +19,6 @@ class TimeField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-time')->onlyOnForms())

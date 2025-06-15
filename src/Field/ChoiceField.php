@@ -2,7 +2,6 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 
 class ChoiceField
@@ -15,7 +14,6 @@ class ChoiceField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
             ->plugin(true)

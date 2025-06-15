@@ -2,7 +2,6 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
@@ -19,7 +18,6 @@ class RepeatField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
             ->setFormType(RepeatedType::class)
