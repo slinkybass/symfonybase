@@ -91,23 +91,21 @@ class FieldGenerator extends AbstractType
     public static function choiceMutiple(string $name)
     {
         return ChoiceField::new($name)
-            ->allowMultipleChoices()
+            ->multiple()
             ->setColumns(12);
     }
 
     public static function choiceExpanded(string $name)
     {
         return ChoiceField::new($name)
-            ->renderExpanded()
-            ->setColumns(12);
+            ->expanded();
     }
 
     public static function choiceExpandedMutiple(string $name)
     {
         return ChoiceField::new($name)
-            ->renderExpanded()
-            ->allowMultipleChoices()
-            ->setColumns(12);
+            ->expanded()
+            ->multiple();
     }
 
     public static function checkbox(string $name)
