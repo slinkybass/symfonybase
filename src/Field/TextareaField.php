@@ -15,6 +15,8 @@ class TextareaField
     public const OPTION_MAX_HEIGHT = 'data-textarea-max-height';
     public const OPTION_ROWS = 'rows';
 
+    public const OPTION_RESIZEABLE = 'resizeable';
+
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -48,7 +50,7 @@ class TextareaField
 
     public function resizeable(bool $val = true): self
     {
-        $this->setHtmlAttribute('style', $val ? false : 'resize: none');
+        $this->setCustomOption(self::OPTION_RESIZEABLE, $val);
 
         return $this;
     }

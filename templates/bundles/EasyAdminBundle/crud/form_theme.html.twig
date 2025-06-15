@@ -261,3 +261,15 @@
 		</div>
 	{% endif %}
 {% endblock password_widget %}
+
+{% block textarea_widget %}
+    {% set field = form.vars.ea_vars.field ?? form_parent(form).vars.ea_vars.field %}
+
+    {% set resizeable = field ? field.customOptions.get('resizeable') ?? true : true %}
+
+    {% if not resizeable %}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' no-resize')|trim}) %}
+    {% endif %}
+
+	{{ parent() }}
+{% endblock textarea_widget %}

@@ -41,6 +41,10 @@
 	color: var(--tblr-disabled-color);
 }
 
+textarea.no-resize {
+	resize: none;
+}
+
 /* Multilevel dropdown fixes */
 .dropdown-menu .dropdown .dropdown-toggle::after {
 	margin-left: auto;
