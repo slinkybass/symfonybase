@@ -10,8 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use Symfony\Component\Form\AbstractType;
 
 class FieldGenerator extends AbstractType
@@ -169,16 +167,12 @@ class FieldGenerator extends AbstractType
 
     public static function percent(string $name)
     {
-        return PercentField::new($name)
-            ->setColumns(12);
+        return PercentField::new($name);
     }
 
     public static function money(string $name)
     {
-        return MoneyField::new($name)
-            ->setCurrency('EUR')
-            ->setStoredAsCents(false)
-            ->setColumns(12);
+        return MoneyField::new($name);
     }
 
     public static function color(string $name)
