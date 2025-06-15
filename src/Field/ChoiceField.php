@@ -9,16 +9,6 @@ class ChoiceField
 {
     use FieldTrait;
 
-    public const OPTION_WIDGET = 'widget';
-    public const WIDGET_AUTOCOMPLETE = 'autocomplete';
-    public const WIDGET_NATIVE = 'native';
-
-    public const OPTION_ALLOW_MULTIPLE_CHOICES = 'allowMultipleChoices';
-    public const OPTION_RENDER_EXPANDED = 'renderExpanded';
-    public const OPTION_CHOICES = 'choices';
-    public const OPTION_USE_TRANSLATABLE_CHOICES = 'useTranslatableChoices';
-    public const OPTION_RENDER_AS_BADGES = 'renderAsBadges';
-
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -36,43 +26,42 @@ class ChoiceField
 
     public function plugin(bool $val = true): self
     {
-        $this->setCustomOption(self::OPTION_WIDGET, $val ? self::WIDGET_AUTOCOMPLETE : self::WIDGET_NATIVE);
+        $this->field->renderAsNativeWidget(!$val);
 
         return $this;
     }
 
-    public function multiple(bool $allow = true): self
+    public function multiple(bool $val = true): self
     {
-        $this->setCustomOption(self::OPTION_ALLOW_MULTIPLE_CHOICES, $allow);
+        $this->field->allowMultipleChoices($val);
 
         return $this;
     }
 
-    public function expanded(bool $expanded = true): self
+    public function expanded(bool $val = true): self
     {
-        $this->setCustomOption(self::OPTION_RENDER_EXPANDED, $expanded);
+        $this->field->renderExpanded($val);
 
         return $this;
     }
 
-    public function setChoices($choiceGenerator): self
+    public function setChoices($choices): self
     {
-        $this->setCustomOption(self::OPTION_CHOICES, $choiceGenerator);
+        $this->field->setChoices($choices);
 
         return $this;
     }
 
-    public function setTransChoices($choiceGenerator): self
+    public function setTransChoices($choices): self
     {
-        $this->setChoices($choiceGenerator);
-        $this->setCustomOption(self::OPTION_USE_TRANSLATABLE_CHOICES, true);
+        $this->field->setTranslatableChoices($choices);
 
         return $this;
     }
 
-    public function renderAsBadges($badgeSelector = true): self
+    public function renderAsBadges(bool $val = true): self
     {
-        $this->setCustomOption(self::OPTION_RENDER_AS_BADGES, $badgeSelector);
+        $this->field->renderAsBadges($val);
 
         return $this;
     }

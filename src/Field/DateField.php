@@ -12,27 +12,21 @@ class DateField
 {
     use FieldTrait;
 
-    public const OPTION_PLUGIN = 'data-date-field';
-
     public const OPTION_MAX = 'max';
     public const OPTION_MIN = 'min';
 
+    public const OPTION_PLUGIN = 'data-date-field';
+
     public const OPTION_DATE_INLINE = 'data-date-inline';
     public const OPTION_DATE_MODE = 'data-date-mode';
-    public const DATE_MODE_SINGLE = 'single';
-    public const DATE_MODE_MULTIPLE = 'multiple';
-    public const DATE_MODE_RANGE = 'range';
     public const OPTION_DATE_FORMAT = 'data-date-format';
     public const OPTION_DATE_ALT_FORMAT = 'data-date-alt-format';
     public const OPTION_DATE_ENABLED = 'data-date-enabled';
     public const OPTION_DATE_DISABLED = 'data-date-disabled';
 
-    public const OPTION_TIMEZONE = 'timezone';
-    public const OPTION_DATE_PATTERN = 'datePattern';
-
-    public const OPTION_WIDGET = 'widget';
-    public const WIDGET_NATIVE = 'native';
-    public const WIDGET_CHOICE = 'choice';
+    public const DATE_MODE_SINGLE = 'single';
+    public const DATE_MODE_MULTIPLE = 'multiple';
+    public const DATE_MODE_RANGE = 'range';
 
     public const FORMAT_FULL = 'full';
     public const FORMAT_LONG = 'long';
@@ -159,16 +153,16 @@ class DateField
         return $this;
     }
 
-    public function setTimezone(?string $timezoneId): self
+    public function setTimezone(string $timezoneId): self
     {
-        $this->setCustomOption(self::OPTION_TIMEZONE, $timezoneId);
+        $this->field->setTimezone($timezoneId);
 
         return $this;
     }
 
-    public function setFormat(?string $dateFormatOrPattern): self
+    public function setFormat(string $dateFormatOrPattern): self
     {
-        $this->setCustomOption(self::OPTION_DATE_PATTERN, $dateFormatOrPattern);
+        $this->field->setFormat($dateFormatOrPattern);
 
         return $this;
     }
@@ -176,9 +170,9 @@ class DateField
     public function renderAsChoice(bool $val = true): self
     {
         if ($val) {
-            $this->setCustomOption(self::OPTION_WIDGET, self::WIDGET_CHOICE);
+            $this->field->renderAsChoice();
         } else {
-            $this->setCustomOption(self::OPTION_WIDGET, self::WIDGET_NATIVE);
+            $this->field->renderAsNativeWidget();
         }
 
         return $this;

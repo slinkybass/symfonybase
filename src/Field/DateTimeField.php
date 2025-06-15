@@ -140,17 +140,16 @@ class DateTimeField
         return $this;
     }
 
-    public function setTimezone(?string $timezoneId): self
+    public function setTimezone(string $timezoneId): self
     {
-        $this->setCustomOption(DateField::OPTION_TIMEZONE, $timezoneId);
+        $this->field->setTimezone($timezoneId);
 
         return $this;
     }
 
-    public function setFormat(?string $dateFormatOrPattern, ?string $timeFormat = DateField::FORMAT_NONE): self
+    public function setFormat(string $dateFormatOrPattern, string $timeFormat): self
     {
-        $this->setCustomOption(DateField::OPTION_DATE_PATTERN, $dateFormatOrPattern);
-        $this->setCustomOption(TimeField::OPTION_TIME_PATTERN, $timeFormat);
+        $this->field->setFormat($dateFormatOrPattern, $timeFormat);
 
         return $this;
     }
@@ -158,9 +157,9 @@ class DateTimeField
     public function renderAsChoice(bool $val = true): self
     {
         if ($val) {
-            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_CHOICE);
+            $this->field->renderAsChoice();
         } else {
-            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_NATIVE);
+            $this->field->renderAsNativeWidget();
         }
 
         return $this;

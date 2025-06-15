@@ -14,8 +14,6 @@ class TimeField
 
     public const OPTION_DATE_MINUTE_INCREMENT = 'data-date-minute-increment';
 
-    public const OPTION_TIME_PATTERN = 'timePattern';
-
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -67,16 +65,16 @@ class TimeField
         return $this;
     }
 
-    public function setTimezone(?string $timezoneId): self
+    public function setTimezone(string $timezoneId): self
     {
-        $this->setCustomOption(DateField::OPTION_TIMEZONE, $timezoneId);
+        $this->field->setTimezone($timezoneId);
 
         return $this;
     }
 
-    public function setFormat(?string $timeFormatOrPattern): self
+    public function setFormat(string $timeFormatOrPattern): self
     {
-        $this->setCustomOption(self::OPTION_TIME_PATTERN, $timeFormatOrPattern);
+        $this->field->setFormat($timeFormatOrPattern);
 
         return $this;
     }
@@ -84,9 +82,9 @@ class TimeField
     public function renderAsChoice(bool $val = true): self
     {
         if ($val) {
-            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_CHOICE);
+            $this->field->renderAsChoice();
         } else {
-            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_NATIVE);
+            $this->field->renderAsNativeWidget();
         }
 
         return $this;

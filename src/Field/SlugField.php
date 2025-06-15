@@ -12,9 +12,6 @@ class SlugField
 
     public const OPTION_PLUGIN = 'data-slug-field';
 
-    public const OPTION_TARGET = 'targetFieldName';
-    public const OPTION_CONFIRM_TEXT = 'unlockConfirmationMessage';
-
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -38,16 +35,16 @@ class SlugField
         return $this;
     }
 
-    public function setTarget(string $fieldName): self
+    public function setTarget(string|array $fieldName): self
     {
-        $this->setCustomOption(self::OPTION_TARGET, \is_string($fieldName) ? [$fieldName] : $fieldName);
+        $this->field->setTargetFieldName($fieldName);
 
         return $this;
     }
 
     public function setConfirmText(string $message): self
     {
-        $this->setCustomOption(self::OPTION_CONFIRM_TEXT, $message);
+        $this->field->setUnlockConfirmationMessage($message);
 
         return $this;
     }

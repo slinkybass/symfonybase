@@ -12,8 +12,7 @@ class TextareaField
 
     public const OPTION_PLUGIN = 'data-textarea-field';
 
-    public const OPTION_MAX_HEIGHT = 'data-textarea-max-height';
-    public const OPTION_ROWS = 'rows';
+    public const OPTION_TEXTAREA_MAX_HEIGHT = 'data-textarea-max-height';
 
     public const OPTION_RESIZEABLE = 'resizeable';
 
@@ -43,7 +42,7 @@ class TextareaField
 
     public function setMaxHeight(string $val): self
     {
-        $this->setHtmlAttribute(self::OPTION_MAX_HEIGHT, $val);
+        $this->setHtmlAttribute(self::OPTION_TEXTAREA_MAX_HEIGHT, $val);
 
         return $this;
     }
@@ -57,7 +56,7 @@ class TextareaField
 
     public function setRows(int $rows): self
     {
-        $this->setHtmlAttribute(self::OPTION_ROWS, $rows);
+        $this->field->setNumOfRows($rows);
 
         return $this;
     }
