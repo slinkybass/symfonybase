@@ -3,7 +3,6 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField as EasyField;
 
 class ColorField
@@ -33,7 +32,6 @@ class ColorField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-color')->onlyOnForms())
