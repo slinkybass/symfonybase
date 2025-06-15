@@ -1,5 +1,5 @@
 /**
- * TextEditor field
+ * TinyMCE field
  *
  * Autor: slinkybass
  * Version: 3.0

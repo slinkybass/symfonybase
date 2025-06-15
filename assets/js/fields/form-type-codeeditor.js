@@ -1,5 +1,5 @@
 /**
- * CodeEditor field
+ * Ace editor field
  *
  * Autor: slinkybass
  * Version: 3.0
