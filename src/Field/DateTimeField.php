@@ -97,14 +97,14 @@ class DateTimeField
         return $this;
     }
 
-    public function setDateFormat(?string $val): self
+    public function setDateFormat(string $val): self
     {
         $this->setCustomOption(DateField::OPTION_DATE_FORMAT, $val);
 
         return $this;
     }
 
-    public function seAltFormat(?string $val): self
+    public function seAltFormat(string $val): self
     {
         $this->setCustomOption(DateField::OPTION_DATE_ALT_FORMAT, $val);
 
@@ -133,7 +133,7 @@ class DateTimeField
         return $this;
     }
 
-    public function setMinuteIncrement(?int $val): self
+    public function setMinuteIncrement(int $val): self
     {
         $this->setHtmlAttribute(TimeField::OPTION_DATE_MINUTE_INCREMENT, $val);
 

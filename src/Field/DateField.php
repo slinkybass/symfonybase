@@ -117,14 +117,14 @@ class DateField
         return $this;
     }
 
-    public function setDateFormat(?string $val): self
+    public function setDateFormat(string $val): self
     {
         $this->setCustomOption(self::OPTION_DATE_FORMAT, $val);
 
         return $this;
     }
 
-    public function seAltFormat(?string $val): self
+    public function seAltFormat(string $val): self
     {
         $this->setCustomOption(self::OPTION_DATE_ALT_FORMAT, $val);
 

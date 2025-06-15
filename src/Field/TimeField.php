@@ -58,7 +58,7 @@ class TimeField
         return $this;
     }
 
-    public function setMinuteIncrement(?int $val): self
+    public function setMinuteIncrement(int $val): self
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MINUTE_INCREMENT, $val);
 
