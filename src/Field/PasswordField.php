@@ -26,8 +26,6 @@ class PasswordField
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())
             ->repeated(false)
-            ->renderSwitch(true)
-            ->renderGenerator(true)
             ->setDefaultColumns(12);
 
         return $instance;
