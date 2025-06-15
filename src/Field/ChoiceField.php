@@ -40,6 +40,7 @@ class ChoiceField
 
     public function expanded(bool $val = true): self
     {
+        $this->field->renderAsNativeWidget($val);
         $this->field->renderExpanded($val);
 
         return $this;
