@@ -53,14 +53,14 @@ class DateTimeField
 
     public function inline(bool $val = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_INLINE, json_encode($val));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($val));
 
         return $this;
     }
 
     public function single(bool $val = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MODE, $val ? DateField::MODE_SINGLE : DateField::MODE_MULTIPLE);
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $val ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
         $this->setFormType($val ? DateTimeType::class : TextType::class);
         if ($val) {
             $this->setTemplateName('crud/field/datetime');
@@ -73,7 +73,7 @@ class DateTimeField
 
     public function multiple(bool $val = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MODE, $val ? DateField::MODE_MULTIPLE : DateField::MODE_SINGLE);
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $val ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_SINGLE);
         $this->setFormType($val ? TextType::class : DateTimeType::class);
         if ($val) {
             $this->setTemplatePath('field/datetimeMultiple.html.twig');
@@ -86,7 +86,7 @@ class DateTimeField
 
     public function range(bool $val = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MODE, $val ? DateField::MODE_RANGE : DateField::MODE_SINGLE);
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $val ? DateField::DATE_MODE_RANGE : DateField::DATE_MODE_SINGLE);
         $this->setFormType($val ? TextType::class : DateTimeType::class);
         if ($val) {
             $this->setTemplatePath('field/datetimeMultiple.html.twig');
@@ -106,7 +106,7 @@ class DateTimeField
 
     public function seAltFormat(?string $val): self
     {
-        $this->setCustomOption(DateField::OPTION_ALT_FORMAT, $val);
+        $this->setCustomOption(DateField::OPTION_DATE_ALT_FORMAT, $val);
 
         return $this;
     }
@@ -117,7 +117,7 @@ class DateTimeField
         foreach ($dates as $date) {
             $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
         }
-        $this->setHtmlAttribute(DateField::OPTION_ENABLED_DATES, implode(',', $datesArr));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_ENABLED, implode(',', $datesArr));
 
         return $this;
     }
@@ -128,14 +128,14 @@ class DateTimeField
         foreach ($dates as $date) {
             $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
         }
-        $this->setHtmlAttribute(DateField::OPTION_DISABLED_DATES, implode(',', $datesArr));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_DISABLED, implode(',', $datesArr));
 
         return $this;
     }
 
     public function setMinuteIncrement(?int $val): self
     {
-        $this->setHtmlAttribute(TimeField::OPTION_MINUTE_INCREMENT, $val);
+        $this->setHtmlAttribute(TimeField::OPTION_DATE_MINUTE_INCREMENT, $val);
 
         return $this;
     }
@@ -155,34 +155,12 @@ class DateTimeField
         return $this;
     }
 
-    public function renderAsNativeWidget(bool $val = true): self
-    {
-        if ($val) {
-            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_NATIVE);
-        } else {
-            $this->renderAsChoice();
-        }
-
-        return $this;
-    }
-
     public function renderAsChoice(bool $val = true): self
     {
         if ($val) {
             $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_CHOICE);
         } else {
-            $this->renderAsNativeWidget();
-        }
-
-        return $this;
-    }
-
-    public function renderAsText(bool $val = true): self
-    {
-        if ($val) {
-            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_TEXT);
-        } else {
-            $this->renderAsNativeWidget();
+            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_NATIVE);
         }
 
         return $this;

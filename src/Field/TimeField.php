@@ -12,7 +12,8 @@ class TimeField
 
     public const OPTION_PLUGIN = 'data-time-field';
 
-    public const OPTION_MINUTE_INCREMENT = 'data-date-minute-increment';
+    public const OPTION_DATE_MINUTE_INCREMENT = 'data-date-minute-increment';
+
     public const OPTION_TIME_PATTERN = 'timePattern';
 
     private EasyField $field;
@@ -54,14 +55,14 @@ class TimeField
 
     public function inline(bool $val = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_INLINE, json_encode($val));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($val));
 
         return $this;
     }
 
     public function setMinuteIncrement(?int $val): self
     {
-        $this->setHtmlAttribute(self::OPTION_MINUTE_INCREMENT, $val);
+        $this->setHtmlAttribute(self::OPTION_DATE_MINUTE_INCREMENT, $val);
 
         return $this;
     }
@@ -80,34 +81,12 @@ class TimeField
         return $this;
     }
 
-    public function renderAsNativeWidget(bool $val = true): self
-    {
-        if ($val) {
-            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_NATIVE);
-        } else {
-            $this->renderAsChoice();
-        }
-
-        return $this;
-    }
-
     public function renderAsChoice(bool $val = true): self
     {
         if ($val) {
             $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_CHOICE);
         } else {
-            $this->renderAsNativeWidget();
-        }
-
-        return $this;
-    }
-
-    public function renderAsText(bool $val = true): self
-    {
-        if ($val) {
-            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_TEXT);
-        } else {
-            $this->renderAsNativeWidget();
+            $this->setCustomOption(DateField::OPTION_WIDGET, DateField::WIDGET_NATIVE);
         }
 
         return $this;

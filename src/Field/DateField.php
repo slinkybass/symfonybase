@@ -16,15 +16,16 @@ class DateField
 
     public const OPTION_MAX = 'max';
     public const OPTION_MIN = 'min';
-    public const OPTION_INLINE = 'data-date-inline';
-    public const OPTION_MODE = 'data-date-mode';
-    public const MODE_SINGLE = 'single';
-    public const MODE_MULTIPLE = 'multiple';
-    public const MODE_RANGE = 'range';
+
+    public const OPTION_DATE_INLINE = 'data-date-inline';
+    public const OPTION_DATE_MODE = 'data-date-mode';
+    public const DATE_MODE_SINGLE = 'single';
+    public const DATE_MODE_MULTIPLE = 'multiple';
+    public const DATE_MODE_RANGE = 'range';
     public const OPTION_DATE_FORMAT = 'data-date-format';
-    public const OPTION_ALT_FORMAT = 'data-date-alt-format';
-    public const OPTION_ENABLED_DATES = 'data-date-enabled';
-    public const OPTION_DISABLED_DATES = 'data-date-disabled';
+    public const OPTION_DATE_ALT_FORMAT = 'data-date-alt-format';
+    public const OPTION_DATE_ENABLED = 'data-date-enabled';
+    public const OPTION_DATE_DISABLED = 'data-date-disabled';
 
     public const OPTION_TIMEZONE = 'timezone';
     public const OPTION_DATE_PATTERN = 'datePattern';
@@ -32,14 +33,12 @@ class DateField
     public const OPTION_WIDGET = 'widget';
     public const WIDGET_NATIVE = 'native';
     public const WIDGET_CHOICE = 'choice';
-    public const WIDGET_TEXT = 'text';
 
     public const FORMAT_FULL = 'full';
     public const FORMAT_LONG = 'long';
     public const FORMAT_MEDIUM = 'medium';
     public const FORMAT_SHORT = 'short';
     public const FORMAT_NONE = 'none';
-    public const VALID_DATE_FORMATS = [self::FORMAT_NONE, self::FORMAT_SHORT, self::FORMAT_MEDIUM, self::FORMAT_LONG, self::FORMAT_FULL];
 
     private EasyField $field;
 
@@ -80,14 +79,14 @@ class DateField
 
     public function inline(bool $val = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_INLINE, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_DATE_INLINE, json_encode($val));
 
         return $this;
     }
 
     public function single(bool $val = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_MODE, $val ? self::MODE_SINGLE : self::MODE_MULTIPLE);
+        $this->setHtmlAttribute(self::OPTION_DATE_MODE, $val ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
         $this->setFormType($val ? DateType::class : TextType::class);
         if ($val) {
             $this->setTemplateName('crud/field/date');
@@ -100,7 +99,7 @@ class DateField
 
     public function multiple(bool $val = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_MODE, $val ? self::MODE_MULTIPLE : self::MODE_SINGLE);
+        $this->setHtmlAttribute(self::OPTION_DATE_MODE, $val ? self::DATE_MODE_MULTIPLE : self::DATE_MODE_SINGLE);
         $this->setFormType($val ? TextType::class : DateType::class);
         if ($val) {
             $this->setTemplatePath('field/dateMultiple.html.twig');
@@ -113,7 +112,7 @@ class DateField
 
     public function range(bool $val = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_MODE, $val ? self::MODE_RANGE : self::MODE_SINGLE);
+        $this->setHtmlAttribute(self::OPTION_DATE_MODE, $val ? self::DATE_MODE_RANGE : self::DATE_MODE_SINGLE);
         $this->setFormType($val ? TextType::class : DateType::class);
         if ($val) {
             $this->setTemplatePath('field/dateMultiple.html.twig');
@@ -133,7 +132,7 @@ class DateField
 
     public function seAltFormat(?string $val): self
     {
-        $this->setCustomOption(self::OPTION_ALT_FORMAT, $val);
+        $this->setCustomOption(self::OPTION_DATE_ALT_FORMAT, $val);
 
         return $this;
     }
@@ -144,7 +143,7 @@ class DateField
         foreach ($dates as $date) {
             $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
         }
-        $this->setHtmlAttribute(self::OPTION_ENABLED_DATES, implode(',', $datesArr));
+        $this->setHtmlAttribute(self::OPTION_DATE_ENABLED, implode(',', $datesArr));
 
         return $this;
     }
@@ -155,7 +154,7 @@ class DateField
         foreach ($dates as $date) {
             $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
         }
-        $this->setHtmlAttribute(self::OPTION_DISABLED_DATES, implode(',', $datesArr));
+        $this->setHtmlAttribute(self::OPTION_DATE_DISABLED, implode(',', $datesArr));
 
         return $this;
     }
@@ -174,34 +173,12 @@ class DateField
         return $this;
     }
 
-    public function renderAsNativeWidget(bool $val = true): self
-    {
-        if ($val) {
-            $this->setCustomOption(self::OPTION_WIDGET, self::WIDGET_NATIVE);
-        } else {
-            $this->renderAsChoice();
-        }
-
-        return $this;
-    }
-
     public function renderAsChoice(bool $val = true): self
     {
         if ($val) {
             $this->setCustomOption(self::OPTION_WIDGET, self::WIDGET_CHOICE);
         } else {
-            $this->renderAsNativeWidget();
-        }
-
-        return $this;
-    }
-
-    public function renderAsText(bool $val = true): self
-    {
-        if ($val) {
-            $this->setCustomOption(self::OPTION_WIDGET, self::WIDGET_TEXT);
-        } else {
-            $this->renderAsNativeWidget();
+            $this->setCustomOption(self::OPTION_WIDGET, self::WIDGET_NATIVE);
         }
 
         return $this;
