@@ -10,9 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use Symfony\Component\Form\AbstractType;
 
@@ -159,18 +157,14 @@ class FieldGenerator extends AbstractType
         return RepeatField::new($name);
     }
 
-    public static function float(string $name)
-    {
-        return NumberField::new($name)
-            ->setNumDecimals(2)
-            ->setFormTypeOption('html5', true)
-            ->setColumns(12);
-    }
-
     public static function integer(string $name)
     {
-        return IntegerField::new($name)
-            ->setColumns(12);
+        return IntegerField::new($name);
+    }
+
+    public static function float(string $name)
+    {
+        return FloatField::new($name);
     }
 
     public static function percent(string $name)
