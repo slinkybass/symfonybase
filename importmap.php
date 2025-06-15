@@ -56,6 +56,10 @@ return [
         'path' => './assets/js/fields/form-type-codeeditor.js',
         'entrypoint' => true,
     ],
+    'form-type-color' => [
+        'path' => './assets/js/fields/form-type-color.js',
+        'entrypoint' => true,
+    ],
     'form-type-date' => [
         'path' => './assets/js/fields/form-type-date.js',
         'entrypoint' => true,
@@ -234,5 +238,12 @@ return [
     ],
     'ace-builds/src-min-noconflict/ace' => [
         'version' => '1.42.0',
+    ],
+    'spectrum-vanilla' => [
+        'version' => '1.1.1',
+    ],
+    'spectrum-vanilla/dist/spectrum.min.css' => [
+        'version' => '1.1.1',
+        'type' => 'css',
     ],
 ];

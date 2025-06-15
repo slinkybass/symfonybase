@@ -273,3 +273,7 @@
 
 	{{ parent() }}
 {% endblock textarea_widget %}
+
+{% block color_widget %}
+	{{ block('form_widget_simple') }}
+{% endblock color_widget %}
