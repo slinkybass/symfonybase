@@ -7,11 +7,11 @@
 
 import ace from "ace-builds/src-min-noconflict/ace";
 
-const CDN = 'https://cdn.jsdelivr.net/npm/ace-builds@latest/src-min-noconflict';
-ace.config.set('basePath', CDN);
-ace.config.set('modePath', CDN);
-ace.config.set('themePath', CDN);
-ace.config.set('workerPath', CDN);
+const CDN = "https://cdn.jsdelivr.net/npm/ace-builds@latest/src-min-noconflict";
+ace.config.set("basePath", CDN);
+ace.config.set("modePath", CDN);
+ace.config.set("themePath", CDN);
+ace.config.set("workerPath", CDN);
 
 (function () {
 	document.addEventListener("DOMContentLoaded", () => {
@@ -37,16 +37,16 @@ ace.config.set('workerPath', CDN);
 			e.parentNode.insertBefore(clonedE, e);
 
 			const editor = ace.edit(e, {
-				'theme': "ace/theme/" + theme,
-				'mode': "ace/mode/" + language,
-				'tabSize': tabSize,
-				'useSoftTabs': !indentWithTabs,
-				'showLineNumbers': showLineNumbers,
-				'showGutter': showLineNumbers,
-				'minLines': minLines,
-				'maxLines': maxLines,
-				'autoScrollEditorIntoView': true,
-				'showPrintMargin': false
+				theme: "ace/theme/" + theme,
+				mode: "ace/mode/" + language,
+				tabSize: tabSize,
+				useSoftTabs: !indentWithTabs,
+				showLineNumbers: showLineNumbers,
+				showGutter: showLineNumbers,
+				minLines: minLines,
+				maxLines: maxLines,
+				autoScrollEditorIntoView: true,
+				showPrintMargin: false,
 			});
 
 			// Set value in and from the cloned field
@@ -60,7 +60,7 @@ ace.config.set('workerPath', CDN);
 			h = Math.min(Math.max(h, 120), 200);
 			editor.container.style.height = `${h}px`;
 			editor.resize();
-			editor.on('change', (arg, editor) => {
+			editor.on("change", (arg, editor) => {
 				let h = editor.getSession().getScreenLength() * (editor.renderer.lineHeight + editor.renderer.scrollBar.getWidth());
 				h = Math.min(Math.max(h, 120), 200);
 				editor.container.style.height = `${h}px`;

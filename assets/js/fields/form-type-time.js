@@ -36,7 +36,7 @@ import "flatpickr/dist/flatpickr.min.css";
 				time_24hr: true,
 				minuteIncrement: minuteIncrement,
 				noCalendar: true,
-				onOpen: function(selectedDates, dateStr, instance) {
+				onOpen: function (selectedDates, dateStr, instance) {
 					if (!instance.element.value) {
 						const h = instance.config.defaultHour;
 						const m = instance.config.defaultMinute;

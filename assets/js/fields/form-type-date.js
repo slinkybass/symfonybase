@@ -56,34 +56,34 @@ import "flatpickr/dist/flatpickr.min.css";
 
 			if (enabledDates) {
 				flatPickrOtps.enable = [
-					function(date) {
-						const dates = enabledDates.split(',').map(function(dt) {
+					function (date) {
+						const dates = enabledDates.split(",").map(function (dt) {
 							const dateDt = new Date(dt);
-							return new Date(dateDt.getTime() - (dateDt.getTimezoneOffset()*60*1000)).toISOString().split('T')[0];
+							return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
 						});
-						const iDate = new Date(date.getTime() - (date.getTimezoneOffset()*60*1000)).toISOString().split('T')[0];
-						return dates.find(dt => dt === iDate) !== undefined;
-					}
+						const iDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
+						return dates.find((dt) => dt === iDate) !== undefined;
+					},
 				];
-				flatPickrOtps.onOpen = function(selectedDates, dateStr, instance) {
-					const dates = enabledDates.split(',').map(function(dt) {
+				flatPickrOtps.onOpen = function (selectedDates, dateStr, instance) {
+					const dates = enabledDates.split(",").map(function (dt) {
 						const dateDt = new Date(dt);
-						return new Date(dateDt.getTime() - (dateDt.getTimezoneOffset()*60*1000));
+						return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000);
 					}).sort((a, b) => a - b);
 					instance.currentMonth = dates[0].getMonth();
 					instance.currentYear = dates[0].getFullYear();
 					instance.redraw();
-				}
+				};
 			} else if (disabledDates) {
 				flatPickrOtps.disable = [
-					function(date) {
-						const dates = disabledDates.split(',').map(function(dt) {
+					function (date) {
+						const dates = disabledDates.split(",").map(function (dt) {
 							const dateDt = new Date(dt);
-							return new Date(dateDt.getTime() - (dateDt.getTimezoneOffset()*60*1000)).toISOString().split('T')[0];
+							return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
 						});
-						const iDate = new Date(date.getTime() - (date.getTimezoneOffset()*60*1000)).toISOString().split('T')[0];
-						return dates.find(dt => dt === iDate) !== undefined;
-					}
+						const iDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
+						return dates.find((dt) => dt === iDate) !== undefined;
+					},
 				];
 			}
 
