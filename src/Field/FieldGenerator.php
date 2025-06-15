@@ -5,7 +5,6 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
@@ -110,15 +109,13 @@ class FieldGenerator extends AbstractType
 
     public static function checkbox(string $name)
     {
-        return BooleanField::new($name)
-            ->renderAsSwitch(false)
-            ->setColumns(12);
+        return BooleanField::new($name);
     }
 
     public static function switch(string $name)
     {
         return BooleanField::new($name)
-            ->setColumns(12);
+            ->switch();
     }
 
     public static function email(string $name)
