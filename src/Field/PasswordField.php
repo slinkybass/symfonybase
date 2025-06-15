@@ -34,9 +34,9 @@ class PasswordField
         return $this->getAsDto()->getFormType() == RepeatedType::class;
     }
 
-    public function repeated(bool $val = true): self
+    public function repeated(bool $repeated = true): self
     {
-        if ($val) {
+        if ($repeated) {
             $parentFormType = $this->getAsDto()->getFormType();
             $parentLabel = $this->getAsDto()->getLabel();
             $parentPlaceholder = $this->getAsDto()->getFormTypeOption('attr.' . self::OPTION_PLACEHOLDER);
@@ -81,96 +81,96 @@ class PasswordField
         return $this;
     }
 
-    public function setFirstLabel(?string $val): self
+    public function setFirstLabel(?string $label): self
     {
         if ($this->isRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.label', $val);
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.label', $label);
         } else {
-            $this->getAsDto()->setLabel($val);
+            $this->getAsDto()->setLabel($label);
         }
 
         return $this;
     }
 
-    public function setSecondLabel(?string $val): self
+    public function setSecondLabel(?string $label): self
     {
         if ($this->isRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.label', $val);
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.label', $label);
         } else {
-            $this->getAsDto()->setLabel($val);
+            $this->getAsDto()->setLabel($label);
         }
 
         return $this;
     }
 
-    public function setPlaceholder(?string $val): self
+    public function setPlaceholder(?string $placeholder): self
     {
         if ($this->isRepeated()) {
-            $this->setFirstPlaceholder($val);
-            $this->setSecondPlaceholder($val);
+            $this->setFirstPlaceholder($placeholder);
+            $this->setSecondPlaceholder($placeholder);
         } else {
-            $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $val);
+            $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
         }
 
         return $this;
     }
 
-    public function setFirstPlaceholder(?string $val): self
+    public function setFirstPlaceholder(?string $placeholder): self
     {
         if ($this->isRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $val);
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $placeholder);
         } else {
-            $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $val);
+            $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
         }
 
         return $this;
     }
 
-    public function setSecondPlaceholder(?string $val): self
+    public function setSecondPlaceholder(?string $placeholder): self
     {
         if ($this->isRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $val);
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $placeholder);
         } else {
-            $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $val);
+            $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
         }
 
         return $this;
     }
 
-    public function setMaxLength(?int $val): self
+    public function setMaxLength(?int $maxLength): self
     {
         if ($this->isRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $val);
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $val);
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $maxLength);
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $maxLength);
         } else {
-            $this->setHtmlAttribute(self::OPTION_MAX_LENGTH, $val);
+            $this->setHtmlAttribute(self::OPTION_MAX_LENGTH, $maxLength);
         }
 
         return $this;
     }
 
-    public function setMinLength(?int $val): self
+    public function setMinLength(?int $minLength): self
     {
         if ($this->isRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $val);
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $val);
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $minLength);
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $minLength);
         } else {
-            $this->setHtmlAttribute(self::OPTION_MIN_LENGTH, $val);
+            $this->setHtmlAttribute(self::OPTION_MIN_LENGTH, $minLength);
         }
 
         return $this;
     }
 
-    public function renderSwitch(bool $val = true): self
+    public function renderSwitch(bool $switch = true): self
     {
-        $this->setCustomOption(self::OPTION_RENDER_SWITCH, $val);
+        $this->setCustomOption(self::OPTION_RENDER_SWITCH, $switch);
 
         return $this;
     }
 
-    public function renderGenerator(bool $val = true): self
+    public function renderGenerator(bool $generator = true): self
     {
-        $this->setCustomOption(self::OPTION_RENDER_GENERATOR, $val);
+        $this->setCustomOption(self::OPTION_RENDER_GENERATOR, $generator);
 
         return $this;
     }

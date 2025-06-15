@@ -41,54 +41,54 @@ class RepeatField
         return $this;
     }
 
-    public function setFirstLabel(?string $val): self
+    public function setFirstLabel(?string $label): self
     {
-        $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.label', $val);
+        $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.label', $label);
 
         return $this;
     }
 
-    public function setSecondLabel(?string $val): self
+    public function setSecondLabel(?string $label): self
     {
-        $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.label', $val);
+        $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.label', $label);
 
         return $this;
     }
 
-    public function setPlaceholder(?string $val): self
+    public function setPlaceholder(?string $placeholder): self
     {
-        $this->setFirstPlaceholder($val);
-        $this->setSecondPlaceholder($val);
+        $this->setFirstPlaceholder($placeholder);
+        $this->setSecondPlaceholder($placeholder);
 
         return $this;
     }
 
-    public function setFirstPlaceholder(?string $val): self
+    public function setFirstPlaceholder(?string $placeholder): self
     {
-        $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $val);
+        $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $placeholder);
 
         return $this;
     }
 
-    public function setSecondPlaceholder(?string $val): self
+    public function setSecondPlaceholder(?string $placeholder): self
     {
-        $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $val);
+        $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $placeholder);
 
         return $this;
     }
 
-    public function setMaxLength(?int $val): self
+    public function setMaxLength(?int $maxLength): self
     {
-        $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $val);
-        $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $val);
+        $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $maxLength);
+        $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $maxLength);
 
         return $this;
     }
 
-    public function setMinLength(?int $val): self
+    public function setMinLength(?int $minLength): self
     {
-        $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $val);
-        $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $val);
+        $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $minLength);
+        $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $minLength);
 
         return $this;
     }

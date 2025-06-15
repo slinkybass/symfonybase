@@ -22,22 +22,22 @@ class SlugField
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-slug')->onlyOnForms())
-            ->plugin(true)
+            ->plugin()
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function plugin(bool $val = true): self
+    public function plugin(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;
     }
 
-    public function setTarget(string|array $fieldName): self
+    public function setTarget(string|array $target): self
     {
-        $this->field->setTargetFieldName($fieldName);
+        $this->field->setTargetFieldName($target);
 
         return $this;
     }

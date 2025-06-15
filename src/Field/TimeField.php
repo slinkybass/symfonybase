@@ -22,64 +22,64 @@ class TimeField
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-time')->onlyOnForms())
-            ->plugin(true)
+            ->plugin()
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function plugin(bool $val = true): self
+    public function plugin(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;
     }
 
-    public function setMax(?string $val): self
+    public function setMax(\DateTime|string|null $max): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MAX, $val);
+        $this->setHtmlAttribute(DateField::OPTION_MAX, $max instanceof \DateTime ? $max->format('H:i:s') : $max);
 
         return $this;
     }
 
-    public function setMin(?string $val): self
+    public function setMin(\DateTime|string|null $min): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MIN, $val);
+        $this->setHtmlAttribute(DateField::OPTION_MIN, $min instanceof \DateTime ? $min->format('H:i:s') : $min);
 
         return $this;
     }
 
-    public function inline(bool $val = true): self
+    public function inline(bool $inline = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($val));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($inline));
 
         return $this;
     }
 
-    public function setMinuteIncrement(int $val): self
+    public function setMinuteIncrement(int $minutes): self
     {
-        $this->setHtmlAttribute(self::OPTION_DATE_MINUTE_INCREMENT, $val);
+        $this->setHtmlAttribute(self::OPTION_DATE_MINUTE_INCREMENT, $minutes);
 
         return $this;
     }
 
-    public function setTimezone(string $timezoneId): self
+    public function setTimezone(string $timezone): self
     {
-        $this->field->setTimezone($timezoneId);
+        $this->field->setTimezone($timezone);
 
         return $this;
     }
 
-    public function setFormat(string $timeFormatOrPattern): self
+    public function setFormat(string $timeFormat): self
     {
-        $this->field->setFormat($timeFormatOrPattern);
+        $this->field->setFormat($timeFormat);
 
         return $this;
     }
 
-    public function renderAsChoice(bool $val = true): self
+    public function renderAsChoice(bool $choice = true): self
     {
-        if ($val) {
+        if ($choice) {
             $this->field->renderAsChoice();
         } else {
             $this->field->renderAsNativeWidget();

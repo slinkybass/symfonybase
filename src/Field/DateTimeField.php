@@ -22,45 +22,45 @@ class DateTimeField
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms())
-            ->plugin(true)
+            ->plugin()
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function plugin(bool $val = true): self
+    public function plugin(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;
     }
 
-    public function setMax(?string $val): self
+    public function setMax(\DateTime|string|null $max): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MAX, $val);
+        $this->setHtmlAttribute(DateField::OPTION_MAX, $max instanceof \DateTime ? $max->format('Y-m-d H:i:s') : $max);
 
         return $this;
     }
 
-    public function setMin(?string $val): self
+    public function setMin(\DateTime|string|null $min): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MIN, $val);
+        $this->setHtmlAttribute(DateField::OPTION_MIN, $min instanceof \DateTime ? $min->format('Y-m-d H:i:s') : $min);
 
         return $this;
     }
 
-    public function inline(bool $val = true): self
+    public function inline(bool $inline = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($val));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($inline));
 
         return $this;
     }
 
-    public function single(bool $val = true): self
+    public function single(bool $single = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $val ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
-        $this->setFormType($val ? DateTimeType::class : TextType::class);
-        if ($val) {
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $single ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
+        $this->setFormType($single ? DateTimeType::class : TextType::class);
+        if ($single) {
             $this->setTemplateName('crud/field/datetime');
         } else {
             $this->setTemplatePath('field/datetimeMultiple.html.twig');
@@ -69,11 +69,11 @@ class DateTimeField
         return $this;
     }
 
-    public function multiple(bool $val = true): self
+    public function multiple(bool $multiple = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $val ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_SINGLE);
-        $this->setFormType($val ? TextType::class : DateTimeType::class);
-        if ($val) {
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $multiple ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_SINGLE);
+        $this->setFormType($multiple ? TextType::class : DateTimeType::class);
+        if ($multiple) {
             $this->setTemplatePath('field/datetimeMultiple.html.twig');
         } else {
             $this->setTemplateName('crud/field/datetime');
@@ -82,11 +82,11 @@ class DateTimeField
         return $this;
     }
 
-    public function range(bool $val = true): self
+    public function range(bool $range = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $val ? DateField::DATE_MODE_RANGE : DateField::DATE_MODE_SINGLE);
-        $this->setFormType($val ? TextType::class : DateTimeType::class);
-        if ($val) {
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $range ? DateField::DATE_MODE_RANGE : DateField::DATE_MODE_SINGLE);
+        $this->setFormType($range ? TextType::class : DateTimeType::class);
+        if ($range) {
             $this->setTemplatePath('field/datetimeMultiple.html.twig');
         } else {
             $this->setTemplateName('crud/field/datetime');
@@ -95,16 +95,16 @@ class DateTimeField
         return $this;
     }
 
-    public function setDateFormat(string $val): self
+    public function setDateFormat(string $dateFormat): self
     {
-        $this->setCustomOption(DateField::OPTION_DATE_FORMAT, $val);
+        $this->setCustomOption(DateField::OPTION_DATE_FORMAT, $dateFormat);
 
         return $this;
     }
 
-    public function seAltFormat(string $val): self
+    public function setDateAltFormat(string $dateAltFormat): self
     {
-        $this->setCustomOption(DateField::OPTION_DATE_ALT_FORMAT, $val);
+        $this->setCustomOption(DateField::OPTION_DATE_ALT_FORMAT, $dateAltFormat);
 
         return $this;
     }
@@ -138,23 +138,23 @@ class DateTimeField
         return $this;
     }
 
-    public function setTimezone(string $timezoneId): self
+    public function setTimezone(string $timezone): self
     {
-        $this->field->setTimezone($timezoneId);
+        $this->field->setTimezone($timezone);
 
         return $this;
     }
 
-    public function setFormat(string $dateFormatOrPattern, string $timeFormat): self
+    public function setFormat(string $dateFormat, string $timeFormat): self
     {
-        $this->field->setFormat($dateFormatOrPattern, $timeFormat);
+        $this->field->setFormat($dateFormat, $timeFormat);
 
         return $this;
     }
 
-    public function renderAsChoice(bool $val = true): self
+    public function renderAsChoice(bool $choice = true): self
     {
-        if ($val) {
+        if ($choice) {
             $this->field->renderAsChoice();
         } else {
             $this->field->renderAsNativeWidget();

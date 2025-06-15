@@ -22,23 +22,23 @@ class BooleanField
         return $instance;
     }
 
-    public function switch(bool $val = true): self
+    public function switch(bool $switch = true): self
     {
-        $this->field->renderAsSwitch($val);
+        $this->field->renderAsSwitch($switch);
 
         return $this;
     }
 
-    public function hideTrue(bool $val = true): self
+    public function hideTrue(bool $hide = true): self
     {
-        $this->field->hideValueWhenTrue($val);
+        $this->field->hideValueWhenTrue($hide);
 
         return $this;
     }
 
-    public function hideFalse(bool $val = true): self
+    public function hideFalse(bool $hide = true): self
     {
-        $this->field->hideValueWhenFalse($val);
+        $this->field->hideValueWhenFalse($hide);
 
         return $this;
     }

@@ -16,30 +16,30 @@ class ChoiceField
         $instance->field = EasyField::new($propertyName, $label);
 
         $instance
-            ->plugin(true)
+            ->plugin()
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function plugin(bool $val = true): self
+    public function plugin(bool $enable = true): self
     {
-        $this->field->renderAsNativeWidget(!$val);
+        $this->field->renderAsNativeWidget(!$enable);
 
         return $this;
     }
 
-    public function multiple(bool $val = true): self
+    public function multiple(bool $multiple = true): self
     {
-        $this->field->allowMultipleChoices($val);
+        $this->field->allowMultipleChoices($multiple);
 
         return $this;
     }
 
-    public function expanded(bool $val = true): self
+    public function expanded(bool $expanded = true): self
     {
-        $this->field->renderAsNativeWidget($val);
-        $this->field->renderExpanded($val);
+        $this->field->renderAsNativeWidget($expanded);
+        $this->field->renderExpanded($expanded);
 
         return $this;
     }
@@ -58,9 +58,9 @@ class ChoiceField
         return $this;
     }
 
-    public function renderAsBadges(bool $val = true): self
+    public function renderAsBadges(bool $badges = true): self
     {
-        $this->field->renderAsBadges($val);
+        $this->field->renderAsBadges($badges);
 
         return $this;
     }

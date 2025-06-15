@@ -21,9 +21,9 @@ class IntegerField
         return $instance;
     }
 
-    public function setNumberFormat(string $sprintfFormat): self
+    public function setNumberFormat(string $numberFormat): self
     {
-        $this->field->setNumberFormat($sprintfFormat);
+        $this->field->setNumberFormat($numberFormat);
 
         return $this;
     }

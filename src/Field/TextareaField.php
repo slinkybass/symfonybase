@@ -26,30 +26,30 @@ class TextareaField
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-textarea')->onlyOnForms())
-            ->plugin(true)
+            ->plugin()
             ->setRows(5)
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function plugin(bool $val = true): self
+    public function plugin(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;
     }
 
-    public function setMaxHeight(string $val): self
+    public function setMaxHeight(string $maxHeight): self
     {
-        $this->setHtmlAttribute(self::OPTION_TEXTAREA_MAX_HEIGHT, $val);
+        $this->setHtmlAttribute(self::OPTION_TEXTAREA_MAX_HEIGHT, $maxHeight);
 
         return $this;
     }
 
-    public function resizeable(bool $val = true): self
+    public function resizeable(bool $resizeable = true): self
     {
-        $this->setCustomOption(self::OPTION_RESIZEABLE, $val);
+        $this->setCustomOption(self::OPTION_RESIZEABLE, $resizeable);
 
         return $this;
     }

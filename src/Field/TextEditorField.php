@@ -26,36 +26,36 @@ class TextEditorField
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-texteditor')->onlyOnForms())
-            ->plugin(true)
+            ->plugin()
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function plugin(bool $val = true): self
+    public function plugin(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;
     }
 
-    public function resize(bool $val = true): self
+    public function resize(bool $resize = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_RESIZE, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_RESIZE, json_encode($resize));
 
         return $this;
     }
 
-    public function spellcheck(bool $val = true): self
+    public function spellcheck(bool $spellcheck = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_SPELLCHECK, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_SPELLCHECK, json_encode($spellcheck));
 
         return $this;
     }
 
-    public function setToolbar(string $val): self
+    public function setToolbar(string $toolbar): self
     {
-        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_TOOLBAR, $val);
+        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_TOOLBAR, $toolbar);
 
         return $this;
     }

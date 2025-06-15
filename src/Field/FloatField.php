@@ -23,9 +23,9 @@ class FloatField
         return $instance;
     }
 
-    public function setDecimals(int $num): self
+    public function setDecimals(int $decimals): self
     {
-        $this->field->setNumDecimals($num);
+        $this->field->setNumDecimals($decimals);
 
         return $this;
     }
@@ -44,9 +44,9 @@ class FloatField
         return $this;
     }
 
-    public function setNumberFormat(string $sprintfFormat): self
+    public function setNumberFormat(string $numberFormat): self
     {
-        $this->field->setNumberFormat($sprintfFormat);
+        $this->field->setNumberFormat($numberFormat);
 
         return $this;
     }

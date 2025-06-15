@@ -30,64 +30,64 @@ class CodeEditorField
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-codeeditor')->onlyOnForms())
-            ->plugin(true)
+            ->plugin()
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function plugin(bool $val = true): self
+    public function plugin(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;
     }
 
-    public function setTheme(string $val): self
+    public function setTheme(string $theme): self
     {
-        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_THEME, $val);
+        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_THEME, $theme);
 
         return $this;
     }
 
-    public function setLanguage(string $val): self
+    public function setLanguage(string $language): self
     {
-        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_LANGUAGE, $val);
+        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_LANGUAGE, $language);
 
         return $this;
     }
 
-    public function setTabSize(int $val): self
+    public function setTabSize(int $tabSize): self
     {
-        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_TAB_SIZE, $val);
+        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_TAB_SIZE, $tabSize);
 
         return $this;
     }
 
-    public function indentWithTabs(bool $val = true): self
+    public function indentWithTabs(bool $indent = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_INDENT_WITH_TABS, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_INDENT_WITH_TABS, json_encode($indent));
 
         return $this;
     }
 
-    public function showLineNumbers(bool $val = true): self
+    public function showLineNumbers(bool $show = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_SHOW_LINE_NUMBERS, json_encode($val));
+        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_SHOW_LINE_NUMBERS, json_encode($show));
 
         return $this;
     }
 
-    public function setMinLines(int $val): self
+    public function setMinLines(int $minLines): self
     {
-        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_MIN_LINES, $val);
+        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_MIN_LINES, $minLines);
 
         return $this;
     }
 
-    public function setMaxLines(int $val): self
+    public function setMaxLines(int $maxLines): self
     {
-        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_MAX_LINES, $val);
+        $this->setHtmlAttribute(self::OPTION_CODEEDITOR_MAX_LINES, $maxLines);
 
         return $this;
     }
