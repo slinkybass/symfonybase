@@ -14,7 +14,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
 use Symfony\Component\Form\AbstractType;
 
 class FieldGenerator extends AbstractType
@@ -147,8 +146,7 @@ class FieldGenerator extends AbstractType
 
     public static function timezone(string $name)
     {
-        return TimezoneField::new($name)
-            ->setColumns(12);
+        return TimezoneField::new($name);
     }
 
     public static function password(string $name)
