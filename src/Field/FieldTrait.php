@@ -31,28 +31,28 @@ trait FieldTrait
         return $this->field;
     }
 
-    public function setMapped(bool $val = true): self
+    public function mapped(bool $val = true): self
     {
         $this->field->setFormTypeOption(self::OPTION_MAPPED, $val);
 
         return $this;
     }
 
-    public function setRequired(bool $val = true): self
+    public function required(bool $val = true): self
     {
         $this->field->setFormTypeOption(self::OPTION_REQUIRED, $val);
 
         return $this;
     }
 
-    public function setDisabled(bool $val = true): self
+    public function disabled(bool $val = true): self
     {
         $this->field->setFormTypeOption(self::OPTION_DISABLED, $val);
 
         return $this;
     }
 
-    public function setReadOnly(bool $val = true): self
+    public function readonly(bool $val = true): self
     {
         $this->field->setHtmlAttribute(self::OPTION_READ_ONLY, $val);
 
