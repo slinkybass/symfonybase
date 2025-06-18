@@ -173,4 +173,9 @@ class FieldGenerator extends AbstractType
     {
         return FileField::new($name);
     }
+
+    public static function signature(string $name)
+    {
+        return SignatureField::new($name);
+    }
 }

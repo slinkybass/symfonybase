@@ -76,6 +76,10 @@ return [
         'path' => './assets/js/fields/form-type-password.js',
         'entrypoint' => true,
     ],
+    'form-type-signature' => [
+        'path' => './assets/js/fields/form-type-signature.js',
+        'entrypoint' => true,
+    ],
     'form-type-slug' => [
         'path' => './assets/js/fields/form-type-slug.js',
         'entrypoint' => true,
@@ -249,5 +253,8 @@ return [
     'spectrum-vanilla/dist/spectrum.min.css' => [
         'version' => '1.1.1',
         'type' => 'css',
+    ],
+    'signature_pad' => [
+        'version' => '5.0.9',
     ],
 ];

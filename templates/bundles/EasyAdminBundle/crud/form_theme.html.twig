@@ -424,3 +424,18 @@
 {% block color_widget %}
 	{{ block('form_widget_simple') }}
 {% endblock color_widget %}
+
+{% block signature_widget %}
+    <div class="signature-pad-wrapper">
+        <canvas class="signature-pad w-100" height="200"></canvas>
+    </div>
+    {{ block('form_widget_simple') }}
+    <div class="signature-pad-actions">
+        <button class="btn btn-icon btn-secondary" type="button" data-action="undo">
+            <twig:ux:icon class="icon" name="tabler:arrow-back-up" />
+        </button>
+        <button class="btn btn-icon btn-danger" type="button" data-action="clear">
+            <twig:ux:icon class="icon" name="tabler:eraser" />
+        </button>
+    </div>
+{% endblock signature_widget %}
