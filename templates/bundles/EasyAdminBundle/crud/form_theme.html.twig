@@ -226,6 +226,88 @@
     </div>
 {% endblock %}
 
+{% block empty_collection %}
+    <div class="collection-empty mb-3"></div>
+{% endblock empty_collection %}
+
+{% block collection_widget %}
+    {# the "is iterable" check is needed because if an object implements __toString() and
+               returns an empty string, "is empty" returns true even if it's not a collection #}
+    {% set isEmptyCollection = value is null or (value is iterable and value is empty) %}
+    {% set is_array_field = 'EasyCorp\\Bundle\\EasyAdminBundle\\Field\\ArrayField' == form.vars.ea_vars.field.fieldFqcn|default(false) %}
+
+    <div class="ea-form-collection-items">
+        {% if isEmptyCollection %}
+            {{ block('empty_collection') }}
+        {% elseif is_array_field %}
+            {{ block('form_widget') }}
+        {% else %}
+            <div class="accordion">
+                {{ block('form_widget') }}
+            </div>
+        {% endif %}
+    </div>
+
+    {% if isEmptyCollection or form.vars.prototype is defined %}
+        {% set attr = attr|merge({'data-empty-collection': block('empty_collection') }) %}
+    {% endif %}
+
+    {% if allow_add|default(false) %}
+        <button type="button" class="btn btn-secondary field-collection-add-button">
+            <twig:ux:icon class="icon" name="tabler:plus" /> {{ 'action.add_new_item'|trans({}, 'EasyAdminBundle') }}
+        </button>
+    {% endif %}
+{% endblock collection_widget %}
+
+{% block collection_entry_row %}
+    {% set is_array_field = 'EasyCorp\\Bundle\\EasyAdminBundle\\Field\\ArrayField' == form_parent(form).vars.ea_vars.field.fieldFqcn|default(false) %}
+    {% set is_complex = form_parent(form).vars.ea_vars.field.customOptions.get('entryIsComplex') ?? false %}
+    {% set to_string_method = form_parent(form).vars.ea_vars.field.customOptions.get('entryToStringMethod') ?? null %}
+    {% set allows_deleting_items = form_parent(form).vars.allow_delete|default(false) %}
+    {% set render_expanded = not form.vars.valid or form_parent(form).vars.ea_vars.field.customOptions.get('renderExpanded')|default(false) %}
+
+    <div class="field-collection-item mb-3 {{ is_complex ? 'field-collection-item-complex' }} {{ not form.vars.valid ? 'is-invalid' }}">
+        {% if is_array_field|default(false) %}
+            {{ form_label(form) }}
+			{% if allows_deleting_items and not disabled %}
+				<div class="input-group">
+			{% endif %}
+                {{ form_widget(form) }}
+                {% if allows_deleting_items and not disabled %}
+                    <button type="button" class="btn btn-icon field-collection-delete-button" title="{{ 'action.remove_item'|trans({}, 'EasyAdminBundle') }}">
+                        <twig:ux:icon class="icon" name="tabler:trash" />
+                    </button>
+                {% endif %}
+			{% if allows_deleting_items and not disabled %}
+				</div>
+			{% endif %}
+        {% else %}
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <button class="accordion-button {{ render_expanded ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#{{ id }}-contents">
+                        <twig:ux:icon class="icon form-collection-item-collapse-marker" name="tabler:chevron-right" />
+                        {{ value|ea_as_string(to_string_method)|default('#' ~ form.vars.name) }}
+                    </button>
+                </div>
+                <div id="{{ id }}-contents" class="accordion-collapse collapse {{ render_expanded ? 'show' }}">
+                    <div class="accordion-body">
+                        <div class="row">
+                            {{ form_widget(form) }}
+                        </div>
+                    </div>
+                    {% if allows_deleting_items and not disabled %}
+                        <div class="text-center p-2">
+							<button type="button" class="btn field-collection-delete-button">
+								<twig:ux:icon class="icon" name="tabler:trash" /> {{ 'action.remove_item'|trans({}, 'EasyAdminBundle') }}
+							</button>
+						</div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock collection_entry_row %}
+
 {% block password_widget %}
     {% set field = form.vars.ea_vars.field ?? form_parent(form).vars.ea_vars.field %}
 

@@ -56,6 +56,10 @@ return [
         'path' => './assets/js/fields/form-type-codeeditor.js',
         'entrypoint' => true,
     ],
+    'form-type-collection' => [
+        'path' => './assets/js/fields/form-type-collection.js',
+        'entrypoint' => true,
+    ],
     'form-type-color' => [
         'path' => './assets/js/fields/form-type-color.js',
         'entrypoint' => true,

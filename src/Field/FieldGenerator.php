@@ -2,10 +2,7 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -181,20 +178,17 @@ class FieldGenerator extends AbstractType
 
     public static function array(string $name)
     {
-        return ArrayField::new($name)
-            ->setColumns(12);
+        return ArrayField::new($name);
     }
 
     public static function collection(string $name)
     {
-        return CollectionField::new($name)
-            ->setColumns(12);
+        return CollectionField::new($name);
     }
 
     public static function association(string $name)
     {
-        return AssociationField::new($name)
-            ->setColumns(12);
+        return AssociationField::new($name);
     }
 
     public static function image(string $name)
