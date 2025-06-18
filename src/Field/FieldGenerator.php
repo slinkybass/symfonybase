@@ -2,10 +2,8 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Symfony\Component\Form\AbstractType;
 
 class FieldGenerator extends AbstractType
@@ -171,15 +169,8 @@ class FieldGenerator extends AbstractType
         return AssociationField::new($name);
     }
 
-    public static function image(string $name)
+    public static function file(string $name)
     {
-        return ImageField::new($name)
-            ->setColumns(12);
-    }
-
-    public static function avatar(string $name)
-    {
-        return AvatarField::new($name)
-            ->setColumns(12);
+        return FileField::new($name);
     }
 }
