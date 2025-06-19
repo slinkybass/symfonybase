@@ -2,30 +2,28 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
-use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use Symfony\Component\Form\AbstractType;
 
 class FieldGenerator extends AbstractType
 {
     public static function tab(string $name)
     {
-        return FormField::addTab($name);
+        return FormField::tab($name);
     }
 
     public static function panel(string $name)
     {
-        return FormField::addPanel($name);
+        return FormField::panel($name);
     }
 
     public static function row(string $breakpointName = '')
     {
-        return FormField::addRow($breakpointName);
+        return FormField::row($breakpointName);
     }
 
     public static function col(int|string $cols = 'col')
     {
-        return FormField::addColumn($cols);
+        return FormField::col($cols);
     }
 
     public static function field(string $name)
