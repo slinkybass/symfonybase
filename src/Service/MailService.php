@@ -24,7 +24,7 @@ class MailService
     }
 
     /**
-     * Send an email
+     * Send an email.
      *
      * @param string $subject     the subject of the email
      * @param string $html        the html content of the email
