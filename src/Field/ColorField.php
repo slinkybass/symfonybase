@@ -19,13 +19,11 @@ class ColorField
     public const OPTION_COLOR_HIDE_AFTER_PALETTE_SELECT = 'hide-after-palette-select';
 
     /** start types */
-        public const COLOR_TYPE_TEXT = 'text';
-        public const COLOR_TYPE_COMPONENT = 'component';
-        public const COLOR_TYPE_COLOR = 'color';
-        public const COLOR_TYPE_FLAT = 'flat';
+    public const COLOR_TYPE_TEXT = 'text';
+    public const COLOR_TYPE_COMPONENT = 'component';
+    public const COLOR_TYPE_COLOR = 'color';
+    public const COLOR_TYPE_FLAT = 'flat';
     /** end types */
-
-
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self

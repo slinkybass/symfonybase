@@ -24,19 +24,18 @@ class DateField
     public const OPTION_DATE_DISABLED = 'data-date-disabled';
 
     /** start modes */
-        public const DATE_MODE_SINGLE = 'single';
-        public const DATE_MODE_MULTIPLE = 'multiple';
-        public const DATE_MODE_RANGE = 'range';
+    public const DATE_MODE_SINGLE = 'single';
+    public const DATE_MODE_MULTIPLE = 'multiple';
+    public const DATE_MODE_RANGE = 'range';
     /** end modes */
 
     /** start formats */
-        public const DATE_FORMAT_FULL = 'full';
-        public const DATE_FORMAT_LONG = 'long';
-        public const DATE_FORMAT_MEDIUM = 'medium';
-        public const DATE_FORMAT_SHORT = 'short';
-        public const DATE_FORMAT_NONE = 'none';
+    public const DATE_FORMAT_FULL = 'full';
+    public const DATE_FORMAT_LONG = 'long';
+    public const DATE_FORMAT_MEDIUM = 'medium';
+    public const DATE_FORMAT_SHORT = 'short';
+    public const DATE_FORMAT_NONE = 'none';
     /** end formats */
-
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
