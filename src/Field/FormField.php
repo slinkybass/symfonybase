@@ -80,7 +80,7 @@ class FormField
         return $this;
     }
 
-    public function renderCollapsed(bool $collapsed = true): self
+    public function collapsed(bool $collapsed = true): self
     {
         $this->field->renderCollapsed($collapsed);
 
