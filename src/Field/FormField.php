@@ -11,10 +11,10 @@ class FormField
 
     private EasyField $field;
 
-    public static function new(string $propertyName, $label = null): self
+    public static function tab(TranslatableInterface|string|false|null $label = null, ?string $icon = null, ?string $propertySuffix = null): self
     {
         $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $instance->field = EasyField::addTab($label, $icon, $propertySuffix);
 
         $instance
             ->setDefaultColumns(12);
@@ -22,39 +22,48 @@ class FormField
         return $instance;
     }
 
-    public function tab(TranslatableInterface|string|false|null $label = null, ?string $icon = null, ?string $propertySuffix = null): self
+    public static function panel($label = false, ?string $icon = null): self
     {
-        $this->field->addTab($label, $icon, $propertySuffix);
+        $instance = new self();
+        $instance->field = EasyField::addPanel($label, $icon);
 
-        return $this;
+        $instance
+            ->setDefaultColumns(12);
+
+        return $instance;
     }
 
-    public function panel($label = false, ?string $icon = null): self
+    public static function row(string $breakpoint = '', ?string $propertySuffix = null): self
     {
-        $this->field->addPanel($label, $icon);
+        $instance = new self();
+        $instance->field = EasyField::addRow($breakpoint, $propertySuffix);
 
-        return $this;
+        $instance
+            ->setDefaultColumns(12);
+
+        return $instance;
     }
 
-    public function row(string $breakpoint = '', ?string $propertySuffix = null): self
+    public static function col(int|string $cols = 'col', TranslatableInterface|string|false|null $label = null, ?string $icon = null, ?string $help = null, ?string $propertySuffix = null): self
     {
-        $this->field->addRow($breakpoint, $propertySuffix);
+        $instance = new self();
+        $instance->field = EasyField::addColumn($cols, $label, $icon, $help, $propertySuffix);
 
-        return $this;
+        $instance
+            ->setDefaultColumns(12);
+
+        return $instance;
     }
 
-    public function col(int|string $cols = 'col', TranslatableInterface|string|false|null $label = null, ?string $icon = null, ?string $help = null, ?string $propertySuffix = null): self
+    public static function fieldset($label = false, ?string $icon = null, ?string $propertySuffix = null): self
     {
-        $this->field->addColumn($cols, $label, $icon, $help, $propertySuffix);
+        $instance = new self();
+        $instance->field = EasyField::addFieldset($label, $icon, $propertySuffix);
 
-        return $this;
-    }
+        $instance
+            ->setDefaultColumns(12);
 
-    public function fieldset($label = false, ?string $icon = null, ?string $propertySuffix = null): self
-    {
-        $this->field->addFieldset($label, $icon, $propertySuffix);
-
-        return $this;
+        return $instance;
     }
 
     public function setIcon(string $icon): self
