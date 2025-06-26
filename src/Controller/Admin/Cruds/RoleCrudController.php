@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Cruds;
 
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\Role;
+use App\Field\BooleanField;
 use App\Field\FieldGenerator;
 use App\Service\RolePermissions;
 use Doctrine\ORM\QueryBuilder;
@@ -15,7 +16,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\ComparisonType;
@@ -51,13 +51,21 @@ class RoleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $entity = $this->entity();
+        $entityIsAdmin = $entity && $entity->isAdmin();
+        $publicEnabled = $this->config()->enablePublic;
 
-        $dataPanel = FieldGenerator::panel($this->transEntitySection())->setIcon('lock');
-        $displayName = FieldGenerator::text('displayName')->setLabel($this->transEntityField('displayName'));
-        $isAdmin = FieldGenerator::switch('isAdmin')->setLabel($this->transEntityField('isAdmin'))
+        /*** Data ***/
+        $dataPanel = FieldGenerator::panel($this->transEntitySection())
+            ->setIcon('lock');
+        $displayName = FieldGenerator::text('displayName')
+            ->setLabel($this->transEntityField('displayName'));
+        $isAdmin = FieldGenerator::switch('isAdmin')
+            ->setLabel($this->transEntityField('isAdmin'))
             ->setHtmlAttribute('data-hf-parent', 'isAdmin');
 
-        $permissionsPanel = FieldGenerator::panel($this->transEntitySection('permissions'))->setIcon('lock');
+        /*** Permissions ***/
+        $permissionsPanel = FieldGenerator::panel($this->transEntitySection('permissions'))
+            ->setIcon('lock');
         $crudPermissions = $this->rolePermissions->getCrudPermissions();
         $crudPermissionsFields = [];
         $this->rolePermissions->loopPermissions($crudPermissions, function ($permission, $parentPermission, $level) use (&$crudPermissionsFields) {
@@ -79,58 +87,56 @@ class RoleCrudController extends AbstractCrudController
                 $crudPermissionsFields[] = $this->generatePermissionField($permission, $permissionLabel, $parentPermission, $level);
             }
         });
+        $haveAnyCrudPermissions = false;
+        foreach ($crudPermissionsFields as $crudPermissionsField) {
+            if ($this->hasPermission($crudPermissionsField->getAsDto()->getProperty())) {
+                $haveAnyCrudPermissions = true;
+                break;
+            }
+        }
 
-        $nameUsers = $this->config()->enablePublic && $entity && $entity->isAdmin() ? 'admin' : 'user';
-        $iconUsers = $this->config()->enablePublic && $entity && $entity->isAdmin() ? 'user-shield' : 'user';
-        $usersPanel = FieldGenerator::panel($this->transEntityPlural($nameUsers))->setIcon('' . $iconUsers);
-        $users = FieldGenerator::association('users')->setLabel($this->transEntityPlural('user'));
+        /*** Users ***/
+        $nameUsers = $publicEnabled && $entityIsAdmin ? 'admin' : 'user';
+        $iconUsers = $publicEnabled && $entityIsAdmin ? 'user-shield' : 'user';
+        $usersPanel = FieldGenerator::panel($this->transEntityPlural($nameUsers))
+            ->setIcon('' . $iconUsers);
+        $users = FieldGenerator::association('users')
+            ->setLabel($this->transEntityPlural('user'));
 
         if ($pageName == Crud::PAGE_INDEX) {
-            yield $displayName;
-            if ($this->config()->enablePublic) {
-                yield $isAdmin->renderAsSwitch(false);
-            }
-            yield $users->addCssClass('w-1')->setTextAlign('center');
+            yield from $this->yieldFields([
+                $displayName,
+                ...($publicEnabled ? [
+                    $isAdmin->renderAsSwitch(false),
+                ] : []),
+                $users->addCssClass('w-1')->setTextAlign('center'),
+            ]);
         } elseif ($pageName == Crud::PAGE_DETAIL) {
-            yield $dataPanel;
-            yield $displayName;
-            if ($this->config()->enablePublic) {
-                yield $isAdmin;
-            }
-            $haveAnyCrudPermissions = false;
-            foreach ($crudPermissionsFields as $crudPermissionsField) {
-                if ($this->hasPermission($crudPermissionsField->getAsDto()->getProperty())) {
-                    $haveAnyCrudPermissions = true;
-                    break;
-                }
-            }
-            if ($haveAnyCrudPermissions) {
-                yield $permissionsPanel;
-                foreach ($crudPermissionsFields as $crudPermissionsField) {
-                    yield $crudPermissionsField;
-                }
-            }
-            yield $usersPanel;
-            yield $users->setLabel(false);
+            yield from $this->yieldFields([
+                $dataPanel,
+                $displayName,
+                ...($publicEnabled ? [
+                    $isAdmin,
+                ] : []),
+                ...($haveAnyCrudPermissions ? [
+                    $permissionsPanel,
+                    ...$crudPermissionsFields,
+                ] : []),
+                $usersPanel,
+                $users->setLabel(false),
+            ]);
         } elseif ($pageName == Crud::PAGE_NEW || $pageName == Crud::PAGE_EDIT) {
-            yield $dataPanel;
-            yield $displayName;
-            if ($this->config()->enablePublic) {
-                yield $isAdmin;
-            }
-            $haveAnyCrudPermissions = false;
-            foreach ($crudPermissionsFields as $crudPermissionsField) {
-                if ($this->hasPermission($crudPermissionsField->getAsDto()->getProperty())) {
-                    $haveAnyCrudPermissions = true;
-                    break;
-                }
-            }
-            if ($haveAnyCrudPermissions) {
-                yield $permissionsPanel;
-                foreach ($crudPermissionsFields as $crudPermissionsField) {
-                    yield $crudPermissionsField;
-                }
-            }
+            yield from $this->yieldFields([
+                $dataPanel,
+                $displayName,
+                ...($publicEnabled ? [
+                    $isAdmin,
+                ] : []),
+                ...($haveAnyCrudPermissions ? [
+                    $permissionsPanel,
+                    ...$crudPermissionsFields,
+                ] : []),
+            ]);
         }
     }
 
@@ -270,7 +276,7 @@ class RoleCrudController extends AbstractCrudController
         });
     }
 
-    private function generatePermissionField(string $permission, string $label, ?string $parentPermission = null, ?int $level = 0): FieldInterface
+    private function generatePermissionField(string $permission, string $label, ?string $parentPermission = null, ?int $level = 0): BooleanField
     {
         $entity = $this->entity();
         $permissionValue = $entity && $entity->getPermission($permission) ? true : false;

@@ -34,22 +34,30 @@ class ConfigCrudController extends AbstractCrudController
     {
         $entity = $this->entity();
 
-        $dataPanel = FieldGenerator::panel($this->transEntitySection())->setIcon('settings');
-        $enablePublic = FieldGenerator::switch('enablePublic')->setLabel($this->transEntityField('enablePublic'))
+        /*** Data ***/
+        $dataPanel = FieldGenerator::panel($this->transEntitySection())
+            ->setIcon('settings');
+        $enablePublic = FieldGenerator::switch('enablePublic')
+            ->setLabel($this->transEntityField('enablePublic'))
             ->setHtmlAttribute('data-hf-parent', 'enablePublic')
             ->setColumns(12);
 
-        $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))->setIcon('settings');
-        $enableCookies = FieldGenerator::switch('enableCookies')->setLabel($this->transEntityField('enableCookies'))
+        /*** Privacy ***/
+        $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))
+            ->setIcon('settings');
+        $enableCookies = FieldGenerator::switch('enableCookies')
+            ->setLabel($this->transEntityField('enableCookies'))
             ->setHtmlAttribute('data-hf-child', 'enablePublic')
             ->setColumns(12);
 
-        yield $dataPanel;
-        yield $enablePublic->renderAsSwitch($pageName !== Crud::PAGE_INDEX);
-        if (!$entity || $entity->isEnablePublic()) {
-            yield $privacyPanel;
-            yield $enableCookies->renderAsSwitch($pageName !== Crud::PAGE_INDEX);
-        }
+        yield from $this->yieldFields([
+            $dataPanel,
+            $enablePublic->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
+            ...(!$entity || $entity->isEnablePublic() ? [
+                $privacyPanel,
+                $enableCookies->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
+            ] : []),
+        ]);
     }
 
     public function configureActions(Actions $actions): Actions

@@ -55,73 +55,106 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $dataPanel = FieldGenerator::panel($this->transEntitySection())->setIcon('user');
-        $fullname = FieldGenerator::text('fullname')->setLabel($this->transEntityField('name'));
-        $name = FieldGenerator::text('name')->setLabel($this->transEntityField('name'))->setColumns(2);
-        $lastname = FieldGenerator::text('lastname')->setLabel($this->transEntityField('lastname'))->setColumns(3);
-        $email = FieldGenerator::email('email')->setLabel($this->transEntityField('email'))->setColumns(4);
-        $phone = FieldGenerator::phone('phone')->setLabel($this->transEntityField('phone'))->setColumns(3);
-        $birthdate = FieldGenerator::date('birthdate')->setLabel($this->transEntityField('birthdate'))->setColumns(2);
-        $gender = FieldGenerator::choice('gender')->setLabel($this->transEntityField('gender'))->setColumns(2)
+        /*** Data ***/
+        $dataPanel = FieldGenerator::panel($this->transEntitySection())
+            ->setIcon('user');
+        $fullname = FieldGenerator::text('fullname')
+            ->setLabel($this->transEntityField('name'));
+        $name = FieldGenerator::text('name')
+            ->setLabel($this->transEntityField('name'))
+            ->setColumns(2);
+        $lastname = FieldGenerator::text('lastname')
+            ->setLabel($this->transEntityField('lastname'))
+            ->setColumns(3);
+        $email = FieldGenerator::email('email')
+            ->setLabel($this->transEntityField('email'))
+            ->setColumns(4);
+        $phone = FieldGenerator::phone('phone')
+            ->setLabel($this->transEntityField('phone'))
+            ->setColumns(3);
+        $birthdate = FieldGenerator::date('birthdate')
+            ->setLabel($this->transEntityField('birthdate'))
+            ->setColumns(2);
+        $gender = FieldGenerator::choice('gender')
+            ->setLabel($this->transEntityField('gender'))
             ->setFormType(EnumType::class)
-            ->setFormTypeOption('class', UserGender::class);
-        $avatar = FieldGenerator::avatar('avatar')->setLabel($this->transEntityField('avatar'))->setColumns(8);
+            ->setFormTypeOption('class', UserGender::class)
+            ->setColumns(2);
+        $avatar = FieldGenerator::file('avatar')
+            ->setLabel($this->transEntityField('avatar'))
+            ->setUploadDir('public')
+            ->setColumns(8);
         $roles = $this->em()->getRepository(Role::class)->getAdmin(false);
-        $role = FieldGenerator::association('role')->setLabel($this->transEntitySingular('role'))
-            ->setRequired(true)
+        $role = FieldGenerator::association('role')
+            ->setLabel($this->transEntitySingular('role'))
+            ->required()
             ->setQueryBuilder(function ($qb) use ($roles) {
-                $rolesIds = array_map(function ($role) { return $role->getId(); }, $roles);
-                return !count($rolesIds) ? $qb->andWhere('entity.id IS NULL') : $qb->andWhere('entity.id IN (' . implode(',', $rolesIds) . ')');
-            });
+                $rolesIds = array_map(fn ($r) => $r->getId(), $roles);
+                return empty($rolesIds)
+                    ? $qb->andWhere('entity.id IS NULL')
+                    : $qb->andWhere('entity.id IN (' . implode(',', $rolesIds) . ')');
+            })
+            ->setColumns('d-none');
         if (count($roles) == 1) {
-            $role->setFormTypeOption('data', $roles[0])->setColumns('d-none');
+            $role->setFormTypeOption('data', $roles[0]);
         } elseif ($this->filterHidden('role')) {
-            $role->setFormTypeOption('data', $this->em()->getRepository(Role::class)->find($this->filterHidden('role')['value']))->setColumns('d-none');
+            $role->setFormTypeOption('data', $this->em()->getRepository(Role::class)->find($this->filterHidden('role')['value']));
         }
-        $active = FieldGenerator::switch('active')->setLabel($this->transEntityField('active'));
-        $createdAt = FieldGenerator::datetime('createdAt')->setLabel($this->transEntityField('createdAt'))->setColumns(6);
+        $active = FieldGenerator::switch('active')
+            ->setLabel($this->transEntityField('active'));
+        $createdAt = FieldGenerator::datetime('createdAt')
+            ->setLabel($this->transEntityField('createdAt'))
+            ->setColumns(6);
 
-        $passwordPanel = FieldGenerator::panel($this->transEntitySection('password'))->setIcon('key');
+        /*** Password ***/
+        $passwordPanel = FieldGenerator::panel($this->transEntitySection('password'))
+            ->setIcon('key');
         $password = FieldGenerator::password('plainPassword')
             ->repeated()
             ->setFirstLabel($this->transEntityField('password', 'user'))
             ->setSecondLabel($this->transEntityField('repeatPassword', 'user'));
 
         if ($pageName == Crud::PAGE_INDEX) {
-            yield $avatar->addCssClass('w-1');
-            yield $fullname;
-            yield $email;
-            if (count($roles) > 1 && !$this->filterHidden('role')) {
-                yield $role;
-            }
-            yield $active->renderAsSwitch($this->hasPermissionCrudAction(Action::EDIT))->addCssClass('w-1');
+            yield from $this->yieldFields([
+                $avatar->addCssClass('w-1'),
+                $fullname,
+                $email,
+                ...(count($roles) && !$this->filterHidden('role') ? [
+                    $role,
+                ] : []),
+                $active->renderAsSwitch(false)->addCssClass('w-1'),
+            ]);
         } elseif ($pageName == Crud::PAGE_DETAIL) {
-            yield $dataPanel;
-            yield $avatar->setColumns(12);
-            yield $name;
-            yield $lastname;
-            yield $email;
-            yield $phone;
-            yield $birthdate;
-            yield $gender;
-            if (count($roles) > 1 && !$this->filterHidden('role')) {
-                yield $role->setColumns(2);
-            }
-            yield $active->setColumns(2);
-            yield $createdAt;
-        } elseif ($pageName == Crud::PAGE_NEW || $pageName == Crud::PAGE_EDIT) {
-            yield $dataPanel;
-            yield $name;
-            yield $lastname;
-            yield $email;
-            yield $phone;
-            yield $birthdate;
-            yield $gender;
-            yield $avatar;
-            yield $role;
-            yield $active;
-            yield $passwordPanel;
-            yield $password->setRequired($pageName == Crud::PAGE_NEW);
+            yield from $this->yieldFields([
+                $dataPanel,
+                $avatar->setColumns(12),
+                $name,
+                $lastname,
+                $email,
+                $phone,
+                $birthdate,
+                $gender,
+                ...(count($roles) && !$this->filterHidden('role') ? [
+                    $role->setColumns(2),
+                ] : []),
+                $active->setColumns(2),
+                $createdAt,
+            ]);
+        } elseif (in_array($pageName, [Crud::PAGE_NEW, Crud::PAGE_EDIT])) {
+            yield from $this->yieldFields([
+                $dataPanel,
+                $name,
+                $lastname,
+                $email,
+                $phone,
+                $birthdate,
+                $gender,
+                $avatar,
+                $role,
+                $active,
+                $passwordPanel,
+                $password->setRequired($pageName == Crud::PAGE_NEW),
+            ]);
         }
     }
 

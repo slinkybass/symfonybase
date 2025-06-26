@@ -34,38 +34,60 @@ class SettingsCrudController extends AbstractCrudController
     {
         $entity = $this->entity();
 
-        $dataPanel = FieldGenerator::panel($this->transEntitySection())->setIcon('tool');
-        $appName = FieldGenerator::text('appName')->setLabel($this->transEntityField('appName'))->setColumns(6);
-        $appColor = FieldGenerator::color('appColor')->setLabel($this->transEntityField('appColor'))->setColumns(6);
-        $appLogo = FieldGenerator::text('appLogo')->setLabel($this->transEntityField('appLogo'))->setColumns(6);
-        $appFavicon = FieldGenerator::text('appFavicon')->setLabel($this->transEntityField('appFavicon'))->setColumns(6);
-        $appTimezone = FieldGenerator::timezone('appTimezone')->setLabel($this->transEntityField('appTimezone'))->setColumns(6);
-        $senderEmail = FieldGenerator::email('senderEmail')->setLabel($this->transEntityField('senderEmail'))->setColumns(6);
-        $appDescription = FieldGenerator::textarea('appDescription')->setLabel($this->transEntityField('appDescription'))->setColumns(6);
-        $appKeywords = FieldGenerator::textarea('appKeywords')->setLabel($this->transEntityField('appKeywords'))->setColumns(6);
+        /*** Data ***/
+        $dataPanel = FieldGenerator::panel($this->transEntitySection())
+            ->setIcon('tool');
+        $appName = FieldGenerator::text('appName')
+            ->setLabel($this->transEntityField('appName'))
+            ->setColumns(6);
+        $appColor = FieldGenerator::color('appColor')
+            ->setLabel($this->transEntityField('appColor'))
+            ->setColumns(6);
+        $appLogo = FieldGenerator::text('appLogo')
+            ->setLabel($this->transEntityField('appLogo'))
+            ->setColumns(6);
+        $appFavicon = FieldGenerator::text('appFavicon')
+            ->setLabel($this->transEntityField('appFavicon'))
+            ->setColumns(6);
+        $appTimezone = FieldGenerator::timezone('appTimezone')
+            ->setLabel($this->transEntityField('appTimezone'))
+            ->setColumns(6);
+        $senderEmail = FieldGenerator::email('senderEmail')
+            ->setLabel($this->transEntityField('senderEmail'))
+            ->setColumns(6);
+        $appDescription = FieldGenerator::textarea('appDescription')
+            ->setLabel($this->transEntityField('appDescription'))
+            ->setColumns(6);
+        $appKeywords = FieldGenerator::textarea('appKeywords')
+            ->setLabel($this->transEntityField('appKeywords'))
+            ->setColumns(6);
 
-        $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))->setIcon('tool');
-        $privacyText = FieldGenerator::texteditor('privacyText')->setLabel($this->transEntityField('privacyText'));
-        $cookiesText = FieldGenerator::texteditor('cookiesText')->setLabel($this->transEntityField('cookiesText'));
+        /*** Privacy ***/
+        $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))
+            ->setIcon('tool');
+        $privacyText = FieldGenerator::texteditor('privacyText')
+            ->setLabel($this->transEntityField('privacyText'));
+        $cookiesText = FieldGenerator::texteditor('cookiesText')
+            ->setLabel($this->transEntityField('cookiesText'));
 
-        yield $dataPanel;
-        yield $appName;
-        yield $appColor;
-        yield $appLogo;
-        yield $appFavicon;
-        yield $appTimezone;
-        yield $senderEmail;
-        if (!$entity || $entity->isEnablePublic()) {
-            yield $appDescription;
-            yield $appKeywords;
-        }
-        if (!$entity || $entity->isEnablePublic()) {
-            yield $privacyPanel;
-            yield $privacyText;
-            if (!$entity || $entity->isEnableCookies()) {
-                yield $cookiesText;
-            }
-        }
+        yield from $this->yieldFields([
+            $dataPanel,
+            $appName,
+            $appColor,
+            $appLogo,
+            $appFavicon,
+            $appTimezone,
+            $senderEmail,
+            ...(!$entity || $entity->isEnablePublic() ? [
+                $appDescription,
+                $appKeywords,
+                $privacyPanel,
+                $privacyText,
+                ...(!$entity || $entity->isEnableCookies() ? [
+                    $cookiesText,
+                ] : []),
+            ] : []),
+        ]);
     }
 
     public function configureActions(Actions $actions): Actions

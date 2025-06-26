@@ -264,4 +264,11 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $entity = $entity ?? $this->transEntity;
         return $this->translator->trans('entities.' . $entity . '.fields.' . $field);
     }
+
+    protected function yieldFields(array $fields): \Generator
+    {
+        foreach ($fields as $field) {
+            yield $field->getField();
+        }
+    }
 }
