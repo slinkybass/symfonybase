@@ -160,11 +160,9 @@ class UserCrudController extends AbstractCrudController
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        $queryBuilder = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters)
-            ->leftJoin('entity.role', 'r')
-            ->andWhere("entity.verified = true")
-            ->andWhere("r.isAdmin = false");
-        return $queryBuilder;
+        return $this->em()->getRepository($this->getEntityFqcn())->findAdminsSentence(
+            $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters), false
+        );
     }
 
     public function configureFilters(Filters $filters): Filters

@@ -39,9 +39,25 @@ class UserRepository extends ServiceEntityRepository
      */
     public function findByRoleQB(string $roleName): QueryBuilder
     {
-        return $this->createQueryBuilder('u')
-            ->innerJoin('u.role', 'r')
-            ->where('u.verified = true')
+        return $this->findByRoleSentence(
+            $this->createQueryBuilder('entity'), $roleName
+        );
+    }
+
+
+    /**
+     * Returns a QueryBuilder instance to find all users who belong to a given role.
+     *
+     * @param QueryBuilder $qb the base query builder
+     * @param string $roleName the name of the role
+     *
+     * @return QueryBuilder a Doctrine QueryBuilder of User entities matching the role
+     */
+    public function findByRoleSentence(QueryBuilder $qb, string $roleName): QueryBuilder
+    {
+        return $qb
+            ->innerJoin('entity.role', 'r')
+            ->where('entity.verified = true')
             ->andWhere('r.name = :roleName')
             ->setParameter('roleName', $roleName);
     }
@@ -68,9 +84,24 @@ class UserRepository extends ServiceEntityRepository
      */
     public function findAdminsQB(bool $isAdmin = true): QueryBuilder
     {
-        return $this->createQueryBuilder('u')
-            ->leftJoin('u.role', 'r')
-            ->where('u.verified = true')
+        return $this->findAdminsSentence(
+            $this->createQueryBuilder('entity'), $isAdmin
+        );
+    }
+
+    /**
+     * Returns a QueryBuilder instance to find all users who have (or don't have) an admin role.
+     *
+     * @param QueryBuilder $qb the base query builder
+     * @param bool $isAdmin whether to filter for admin roles (default: true)
+     *
+     * @return QueryBuilder a Doctrine QueryBuilder of User entities with the specified admin status
+     */
+    public function findAdminsSentence(QueryBuilder $qb, bool $isAdmin = true): QueryBuilder
+    {
+        return $qb
+            ->leftJoin('entity.role', 'r')
+            ->where('entity.verified = true')
             ->andWhere('r.isAdmin = :isAdmin')
             ->setParameter('isAdmin', $isAdmin);
     }

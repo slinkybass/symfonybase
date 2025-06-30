@@ -30,8 +30,8 @@ class RoleRepository extends ServiceEntityRepository
      */
     public function get(string $name): ?Role
     {
-        return $this->createQueryBuilder('r')
-            ->where('r.name = :name')
+        return $this->createQueryBuilder('entity')
+            ->where('entity.name = :name')
             ->setParameter('name', $name)
             ->getQuery()->getOneOrNullResult();
     }
@@ -58,10 +58,25 @@ class RoleRepository extends ServiceEntityRepository
      */
     public function getAdminQB(bool $isAdmin = true): QueryBuilder
     {
-        return $this->createQueryBuilder('r')
-            ->where('r.isAdmin = :isAdmin')
+        return $this->getAdminSentence(
+            $this->createQueryBuilder('entity'), $isAdmin
+        );
+    }
+
+    /**
+     * Returns a QueryBuilder instance to find all admin roles based on the isAdmin flag.
+     *
+     * @param QueryBuilder $qb the base query builder
+     * @param bool $isAdmin whether to fetch admin roles (default: true)
+     *
+     * @return QueryBuilder a Doctrine QueryBuilder of Role entities
+     */
+    public function getAdminSentence(QueryBuilder $qb, bool $isAdmin = true): QueryBuilder
+    {
+        return $qb
+            ->where('entity.isAdmin = :isAdmin')
             ->setParameter('isAdmin', $isAdmin)
-            ->orderBy('r.displayName', 'ASC');
+            ->orderBy('entity.displayName', 'ASC');
     }
 
     /**
@@ -86,9 +101,24 @@ class RoleRepository extends ServiceEntityRepository
      */
     public function getAdminIsUpQB(Role $role): QueryBuilder
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.id IN (' . implode(',', $this->getAdminIsUpIds($role)) . ')')
-            ->orderBy('r.displayName', 'ASC');
+        return $this->getAdminIsUpSentence(
+            $this->createQueryBuilder('entity'), $role
+        );
+    }
+
+    /**
+     * Returns a QueryBuilder instance to find all admin roles that are "higher" than the given role.
+     *
+     * @param QueryBuilder $qb the base query builder
+     * @param Role $role the role to compare against
+     *
+     * @return QueryBuilder a Doctrine QueryBuilder of Role entities considered higher
+     */
+    public function getAdminIsUpSentence(QueryBuilder $qb, Role $role): QueryBuilder
+    {
+        return $qb
+            ->andWhere('entity.id IN (' . implode(',', $this->getAdminIsUpIds($role)) . ')')
+            ->orderBy('entity.displayName', 'ASC');
     }
 
     /**

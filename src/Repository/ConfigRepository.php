@@ -23,8 +23,8 @@ class ConfigRepository extends ServiceEntityRepository
      */
     public function get(): ?Config
     {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.id', 'DESC')
+        return $this->createQueryBuilder('entity')
+            ->orderBy('entity.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()->getOneOrNullResult();
     }
