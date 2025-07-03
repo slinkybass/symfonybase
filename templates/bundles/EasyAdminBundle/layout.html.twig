@@ -31,7 +31,6 @@
     {% block head_javascript %}
         {% block importmap %}
             {{ include('@EasyAdmin/includes/_importmap.html.twig', { assets: ea.assets.assetMapperAssets ?? [] }, with_context = false) }}
-            {{ importmap('page-color-scheme') }}
         {% endblock %}
     {% endblock head_javascript %}
 

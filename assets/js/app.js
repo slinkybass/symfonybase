@@ -51,6 +51,9 @@ import "tom-select/dist/css/tom-select.bootstrap5.css";
 // Tabler Vendors
 import "@tabler/core/dist/css/tabler-vendors.min.css";
 
+// Page color scheme
+import "./app/page-color-scheme.js";
+
 import App from "./controllers/app.js";
 window.App = App;
 
