@@ -1,0 +1,5 @@
+{% if field.value %}
+	<time datetime="{{ field.value|date('c') }}" title="{{ field.value|date('r') }}">{{ field.value|ago|capitalize }}</time>
+{% else %}
+	{{ include(ea.templatePath('label/empty')) }}
+{% endif %}

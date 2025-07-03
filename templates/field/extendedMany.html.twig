@@ -1,0 +1,54 @@
+{% if field.value|length %}
+	{% if ea.crud.currentAction == 'index' %}
+		<a data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button">
+			<span class="badge badge-outline text-primary">{{ field.value|length }}</span>
+		</a>
+		<div class="modal modal-blur fade" id="info-{{ field.uniqueId }}" tabindex="-1" aria-labelledby="info-{{ field.uniqueId }}Label" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="list-group list-group-flush">
+							{% for val in field.value %}
+								{% if field.customOptions.get('crudControllerFqcn') %}
+									{% set controllerName = field.customOptions.get('crudControllerFqcn')|split('\\')|last|replace({'CrudController': ''})|lower %}
+									{% set hasPermission = app.user.hasPermissionAction('detail', controllerName) %}
+									{% set url = hasPermission ? ea_url().setController(field.customOptions.get('crudControllerFqcn')).setAction('detail').setEntityId(val.id) : null %}
+									<{% if url %}a{% else %}div{% endif %} class="list-group-item{% if url %} list-group-item-action{% endif %}" {% if url %}href="{{ url }}" title="{{ val }}"{% endif %}>
+										{{ val }}
+									</{% if url %}a{% else %}div{% endif %}>
+								{% else %}
+									<div class="list-group-item">
+										{{ val }}
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<ul class="list-unstyled mb-0">
+			{% for val in field.value %}
+				<li>
+					{% if field.customOptions.get('crudControllerFqcn') %}
+						{% set controllerName = field.customOptions.get('crudControllerFqcn')|split('\\')|last|replace({'CrudController': ''})|lower %}
+						{% set hasPermission = app.user.hasPermissionAction('detail', controllerName) %}
+						{% set url = hasPermission ? ea_url().setController(field.customOptions.get('crudControllerFqcn')).setAction('detail').setEntityId(val.id) : null %}
+						<{% if url %}a{% else %}div{% endif %} {% if url %}href="{{ url }}" title="{{ val }}"{% endif %}>
+							{{ val }}
+						</{% if url %}a{% else %}div{% endif %}>
+					{% else %}
+						{{ val }}
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+{% else %}
+	{% if ea.crud.currentAction == 'index' %}
+		<span class="badge badge-outline text-secondary">0</span>
+	{% else %}
+		{{ include(ea.templatePath('label/empty')) }}
+	{% endif %}
+{% endif %}
