@@ -11,13 +11,14 @@
 	font-size: .625rem;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 767px) {
 	.table-mobile-md td {
 		width: auto !important;
 		text-align: start !important;
 	}
 }
 
+/* Disabled/Readonly fields */
 .form-control.disabled,
 .form-control:disabled,
 .form-control.readonly,
@@ -41,6 +42,7 @@
 	color: var(--tblr-disabled-color);
 }
 
+/* Textarea resize */
 textarea.no-resize {
 	resize: none;
 }
