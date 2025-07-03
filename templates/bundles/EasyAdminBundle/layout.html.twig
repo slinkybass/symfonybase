@@ -22,6 +22,15 @@
     {% block configured_stylesheets %}
         {{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea.assets.cssAssets ?? [] }, with_context = false) }}
         {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
+        {% set hexColor = app.session.get('config').appColor %}
+        {% set rgbColor = hexColor|hex_to_rgb %}
+        <style>
+            :root, [data-bs-theme="light"] {
+                --tblr-primary: {{ hexColor }} !important;
+                --tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }}
+                !important;
+            }
+        </style>
     {% endblock %}
 
     {% block head_favicon %}

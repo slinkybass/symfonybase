@@ -13,6 +13,15 @@
             {{ importmap('app') }}
             {{ importmap('public') }}
             {{ include('public/includes/_flash_messages.html.twig') }}
+            {% set hexColor = app.session.get('config').appColor %}
+            {% set rgbColor = hexColor|hex_to_rgb %}
+            <style>
+                :root, [data-bs-theme="light"] {
+                    --tblr-primary: {{ hexColor }} !important;
+                    --tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }}
+                    !important;
+                }
+            </style>
         {% endblock %}
         {% block css %}{% endblock %}
     </head>
