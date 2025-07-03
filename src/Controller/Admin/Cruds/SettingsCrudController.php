@@ -7,6 +7,7 @@ use App\Entity\Config;
 use App\Field\FieldGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,6 +29,13 @@ class SettingsCrudController extends AbstractCrudController
         $crud->setSearchFields(null);
 
         return $crud;
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        $assets->addAssetMapperEntry('settingsForm');
+
+        return $assets;
     }
 
     public function configureFields(string $pageName): iterable

@@ -52,6 +52,10 @@ return [
         'path' => './assets/js/app/page-color-scheme.js',
         'entrypoint' => true,
     ],
+    'settingsForm' => [
+        'path' => './assets/js/app/settingsForm.js',
+        'entrypoint' => true,
+    ],
     'form-type-codeeditor' => [
         'path' => './assets/js/fields/form-type-codeeditor.js',
         'entrypoint' => true,
