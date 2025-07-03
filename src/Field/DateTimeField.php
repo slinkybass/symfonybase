@@ -60,37 +60,25 @@ class DateTimeField
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $single ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
         $this->setFormType($single ? DateTimeType::class : TextType::class);
-        if ($single) {
-            $this->setTemplateName('crud/field/datetime');
-        } else {
-            $this->setTemplatePath('field/datetimeMultiple.html.twig');
-        }
+        $this->setTemplateName($single ? 'crud/field/datetime' : 'field/datetimeMultiple.html.twig');
 
         return $this;
     }
 
     public function multiple(bool $multiple = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $multiple ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_SINGLE);
-        $this->setFormType($multiple ? TextType::class : DateTimeType::class);
-        if ($multiple) {
-            $this->setTemplatePath('field/datetimeMultiple.html.twig');
-        } else {
-            $this->setTemplateName('crud/field/datetime');
-        }
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$multiple ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
+        $this->setFormType(!$multiple ? DateTimeType::class : TextType::class);
+        $this->setTemplateName(!$multiple ? 'crud/field/datetime' : 'field/datetimeMultiple.html.twig');
 
         return $this;
     }
 
     public function range(bool $range = true): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $range ? DateField::DATE_MODE_RANGE : DateField::DATE_MODE_SINGLE);
-        $this->setFormType($range ? TextType::class : DateTimeType::class);
-        if ($range) {
-            $this->setTemplatePath('field/datetimeMultiple.html.twig');
-        } else {
-            $this->setTemplateName('crud/field/datetime');
-        }
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$range ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_RANGE);
+        $this->setFormType(!$range ? DateTimeType::class : TextType::class);
+        $this->setTemplateName(!$range ? 'crud/field/datetime' : 'field/datetimeMultiple.html.twig');
 
         return $this;
     }

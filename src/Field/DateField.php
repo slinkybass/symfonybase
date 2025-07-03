@@ -83,37 +83,25 @@ class DateField
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, $single ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
         $this->setFormType($single ? DateType::class : TextType::class);
-        if ($single) {
-            $this->setTemplateName('crud/field/date');
-        } else {
-            $this->setTemplatePath('field/dateMultiple.html.twig');
-        }
+        $this->setTemplateName($single ? 'crud/field/date' : 'field/dateMultiple.html.twig');
 
         return $this;
     }
 
     public function multiple(bool $multiple = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_DATE_MODE, $multiple ? self::DATE_MODE_MULTIPLE : self::DATE_MODE_SINGLE);
-        $this->setFormType($multiple ? TextType::class : DateType::class);
-        if ($multiple) {
-            $this->setTemplatePath('field/dateMultiple.html.twig');
-        } else {
-            $this->setTemplateName('crud/field/date');
-        }
+        $this->setHtmlAttribute(self::OPTION_DATE_MODE, !$multiple ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
+        $this->setFormType(!$multiple ? DateType::class : TextType::class);
+        $this->setTemplateName(!$multiple ? 'crud/field/date' : 'field/dateMultiple.html.twig');
 
         return $this;
     }
 
     public function range(bool $range = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_DATE_MODE, $range ? self::DATE_MODE_RANGE : self::DATE_MODE_SINGLE);
-        $this->setFormType($range ? TextType::class : DateType::class);
-        if ($range) {
-            $this->setTemplatePath('field/dateMultiple.html.twig');
-        } else {
-            $this->setTemplateName('crud/field/date');
-        }
+        $this->setHtmlAttribute(self::OPTION_DATE_MODE, !$range ? self::DATE_MODE_SINGLE : self::DATE_MODE_RANGE);
+        $this->setFormType(!$range ? DateType::class : TextType::class);
+        $this->setTemplateName(!$range ? 'crud/field/date' : 'field/dateMultiple.html.twig');
 
         return $this;
     }
