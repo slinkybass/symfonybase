@@ -10,6 +10,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+/**
+ * Redirects users accessing public routes based on config settings and user roles.
+ */
 class PublicAccessSubscriber implements EventSubscriberInterface
 {
     private $router;

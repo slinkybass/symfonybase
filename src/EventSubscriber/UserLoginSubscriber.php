@@ -10,6 +10,9 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 use function Symfony\Component\Translation\t;
 
+/**
+ * Prevents login if the user is inactive or not verified.
+ */
 class UserLoginSubscriber implements EventSubscriberInterface
 {
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)

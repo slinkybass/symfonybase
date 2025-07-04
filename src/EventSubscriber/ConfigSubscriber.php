@@ -9,6 +9,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Loads application configuration from the database (or defaults)
+ * and stores it in the user session on every request.
+ */
 class ConfigSubscriber implements EventSubscriberInterface
 {
     private $em;

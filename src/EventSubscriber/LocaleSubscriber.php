@@ -6,6 +6,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Sets the request locale based on the session or the `_locale` parameter.
+ */
 class LocaleSubscriber implements EventSubscriberInterface
 {
     private $defaultLocale;

@@ -7,6 +7,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Logs out inactive users automatically on each request.
+ */
 class InactiveUserSubscriber implements EventSubscriberInterface
 {
     private $security;
