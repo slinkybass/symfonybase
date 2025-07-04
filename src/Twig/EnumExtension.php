@@ -29,7 +29,7 @@ class EnumExtension extends AbstractExtension
     /**
      * Displays the label corresponding to the enum.
      *
-     * @param mixed $enum The enum to display
+     * @param mixed  $enum   The enum to display
      * @param string $locale The locale code
      *
      * @return string The label corresponding to $value
@@ -46,8 +46,8 @@ class EnumExtension extends AbstractExtension
      * Returns the enum choices.
      *
      * @param string $enumClass Enum class name
-     * @param string $locale The locale code
-     * 
+     * @param string $locale    The locale code
+     *
      * @return array<string, mixed>
      */
     public function enumChoices(string $enumClass, ?string $locale = null): array
@@ -66,11 +66,9 @@ class EnumExtension extends AbstractExtension
 
     /**
      * Returns the enum from its value.
-     * 
-     * @param mixed $value Enum 'value' property
+     *
+     * @param mixed  $value     Enum 'value' property
      * @param string $enumClass Enum class name
-     * 
-     * @return object
      */
     public function enumFromValue($value, string $enumClass): ?object
     {
@@ -85,11 +83,9 @@ class EnumExtension extends AbstractExtension
 
     /**
      * Returns the enum from its name.
-     * 
-     * @param string $name Enum 'name' property
+     *
+     * @param string $name      Enum 'name' property
      * @param string $enumClass Enum class name
-     * 
-     * @return object
      */
     public function enumFromName(string $name, string $enumClass): ?object
     {
