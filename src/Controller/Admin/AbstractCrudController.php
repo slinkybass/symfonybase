@@ -40,6 +40,9 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
         $crud->setDefaultSort(['id' => 'DESC']);
 
+        $crud->addFormTheme('@ArkounayUxCollection/ux_collection_form_theme.html.twig');
+        $crud->addFormTheme('@ArkounayUxMedia/ux_media_form_theme.html.twig');
+
         return $crud;
     }
 

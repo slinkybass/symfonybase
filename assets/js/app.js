@@ -40,6 +40,11 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import moment from 'moment/min/moment-with-locales.min.js';
 window.moment = moment;
 
+// BasicLightbox
+import basicLightbox from "basiclightbox";
+window.basicLightbox = basicLightbox;
+import "basiclightbox/dist/basicLightbox.min.css";
+
 // HierarchyFields
 import "./fields/hierarchyFields.js";
 
@@ -63,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	App.persistSelectedTab();
 	App.createUnsavedFormChangesWarning();
 	App.createFieldsWithErrors();
+	App.createLightboxes();
 	App.setTabAsActive();
 	App.preventMultipleFormSubmission();
 });

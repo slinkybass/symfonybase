@@ -1,0 +1,13 @@
+{% set icon = icon == "-up" ? 'arrow-narrow-up' : (icon == "-down" ? 'arrow-narrow-down' : 'arrows-sort') %}
+
+{% if islist %}
+	<a href="{{ href }}">
+		{{ ('table.' ~ type)|trans }}
+        <twig:ux:icon class="icon" name="tabler:{{ icon }}" style="width: 0.75em; height: 0.75em;" />
+	</a>
+{% else %}
+	<a href="{{ href }}" class="btn btn{{ not active ? '-ghost' }}-primary">
+        <twig:ux:icon class="icon" name="tabler:{{ icon }}"/>
+		{{ ('table.' ~ type)|trans }}
+	</a>
+{% endif %}

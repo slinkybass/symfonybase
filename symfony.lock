@@ -1,4 +1,13 @@
 {
+    "arkounay/ux-collection": {
+        "version": "4.0.3"
+    },
+    "arkounay/ux-media": {
+        "version": "4.1.6"
+    },
+    "artgris/filemanager-bundle": {
+        "version": "2.10.6"
+    },
     "doctrine/deprecations": {
         "version": "1.1",
         "recipe": {

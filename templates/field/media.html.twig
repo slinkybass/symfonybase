@@ -1,0 +1,13 @@
+{% if (media is defined and media is not null) or (field is defined and field.value is defined and field.value is not null) %}
+	{% set media = media ?? field.value ?? null %}
+	{% set imageExts = ["apng", "avif", "bmp", "gif", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "png", "svg", "webp"] %}
+	{% set fileExt = media|split('?')|first|split('.')|last|lower %}
+	{% set fileName = media|split('.')|first|split('/')|last %}
+	{% set isImage = fileExt in imageExts or media starts with 'data:image' %}
+	<span class="avatar avatar-xl" {% if isImage %}style="background-image: url('{{ media }}')" title="{{ fileName }}"{% endif %}>
+		{% if not isImage %}<i class="icon ti ti-file"></i>{% endif %}
+		<a href="{{ media }}" class="stretched-link" {% if isImage %}data-action="zoom" style="cursor: zoom-in;"{% else %}target="_blank"{% endif %}></a>
+	</span>
+{% else %}
+	{{ include(ea.templatePath('label/empty')) }}
+{% endif %}

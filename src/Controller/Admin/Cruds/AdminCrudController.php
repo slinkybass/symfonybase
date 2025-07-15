@@ -90,9 +90,9 @@ class AdminCrudController extends AbstractCrudController
             ->setFormType(EnumType::class)
             ->setFormTypeOption('class', UserGender::class)
             ->setColumns(2);
-        $avatar = FieldGenerator::file('avatar')
+        $avatar = FieldGenerator::media('avatar')
             ->setLabel($this->transEntityField('avatar', 'user'))
-            ->setUploadDir('public')
+            ->conf('public_user_images')
             ->setColumns(8);
         $role = FieldGenerator::association('role')
             ->setLabel($this->transEntitySingular('role'))

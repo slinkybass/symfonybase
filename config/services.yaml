@@ -27,3 +27,6 @@ services:
         arguments:
             $defaultLocale: '%kernel.default_locale%'
             $locales: '%locales%'
+    App\EventSubscriber\MediaSubscriber:
+        arguments:
+            $artgrisFileManager: '%artgris_file_manager%'

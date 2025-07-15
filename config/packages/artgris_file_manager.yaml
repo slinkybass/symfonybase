@@ -1,0 +1,28 @@
+artgris_file_manager:
+  conf:
+    public_all:
+      dir: "%kernel.project_dir%/public/media"
+      tree: false
+      upload:
+        max_file_size: 67108864 # 64MB
+    public_images:
+      dir: "%kernel.project_dir%/public/media"
+      type: 'image'
+      accept: '.apng, .avif, .bmp, .gif, .jpg, .jpeg, .jfif, .pjpeg, .pjp, .png, .svg, .webp'
+      tree: false
+      upload:
+        max_file_size: 67108864 # 64MB
+    public_config_images:
+      dir: "%kernel.project_dir%/public/media/config"
+      type: 'image'
+      accept: '.apng, .avif, .bmp, .gif, .jpg, .jpeg, .jfif, .pjpeg, .pjp, .png, .svg, .webp'
+      tree: false
+      upload:
+        max_file_size: 67108864 # 64MB
+    public_user_images:
+      dir: "%kernel.project_dir%/public/media/user"
+      type: 'image'
+      accept: '.apng, .avif, .bmp, .gif, .jpg, .jpeg, .jfif, .pjpeg, .pjp, .png, .svg, .webp'
+      tree: false
+      upload:
+        max_file_size: 67108864 # 64MB

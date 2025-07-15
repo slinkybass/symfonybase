@@ -186,6 +186,16 @@ const App = (() => {
 		});
 	};
 
+	const createLightboxes = () => {
+		document.querySelectorAll('[data-action="zoom"]').forEach((link) => {
+			link.addEventListener("click", (e) => {
+				e.preventDefault();
+				var img = '<img width="1400" height="900" src="' + link.getAttribute("href") + '">';
+				basicLightbox.create(img).show();
+			});
+		});
+	};
+
 	const setTabAsActive = (tabItemId) => {
 		const tabElement = document.getElementById(tabItemId);
 		if (!tabElement) {
@@ -225,6 +235,7 @@ const App = (() => {
 		persistSelectedTab,
 		createUnsavedFormChangesWarning,
 		createFieldsWithErrors,
+		createLightboxes,
 		setTabAsActive,
 		preventMultipleFormSubmission,
 	};

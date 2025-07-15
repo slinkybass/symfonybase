@@ -52,6 +52,10 @@ return [
         'path' => './assets/js/app/page-color-scheme.js',
         'entrypoint' => true,
     ],
+    'artgris_manager' => [
+        'path' => './assets/js/app/artgris_manager.js',
+        'entrypoint' => true,
+    ],
     'settingsForm' => [
         'path' => './assets/js/app/settingsForm.js',
         'entrypoint' => true,
@@ -260,5 +264,22 @@ return [
     ],
     'signature_pad' => [
         'version' => '5.0.9',
+    ],
+    'sortablejs' => [
+        'version' => '1.15.6',
+    ],
+    'cropperjs' => [
+        'version' => '1.6.2',
+    ],
+    'cropperjs/dist/cropper.min.css' => [
+        'version' => '1.6.2',
+        'type' => 'css',
+    ],
+    'basiclightbox' => [
+        'version' => '5.0.4',
+    ],
+    'basiclightbox/dist/basicLightbox.min.css' => [
+        'version' => '5.0.4',
+        'type' => 'css',
     ],
 ];

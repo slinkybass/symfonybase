@@ -176,4 +176,9 @@ class FieldGenerator extends AbstractType
     {
         return SignatureField::new($name);
     }
+
+    public static function media(string $name)
+    {
+        return MediaField::new($name);
+    }
 }

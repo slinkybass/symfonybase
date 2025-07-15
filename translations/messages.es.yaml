@@ -5,6 +5,8 @@ app:
 admin:
   home:
     title: Inicio
+  media:
+    title: Media
 public:
   home:
     title: Inicio
@@ -80,3 +82,7 @@ entities:
       displayName: Nombre
       isAdmin: ¿Es administrador?
       permissions: Permisos
+    permissions:
+      media: Media
+      mediaEdit: Editar
+      mediaFolders: Crear carpetas

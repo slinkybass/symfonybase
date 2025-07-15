@@ -47,6 +47,11 @@ class RolePermissions
      * Additional permissions.
      */
     public const EXTRA_PERMISSIONS = [
+        'media',
+        'mediaTree',
+        'mediaUpload',
+        'mediaEdit',
+        'mediaFolders',
     ];
 
     public function __construct(KernelInterface $kernel)

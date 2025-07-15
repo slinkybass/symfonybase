@@ -57,6 +57,28 @@ textarea.no-resize {
 	padding: 0;
 }
 
+/* UX-Media */
+.ux-media .img-preview > img {
+	object-fit: scale-down;
+	object-position: center;
+	height: 36px;
+	width: 36px;
+	background-color: var(--tblr-bg-surface-secondary);
+	border: var(--tblr-border-width) solid var(--tblr-border-color);
+	border-radius: var(--tblr-border-radius);
+	box-shadow: var(--tblr-shadow-input);
+	padding: 3px;
+}
+
+/* BasicLightbox */
+.basicLightbox {
+	z-index: 9999;
+}
+.basicLightbox img {
+	background: white;
+	padding: 25px;
+}
+
 /* Flatpickr */
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
