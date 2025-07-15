@@ -8,6 +8,9 @@ class FloatField
 {
     use FieldTrait;
 
+    public const OPTION_HTML5 = 'html5';
+    public const OPTION_STEP = 'step';
+
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -17,10 +20,18 @@ class FloatField
 
         $instance
             ->setDecimals(2)
-            ->setFormTypeOption('html5', true)
+            ->setStep(0.1)
+            ->setFormTypeOption(self::OPTION_HTML5, true)
             ->setDefaultColumns(12);
 
         return $instance;
+    }
+
+    public function setStep(float $step): self
+    {
+        $this->field->setHtmlAttribute(self::OPTION_STEP, $step);
+
+        return $this;
     }
 
     public function setDecimals(int $decimals): self
