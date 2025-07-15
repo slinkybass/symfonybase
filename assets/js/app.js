@@ -56,6 +56,12 @@ import "tom-select/dist/css/tom-select.bootstrap5.css";
 // Tabler Vendors
 import "@tabler/core/dist/css/tabler-vendors.min.css";
 
+// UX Translator
+import { trans } from '@symfony/ux-translator';
+import * as translations from '@app/translations';
+window.trans = trans;
+window.translations = translations;
+
 // Page color scheme
 import "./app/page-color-scheme.js";
 
