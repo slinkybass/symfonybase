@@ -26,6 +26,7 @@ class RolePermissions
         'crudAdminImpersonate',
         'crudUserImpersonate',
     ];
+
     /**
      * @const array
      * List of CRUD-related permissions that should be excluded from permissions.
@@ -39,6 +40,13 @@ class RolePermissions
         'crudSettingsEdit',
         'crudSettingsDetail',
         'crudSettingsDelete',
+    ];
+
+    /**
+     * @const array
+     * Additional permissions.
+     */
+    public const EXTRA_PERMISSIONS = [
     ];
 
     public function __construct(KernelInterface $kernel)
@@ -71,10 +79,10 @@ class RolePermissions
     }
 
     /**
-     * Generates a grouped tree of available CRUD-related permissions
+     * Generates a flat list of available CRUD-related permissions
      * by scanning controller files and applying naming conventions.
      *
-     * @return array a nested array representing grouped permissions
+     * @return array a flat array representing permissions
      */
     public function getCrudPermissions(): array
     {
@@ -103,8 +111,39 @@ class RolePermissions
                 $crudPermissions[] = $subPermName;
             }
         }
-        $crudPermissions = array_merge($crudPermissions, self::CRUD_PERMISSIONS);
-        return $this->groupPermissions($crudPermissions);
+        return array_merge($crudPermissions, self::CRUD_PERMISSIONS);
+    }
+
+    /**
+     * Generates a flat list of available extra permissions.
+     *
+     * @return array a flat array representing permissions
+     */
+    public function getExtraPermissions(): array
+    {
+        return self::EXTRA_PERMISSIONS;
+    }
+
+    /**
+     * Generates a flat list of all available permissions.
+     *
+     * @return array a flat array representing permissions
+     */
+    public function getPermissions(): array
+    {
+        $crudPermissions = $this->getCrudPermissions();
+        $extraPermissions = $this->getExtraPermissions();
+        return array_merge($crudPermissions, $extraPermissions);
+    }
+
+    /**
+     * Generates a grouped tree of all available permissions.
+     *
+     * @return array a nested array representing permissions
+     */
+    public function getGroupedPermissions(): array
+    {
+        return $this->groupPermissions($this->getPermissions());
     }
 
     /**

@@ -66,22 +66,27 @@ class RoleCrudController extends AbstractCrudController
         /*** Permissions ***/
         $permissionsPanel = FieldGenerator::panel($this->transEntitySection('permissions'))
             ->setIcon('lock');
-        $crudPermissions = $this->rolePermissions->getCrudPermissions();
+        $permissions = $this->rolePermissions->getGroupedPermissions();
         $crudPermissionsFields = [];
-        $this->rolePermissions->loopPermissions($crudPermissions, function ($permission, $parentPermission, $level) use (&$crudPermissionsFields) {
+        $this->rolePermissions->loopPermissions($permissions, function ($permission, $parentPermission, $level) use (&$crudPermissionsFields) {
             if ($this->hasPermission($permission)) {
-                $entity = lcfirst(preg_split('/(?=[A-Z])/', $permission)[1]);
-                $action = str_replace('crud' . ucfirst($entity), '', $permission);
-                $action = $action ? lcfirst($action) : null;
+                $isCrudPermission = strpos($permission, 'crud') !== false;
+                if ($isCrudPermission) {
+                    $permissionWithoutCrud = str_replace('crud', '', $permission);
+                    $entity = lcfirst(preg_split('/(?=[A-Z])/', $permissionWithoutCrud)[1]);
+                    $action = lcfirst(str_replace(ucfirst($entity), '', $permissionWithoutCrud));
 
-                $entityLabel = $this->translator->trans('entities.' . $entity . '.plural');
-                if (!$action) {
-                    $permissionLabel = $entityLabel;
-                } elseif (in_array($action, [Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE])) {
-                    $permissionLabel = $this->translator->trans('action.' . $action, [], 'EasyAdminBundle');
-                    $permissionLabel = str_replace(['%entity_label_singular%', '%entity_label_plural%'], [$entityLabel, $entityLabel], $permissionLabel);
+                    $entityLabel = $this->translator->trans('entities.' . $entity . '.plural');
+                    if (!$action) {
+                        $permissionLabel = $entityLabel;
+                    } elseif (in_array($action, [Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE])) {
+                        $permissionLabel = $this->translator->trans('action.' . $action, [], 'EasyAdminBundle');
+                        $permissionLabel = str_replace(['%entity_label_singular%', '%entity_label_plural%'], [$entityLabel, $entityLabel], $permissionLabel);
+                    } else {
+                        $permissionLabel = $this->translator->trans('entities.' . $entity . '.actions.' . $action);
+                    }
                 } else {
-                    $permissionLabel = $this->translator->trans('entities.' . $entity . '.actions.' . $action);
+                    $permissionLabel = $this->translator->trans('permissions.' . $permission);
                 }
 
                 $crudPermissionsFields[] = $this->generatePermissionField($permission, $permissionLabel, $parentPermission, $level);
@@ -266,13 +271,13 @@ class RoleCrudController extends AbstractCrudController
             $role = $event->getData();
             $form = $event->getForm();
 
-            $crudPermissions = $this->rolePermissions->getCrudPermissions();
-            $crudPermissionsValues = [];
-            $this->rolePermissions->loopPermissions($crudPermissions, function ($permission) use (&$crudPermissionsValues, $form) {
-                $crudPermissionsValues[$permission] = $form->has($permission) ? $form->get($permission)->getData() : false;
+            $permissions = $this->rolePermissions->getGroupedPermissions();
+            $permissionsValues = [];
+            $this->rolePermissions->loopPermissions($permissions, function ($permission) use (&$permissionsValues, $form) {
+                $permissionsValues[$permission] = $form->has($permission) ? $form->get($permission)->getData() : false;
             });
 
-            $role->setPermissions($crudPermissionsValues);
+            $role->setPermissions($permissionsValues);
         });
     }
 

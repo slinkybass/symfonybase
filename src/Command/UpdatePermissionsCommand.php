@@ -35,12 +35,12 @@ class UpdatePermissionsCommand extends Command
     {
         $roleSuperAdmin = $this->em->getRepository(Role::class)->get("ROLE_SUPERADMIN");
         if ($roleSuperAdmin) {
-            $crudPermissions = $this->rolePermissions->getCrudPermissions();
-            $crudPermissionsValues = [];
-            $this->rolePermissions->loopPermissions($crudPermissions, function ($permission) use (&$crudPermissionsValues) {
-                $crudPermissionsValues[$permission] = true;
+            $permissions = $this->rolePermissions->getGroupedPermissions();
+            $permissionsValues = [];
+            $this->rolePermissions->loopPermissions($permissions, function ($permission) use (&$permissionsValues) {
+                $permissionsValues[$permission] = true;
             });
-            $roleSuperAdmin->setPermissions($crudPermissionsValues);
+            $roleSuperAdmin->setPermissions($permissionsValues);
             $this->em->persist($roleSuperAdmin);
             $output->writeln('<bg=green;options=bold>UPDATED ROLE_SUPERADMIN</>');
         }

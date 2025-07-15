@@ -43,12 +43,12 @@ class CreateUsersCommand extends Command
             $roleSuperAdmin->setName('ROLE_SUPERADMIN');
             $roleSuperAdmin->setDisplayName('Superadmin');
             $roleSuperAdmin->setIsAdmin(true);
-            $crudPermissions = $this->rolePermissions->getCrudPermissions();
-            $crudPermissionsValues = [];
-            $this->rolePermissions->loopPermissions($crudPermissions, function ($permission) use (&$crudPermissionsValues) {
-                $crudPermissionsValues[$permission] = true;
+            $permissions = $this->rolePermissions->getGroupedPermissions();
+            $permissionsValues = [];
+            $this->rolePermissions->loopPermissions($permissions, function ($permission) use (&$permissionsValues) {
+                $permissionsValues[$permission] = true;
             });
-            $roleSuperAdmin->setPermissions($crudPermissionsValues);
+            $roleSuperAdmin->setPermissions($permissionsValues);
             $this->em->persist($roleSuperAdmin);
             $output->writeln('<bg=green;options=bold>CREATED ROLE_SUPERADMIN</>');
         }
