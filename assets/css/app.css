@@ -58,7 +58,8 @@ textarea.no-resize {
 }
 
 /* UX-Media */
-.ux-media .img-preview > img {
+.ux-media .img-preview > img,
+.ux-media .img-preview > svg {
 	object-fit: scale-down;
 	object-position: center;
 	height: 36px;
@@ -68,6 +69,10 @@ textarea.no-resize {
 	border-radius: var(--tblr-border-radius);
 	box-shadow: var(--tblr-shadow-input);
 	padding: 3px;
+	margin: 0;
+}
+.ux-media .collection-error-message-button > svg {
+	margin: 0;
 }
 
 /* BasicLightbox */
