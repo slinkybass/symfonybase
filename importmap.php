@@ -88,6 +88,10 @@ return [
         'path' => './assets/js/fields/form-type-signature.js',
         'entrypoint' => true,
     ],
+    'form-type-slider' => [
+        'path' => './assets/js/fields/form-type-slider.js',
+        'entrypoint' => true,
+    ],
     'form-type-slug' => [
         'path' => './assets/js/fields/form-type-slug.js',
         'entrypoint' => true,
@@ -305,5 +309,12 @@ return [
     ],
     '@app/translations/configuration' => [
         'path' => './var/translations/configuration.js',
+    ],
+    'nouislider' => [
+        'version' => '15.8.1',
+    ],
+    'nouislider/dist/nouislider.min.css' => [
+        'version' => '15.8.1',
+        'type' => 'css',
     ],
 ];

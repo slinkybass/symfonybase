@@ -53,6 +53,9 @@ import Autocomplete from "./fields/autocomplete.js";
 window.Autocomplete = Autocomplete;
 import "tom-select/dist/css/tom-select.bootstrap5.css";
 
+// NoUISlider
+import "nouislider/dist/nouislider.min.css";
+
 // Tabler Vendors
 import "@tabler/core/dist/css/tabler-vendors.min.css";
 
