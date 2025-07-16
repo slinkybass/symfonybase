@@ -36,6 +36,7 @@ class DateField
     public const DATE_FORMAT_SHORT = 'short';
     public const DATE_FORMAT_NONE = 'none';
     /** end formats */
+
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self

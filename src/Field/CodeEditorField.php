@@ -267,6 +267,7 @@ class CodeEditorField
     public const CODEEDITOR_LANGUAGE_ZEEK = 'zeek';
     public const CODEEDITOR_LANGUAGE_ZIG = 'zig';
     /** end languages */
+
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self

@@ -24,6 +24,7 @@ class ColorField
     public const COLOR_TYPE_COLOR = 'color';
     public const COLOR_TYPE_FLAT = 'flat';
     /** end types */
+
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
