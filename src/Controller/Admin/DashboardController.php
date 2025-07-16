@@ -170,20 +170,20 @@ class DashboardController extends AbstractDashboardController
 
         $actions->add(Crud::PAGE_NEW, Action::INDEX);
         $actions->add(Crud::PAGE_NEW, Action::SAVE_AND_RETURN);
-        $actions->update(Crud::PAGE_NEW, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left'); });
+        $actions->update(Crud::PAGE_NEW, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
         $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) { return $action->setIcon('device-floppy')->addCssClass('btn-success'); });
 
         $actions->add(Crud::PAGE_DETAIL, Action::INDEX);
         $actions->add(Crud::PAGE_DETAIL, Action::DELETE);
         $actions->add(Crud::PAGE_DETAIL, Action::EDIT);
-        $actions->update(Crud::PAGE_DETAIL, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left'); });
+        $actions->update(Crud::PAGE_DETAIL, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
         $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger text-white'); });
         $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) { return $action->setIcon('edit'); });
 
         $actions->add(Crud::PAGE_EDIT, Action::INDEX);
         $actions->add(Crud::PAGE_EDIT, Action::DELETE);
         $actions->add(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN);
-        $actions->update(Crud::PAGE_EDIT, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left'); });
+        $actions->update(Crud::PAGE_EDIT, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
         $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger text-white'); });
         $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) { return $action->setIcon('device-floppy')->addCssClass('btn-success'); });
 
