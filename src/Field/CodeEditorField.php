@@ -20,7 +20,7 @@ class CodeEditorField
     public const OPTION_CODEEDITOR_MIN_LINES = 'data-codeeditor-min-lines';
     public const OPTION_CODEEDITOR_MAX_LINES = 'data-codeeditor-max-lines';
 
-    /** start themes */
+    /** themes */
     public const CODEEDITOR_THEME_AMBIENCE = 'ambiance';
     public const CODEEDITOR_THEME_CHAOS = 'chaos';
     public const CODEEDITOR_THEME_CHROME = 'chrome';
@@ -69,9 +69,8 @@ class CodeEditorField
     public const CODEEDITOR_THEME_TWILIGHT = 'twilight';
     public const CODEEDITOR_THEME_VIBRANT_INK = 'vibrant_ink';
     public const CODEEDITOR_THEME_XCODE = 'xcode';
-    /** end themes */
 
-    /** start languages */
+    /** languages */
     public const CODEEDITOR_LANGUAGE_ABAP = 'abap';
     public const CODEEDITOR_LANGUAGE_ABC = 'abc';
     public const CODEEDITOR_LANGUAGE_ACTIONSCRIPT = 'actionscript';
@@ -266,7 +265,6 @@ class CodeEditorField
     public const CODEEDITOR_LANGUAGE_YAML = 'yaml';
     public const CODEEDITOR_LANGUAGE_ZEEK = 'zeek';
     public const CODEEDITOR_LANGUAGE_ZIG = 'zig';
-    /** end languages */
 
     private EasyField $field;
 

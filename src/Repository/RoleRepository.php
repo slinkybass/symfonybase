@@ -66,8 +66,8 @@ class RoleRepository extends ServiceEntityRepository
     /**
      * Returns a QueryBuilder instance to find all admin roles based on the isAdmin flag.
      *
-     * @param QueryBuilder $qb the base query builder
-     * @param bool $isAdmin whether to fetch admin roles (default: true)
+     * @param QueryBuilder $qb      the base query builder
+     * @param bool         $isAdmin whether to fetch admin roles (default: true)
      *
      * @return QueryBuilder a Doctrine QueryBuilder of Role entities
      */
@@ -109,8 +109,8 @@ class RoleRepository extends ServiceEntityRepository
     /**
      * Returns a QueryBuilder instance to find all admin roles that are "higher" than the given role.
      *
-     * @param QueryBuilder $qb the base query builder
-     * @param Role $role the role to compare against
+     * @param QueryBuilder $qb   the base query builder
+     * @param Role         $role the role to compare against
      *
      * @return QueryBuilder a Doctrine QueryBuilder of Role entities considered higher
      */

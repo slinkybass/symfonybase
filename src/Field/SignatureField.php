@@ -25,7 +25,7 @@ class SignatureField
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-signature')->onlyOnForms())
             ->setFormTypeOption('block_prefix', 'signature')
-			->setTemplatePath('field/media.html.twig')
+            ->setTemplatePath('field/media.html.twig')
             ->plugin()
             ->setDefaultColumns(12);
 

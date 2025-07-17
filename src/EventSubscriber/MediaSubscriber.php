@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Create the media directory if it doesn't exist
+ * Create the media directory if it doesn't exist.
  */
 class MediaSubscriber implements EventSubscriberInterface
 {

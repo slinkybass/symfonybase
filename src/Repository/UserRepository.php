@@ -44,12 +44,11 @@ class UserRepository extends ServiceEntityRepository
         );
     }
 
-
     /**
      * Returns a QueryBuilder instance to find all users who belong to a given role.
      *
-     * @param QueryBuilder $qb the base query builder
-     * @param string $roleName the name of the role
+     * @param QueryBuilder $qb       the base query builder
+     * @param string       $roleName the name of the role
      *
      * @return QueryBuilder a Doctrine QueryBuilder of User entities matching the role
      */
@@ -92,8 +91,8 @@ class UserRepository extends ServiceEntityRepository
     /**
      * Returns a QueryBuilder instance to find all users who have (or don't have) an admin role.
      *
-     * @param QueryBuilder $qb the base query builder
-     * @param bool $isAdmin whether to filter for admin roles (default: true)
+     * @param QueryBuilder $qb      the base query builder
+     * @param bool         $isAdmin whether to filter for admin roles (default: true)
      *
      * @return QueryBuilder a Doctrine QueryBuilder of User entities with the specified admin status
      */

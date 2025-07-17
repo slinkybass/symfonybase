@@ -9,7 +9,7 @@ class FileField
 {
     use FieldTrait;
 
-	public const OPTION_ACCEPT = 'accept';
+    public const OPTION_ACCEPT = 'accept';
 
     private EasyField $field;
 
@@ -21,18 +21,18 @@ class FileField
 
         $instance
             ->setCssClass('field-file')
-			->setUploadDir('public/media')
+            ->setUploadDir('public/media')
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-	public function setAccept(?string $filetype): self
-	{
-		$this->setHtmlAttribute(self::OPTION_ACCEPT, $filetype);
+    public function setAccept(?string $filetype): self
+    {
+        $this->setHtmlAttribute(self::OPTION_ACCEPT, $filetype);
 
-		return $this;
-	}
+        return $this;
+    }
 
     public function setBasePath(string $path): self
     {

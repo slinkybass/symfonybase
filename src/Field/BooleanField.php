@@ -8,7 +8,7 @@ class BooleanField
 {
     use FieldTrait;
 
-	public const OPTION_CHECKED = 'checked';
+    public const OPTION_CHECKED = 'checked';
 
     private EasyField $field;
 
@@ -24,12 +24,12 @@ class BooleanField
         return $instance;
     }
 
-	public function isChecked(bool $checked = true): self
-	{
-		$this->setHtmlAttribute(self::OPTION_CHECKED, $checked);
+    public function isChecked(bool $checked = true): self
+    {
+        $this->setHtmlAttribute(self::OPTION_CHECKED, $checked);
 
-		return $this;
-	}
+        return $this;
+    }
 
     public function isSwitch(bool $switch = true): self
     {

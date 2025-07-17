@@ -30,7 +30,7 @@ class MediaField
 
         $instance
             ->setFormType(UxMediaType::class)
-			->setTemplatePath('field/media.html.twig')
+            ->setTemplatePath('field/media.html.twig')
             ->setConf()
             ->displayTree(false)
             ->allowCrop(false)

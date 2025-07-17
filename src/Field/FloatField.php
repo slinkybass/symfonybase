@@ -21,10 +21,9 @@ class FloatField
     public const OPTION_SLIDER_TOOLTIPS = 'data-slider-tooltips';
     public const OPTION_SLIDER_CONNECT = 'data-slider-connect';
 
-    /** start connect types */
+    /** connect types */
     public const SLIDER_CONNECT_UPPER = 'upper';
     public const SLIDER_CONNECT_LOWER = 'lower';
-    /** end connect types */
 
     private EasyField $field;
 
