@@ -97,6 +97,11 @@ textarea.no-resize {
 	opacity: 1;
 }
 
+/* TomSelect */
+.ts-control {
+	padding: .5625rem 1rem;
+}
+
 /* Flatpickr */
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
