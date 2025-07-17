@@ -23,18 +23,18 @@ class PasswordField
 
         $instance
             ->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())
-            ->repeated(false)
+            ->isRepeated(false)
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function isRepeated(): bool
+    public function checkIsRepeated(): bool
     {
         return $this->getAsDto()->getFormType() == RepeatedType::class;
     }
 
-    public function repeated(bool $repeated = true): self
+    public function isRepeated(bool $repeated = true): self
     {
         if ($repeated) {
             $parentFormType = $this->getAsDto()->getFormType();
@@ -71,7 +71,7 @@ class PasswordField
 
     public function setLabel(?string $label): self
     {
-        if ($this->isRepeated()) {
+        if ($this->checkIsRepeated()) {
             $this->setFirstLabel($label);
             $this->setSecondLabel($label);
         } else {
@@ -83,7 +83,7 @@ class PasswordField
 
     public function setFirstLabel(?string $label): self
     {
-        if ($this->isRepeated()) {
+        if ($this->checkIsRepeated()) {
             $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.label', $label);
         } else {
             $this->getAsDto()->setLabel($label);
@@ -94,7 +94,7 @@ class PasswordField
 
     public function setSecondLabel(?string $label): self
     {
-        if ($this->isRepeated()) {
+        if ($this->checkIsRepeated()) {
             $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.label', $label);
         } else {
             $this->getAsDto()->setLabel($label);
@@ -105,7 +105,7 @@ class PasswordField
 
     public function setPlaceholder(?string $placeholder): self
     {
-        if ($this->isRepeated()) {
+        if ($this->checkIsRepeated()) {
             $this->setFirstPlaceholder($placeholder);
             $this->setSecondPlaceholder($placeholder);
         } else {
@@ -117,7 +117,7 @@ class PasswordField
 
     public function setFirstPlaceholder(?string $placeholder): self
     {
-        if ($this->isRepeated()) {
+        if ($this->checkIsRepeated()) {
             $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $placeholder);
         } else {
             $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
@@ -128,7 +128,7 @@ class PasswordField
 
     public function setSecondPlaceholder(?string $placeholder): self
     {
-        if ($this->isRepeated()) {
+        if ($this->checkIsRepeated()) {
             $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $placeholder);
         } else {
             $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
@@ -139,7 +139,7 @@ class PasswordField
 
     public function setMaxLength(?int $maxLength): self
     {
-        if ($this->isRepeated()) {
+        if ($this->checkIsRepeated()) {
             $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $maxLength);
             $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $maxLength);
         } else {
@@ -151,7 +151,7 @@ class PasswordField
 
     public function setMinLength(?int $minLength): self
     {
-        if ($this->isRepeated()) {
+        if ($this->checkIsRepeated()) {
             $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $minLength);
             $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $minLength);
         } else {

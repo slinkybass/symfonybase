@@ -9,6 +9,8 @@ class FileField
 {
     use FieldTrait;
 
+	public const OPTION_ACCEPT = 'accept';
+
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -23,6 +25,13 @@ class FileField
 
         return $instance;
     }
+
+	public function setAccept(?string $filetype): self
+	{
+		$this->setHtmlAttribute(self::OPTION_ACCEPT, $filetype);
+
+		return $this;
+	}
 
     public function setBasePath(string $path): self
     {

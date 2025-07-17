@@ -92,11 +92,11 @@ class AdminCrudController extends AbstractCrudController
             ->setColumns(2);
         $avatar = FieldGenerator::media('avatar')
             ->setLabel($this->transEntityField('avatar', 'user'))
-            ->conf('public_user_images')
+            ->setConf('public_user_images')
             ->setColumns(8);
         $role = FieldGenerator::association('role')
             ->setLabel($this->transEntitySingular('role'))
-            ->required()
+            ->isRequired()
             ->setQueryBuilder(function ($qb) use ($roles) {
                 $rolesIds = array_map(fn ($r) => $r->getId(), $roles);
                 return empty($rolesIds)
@@ -119,8 +119,8 @@ class AdminCrudController extends AbstractCrudController
         $passwordPanel = FieldGenerator::panel($this->transEntitySection('password', 'user'))
             ->setIcon('key');
         $password = FieldGenerator::password('plainPassword')
-            ->repeated()
-            ->setRequired($pageName == Crud::PAGE_NEW)
+            ->isRepeated()
+            ->isRequired($pageName == Crud::PAGE_NEW)
             ->setFirstLabel($this->transEntityField('password', 'user'))
             ->setSecondLabel($this->transEntityField('repeatPassword', 'user'));
 
@@ -167,7 +167,7 @@ class AdminCrudController extends AbstractCrudController
                     $active,
                 ] : []),
                 $passwordPanel,
-                $password->setRequired($pageName == Crud::PAGE_NEW),
+                $password->isRequired($pageName == Crud::PAGE_NEW),
             ]);
         }
     }

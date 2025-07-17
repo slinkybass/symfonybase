@@ -83,7 +83,7 @@ class FieldGenerator extends AbstractType
 
     public static function switch(string $name)
     {
-        return BooleanField::new($name)->switch();
+        return BooleanField::new($name)->isSwitch();
     }
 
     public static function email(string $name)

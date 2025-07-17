@@ -29,14 +29,14 @@ class ChoiceField
         return $this;
     }
 
-    public function multiple(bool $multiple = true): self
+    public function isMultiple(bool $multiple = true): self
     {
         $this->field->allowMultipleChoices($multiple);
 
         return $this;
     }
 
-    public function expanded(bool $expanded = true): self
+    public function isExpanded(bool $expanded = true): self
     {
         $this->field->renderAsNativeWidget($expanded);
         $this->field->renderExpanded($expanded);

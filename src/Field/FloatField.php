@@ -11,6 +11,8 @@ class FloatField
     use FieldTrait;
 
     public const OPTION_HTML5 = 'html5';
+    public const OPTION_MAX = 'max';
+    public const OPTION_MIN = 'min';
     public const OPTION_STEP = 'step';
 
     public const OPTION_PLUGIN_SLIDER = 'data-slider-field';
@@ -52,28 +54,42 @@ class FloatField
         return $this;
     }
 
-    public function sliderShowInput(bool $show = true): self
+    public function showInputSlider(bool $show = true): self
     {
         $this->setHtmlAttribute(self::OPTION_SLIDER_SHOW_INPUT, json_encode($show));
 
         return $this;
     }
 
-    public function sliderTooltips(bool $tooltips = true): self
+    public function showTooltipSlider(bool $tooltips = true): self
     {
         $this->setHtmlAttribute(self::OPTION_SLIDER_TOOLTIPS, json_encode($tooltips));
 
         return $this;
     }
 
-    public function sliderConnect(string $type): self
+    public function connectSlider(string $type): self
     {
         $this->setHtmlAttribute(self::OPTION_SLIDER_CONNECT, $type);
 
         return $this;
     }
 
-    public function setStep(float $step): self
+    public function setMax(int|float|null $val): self
+    {
+        $this->setHtmlAttribute(self::OPTION_MAX, $val);
+
+        return $this;
+    }
+
+    public function setMin(int|float|null $val): self
+    {
+        $this->setHtmlAttribute(self::OPTION_MIN, $val);
+
+        return $this;
+    }
+
+    public function setStep(int|float|null $step): self
     {
         $this->field->setHtmlAttribute(self::OPTION_STEP, $step);
 

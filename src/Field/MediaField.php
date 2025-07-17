@@ -31,7 +31,7 @@ class MediaField
         $instance
             ->setFormType(UxMediaType::class)
 			->setTemplatePath('field/media.html.twig')
-            ->conf()
+            ->setConf()
             ->displayTree(false)
             ->allowCrop(false)
             ->setDefaultColumns(12);
@@ -39,7 +39,7 @@ class MediaField
         return $instance;
     }
 
-    public function conf(string $conf = 'public_all'): self
+    public function setConf(string $conf = 'public_all'): self
     {
         $this->setFormTypeOption(self::OPTION_CONF, $conf);
 
@@ -98,7 +98,7 @@ class MediaField
         return $this;
     }
 
-    public function ratio($val = false): self
+    public function setRatio($val = false): self
     {
         $this->allowCrop();
         $this->setFormTypeOption(self::OPTION_CROP_OPTIONS . '.' . self::OPTION_CROP_RATIO, $val);

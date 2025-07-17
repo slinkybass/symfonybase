@@ -39,7 +39,7 @@ class CollectionField
         return $this;
     }
 
-    public function entryIsComplex(bool $isComplex = true): self
+    public function isEntryComplex(bool $isComplex = true): self
     {
         $this->field->setEntryIsComplex($isComplex);
 
@@ -67,7 +67,7 @@ class CollectionField
         return $this;
     }
 
-    public function expanded(bool $expanded = true): self
+    public function isExpanded(bool $expanded = true): self
     {
         $this->field->renderExpanded($expanded);
 

@@ -47,7 +47,7 @@ class TextareaField
         return $this;
     }
 
-    public function resizeable(bool $resizeable = true): self
+    public function isResizeable(bool $resizeable = true): self
     {
         $this->setCustomOption(self::OPTION_RESIZEABLE, $resizeable);
 

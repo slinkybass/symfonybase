@@ -8,6 +8,8 @@ class BooleanField
 {
     use FieldTrait;
 
+	public const OPTION_CHECKED = 'checked';
+
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -16,13 +18,20 @@ class BooleanField
         $instance->field = EasyField::new($propertyName, $label);
 
         $instance
-            ->switch(false)
+            ->isSwitch(false)
             ->setDefaultColumns(12);
 
         return $instance;
     }
 
-    public function switch(bool $switch = true): self
+	public function isChecked(bool $checked = true): self
+	{
+		$this->setHtmlAttribute(self::OPTION_CHECKED, $checked);
+
+		return $this;
+	}
+
+    public function isSwitch(bool $switch = true): self
     {
         $this->field->renderAsSwitch($switch);
 

@@ -68,7 +68,7 @@ class ColorField
         return $this;
     }
 
-    public function paletteOnly(bool $paletteOnly = true): self
+    public function isPaletteOnly(bool $paletteOnly = true): self
     {
         $this->setHtmlAttribute(self::OPTION_COLOR_PALETTE_ONLY, json_encode($paletteOnly));
 

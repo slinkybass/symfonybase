@@ -49,7 +49,7 @@ class TimeField
         return $this;
     }
 
-    public function inline(bool $inline = true): self
+    public function isInline(bool $inline = true): self
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($inline));
 

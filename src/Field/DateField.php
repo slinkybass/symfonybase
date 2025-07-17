@@ -73,14 +73,14 @@ class DateField
         return $this;
     }
 
-    public function inline(bool $inline = true): self
+    public function isInline(bool $inline = true): self
     {
         $this->setHtmlAttribute(self::OPTION_DATE_INLINE, json_encode($inline));
 
         return $this;
     }
 
-    public function single(bool $single = true): self
+    public function isSingle(bool $single = true): self
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, $single ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
         $this->setFormType($single ? DateType::class : TextType::class);
@@ -89,7 +89,7 @@ class DateField
         return $this;
     }
 
-    public function multiple(bool $multiple = true): self
+    public function isMultiple(bool $multiple = true): self
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, !$multiple ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
         $this->setFormType(!$multiple ? DateType::class : TextType::class);
@@ -98,7 +98,7 @@ class DateField
         return $this;
     }
 
-    public function range(bool $range = true): self
+    public function isRange(bool $range = true): self
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, !$range ? self::DATE_MODE_SINGLE : self::DATE_MODE_RANGE);
         $this->setFormType(!$range ? DateType::class : TextType::class);

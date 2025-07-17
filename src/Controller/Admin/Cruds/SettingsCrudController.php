@@ -53,11 +53,11 @@ class SettingsCrudController extends AbstractCrudController
             ->setColumns(6);
         $appLogo = FieldGenerator::media('appLogo')
             ->setLabel($this->transEntityField('appLogo'))
-            ->conf('public_config_images')
+            ->setConf('public_config_images')
             ->setColumns(6);
         $appFavicon = FieldGenerator::media('appFavicon')
             ->setLabel($this->transEntityField('appFavicon'))
-            ->conf('public_config_images')
+            ->setConf('public_config_images')
             ->setColumns(6);
         $appTimezone = FieldGenerator::timezone('appTimezone')
             ->setLabel($this->transEntityField('appTimezone'))

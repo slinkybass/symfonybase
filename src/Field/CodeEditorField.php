@@ -312,7 +312,7 @@ class CodeEditorField
         return $this;
     }
 
-    public function indentWithTabs(bool $indent = true): self
+    public function isIndentedWithTabs(bool $indent = true): self
     {
         $this->setHtmlAttribute(self::OPTION_CODEEDITOR_INDENT_WITH_TABS, json_encode($indent));
 

@@ -52,7 +52,7 @@ class MaskField
         return $this;
     }
 
-    public function overwrite(bool $overwrite = true): self
+    public function isOverwrite(bool $overwrite = true): self
     {
         $this->setHtmlAttribute(self::OPTION_MASK_OVERWRITE, json_encode($overwrite));
 

@@ -39,14 +39,14 @@ class TextEditorField
         return $this;
     }
 
-    public function resize(bool $resize = true): self
+    public function isResizeable(bool $resizeable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_RESIZE, json_encode($resize));
+        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_RESIZE, json_encode($resizeable));
 
         return $this;
     }
 
-    public function spellcheck(bool $spellcheck = true): self
+    public function isSpellcheck(bool $spellcheck = true): self
     {
         $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_SPELLCHECK, json_encode($spellcheck));
 
