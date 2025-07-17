@@ -14,6 +14,7 @@ trait FieldTrait
     public const OPTION_MIN_LENGTH = 'minlength';
     public const OPTION_RENDER_AS_HTML = 'renderAsHtml';
     public const OPTION_STRIP_TAGS = 'stripTags';
+    public const OPTION_WIDGET = 'widget';
 
     public function __call(string $method, array $args)
     {

@@ -83,6 +83,11 @@ class DateField
     public function isSingle(bool $single = true): self
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, $single ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
+        if ($single) {
+            $this->renderAsNativeWidget();
+        } else {
+            $this->setCustomOption(self::OPTION_WIDGET, null);
+        }
         $this->setFormType($single ? DateType::class : TextType::class);
         if ($single) {
             $this->setTemplateName('crud/field/date');
@@ -96,6 +101,11 @@ class DateField
     public function isMultiple(bool $multiple = true): self
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, !$multiple ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
+        if (!$multiple) {
+            $this->renderAsNativeWidget();
+        } else {
+            $this->setCustomOption(self::OPTION_WIDGET, null);
+        }
         $this->setFormType(!$multiple ? DateType::class : TextType::class);
         if (!$multiple) {
             $this->setTemplateName('crud/field/date');
@@ -109,6 +119,11 @@ class DateField
     public function isRange(bool $range = true): self
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, !$range ? self::DATE_MODE_SINGLE : self::DATE_MODE_RANGE);
+        if (!$range) {
+            $this->renderAsNativeWidget();
+        } else {
+            $this->setCustomOption(self::OPTION_WIDGET, null);
+        }
         $this->setFormType(!$range ? DateType::class : TextType::class);
         if (!$range) {
             $this->setTemplateName('crud/field/date');

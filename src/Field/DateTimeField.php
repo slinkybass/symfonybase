@@ -59,6 +59,11 @@ class DateTimeField
     public function isSingle(bool $single = true): self
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $single ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
+        if ($single) {
+            $this->renderAsNativeWidget();
+        } else {
+            $this->setCustomOption(self::OPTION_WIDGET, null);
+        }
         $this->setFormType($single ? DateTimeType::class : TextType::class);
         if ($single) {
             $this->setTemplateName('crud/field/datetime');
@@ -72,6 +77,11 @@ class DateTimeField
     public function isMultiple(bool $multiple = true): self
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$multiple ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
+        if (!$multiple) {
+            $this->renderAsNativeWidget();
+        } else {
+            $this->setCustomOption(self::OPTION_WIDGET, null);
+        }
         $this->setFormType(!$multiple ? DateTimeType::class : TextType::class);
         if (!$multiple) {
             $this->setTemplateName('crud/field/datetime');
@@ -85,6 +95,11 @@ class DateTimeField
     public function isRange(bool $range = true): self
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$range ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_RANGE);
+        if (!$range) {
+            $this->renderAsNativeWidget();
+        } else {
+            $this->setCustomOption(self::OPTION_WIDGET, null);
+        }
         $this->setFormType(!$range ? DateTimeType::class : TextType::class);
         if (!$range) {
             $this->setTemplateName('crud/field/datetime');
