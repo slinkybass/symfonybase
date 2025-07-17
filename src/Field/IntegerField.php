@@ -10,20 +10,6 @@ class IntegerField
 {
     use FieldTrait;
 
-    public const OPTION_MAX = 'max';
-    public const OPTION_MIN = 'min';
-
-    public const OPTION_PLUGIN_SLIDER = 'data-slider-field';
-
-    public const OPTION_SLIDER_SHOW_INPUT = 'data-slider-show-input';
-    public const OPTION_SLIDER_TOOLTIPS = 'data-slider-tooltips';
-    public const OPTION_SLIDER_CONNECT = 'data-slider-connect';
-
-    /** start connect types */
-    public const SLIDER_CONNECT_UPPER = 'upper';
-    public const SLIDER_CONNECT_LOWER = 'lower';
-    /** end connect types */
-
     private EasyField $field;
 
     public static function new(string $propertyName, $label = null): self
@@ -39,7 +25,7 @@ class IntegerField
 
     public function pluginSlider(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN_SLIDER, json_encode($enable));
+        $this->setHtmlAttribute(FloatField::OPTION_PLUGIN_SLIDER, json_encode($enable));
         if ($enable) {
             $this->field->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
         } else {
@@ -51,35 +37,35 @@ class IntegerField
 
     public function setMax(int|float|null $val): self
     {
-        $this->setHtmlAttribute(self::OPTION_MAX, $val);
+        $this->setHtmlAttribute(FloatField::OPTION_MAX, $val);
 
         return $this;
     }
 
     public function setMin(int|float|null $val): self
     {
-        $this->setHtmlAttribute(self::OPTION_MIN, $val);
+        $this->setHtmlAttribute(FloatField::OPTION_MIN, $val);
 
         return $this;
     }
 
     public function showInputSlider(bool $show = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_SHOW_INPUT, json_encode($show));
+        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_SHOW_INPUT, json_encode($show));
 
         return $this;
     }
 
     public function showTooltipSlider(bool $tooltips = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_TOOLTIPS, json_encode($tooltips));
+        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_TOOLTIPS, json_encode($tooltips));
 
         return $this;
     }
 
     public function connectSlider(string $type): self
     {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_CONNECT, $type);
+        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_CONNECT, $type);
 
         return $this;
     }
