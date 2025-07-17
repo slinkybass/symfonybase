@@ -21,6 +21,7 @@ class FileField
 
         $instance
             ->setCssClass('field-file')
+			->setUploadDir('public/media')
             ->setDefaultColumns(12);
 
         return $instance;
