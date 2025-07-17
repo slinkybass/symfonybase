@@ -84,7 +84,11 @@ class DateField
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, $single ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
         $this->setFormType($single ? DateType::class : TextType::class);
-        $this->setTemplateName($single ? 'crud/field/date' : 'field/dateMultiple.html.twig');
+        if ($single) {
+            $this->setTemplateName('crud/field/date');
+        } else {
+            $this->setTemplatePath('field/dateMultiple.html.twig');
+        }
 
         return $this;
     }
@@ -93,7 +97,11 @@ class DateField
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, !$multiple ? self::DATE_MODE_SINGLE : self::DATE_MODE_MULTIPLE);
         $this->setFormType(!$multiple ? DateType::class : TextType::class);
-        $this->setTemplateName(!$multiple ? 'crud/field/date' : 'field/dateMultiple.html.twig');
+        if (!$multiple) {
+            $this->setTemplateName('crud/field/date');
+        } else {
+            $this->setTemplatePath('field/dateMultiple.html.twig');
+        }
 
         return $this;
     }
@@ -102,7 +110,11 @@ class DateField
     {
         $this->setHtmlAttribute(self::OPTION_DATE_MODE, !$range ? self::DATE_MODE_SINGLE : self::DATE_MODE_RANGE);
         $this->setFormType(!$range ? DateType::class : TextType::class);
-        $this->setTemplateName(!$range ? 'crud/field/date' : 'field/dateMultiple.html.twig');
+        if (!$range) {
+            $this->setTemplateName('crud/field/date');
+        } else {
+            $this->setTemplatePath('field/dateMultiple.html.twig');
+        }
 
         return $this;
     }

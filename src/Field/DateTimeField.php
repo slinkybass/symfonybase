@@ -60,7 +60,11 @@ class DateTimeField
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $single ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
         $this->setFormType($single ? DateTimeType::class : TextType::class);
-        $this->setTemplateName($single ? 'crud/field/datetime' : 'field/datetimeMultiple.html.twig');
+        if ($single) {
+            $this->setTemplateName('crud/field/datetime');
+        } else {
+            $this->setTemplatePath('field/datetimeMultiple.html.twig');
+        }
 
         return $this;
     }
@@ -69,7 +73,11 @@ class DateTimeField
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$multiple ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_MULTIPLE);
         $this->setFormType(!$multiple ? DateTimeType::class : TextType::class);
-        $this->setTemplateName(!$multiple ? 'crud/field/datetime' : 'field/datetimeMultiple.html.twig');
+        if (!$multiple) {
+            $this->setTemplateName('crud/field/datetime');
+        } else {
+            $this->setTemplatePath('field/datetimeMultiple.html.twig');
+        }
 
         return $this;
     }
@@ -78,7 +86,11 @@ class DateTimeField
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$range ? DateField::DATE_MODE_SINGLE : DateField::DATE_MODE_RANGE);
         $this->setFormType(!$range ? DateTimeType::class : TextType::class);
-        $this->setTemplateName(!$range ? 'crud/field/datetime' : 'field/datetimeMultiple.html.twig');
+        if (!$range) {
+            $this->setTemplateName('crud/field/datetime');
+        } else {
+            $this->setTemplatePath('field/datetimeMultiple.html.twig');
+        }
 
         return $this;
     }
