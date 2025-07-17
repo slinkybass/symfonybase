@@ -29,16 +29,22 @@ import SignaturePad from "signature_pad";
 
 			const signaturePad = new SignaturePad(canvas);
 			resizeCanvas(signaturePad);
-			addEventListener("resize", (e) => {resizeCanvas(signaturePad)});
-			addEventListener("shown.bs.tab", (e) => {resizeCanvas(signaturePad)});
+			addEventListener("resize", (e) => {
+				resizeCanvas(signaturePad);
+			});
+			addEventListener("shown.bs.tab", (e) => {
+				resizeCanvas(signaturePad);
+			});
 
 			signaturePad.addEventListener("afterUpdateStroke", () => {
 				const dataUrl = signaturePad.toDataURL("image/png");
-				cropDataURL(dataUrl).then(newDataUrl => {
-					e.value = newDataUrl;
-				}).catch(error => {
-					e.value = null;
-				});
+				cropDataURL(dataUrl)
+					.then((newDataUrl) => {
+						e.value = newDataUrl;
+					})
+					.catch((error) => {
+						e.value = null;
+					});
 			});
 
 			const canvasActions = e.parentNode.querySelector(".signature-pad-actions");
@@ -109,20 +115,20 @@ import SignaturePad from "signature_pad";
 		function cropDataURL(dataUrl) {
 			return new Promise((resolve, reject) => {
 				const img = new Image();
-				img.onload = function() {
-					const canvas = document.createElement('canvas');
-					const ctx = canvas.getContext('2d');
+				img.onload = function () {
+					const canvas = document.createElement("canvas");
+					const ctx = canvas.getContext("2d");
 					canvas.width = img.width;
 					canvas.height = img.height;
 					ctx.drawImage(img, 0, 0);
-		
+
 					const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 					const pixels = imageData.data;
 					let minX = canvas.width;
 					let minY = canvas.height;
 					let maxX = 0;
 					let maxY = 0;
-		
+
 					for (let y = 0; y < canvas.height; y++) {
 						for (let x = 0; x < canvas.width; x++) {
 							const index = (y * canvas.width + x) * 4;
@@ -135,18 +141,18 @@ import SignaturePad from "signature_pad";
 							}
 						}
 					}
-		
+
 					const width = maxX - minX + 1;
 					const height = maxY - minY + 1;
 					const padding = 15;
-					const newCanvas = document.createElement('canvas');
-					const newCtx = newCanvas.getContext('2d');
+					const newCanvas = document.createElement("canvas");
+					const newCtx = newCanvas.getContext("2d");
 					newCanvas.width = width + 2 * padding;
 					newCanvas.height = height + 2 * padding;
 					newCtx.clearRect(0, 0, newCanvas.width, newCanvas.height);
 					newCtx.drawImage(canvas, minX, minY, width, height, padding, padding, width, height);
-		
-					resolve(minY < maxY ? newCanvas.toDataURL('image/png') : null);
+
+					resolve(minY < maxY ? newCanvas.toDataURL("image/png") : null);
 				};
 				img.onerror = reject;
 				img.src = dataUrl;

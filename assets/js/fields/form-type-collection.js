@@ -1,100 +1,100 @@
 const eaCollectionHandler = function (event) {
-    document.querySelectorAll('button.field-collection-add-button').forEach((addButton) => {
-        const collection = addButton.closest('[data-ea-collection-field]');
+	document.querySelectorAll("button.field-collection-add-button").forEach((addButton) => {
+		const collection = addButton.closest("[data-ea-collection-field]");
 
-        if (!collection || collection.classList.contains('processed')) {
-            return;
-        }
+		if (!collection || collection.classList.contains("processed")) {
+			return;
+		}
 
-        EaCollectionProperty.handleAddButton(addButton, collection);
-        EaCollectionProperty.updateCollectionItemCssClasses(collection);
-    });
+		EaCollectionProperty.handleAddButton(addButton, collection);
+		EaCollectionProperty.updateCollectionItemCssClasses(collection);
+	});
 
-    document.querySelectorAll('button.field-collection-delete-button').forEach((deleteButton) => {
-        deleteButton.addEventListener('click', () => {
-            const collection = deleteButton.closest('[data-ea-collection-field]');
-            const item = deleteButton.closest('.field-collection-item');
+	document.querySelectorAll("button.field-collection-delete-button").forEach((deleteButton) => {
+		deleteButton.addEventListener("click", () => {
+			const collection = deleteButton.closest("[data-ea-collection-field]");
+			const item = deleteButton.closest(".field-collection-item");
 
-            item.remove();
-            document.dispatchEvent(new Event('ea.collection.item-removed'));
+			item.remove();
+			document.dispatchEvent(new Event("ea.collection.item-removed"));
 
-            EaCollectionProperty.updateCollectionItemCssClasses(collection);
-        });
-    });
-}
+			EaCollectionProperty.updateCollectionItemCssClasses(collection);
+		});
+	});
+};
 
-window.addEventListener('DOMContentLoaded', eaCollectionHandler);
-document.addEventListener('ea.collection.item-added', eaCollectionHandler);
+window.addEventListener("DOMContentLoaded", eaCollectionHandler);
+document.addEventListener("ea.collection.item-added", eaCollectionHandler);
 
 const EaCollectionProperty = {
-    handleAddButton: (addButton, collection) => {
-        addButton.addEventListener('click', function() {
-            const isArrayCollection = collection.classList.contains('field-array');
-            // Use a counter to avoid having the same index more than once
-            let numItems = parseInt(collection.dataset.numItems);
+	handleAddButton: (addButton, collection) => {
+		addButton.addEventListener("click", function () {
+			const isArrayCollection = collection.classList.contains("field-array");
+			// Use a counter to avoid having the same index more than once
+			let numItems = parseInt(collection.dataset.numItems);
 
-            // Remove the 'Empty Collection' badge, if present
-            const emptyCollectionBadge = this.parentElement.querySelector('.collection-empty');
-            if (null !== emptyCollectionBadge) {
-                emptyCollectionBadge.outerHTML = isArrayCollection ? '' : '<div class="accordion"><div class="form-widget-compound"><div data-empty-collection></div></div></div>';
-            }
+			// Remove the 'Empty Collection' badge, if present
+			const emptyCollectionBadge = this.parentElement.querySelector(".collection-empty");
+			if (null !== emptyCollectionBadge) {
+				emptyCollectionBadge.outerHTML = isArrayCollection ? "" : '<div class="accordion"><div class="form-widget-compound"><div data-empty-collection></div></div></div>';
+			}
 
-            const formTypeNamePlaceholder = collection.dataset.formTypeNamePlaceholder;
-            const labelRegexp = new RegExp(formTypeNamePlaceholder + 'label__', 'g');
-            const nameRegexp = new RegExp(formTypeNamePlaceholder, 'g');
-            const hfParentRegexp = new RegExp('data-hf-parent="([^"]*)"', 'g');
-            const hfChildRegexp = new RegExp('data-hf-child="([^"]*)"', 'g');
+			const formTypeNamePlaceholder = collection.dataset.formTypeNamePlaceholder;
+			const labelRegexp = new RegExp(formTypeNamePlaceholder + "label__", "g");
+			const nameRegexp = new RegExp(formTypeNamePlaceholder, "g");
+			const hfParentRegexp = new RegExp('data-hf-parent="([^"]*)"', "g");
+			const hfChildRegexp = new RegExp('data-hf-child="([^"]*)"', "g");
 
-            let newItemHtml = collection.dataset.prototype
-                .replace(labelRegexp, numItems)
-                .replace(nameRegexp, numItems)
-                .replace(hfParentRegexp, (match, p1) => `data-hf-parent="${p1}_${numItems}"`)
-                .replace(hfChildRegexp, (match, p1) => `data-hf-child="${p1}_${numItems}"`);
+			let newItemHtml = collection.dataset.prototype
+				.replace(labelRegexp, numItems)
+				.replace(nameRegexp, numItems)
+				.replace(hfParentRegexp, (match, p1) => `data-hf-parent="${p1}_${numItems}"`)
+				.replace(hfChildRegexp, (match, p1) => `data-hf-child="${p1}_${numItems}"`);
 
-            collection.dataset.numItems = ++numItems;
-            const newItemInsertionSelector = isArrayCollection ? '.ea-form-collection-items' : '.ea-form-collection-items .accordion > .form-widget-compound [data-empty-collection]';
-            const collectionItemsWrapper = collection.querySelector(newItemInsertionSelector);
+			collection.dataset.numItems = ++numItems;
+			const newItemInsertionSelector = isArrayCollection ? ".ea-form-collection-items" : ".ea-form-collection-items .accordion > .form-widget-compound [data-empty-collection]";
+			const collectionItemsWrapper = collection.querySelector(newItemInsertionSelector);
 
-            collectionItemsWrapper.insertAdjacentHTML('beforeend', newItemHtml);
+			collectionItemsWrapper.insertAdjacentHTML("beforeend", newItemHtml);
 
-            // Execute JS scripts embedded in prototype
-            const collectionItems = collectionItemsWrapper.querySelectorAll('.field-collection-item');
-            const lastElement = collectionItems[collectionItems.length - 1];
-            lastElement.querySelectorAll('script').forEach(script => eval(script.innerHTML));
+			// Execute JS scripts embedded in prototype
+			const collectionItems = collectionItemsWrapper.querySelectorAll(".field-collection-item");
+			const lastElement = collectionItems[collectionItems.length - 1];
+			lastElement.querySelectorAll("script").forEach((script) => eval(script.innerHTML));
 
-            // for complex collections of items, show the newly added item as not collapsed
-            if (!isArrayCollection) {
-                EaCollectionProperty.updateCollectionItemCssClasses(collection);
-                const lastElementCollapseButton = lastElement.querySelector('.accordion-button');
-                lastElementCollapseButton.classList.remove('collapsed');
-                const lastElementBody = lastElement.querySelector('.accordion-collapse');
-                lastElementBody.classList.add('show');
-            }
+			// for complex collections of items, show the newly added item as not collapsed
+			if (!isArrayCollection) {
+				EaCollectionProperty.updateCollectionItemCssClasses(collection);
+				const lastElementCollapseButton = lastElement.querySelector(".accordion-button");
+				lastElementCollapseButton.classList.remove("collapsed");
+				const lastElementBody = lastElement.querySelector(".accordion-collapse");
+				lastElementBody.classList.add("show");
+			}
 
-            document.dispatchEvent(new CustomEvent('ea.collection.item-added', { detail: { newElement: lastElement }}));
-        });
+			document.dispatchEvent(new CustomEvent("ea.collection.item-added", { detail: { newElement: lastElement } }));
+		});
 
-        collection.classList.add('processed');
-    },
+		collection.classList.add("processed");
+	},
 
-    updateCollectionItemCssClasses: (collection) => {
-        if (null === collection) {
-            return;
-        }
+	updateCollectionItemCssClasses: (collection) => {
+		if (null === collection) {
+			return;
+		}
 
-        const collectionItems = collection.querySelectorAll('.field-collection-item');
-        collectionItems.forEach((item) => item.classList.remove('field-collection-item-first', 'field-collection-item-last'));
+		const collectionItems = collection.querySelectorAll(".field-collection-item");
+		collectionItems.forEach((item) => item.classList.remove("field-collection-item-first", "field-collection-item-last"));
 
-        const firstElement = collectionItems[0];
-        if (undefined === firstElement) {
-            return;
-        }
-        firstElement.classList.add('field-collection-item-first');
+		const firstElement = collectionItems[0];
+		if (undefined === firstElement) {
+			return;
+		}
+		firstElement.classList.add("field-collection-item-first");
 
-        const lastElement = collectionItems[collectionItems.length - 1];
-        if (undefined === lastElement) {
-            return;
-        }
-        lastElement.classList.add('field-collection-item-last');
-    }
+		const lastElement = collectionItems[collectionItems.length - 1];
+		if (undefined === lastElement) {
+			return;
+		}
+		lastElement.classList.add("field-collection-item-last");
+	},
 };

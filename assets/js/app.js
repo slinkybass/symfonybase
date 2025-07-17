@@ -37,7 +37,7 @@ window.Toast = Toast;
 import "sweetalert2/dist/sweetalert2.min.css";
 
 // Moment
-import moment from 'moment/min/moment-with-locales.min.js';
+import moment from "moment/min/moment-with-locales.min.js";
 window.moment = moment;
 
 // BasicLightbox
@@ -60,8 +60,8 @@ import "nouislider/dist/nouislider.min.css";
 import "@tabler/core/dist/css/tabler-vendors.min.css";
 
 // UX Translator
-import { trans } from '@symfony/ux-translator';
-import * as translations from '@app/translations';
+import { trans } from "@symfony/ux-translator";
+import * as translations from "@app/translations";
 window.trans = trans;
 window.translations = translations;
 

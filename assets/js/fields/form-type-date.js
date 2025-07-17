@@ -39,8 +39,12 @@ import "flatpickr/dist/flatpickr.min.css";
 				altFormat: altFormat,
 				allowInput: true,
 				disableMobile: true,
-				parseDate: (datestr, format) => { return moment(datestr, format, true).toDate(); },
-				formatDate: (date, format, locale) => { return moment(date).format(format); },
+				parseDate: (datestr, format) => {
+					return moment(datestr, format, true).toDate();
+				},
+				formatDate: (date, format, locale) => {
+					return moment(date).format(format);
+				},
 			};
 
 			if (max) {
@@ -66,10 +70,13 @@ import "flatpickr/dist/flatpickr.min.css";
 					},
 				];
 				flatPickrOtps.onOpen = function (selectedDates, dateStr, instance) {
-					const dates = enabledDates.split(",").map(function (dt) {
-						const dateDt = new Date(dt);
-						return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000);
-					}).sort((a, b) => a - b);
+					const dates = enabledDates
+						.split(",")
+						.map(function (dt) {
+							const dateDt = new Date(dt);
+							return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000);
+						})
+						.sort((a, b) => a - b);
 					instance.currentMonth = dates[0].getMonth();
 					instance.currentYear = dates[0].getFullYear();
 					instance.redraw();

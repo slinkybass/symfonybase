@@ -71,7 +71,7 @@ const App = (() => {
 							const secondElement = form.querySelector(`[name="${secondElementName}"]`);
 							if (secondElement) {
 								if (secondElement.value !== input.value) {
-									const validityMessage = trans(translations.THE_VALUES_DO_NOT_MATCH, {}, 'validators') ;
+									const validityMessage = trans(translations.THE_VALUES_DO_NOT_MATCH, {}, "validators");
 									input.setCustomValidity(validityMessage);
 									secondElement.setCustomValidity(validityMessage);
 								} else {

@@ -1,5 +1,5 @@
-import { localeFallbacks } from '@app/translations/configuration';
-import { trans, getLocale, setLocale, setLocaleFallbacks } from '@symfony/ux-translator';
+import { localeFallbacks } from "@app/translations/configuration";
+import { trans, getLocale, setLocale, setLocaleFallbacks } from "@symfony/ux-translator";
 /*
  * This file is part of the Symfony UX Translator package.
  *
@@ -13,4 +13,4 @@ setLocaleFallbacks(localeFallbacks);
 
 export { trans };
 
-export * from '@app/translations';
+export * from "@app/translations";
