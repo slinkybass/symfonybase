@@ -41,6 +41,11 @@ class FieldGenerator extends AbstractType
         return TextField::new($name);
     }
 
+    public static function mask(string $name)
+    {
+        return MaskField::new($name);
+    }
+
     public static function hidden(string $name)
     {
         return HiddenField::new($name);
@@ -78,8 +83,7 @@ class FieldGenerator extends AbstractType
 
     public static function switch(string $name)
     {
-        return BooleanField::new($name)
-            ->switch();
+        return BooleanField::new($name)->switch();
     }
 
     public static function email(string $name)
@@ -152,6 +156,21 @@ class FieldGenerator extends AbstractType
         return ColorField::new($name);
     }
 
+    public static function signature(string $name)
+    {
+        return SignatureField::new($name);
+    }
+
+    public static function media(string $name)
+    {
+        return MediaField::new($name);
+    }
+
+    public static function file(string $name)
+    {
+        return FileField::new($name);
+    }
+
     public static function array(string $name)
     {
         return ArrayField::new($name);
@@ -165,20 +184,5 @@ class FieldGenerator extends AbstractType
     public static function association(string $name)
     {
         return AssociationField::new($name);
-    }
-
-    public static function file(string $name)
-    {
-        return FileField::new($name);
-    }
-
-    public static function signature(string $name)
-    {
-        return SignatureField::new($name);
-    }
-
-    public static function media(string $name)
-    {
-        return MediaField::new($name);
     }
 }

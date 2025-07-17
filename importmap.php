@@ -80,6 +80,10 @@ return [
         'path' => './assets/js/fields/form-type-datetime.js',
         'entrypoint' => true,
     ],
+    'form-type-mask' => [
+        'path' => './assets/js/fields/form-type-mask.js',
+        'entrypoint' => true,
+    ],
     'form-type-password' => [
         'path' => './assets/js/fields/form-type-password.js',
         'entrypoint' => true,
@@ -316,5 +320,8 @@ return [
     'nouislider/dist/nouislider.min.css' => [
         'version' => '15.8.1',
         'type' => 'css',
+    ],
+    'imask' => [
+        'version' => '7.6.1',
     ],
 ];
