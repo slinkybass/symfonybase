@@ -104,7 +104,12 @@
                 {% set has_prepend_html = field.prepend_html|default(null) is not null %}
                 {% set has_append_html = field.append_html|default(null) is not null %}
                 {% set has_input_groups = has_prepend_html or has_append_html %}
+				{% set has_help = field.help ?? form.vars.help ?? false %}
 
+				{% if has_help %}
+                    <div class="row g-2">
+                        <div class="col">
+				{% endif %}
                 {% if has_input_groups %}<div class="input-group">{% endif %}
                     {% if has_prepend_html %}
                         <div class="input-group-prepend">
@@ -119,11 +124,18 @@
                     {% endif %}
                 {% if has_input_groups %}</div>{% endif %}
 
-                {% if field.help ?? false %}
-                    <small class="form-text form-help">{{ field.help|trans(label_translation_parameters, translation_domain)|raw }}</small>
-                {% elseif form.vars.help ?? false %}
-                    <small class="form-text form-help">{{ form.vars.help|trans(form.vars.help_translation_parameters, form.vars.translation_domain)|raw }}</small>
-                {% endif %}
+				{% if has_help %}
+                        </div>
+                        <div class="col-auto align-self-center">
+                            {% set helpMsg = field.help ?? form.vars.help %}
+                            <span class="form-help"
+                                title="{{ helpMsg|trans(label_translation_parameters, translation_domain)|raw }}"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                data-bs-html="true">?</span>
+                        </div>
+                    </div>
+				{% endif %}
 
                 {{- form_errors(form) -}}
             </div>
