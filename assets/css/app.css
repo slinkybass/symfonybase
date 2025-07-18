@@ -5,6 +5,27 @@
 	--tblr-font-sans-serif: "Jost";
 }
 
+/* Helpers */
+.hide-scroll {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.hide-scroll::-webkit-scrollbar {
+	display: none;
+}
+
+input[type="number"].no-spinners::-webkit-outer-spin-button,
+input[type="number"].no-spinners::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type="number"].no-spinners {
+	appearance: textfield;
+	-moz-appearance: textfield;
+}
+
 /* Tables fixes */
 .markdown > table thead th,
 .table thead th {
@@ -20,11 +41,16 @@
 
 .form-control:focus,
 .form-select:focus,
+.form-check-input:focus {
+	box-shadow: var(--tblr-shadow-input), 0 0 0 .25rem rgba(var(--tblr-primary-rgb), .25);
+}
+
+.form-control:focus,
+.form-select:focus,
 .form-check-input:focus,
 .input-group-flat:focus-within .form-control,
 .input-group-flat:focus-within .input-group-text {
-	border-color: var(--tblr-primary-lt);
-	box-shadow: var(--tblr-shadow-input), 0 0 0 .25rem rgba(var(--tblr-primary-rgb), .25) !important;
+	border-color: var(--tblr-primary-lt) !important;
 }
 
 .form-switch .form-check-input:focus {
