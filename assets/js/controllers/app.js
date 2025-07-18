@@ -104,7 +104,7 @@ const App = (() => {
 									if (!firstTabError) {
 										firstTabError = tab;
 									}
-									if (!tab.classList.contains("text-danger")) {
+									if (firstTabError !== tab && !tab.classList.contains("text-danger")) {
 										tab.classList.add("text-danger");
 
 										tab.addEventListener("click", function onTabClick() {
