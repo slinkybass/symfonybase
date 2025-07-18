@@ -26,10 +26,10 @@ ace.config.set("workerPath", CDN);
 			const theme = e.hasAttribute("data-codeeditor-theme") ? e.getAttribute("data-codeeditor-theme") : "chrome";
 			const language = e.hasAttribute("data-codeeditor-language") ? e.getAttribute("data-codeeditor-language") : "javascript";
 			const tabSize = e.hasAttribute("data-codeeditor-tab-size") ? e.getAttribute("data-codeeditor-tab-size") : 4;
-			const indentWithTabs = e.hasAttribute("data-codeeditor-indent-with-tabs") ? e.getAttribute("data-codeeditor-indent-with-tabs") !== "false" : false;
-			const showLineNumbers = e.hasAttribute("data-codeeditor-show-line-numbers") ? e.getAttribute("data-codeeditor-show-line-numbers") !== "false" : false;
-			const minLines = e.hasAttribute("data-codeeditor-min-lines") ? e.getAttribute("data-codeeditor-min-lines") : null;
-			const maxLines = e.hasAttribute("data-codeeditor-max-lines") ? e.getAttribute("data-codeeditor-max-lines") : null;
+			const indentWithTabs = e.hasAttribute("data-codeeditor-indent-with-tabs") ? e.getAttribute("data-codeeditor-indent-with-tabs") !== "false" : true;
+			const showLineNumbers = e.hasAttribute("data-codeeditor-show-line-numbers") ? e.getAttribute("data-codeeditor-show-line-numbers") !== "false" : true;
+			const minLines = e.hasAttribute("data-codeeditor-min-lines") ? e.getAttribute("data-codeeditor-min-lines") : 5;
+			const maxLines = e.hasAttribute("data-codeeditor-max-lines") ? e.getAttribute("data-codeeditor-max-lines") : 20;
 
 			// Clone and hide the original field
 			const clonedE = e.cloneNode(true);

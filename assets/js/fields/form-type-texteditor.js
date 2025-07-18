@@ -54,7 +54,7 @@ import "tinymce/plugins/wordcount";
 	window.formTypeTextEditor = function formTypeTextEditor(selector = '[data-texteditor-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
 			const resize = e.hasAttribute("data-texteditor-resize") ? e.getAttribute("data-texteditor-resize") !== "false" : false;
-			const spellcheck = e.hasAttribute("data-texteditor-spellcheck") ? e.getAttribute("data-texteditor-spellcheck") !== "false" : false;
+			const spellcheck = e.hasAttribute("data-texteditor-spellcheck") ? e.getAttribute("data-texteditor-spellcheck") !== "false" : true;
 			const defaultToolbar =
 				"undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table insertfile | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen | print";
 			const toolbar = e.hasAttribute("data-texteditor-toolbar") ? e.getAttribute("data-texteditor-toolbar") : defaultToolbar;
