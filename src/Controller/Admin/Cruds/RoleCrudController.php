@@ -67,8 +67,8 @@ class RoleCrudController extends AbstractCrudController
         $permissionsPanel = FieldGenerator::panel($this->transEntitySection('permissions'))
             ->setIcon('lock');
         $permissions = $this->rolePermissions->getGroupedPermissions();
-        $crudPermissionsFields = [];
-        $this->rolePermissions->loopPermissions($permissions, function ($permission, $parentPermission, $level) use (&$crudPermissionsFields) {
+        $permissionsFields = [];
+        $this->rolePermissions->loopPermissions($permissions, function ($permission, $parentPermission, $level) use (&$permissionsFields) {
             if ($this->hasPermission($permission)) {
                 $isCrudPermission = strpos($permission, 'crud') !== false;
                 if ($isCrudPermission) {
@@ -86,16 +86,16 @@ class RoleCrudController extends AbstractCrudController
                         $permissionLabel = $this->translator->trans('entities.' . $entity . '.actions.' . $action);
                     }
                 } else {
-                    $permissionLabel = $this->translator->trans('permissions.' . $permission);
+                    $permissionLabel = $this->translator->trans('entities.role.permissions.' . $permission);
                 }
 
-                $crudPermissionsFields[] = $this->generatePermissionField($permission, $permissionLabel, $parentPermission, $level);
+                $permissionsFields[] = $this->generatePermissionField($permission, $permissionLabel, $parentPermission, $level);
             }
         });
-        $haveAnyCrudPermissions = false;
-        foreach ($crudPermissionsFields as $crudPermissionsField) {
-            if ($this->hasPermission($crudPermissionsField->getAsDto()->getProperty())) {
-                $haveAnyCrudPermissions = true;
+        $haveAnyPermissions = false;
+        foreach ($permissionsFields as $permissionsField) {
+            if ($this->hasPermission($permissionsField->getAsDto()->getProperty())) {
+                $haveAnyPermissions = true;
                 break;
             }
         }
@@ -123,9 +123,9 @@ class RoleCrudController extends AbstractCrudController
                 ...($publicEnabled ? [
                     $isAdmin,
                 ] : []),
-                ...($haveAnyCrudPermissions ? [
+                ...($haveAnyPermissions ? [
                     $permissionsPanel,
-                    ...$crudPermissionsFields,
+                    ...$permissionsFields,
                 ] : []),
                 $usersPanel,
                 $users->setLabel(false),
@@ -137,9 +137,9 @@ class RoleCrudController extends AbstractCrudController
                 ...($publicEnabled ? [
                     $isAdmin,
                 ] : []),
-                ...($haveAnyCrudPermissions ? [
+                ...($haveAnyPermissions ? [
                     $permissionsPanel,
-                    ...$crudPermissionsFields,
+                    ...$permissionsFields,
                 ] : []),
             ]);
         }

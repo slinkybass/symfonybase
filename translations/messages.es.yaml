@@ -84,5 +84,7 @@ entities:
       permissions: Permisos
     permissions:
       media: Media
-      mediaEdit: Editar
+      mediaTree: Árbol de carpetas
+      mediaUpload: Subir archivos
+      mediaEdit: Editar archivos
       mediaFolders: Crear carpetas
