@@ -3,7 +3,7 @@
 
 {% set isModal = fileManager.module == "1" %}
 {% set showTree = app.user and app.user.hasPermission('mediaTree') %}
-{% set canUpload = not isModal and app.user and app.user.hasPermission('mediaUpload') %}
+{% set canUpload = app.user and app.user.hasPermission('mediaUpload') %}
 {% set canEdit = not isModal and app.user and app.user.hasPermission('mediaEdit') %}
 {% set canCreateFolders = not isModal and app.user and app.user.hasPermission('mediaFolders') %}
 {% set isRoot = not fileManager.parent or app.request.get('route') == '\\' %}

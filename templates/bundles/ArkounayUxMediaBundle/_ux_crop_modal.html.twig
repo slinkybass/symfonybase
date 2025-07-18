@@ -23,17 +23,17 @@
 					<div class="col-md-6">
 						<div class="btn-toolbar pb-3">
 							<div class="btn-group me-2">
-								<button type="button" class="btn btn-outline-secondary" title="{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}" data-bs-toggle="button" aria-pressed="true" data-action="arkounay--ux-media--crop#toggleCrop">
+								<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}" data-bs-toggle="button" aria-pressed="true" data-action="arkounay--ux-media--crop#toggleCrop">
 									<twig:ux:icon class="icon" name="tabler:crop" />
 								</button>
 							</div>
 
 							{% if crop_options.allow_rotation %}
 								<div class="btn-group me-2">
-									<button type="button" class="btn btn-outline-secondary" title="{{ 'action.rotateLeft'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#rotateLeft">
+									<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.rotateLeft'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#rotateLeft">
 										<twig:ux:icon class="icon" name="tabler:rotate" />
 									</button>
-									<button type="button" class="btn btn-outline-secondary" title="{{ 'action.rotateRight'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#rotateRight">
+									<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.rotateRight'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#rotateRight">
 										<twig:ux:icon class="icon" name="tabler:rotate-clockwise" />
 									</button>
 								</div>
@@ -41,10 +41,10 @@
 
 							{% if crop_options.allow_flip %}
 								<div class="btn-group me-2">
-									<button type="button" class="btn btn-outline-secondary" title="{{ 'action.flipHorizontal'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#flipHorizontal">
+									<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.flipHorizontal'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#flipHorizontal">
 										<twig:ux:icon class="icon" name="tabler:arrows-horizontal" />
 									</button>
-									<button type="button" class="btn btn-outline-secondary" title="{{ 'action.flipVertical'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#flipVertical">
+									<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.flipVertical'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#flipVertical">
 										<twig:ux:icon class="icon" name="tabler:arrows-vertical" />
 									</button>
 								</div>

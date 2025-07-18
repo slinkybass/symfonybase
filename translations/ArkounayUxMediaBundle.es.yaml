@@ -1,0 +1,12 @@
+action:
+  crop: "Recortar"
+  rotateLeft: "Girar a la izquierda"
+  rotateRight: "Girar a la derecha"
+  flipHorizontal: "Voltear horizontalmente"
+  flipVertical: "Voltear verticalmente"
+size:
+  x: "X"
+  y: "Y"
+  width: "Ancho"
+  height: "Alto"
+  ratio: "Ratio"

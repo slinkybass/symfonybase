@@ -10,9 +10,9 @@ class MediaField
     use FieldTrait;
 
     public const OPTION_CONF = 'conf';
-    public const OPTION_DISPLAY_TREE = 'tree';
     public const OPTION_DISPLAY_FILE_MANAGER = 'display_file_manager';
     public const OPTION_DISPLAY_CLEAR_BUTTON = 'display_clear_button';
+    public const OPTION_DISPLAY_TREE = 'tree';
     public const OPTION_ALLOW_CROP = 'allow_crop';
 
     public const OPTION_CROP_OPTIONS = 'crop_options';
@@ -32,6 +32,7 @@ class MediaField
             ->setFormType(UxMediaType::class)
             ->setTemplatePath('field/media.html.twig')
             ->setConf()
+            ->displayFileManager(true)
             ->displayTree(false)
             ->allowCrop(false)
             ->setDefaultColumns(12);
@@ -46,13 +47,6 @@ class MediaField
         return $this;
     }
 
-    public function displayTree(bool $val = true): self
-    {
-        $this->setFormTypeOption(self::OPTION_DISPLAY_TREE, $val);
-
-        return $this;
-    }
-
     public function displayFileManager(bool $val = true): self
     {
         $this->setFormTypeOption(self::OPTION_DISPLAY_FILE_MANAGER, $val);
@@ -63,6 +57,13 @@ class MediaField
     public function displayClearButton(bool $val = true): self
     {
         $this->setFormTypeOption(self::OPTION_DISPLAY_CLEAR_BUTTON, $val);
+
+        return $this;
+    }
+
+    public function displayTree(bool $val = true): self
+    {
+        $this->setFormTypeOption(self::OPTION_DISPLAY_TREE, $val);
 
         return $this;
     }
