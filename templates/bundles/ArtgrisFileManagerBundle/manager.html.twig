@@ -9,7 +9,7 @@
 {% set isRoot = not fileManager.parent or app.request.get('route') == '\\' %}
 
 <!doctype html>
-<html lang="{{ app.request.locale }}" id="dropzone">
+<html lang="{{ app.request.locale }}" id="dropzone" data-turbo="false">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
