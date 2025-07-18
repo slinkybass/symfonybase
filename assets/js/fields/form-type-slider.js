@@ -18,8 +18,8 @@ import noUiSlider from "nouislider";
 
 	window.formTypeSlider = function formTypeSlider(selector = '[data-slider-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
-			const max = e.hasAttribute("max") ? e.getAttribute("max") : 100;
-			const min = e.hasAttribute("min") ? e.getAttribute("min") : 0;
+			const max = e.hasAttribute("max") ? parseFloat(e.getAttribute("max")) : 100;
+			const min = e.hasAttribute("min") ? parseFloat(e.getAttribute("min")) : 0;
 			const start = e.value ? parseFloat(e.value.replace(",", ".")) : min;
 			const step = e.hasAttribute("step") ? parseFloat(e.getAttribute("step").replace(",", ".")) || 1 : 1;
 			const showInput = e.hasAttribute("data-slider-show-input") ? e.getAttribute("data-slider-show-input") !== "false" : false;
