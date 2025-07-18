@@ -432,8 +432,7 @@
 					{{ parent() }}
 					{% if render_switch %}
 						<button type="button" class="btn btn-icon btn-pass"
-							data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}
-							tabindex="-1">
+							data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}>
 							<twig:ux:icon class="icon btn-pass-show" name="tabler:eye" />
 							<twig:ux:icon class="icon btn-pass-hide d-none" name="tabler:eye-off" />
 						</button>
@@ -443,8 +442,7 @@
 			{% if form.vars.name == 'first' and render_generator %}
 				<div class="col-auto">
 					<button type="button" class="btn btn-icon btn-pass-generator"
-						data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}
-						tabindex="-1">
+						data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}>
 						<twig:ux:icon class="icon" name="tabler:key" />
 					</button>
 				</div>
