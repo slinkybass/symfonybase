@@ -86,7 +86,7 @@
 							{% if form.vars.display_file_manager %}
 								<button type="button" class="btn btn-icon btn-outline-secondary rounded-start-0 btn-manager" data-bs-toggle="modal"
 										data-bs-target="#filemanager-modal-{{ id }}"
-										title="{{ 'admin.media.title'|trans }}"
+										title="{{ 'entities.media.plural'|trans }}"
 										data-action="arkounay--ux-media--media#openFileManager">
 									<twig:ux:icon class="icon" name="tabler:folder" />
 								</button>
@@ -103,7 +103,7 @@
 						<div class="modal-dialog modal-xl" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title">{{ 'admin.media.title'|trans }}</h5>
+									<h5 class="modal-title">{{ 'entities.media.plural'|trans }}</h5>
 									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'action.close'|trans({}, 'EasyAdminBundle') }}"></button>
 								</div>
 								<div class="modal-body p-0">

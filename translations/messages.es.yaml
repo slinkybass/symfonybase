@@ -5,8 +5,6 @@ app:
 admin:
   home:
     title: Inicio
-  media:
-    title: Media
 public:
   home:
     title: Inicio
