@@ -111,7 +111,7 @@ textarea.no-resize {
 	border: var(--tblr-border-width) solid var(--tblr-border-color);
 	border-radius: var(--tblr-border-radius);
 	box-shadow: var(--tblr-shadow-input);
-	padding: 3px;
+	padding: 8px;
 	margin: 0;
 }
 
