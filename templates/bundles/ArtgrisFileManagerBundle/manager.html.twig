@@ -166,26 +166,26 @@
 
 				<script>
 					var treedata = {{ treeData|raw }};
-                    var tree = {{ fileManager.tree and showTree ? 'true' : 'false' }}
-                    var moduleName = '{{ fileManager.module ? fileManager.module : 0 }}';
-                    var successMessage = '{{ 'file.add.success'|trans }}';
-                    var url = "{{ path('file_manager', fileManager.queryParameters|merge({'json':true}))|e('js') }}"
-                    var urldelete = "{{ path('file_manager_delete', fileManager.queryParameters )|e('js') }}"
-                    var deleteMessage = "{{ 'title.delete'|trans }}"
-                    var renameMessage = "{{ 'title.rename.file'|trans }}"
-                    var downloadMessage = "{{ 'title.download'|trans }}"
-                    var previewMessage = "{{ 'title.preview.file'|trans }}"
-                    
-                    function displayAlert(type, msg) {
-                        Swal.fire({html: msg, icon: type, showConfirmButton: false});
-                    }
+					var tree = {{ fileManager.tree and showTree ? 'true' : 'false' }}
+					var moduleName = '{{ fileManager.module ? fileManager.module : 0 }}';
+					var successMessage = '{{ 'file.add.success'|trans }}';
+					var url = "{{ path('file_manager', fileManager.queryParameters|merge({'json':true}))|e('js') }}"
+					var urldelete = "{{ path('file_manager_delete', fileManager.queryParameters )|e('js') }}"
+					var deleteMessage = "{{ 'title.delete'|trans }}"
+					var renameMessage = "{{ 'title.rename.file'|trans }}"
+					var downloadMessage = "{{ 'title.download'|trans }}"
+					var previewMessage = "{{ 'title.preview.file'|trans }}"
+					
+					function displayAlert(type, msg) {
+						Swal.fire({html: msg, icon: type, showConfirmButton: false});
+					}
 
-                    // display session flash messages
-                    {% for type, messages in app.session.flashbag.all %}
-                        {% for message in messages %}
-                            displayAlert('{{ type }}', '{{ message|trans|e('js') }}')
-                        {% endfor %}
-                    {% endfor %}
+					// display session flash messages
+					{% for type, messages in app.session.flashbag.all %}
+						{% for message in messages %}
+							displayAlert('{{ type }}', '{{ message|trans|e('js') }}')
+						{% endfor %}
+					{% endfor %}
 				</script>
 			{% endblock %}
 		</body>

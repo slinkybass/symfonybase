@@ -1,13 +1,13 @@
 {# @var icon \EasyCorp\Bundle\EasyAdminBundle\Dto\IconDto #}
 {% set icon = this.getIcon() %}
 {% if icon.isFontAwesomeIconSet %}
-    <i class="icon {{ icon.name }} {{ attributes.render('class') }}" {{ attributes.without('class') }}></i>
+	<i class="icon {{ icon.name }} {{ attributes.render('class') }}" {{ attributes.without('class') }}></i>
 {% elseif icon.svgContents %}
-    <span {{ attributes.defaults({class: 'icon'}) }}>
-        {{ icon.svgContents|raw }}
-    </span>
+	<span {{ attributes.defaults({class: 'icon'}) }}>
+		{{ icon.svgContents|raw }}
+	</span>
 {% else %}
-    {% guard function ux_icon %}
-        {{ ux_icon(icon.name, attributes.defaults({class: 'icon'}).all) }}
-    {% endguard %}
+	{% guard function ux_icon %}
+		{{ ux_icon(icon.name, attributes.defaults({class: 'icon'}).all) }}
+	{% endguard %}
 {% endif %}

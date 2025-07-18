@@ -1,50 +1,50 @@
 {# Fix simultaneous btn and text classes #}
 {% set cssClass = action.cssClass is defined ? action.cssClass : '' %}
 {% if cssClass is not empty %}
-    {% set classArray = cssClass|split(' ') %}
-    {% set btnClass = '' %}
-    {% set textClass = '' %}
-    {% set animateClasses = [] %}
-    {% set otherClasses = [] %}
-    {% for class in classArray %}
-        {% if class starts with 'btn-' and not class starts with 'btn-animate-' %}
-            {% set btnClass = class %}
-        {% elseif class starts with 'text-' %}
-            {% set textClass = class %}
-        {% elseif class starts with 'btn-animate-' %}
-            {% set animateClasses = animateClasses|merge([class]) %}
-        {% else %}
-            {% set otherClasses = otherClasses|merge([class]) %}
-        {% endif %}
-    {% endfor %}
-    {% set otherClassString = otherClasses|join(' ') %}
-    {% set animateClassString = animateClasses|join(' ') %}
-    {% set cssClass = [otherClassString, btnClass, textClass, animateClassString]|join(' ') %}
+	{% set classArray = cssClass|split(' ') %}
+	{% set btnClass = '' %}
+	{% set textClass = '' %}
+	{% set animateClasses = [] %}
+	{% set otherClasses = [] %}
+	{% for class in classArray %}
+		{% if class starts with 'btn-' and not class starts with 'btn-animate-' %}
+			{% set btnClass = class %}
+		{% elseif class starts with 'text-' %}
+			{% set textClass = class %}
+		{% elseif class starts with 'btn-animate-' %}
+			{% set animateClasses = animateClasses|merge([class]) %}
+		{% else %}
+			{% set otherClasses = otherClasses|merge([class]) %}
+		{% endif %}
+	{% endfor %}
+	{% set otherClassString = otherClasses|join(' ') %}
+	{% set animateClassString = animateClasses|join(' ') %}
+	{% set cssClass = [otherClassString, btnClass, textClass, animateClassString]|join(' ') %}
 {% endif %}
 
 {% if 'a' == action.htmlElement %}
-    <a class="{{ isIncludedInDropdown|default(false) ? 'dropdown-item' }} {{ cssClass }}"
-       href="{{ action.linkUrl }}"
-       {% for name, value in action.htmlAttributes %}{{ name }}="{{ (value.trans is defined ? value|trans : value)|e('html') }}" {% endfor %}>
-        {%- if action.icon %}<twig:ea:Icon name="{{ action.icon }}" class="action-icon" /> {% endif -%}
-        {%- if action.label is not empty -%}<span class="action-label">{{ action.label|trans|raw }}</span>{%- endif -%}
-    </a>
+	<a class="{{ isIncludedInDropdown|default(false) ? 'dropdown-item' }} {{ cssClass }}"
+	   href="{{ action.linkUrl }}"
+	   {% for name, value in action.htmlAttributes %}{{ name }}="{{ (value.trans is defined ? value|trans : value)|e('html') }}" {% endfor %}>
+		{%- if action.icon %}<twig:ea:Icon name="{{ action.icon }}" class="action-icon" /> {% endif -%}
+		{%- if action.label is not empty -%}<span class="action-label">{{ action.label|trans|raw }}</span>{%- endif -%}
+	</a>
 {% elseif 'button' == action.htmlElement %}
-    <button class="{{ cssClass }}" {% for name, value in action.htmlAttributes %}{{ name }}="{{ (value.trans is defined ? value|trans : value)|e('html') }}" {% endfor %}>
-        <span class="btn-label">
-            {%- if action.icon %}<twig:ea:Icon name="{{ action.icon }}" /> {% endif -%}
-            {%- if action.label is not empty -%}<span class="action-label">{{ action.label|trans|raw }}</span>{%- endif -%}
-        </span>
-    </button>
+	<button class="{{ cssClass }}" {% for name, value in action.htmlAttributes %}{{ name }}="{{ (value.trans is defined ? value|trans : value)|e('html') }}" {% endfor %}>
+		<span class="btn-label">
+			{%- if action.icon %}<twig:ea:Icon name="{{ action.icon }}" /> {% endif -%}
+			{%- if action.label is not empty -%}<span class="action-label">{{ action.label|trans|raw }}</span>{%- endif -%}
+		</span>
+	</button>
 {% elseif 'form' == action.htmlElement %}
-    {%- set form_id = 'form-' ~ action.name ~ '-' ~ random() -%}
-    {%- do action.setHtmlAttribute('form', form_id) -%}
-    <form action="{{ action.linkUrl }}" method="POST" id="{{ form_id }}">
-        <button class="{{ cssClass }}" {% for name, value in action.htmlAttributes %}{{ name }}="{{ (value.trans is defined ? value|trans : value)|e('html') }}" {% endfor %}>
-            <span class="btn-label">
-                {%- if action.icon %}<twig:ea:Icon name="{{ action.icon }}"/> {% endif -%}
-                {%- if action.label is not empty -%}<span class="action-label">{{ action.label|trans|raw }}</span>{%- endif -%}
-            </span>
-        </button>
-    </form>
+	{%- set form_id = 'form-' ~ action.name ~ '-' ~ random() -%}
+	{%- do action.setHtmlAttribute('form', form_id) -%}
+	<form action="{{ action.linkUrl }}" method="POST" id="{{ form_id }}">
+		<button class="{{ cssClass }}" {% for name, value in action.htmlAttributes %}{{ name }}="{{ (value.trans is defined ? value|trans : value)|e('html') }}" {% endfor %}>
+			<span class="btn-label">
+				{%- if action.icon %}<twig:ea:Icon name="{{ action.icon }}"/> {% endif -%}
+				{%- if action.label is not empty -%}<span class="action-label">{{ action.label|trans|raw }}</span>{%- endif -%}
+			</span>
+		</button>
+	</form>
 {% endif %}
