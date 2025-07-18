@@ -88,3 +88,6 @@ entities:
       mediaUpload: Subir archivos
       mediaEdit: Editar archivos
       mediaFolders: Crear carpetas
+  media:
+    singular: Media
+    plural: Media
