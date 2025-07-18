@@ -94,7 +94,8 @@
     {% set row_attr = row_attr|merge({
         class: row_attr.class|default('') ~ ' form-group'
     }) %}
-    {%  set field = form.vars.ea_vars.field %}
+	{% set isRepeated = form.parent.vars.ea_vars.field and form.parent.vars.ea_vars.field.formType == "Symfony\\Component\\Form\\Extension\\Core\\Type\\RepeatedType" %}
+	{% set field = isRepeated ? form.parent.vars.ea_vars.field : form.vars.ea_vars.field %}
 
     <div class="{{ field.columns ?? field.defaultColumns ?? '' }}">
         {%- set row_class = row_class|default(row_attr.class) -%}
