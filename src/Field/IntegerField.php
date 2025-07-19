@@ -35,6 +35,41 @@ class IntegerField
         return $this;
     }
 
+    public function sliderShowInput(bool $show = true): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_SHOW_INPUT, json_encode($show));
+
+        return $this;
+    }
+
+    public function sliderShowTooltip(bool $tooltips = true): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_TOOLTIPS, json_encode($tooltips));
+
+        return $this;
+    }
+
+    public function sliderConnectUpper(): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_CONNECT, FloatField::SLIDER_CONNECT_UPPER);
+
+        return $this;
+    }
+
+    public function sliderConnectLower(): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_CONNECT, FloatField::SLIDER_CONNECT_LOWER);
+
+        return $this;
+    }
+
+    public function sliderPips(bool $pips = true): self
+    {
+        $this->setHtmlAttribute(self::OPTION_SLIDER_PIPS, json_encode($pips));
+
+        return $this;
+    }
+
     public function setMax(int|float|null $val): self
     {
         $this->setHtmlAttribute(FloatField::OPTION_MAX, $val);
@@ -45,27 +80,6 @@ class IntegerField
     public function setMin(int|float|null $val): self
     {
         $this->setHtmlAttribute(FloatField::OPTION_MIN, $val);
-
-        return $this;
-    }
-
-    public function showInputSlider(bool $show = true): self
-    {
-        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_SHOW_INPUT, json_encode($show));
-
-        return $this;
-    }
-
-    public function showTooltipSlider(bool $tooltips = true): self
-    {
-        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_TOOLTIPS, json_encode($tooltips));
-
-        return $this;
-    }
-
-    public function connectSlider(string $type): self
-    {
-        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_CONNECT, $type);
 
         return $this;
     }

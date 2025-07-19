@@ -20,6 +20,7 @@ class FloatField
     public const OPTION_SLIDER_SHOW_INPUT = 'data-slider-show-input';
     public const OPTION_SLIDER_TOOLTIPS = 'data-slider-tooltips';
     public const OPTION_SLIDER_CONNECT = 'data-slider-connect';
+    public const OPTION_SLIDER_PIPS = 'data-slider-pips';
 
     /** connect types */
     public const SLIDER_CONNECT_UPPER = 'upper';
@@ -53,23 +54,37 @@ class FloatField
         return $this;
     }
 
-    public function showInputSlider(bool $show = true): self
+    public function sliderShowInput(bool $show = true): self
     {
         $this->setHtmlAttribute(self::OPTION_SLIDER_SHOW_INPUT, json_encode($show));
 
         return $this;
     }
 
-    public function showTooltipSlider(bool $tooltips = true): self
+    public function sliderShowTooltip(bool $tooltip = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_TOOLTIPS, json_encode($tooltips));
+        $this->setHtmlAttribute(self::OPTION_SLIDER_TOOLTIPS, json_encode($tooltip));
 
         return $this;
     }
 
-    public function connectSlider(string $type): self
+    public function sliderConnectUpper(): self
     {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_CONNECT, $type);
+        $this->setHtmlAttribute(self::OPTION_SLIDER_CONNECT, self::SLIDER_CONNECT_UPPER);
+
+        return $this;
+    }
+
+    public function sliderConnectLower(): self
+    {
+        $this->setHtmlAttribute(self::OPTION_SLIDER_CONNECT, self::SLIDER_CONNECT_LOWER);
+
+        return $this;
+    }
+
+    public function sliderPips(bool $pips = true): self
+    {
+        $this->setHtmlAttribute(self::OPTION_SLIDER_PIPS, json_encode($pips));
 
         return $this;
     }

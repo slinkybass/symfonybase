@@ -25,6 +25,7 @@ import noUiSlider from "nouislider";
 			const showInput = e.hasAttribute("data-slider-show-input") ? e.getAttribute("data-slider-show-input") !== "false" : false;
 			const tooltips = e.hasAttribute("data-slider-tooltips") ? e.getAttribute("data-slider-tooltips") !== "false" : true;
 			const connect = e.hasAttribute("data-slider-connect") ? e.getAttribute("data-slider-connect") : "lower";
+			const pips = e.hasAttribute("data-slider-pips") ? e.getAttribute("data-slider-pips") !== "false" : false;
 
 			if (!showInput) {
 				e.classList.add("d-none");
@@ -34,11 +35,11 @@ import noUiSlider from "nouislider";
 			slider.classList.add("slider");
 			e.parentNode.insertBefore(slider, e.nextSibling);
 
-			noUiSlider.create(slider, {
+			const noUiSliderOtps = {
 				tooltips: tooltips,
 				connect: connect,
 				step: step,
-				start: [start],
+				start: start,
 				format: {
 					to: function (value) {
 						return parseFloat(parseFloat(value).toFixed(2));
@@ -51,7 +52,24 @@ import noUiSlider from "nouislider";
 					max: max,
 					min: min,
 				},
-			});
+			};
+
+			if (pips) {
+				noUiSliderOtps.pips = {
+					mode: 'steps',
+					desity: 100,
+					format: {
+						to: function (value) {
+							return parseFloat(parseFloat(value).toFixed(2));
+						},
+						from: function (value) {
+							return parseFloat(parseFloat(value).toFixed(2));
+						},
+					},
+				};
+			}
+
+			noUiSlider.create(slider, noUiSliderOtps);
 
 			slider.noUiSlider.on("update", function (value) {
 				e.value = value;

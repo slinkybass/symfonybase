@@ -143,6 +143,25 @@ textarea.no-resize {
 	opacity: 1;
 }
 
+.noUi-horizontal {
+	height: auto;
+}
+
+.noUi-base {
+	height: 0.25rem;
+}
+
+.noUi-pips {
+	position: relative;
+	height: 2rem;
+	padding: 10px 0 0;
+}
+
+.noUi-value-horizontal {
+	-webkit-transform: translate(-50%, 70%);
+	transform: translate(-50%, 70%);
+}
+
 /* Spectrum */
 .sp-container .sp-input {
 	outline: none;
