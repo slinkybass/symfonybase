@@ -39,6 +39,9 @@ import "flatpickr/dist/flatpickr.min.css";
 				altFormat: altFormat,
 				allowInput: true,
 				disableMobile: true,
+				locale: {
+					rangeSeparator: ', '
+				},
 				parseDate: (datestr, format) => {
 					return moment(datestr, format, true).toDate();
 				},

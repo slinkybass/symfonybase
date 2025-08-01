@@ -43,6 +43,9 @@ import "flatpickr/dist/flatpickr.min.css";
 				enableTime: true,
 				time_24hr: true,
 				minuteIncrement: minuteIncrement,
+				locale: {
+					rangeSeparator: ', '
+				},
 				parseDate: (datestr, format) => {
 					return moment(datestr, format, true).toDate();
 				},
