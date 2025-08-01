@@ -28,17 +28,16 @@
 				use an empty string to not display a label but keep the <label> element to not mess with the layout #}
 			{% else %}
 				<label class="form-label">
-					{%- set label_html_attributes -%}
-						{%- if field.help is not empty -%}
-							data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-animation="false"
-							data-bs-html="true" data-bs-custom-class="ea-detail-label-tooltip"
-							data-bs-title="{{ field.help|trans|e('html') }}"
-						{%- endif -%}
-					{%- endset -%}
-
-					<div {{ label_html_attributes }}>
-						{{ field.label|trans|raw }}
-					</div>
+					{{ field.label|trans|raw }}
+					{% set has_help = field.help ?? form.vars.help ?? false %}
+					{%- if has_help -%}
+						{% set helpMsg = field.help ?? form.vars.help %}
+						<span class="form-help"
+								title="{{ helpMsg|trans|e('html') }}"
+								data-bs-toggle="tooltip"
+								data-bs-placement="top"
+								data-bs-html="true">?</span>
+					{%- endif -%}
 				</label>
 			{% endif %}
 
