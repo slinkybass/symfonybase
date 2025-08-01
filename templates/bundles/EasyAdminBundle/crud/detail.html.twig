@@ -84,11 +84,19 @@
 			<ul class="nav nav-tabs card-header-tabs">
 				{% for tab in field.getCustomOption('tabs') %}
 					<li class="nav-item">
-						<a class="nav-link {% if tab.getCustomOption(tab_is_active_option_name) %}active{% endif %}" href="#{{ tab.getCustomOption(tab_id_option_name) }}" id="tablist-{{ tab.getCustomOption(tab_id_option_name) }}" data-bs-toggle="tab">
+						<a class="nav-link gap-1 {% if tab.getCustomOption(tab_is_active_option_name) %}active{% endif %}" href="#{{ tab.getCustomOption(tab_id_option_name) }}" id="tablist-{{ tab.getCustomOption(tab_id_option_name) }}" data-bs-toggle="tab">
 							{%- if tab.getCustomOption('icon')|default(false) -%}
 								<twig:ea:Icon name="{{ tab.getCustomOption('icon') }}" />
 							{%- endif -%}
 							{{ tab.label|trans(domain = ea.i18n.translationDomain)|raw }}
+
+							{% if tab.help %}
+								<span class="form-help"
+										title="{{ tab.help|trans(domain = ea.i18n.translationDomain)|raw }}"
+										data-bs-toggle="tooltip"
+										data-bs-placement="top"
+										data-bs-html="true">?</span>
+							{% endif %}
 
 							{% set tab_error_count = tab.getCustomOption(tab_error_count_option_name)  %}
 							{%- if tab_error_count > 0 -%}
@@ -113,12 +121,6 @@
 	{% set tab_is_active_option_name = constant('EasyCorp\\Bundle\\EasyAdminBundle\\Field\\FormField::OPTION_TAB_IS_ACTIVE') %}
 
 	<div id="{{ field.getCustomOption(tab_id_option_name) }}" class="tab-pane {% if field.getCustomOption(tab_is_active_option_name) %}active{% endif %} {{ field.cssClass }}" {% for key, value in field.getFormTypeOption('attr') %}{{ key }}="{{ value|e('html') }}"{% endfor %}>
-		{% if field.help %}
-			<div class="content-header-help tab-help">
-				{{ field.help|trans(domain = ea.i18n.translationDomain)|raw }}
-			</div>
-		{% endif %}
-
 {% endmacro %}
 
 {% macro render_tab_close(field) %}
@@ -177,7 +179,11 @@
 						{% endif %}
 
 						{% if field.help %}
-							<div class="page-subtitle">{{ field.help|trans|raw }}</div>
+							<span class="form-help"
+									title="{{ field.help|trans|raw }}"
+									data-bs-toggle="tooltip"
+									data-bs-placement="top"
+									data-bs-html="true">?</span>
 						{% endif %}
 					</div>
 				</div>
