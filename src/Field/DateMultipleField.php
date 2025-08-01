@@ -3,34 +3,13 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField as EasyField;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class DateField
+class DateMultipleField
 {
     use FieldTrait;
-
-    public const OPTION_MAX = 'max';
-    public const OPTION_MIN = 'min';
-
-    public const OPTION_PLUGIN = 'data-date-field';
-
-    public const OPTION_DATE_INLINE = 'data-date-inline';
-    public const OPTION_DATE_MODE = 'data-date-mode';
-    public const OPTION_DATE_FORMAT = 'data-date-format';
-    public const OPTION_DATE_ALT_FORMAT = 'data-date-alt-format';
-    public const OPTION_DATE_ENABLED = 'data-date-enabled';
-    public const OPTION_DATE_DISABLED = 'data-date-disabled';
-
-    /** modes */
-    public const DATE_MODE_MULTIPLE = 'multiple';
-    public const DATE_MODE_RANGE = 'range';
-
-    /** formats */
-    public const DATE_FORMAT_FULL = 'full';
-    public const DATE_FORMAT_LONG = 'long';
-    public const DATE_FORMAT_MEDIUM = 'medium';
-    public const DATE_FORMAT_SHORT = 'short';
-    public const DATE_FORMAT_NONE = 'none';
 
     private EasyField $field;
 
@@ -38,10 +17,11 @@ class DateField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
+        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
-            ->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms())
             ->plugin()
+            ->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms())
             ->setDefaultColumns(12);
 
         return $instance;
@@ -49,42 +29,56 @@ class DateField
 
     public function plugin(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
+        $this->setHtmlAttribute(DateField::OPTION_PLUGIN, json_encode($enable));
+
+        if ($enable) {
+            $this->setFormType(TextType::class);
+            $this->setFormTypeOption('block_prefix', 'datemultiple');
+            $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, DateField::DATE_MODE_MULTIPLE);
+            $this->setTemplatePath('field/dateMultiple.html.twig');
+        }
 
         return $this;
     }
 
     public function setMax(\DateTime|string|null $max): self
     {
-        $this->setHtmlAttribute(self::OPTION_MAX, $max instanceof \DateTime ? $max->format('Y-m-d') : $max);
+        $this->setHtmlAttribute(DateField::OPTION_MAX, $max instanceof \DateTime ? $max->format('Y-m-d') : $max);
 
         return $this;
     }
 
     public function setMin(\DateTime|string|null $min): self
     {
-        $this->setHtmlAttribute(self::OPTION_MIN, $min instanceof \DateTime ? $min->format('Y-m-d') : $min);
+        $this->setHtmlAttribute(DateField::OPTION_MIN, $min instanceof \DateTime ? $min->format('Y-m-d') : $min);
 
         return $this;
     }
 
     public function isInline(bool $inline = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_DATE_INLINE, json_encode($inline));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($inline));
+
+        return $this;
+    }
+
+    public function isRange(bool $range = true): self
+    {
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$range ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_RANGE);
 
         return $this;
     }
 
     public function setDateFormat(string $dateFormat): self
     {
-        $this->setCustomOption(self::OPTION_DATE_FORMAT, $dateFormat);
+        $this->setCustomOption(DateField::OPTION_DATE_FORMAT, $dateFormat);
 
         return $this;
     }
 
     public function setDateAltFormat(string $dateAltFormat): self
     {
-        $this->setCustomOption(self::OPTION_DATE_ALT_FORMAT, $dateAltFormat);
+        $this->setCustomOption(DateField::OPTION_DATE_ALT_FORMAT, $dateAltFormat);
 
         return $this;
     }
@@ -95,7 +89,7 @@ class DateField
         foreach ($dates as $date) {
             $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
         }
-        $this->setHtmlAttribute(self::OPTION_DATE_ENABLED, implode(',', $datesArr));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_ENABLED, implode(',', $datesArr));
 
         return $this;
     }
@@ -106,7 +100,7 @@ class DateField
         foreach ($dates as $date) {
             $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
         }
-        $this->setHtmlAttribute(self::OPTION_DATE_DISABLED, implode(',', $datesArr));
+        $this->setHtmlAttribute(DateField::OPTION_DATE_DISABLED, implode(',', $datesArr));
 
         return $this;
     }

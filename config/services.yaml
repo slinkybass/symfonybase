@@ -30,3 +30,7 @@ services:
     App\EventSubscriber\MediaSubscriber:
         arguments:
             $artgrisFileManager: '%artgris_file_manager%'
+    EasyCorp\Bundle\EasyAdminBundle\Field\Configurator\ArrayConfigurator:
+        class: App\EasyAdmin\Field\Configurator\ArrayConfigurator
+        tags:
+        - { name: 'ea.field_configurator', priority: 100 }

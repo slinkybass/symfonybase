@@ -3,13 +3,13 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField as EasyField;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class DateTimeField
+class DateTimeMultipleField
 {
     use FieldTrait;
-
-    public const OPTION_PLUGIN = 'data-datetime-field';
 
     private EasyField $field;
 
@@ -17,10 +17,11 @@ class DateTimeField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
+        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
-            ->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms())
             ->plugin()
+            ->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms())
             ->setDefaultColumns(12);
 
         return $instance;
@@ -28,7 +29,14 @@ class DateTimeField
 
     public function plugin(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
+        $this->setHtmlAttribute(DateTimeField::OPTION_PLUGIN, json_encode($enable));
+
+        if ($enable) {
+            $this->setFormType(TextType::class);
+            $this->setFormTypeOption('block_prefix', 'datemultiple');
+            $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, DateField::DATE_MODE_MULTIPLE);
+            $this->setTemplatePath('field/datetimeMultiple.html.twig');
+        }
 
         return $this;
     }
@@ -50,6 +58,13 @@ class DateTimeField
     public function isInline(bool $inline = true): self
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($inline));
+
+        return $this;
+    }
+
+    public function isRange(bool $range = true): self
+    {
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$range ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_RANGE);
 
         return $this;
     }

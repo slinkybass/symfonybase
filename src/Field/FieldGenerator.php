@@ -116,6 +116,16 @@ class FieldGenerator extends AbstractType
         return TimeField::new($name);
     }
 
+    public static function dateMultiple(string $name)
+    {
+        return DateMultipleField::new($name);
+    }
+
+    public static function datetimeMultiple(string $name)
+    {
+        return DateTimeMultipleField::new($name);
+    }
+
     public static function timezone(string $name)
     {
         return TimezoneField::new($name);

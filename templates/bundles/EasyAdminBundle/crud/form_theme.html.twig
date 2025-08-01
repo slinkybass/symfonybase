@@ -504,3 +504,8 @@
 		</button>
 	</div>
 {% endblock signature_widget %}
+
+{% block datemultiple_widget %}
+    {% set value = form.vars.ea_vars.field.value|join(', ') %}
+	{{ block('form_widget_simple') }}
+{% endblock datemultiple_widget %}
