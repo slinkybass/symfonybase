@@ -14,7 +14,7 @@
 		</span>
 	{% endif %}
 {% else %}
-	<div class="form-check form-switch">
+	<div class="form-check form-switch mb-0">
 		<input type="checkbox" class="form-check-input" id="{{ field.uniqueId }}" {{ field.value == true ? 'checked' }}
 			data-toggle-url="{{ field.customOptions.get('toggleUrl') }}"
 			{{ field.formTypeOption('disabled') == true ? 'disabled' }} autocomplete="off">
