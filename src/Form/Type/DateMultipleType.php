@@ -27,12 +27,13 @@ class DateMultipleType extends AbstractType
                 return implode(', ', $value);
             }
 
-            public function reverseTransform($value): array
+            public function reverseTransform($value): ?array
             {
                 if (!is_string($value)) {
-                    return [];
+                    return null;
                 }
-                return array_values(array_filter(array_map('trim', explode(',', $value)), fn($item) => $item !== ''));
+                $dates = array_values(array_filter(array_map('trim', explode(',', $value)), fn ($item) => $item !== ''));
+                return empty($dates) ? null : $dates;
             }
         });
     }
