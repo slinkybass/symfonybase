@@ -1,0 +1,5 @@
+{% if field.value %}
+	{{ field.formattedValue|trans|raw }}
+{% else %}
+	{{ include(ea.templatePath('label/empty')) }}
+{% endif %}

@@ -1,0 +1,11 @@
+{% if field.customOptions.get('showSample') %}
+	<span class="badge" style="background: {{ field.value }};">
+		{% if field.customOptions.get('showValue') %}
+			{{ field.formattedValue }}
+		{% else %}
+            &nbsp;
+		{% endif %}
+	</span>
+{% elseif field.customOptions.get('showValue') %}
+    {{ field.formattedValue }}
+{% endif %}
