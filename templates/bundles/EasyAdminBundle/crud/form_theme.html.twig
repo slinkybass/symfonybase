@@ -190,6 +190,22 @@
 	{%- endif -%}
 {%- endblock form_label %}
 
+{% block ea_form_tabpane_open_row %}
+	{% set tab_is_active_option_name = constant('EasyCorp\\Bundle\\EasyAdminBundle\\Field\\FormField::OPTION_TAB_IS_ACTIVE') %}
+	{% set field = form.vars.ea_vars.field %}
+
+	<div id="{{ ea_tab_id }}" class="tab-pane {% if field.getCustomOption(tab_is_active_option_name) %}active{% endif %} {{ ea_css_class }}" {% for key, value in form.vars.attr %}{{ key }}="{{ value|e('html') }}"{% endfor %}>
+		{% if ea_help %}
+			<div class="content-header-help tab-help">
+				{{ ea_help|trans(domain = ea.i18n.translationDomain)|raw }}
+			</div>
+		{% endif %}
+{% endblock ea_form_tabpane_open_row %}
+
+{% block ea_form_tabpane_close_row %}
+	</div>
+{% endblock ea_form_tabpane_close_row %}
+
 {% block ea_filters_widget %}
 	{% set hidden_filters = app.request.query.all()['filters']|default([])['hidden_filters']|default([])|filter(filter => filter)|keys %}
 	{% set applied_filters = ea.request.query.all()['filters']|default([])|keys %}
