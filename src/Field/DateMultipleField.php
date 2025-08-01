@@ -2,10 +2,12 @@
 
 namespace App\Field;
 
+use App\Form\Type\DateMultipleType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class DateMultipleField
 {
@@ -21,6 +23,7 @@ class DateMultipleField
 
         $instance
             ->plugin()
+            ->setFormTypeOption('entry_type', DateType::class)
             ->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms())
             ->setDefaultColumns(12);
 
@@ -30,12 +33,13 @@ class DateMultipleField
     public function plugin(bool $enable = true): self
     {
         $this->setHtmlAttribute(DateField::OPTION_PLUGIN, json_encode($enable));
+        $this->setFormType($enable ? DateMultipleType::class : CollectionType::class);
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $enable ? DateField::DATE_MODE_MULTIPLE : null);
 
         if ($enable) {
-            $this->setFormType(TextType::class);
-            $this->setFormTypeOption('block_prefix', 'datemultiple');
-            $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, DateField::DATE_MODE_MULTIPLE);
             $this->setTemplatePath('field/dateMultiple.html.twig');
+        } else {
+            $this->setTemplateName('crud/field/array');
         }
 
         return $this;
@@ -101,31 +105,6 @@ class DateMultipleField
             $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
         }
         $this->setHtmlAttribute(DateField::OPTION_DATE_DISABLED, implode(',', $datesArr));
-
-        return $this;
-    }
-
-    public function setTimezone(string $timezone): self
-    {
-        $this->field->setTimezone($timezone);
-
-        return $this;
-    }
-
-    public function setFormat(string $dateFormat): self
-    {
-        $this->field->setFormat($dateFormat);
-
-        return $this;
-    }
-
-    public function renderAsChoice(bool $choice = true): self
-    {
-        if ($choice) {
-            $this->field->renderAsChoice();
-        } else {
-            $this->field->renderAsNativeWidget();
-        }
 
         return $this;
     }
