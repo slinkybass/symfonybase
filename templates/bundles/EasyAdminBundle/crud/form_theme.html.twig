@@ -340,14 +340,14 @@
 			{% endif %}
 
 			{% if currentFiles and allow_delete %}
-				<button class="btn ea-fileupload-delete-btn">
-					<twig:ux:icon name="tabler:trash" />
+				<button type="button" class="btn ea-fileupload-delete-btn">
+					<twig:ux:icon class="icon m-0" name="tabler:trash" />
 				</button>
 			{% endif %}
 
 			{% if currentFiles %}
-				<button class="btn">
-					<twig:ux:icon name="tabler:folder" />
+				<button type="button" class="btn">
+					<twig:ux:icon class="icon m-0" name="tabler:folder" />
 				</button>
 			{% endif %}
 		</div>
@@ -360,7 +360,7 @@
 							<td>
 								{% if download_path %}<a href="{{ asset(download_path ~ file.filename) }}">{% endif %}
 									<span title="{{ file.mTime|date }}">
-										<twig:ux:icon name="tabler:file" /> {{ file.filename }}
+										<twig:ux:icon class="icon m-0" name="tabler:file" /> {{ file.filename }}
 									</span>
 								{% if download_path %}</a>{% endif %}
 							</td>
