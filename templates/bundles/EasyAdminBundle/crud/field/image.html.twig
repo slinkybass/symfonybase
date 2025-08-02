@@ -1,0 +1,10 @@
+{% set images = field.formattedValue %}
+{% if images is not iterable %}
+    {% set images = [images] %}
+{% endif %}
+
+{% for image in images %}
+    <span class="avatar {{ ea.crud.currentAction == 'detail' ? 'avatar-xl' : '' }}" style="background-image: url('{{ asset(image) }}')" title="{{ image }}">
+		<a href="{{ asset(image) }}" class="stretched-link" data-action="zoom" style="cursor: zoom-in;"></a>
+	</span>
+{% endfor %}
