@@ -1,8 +1,8 @@
 {% if ea.crud.currentAction == 'detail' %}
     <kbd class="w-100">{{ field.formattedValue|escape|raw|nl2br }}</kbd>
 {% else %}
-	<a data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button">
-		<twig:ux:icon class="icon" name="tabler:eye"/>
+	<a data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button" class="btn btn-sm btn-ghost btn-primary" title="{{ 'field.code_editor.view_code'|trans([], domain = 'EasyAdminBundle') }}">
+		<twig:ux:icon class="icon me-0" name="tabler:eye"/>
 	</a>
 	<div class="modal modal-xl modal-blur fade" id="info-{{ field.uniqueId }}" tabindex="-1" aria-labelledby="info-{{ field.uniqueId }}Label" aria-hidden="true">
 		<div class="modal-dialog">
