@@ -35,6 +35,7 @@ class RepeatField
 
     public function setLabel(?string $label): self
     {
+        $this->field->setLabel($label);
         $this->setFirstLabel($label);
         $this->setSecondLabel($label);
 
