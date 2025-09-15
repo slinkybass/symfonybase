@@ -28,7 +28,7 @@ input[type="number"].no-spinners {
 
 /* Tables fixes */
 .icon {
-  --tblr-icon-size: 1.5rem;
+	vertical-align: -0.25rem;
 }
 
 .markdown > table thead th,
