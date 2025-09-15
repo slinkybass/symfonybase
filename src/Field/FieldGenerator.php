@@ -181,6 +181,11 @@ class FieldGenerator extends AbstractType
         return FileField::new($name);
     }
 
+    public static function image(string $name)
+    {
+        return ImageField::new($name);
+    }
+
     public static function array(string $name)
     {
         return ArrayField::new($name);

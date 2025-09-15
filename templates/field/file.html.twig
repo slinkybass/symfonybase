@@ -1,0 +1,8 @@
+{% if field.value %}
+	<a href="{{ asset(field.formattedValue) }}" target="_blank" class="btn btn-sm btn-ghost btn-primary" title="{{ 'field.file.download'|trans([], domain = 'EasyAdminBundle') }}">
+		<twig:ux:icon class="icon {{ ea.crud.currentAction == 'index' ? 'me-0' : '' }}" name="tabler:download"/>
+		{% if ea.crud.currentAction == 'detail' %}{{ 'field.file.download'|trans([], domain = 'EasyAdminBundle') }}{% endif %}
+	</a>
+{% else %}
+	{{ include(ea.templatePath('label/empty')) }}
+{% endif %}

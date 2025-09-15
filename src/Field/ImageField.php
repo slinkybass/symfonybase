@@ -4,14 +4,10 @@ namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
-use Symfony\Component\Validator\Constraints\File;
 
-class FileField
+class ImageField
 {
     use FieldTrait;
-
-    public const OPTION_ACCEPT = 'accept';
-    public const OPTION_FILE_CONSTRAINTS = 'fileConstraints';
 
     private EasyField $field;
 
@@ -24,8 +20,6 @@ class FileField
         $instance
             ->setBasePath('media')
             ->setUploadDir('public/media')
-            ->setTemplatePath('field/file.html.twig')
-            ->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()])
             ->setDefaultColumns(12);
 
         return $instance;
@@ -33,7 +27,7 @@ class FileField
 
     public function setAccept(?string $filetype): self
     {
-        $this->setHtmlAttribute(self::OPTION_ACCEPT, $filetype);
+        $this->setHtmlAttribute(FileField::OPTION_ACCEPT, $filetype);
 
         return $this;
     }

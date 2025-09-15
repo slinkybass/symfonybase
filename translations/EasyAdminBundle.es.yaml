@@ -11,3 +11,4 @@ action:
   create: "Guardar"
 label.null: "Vacío"
 label.form.empty_value: "Vacío"
+field.file.download: "Descargar"
