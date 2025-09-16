@@ -31,6 +31,7 @@ import SignaturePad from "signature_pad";
 
 			resizeCanvas(e, signaturePad);
 			window.addEventListener("resize", () => resizeCanvas(e, signaturePad));
+			window.addEventListener("shown.bs.tab", () => resizeCanvas(e, signaturePad));
 
 			signaturePad.addEventListener("afterUpdateStroke", () => setValue(e, signaturePad));
 
