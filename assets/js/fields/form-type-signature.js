@@ -17,41 +17,93 @@ import SignaturePad from "signature_pad";
 
 	window.formTypeSignature = function formTypeSignature(selector = '[data-signature-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			const canvas = e.parentNode.querySelector(".signature-pad-wrapper canvas");
+			if (!canvas) return;
+			const currentSignValue = e.value;
+			const canvasActions = e.parentNode.querySelector(".signature-pad-actions");
+
+			const signaturePad = new SignaturePad(canvas);
 			const showInput = e.hasAttribute("data-signature-show-input") ? e.getAttribute("data-signature-show-input") !== "false" : false;
 			const showUndo = e.hasAttribute("data-signature-show-undo") ? e.getAttribute("data-signature-show-undo") !== "false" : true;
 			const showClear = e.hasAttribute("data-signature-show-clear") ? e.getAttribute("data-signature-show-clear") !== "false" : true;
 
-			if (!showInput) {
-				e.classList.add("d-none");
+			if (!showInput) e.classList.add("d-none");
+
+			resizeCanvas(e, signaturePad);
+			window.addEventListener("resize", () => resizeCanvas(e, signaturePad));
+
+			signaturePad.addEventListener("afterUpdateStroke", () => setValue(e, signaturePad));
+
+			if (canvasActions) {
+				const undoBtn = canvasActions.querySelector("[data-action='undo']");
+				const clearBtn = canvasActions.querySelector("[data-action='clear']");
+				if (undoBtn) {
+					undoBtn.classList.toggle("d-none", !showUndo);
+					setTimeout(() => {
+						undoBtn.disabled = true;
+						signaturePad.addEventListener("afterUpdateStroke", () => undoBtn.disabled = signaturePad.isEmpty());
+						undoBtn.addEventListener("click", () => {
+							const data = signaturePad.toData();
+							if (!data) return;
+							data.pop();
+							signaturePad.fromData(data);
+							undoBtn.disabled = signaturePad.isEmpty();
+							if (signaturePad.isEmpty()) {
+								e.value = currentSignValue;
+								setSignature(e, signaturePad);
+							} else {
+								setValue(e, signaturePad);
+							}
+							if (clearBtn) clearBtn.disabled = !e.value;
+						});
+					}, 100);
+				}
+				if (clearBtn) {
+					clearBtn.classList.toggle("d-none", !showClear);
+					setTimeout(() => {
+						clearBtn.disabled = signaturePad.isEmpty();
+						signaturePad.addEventListener("afterUpdateStroke", () => clearBtn.disabled = signaturePad.isEmpty());
+						clearBtn.addEventListener("click", () => {
+							clearBtn.disabled = true;
+							if (undoBtn) undoBtn.disabled = false;
+							signaturePad.clear();
+							e.value = null;
+						});
+					}, 100);
+				}
 			}
+		});
 
-			const canvas = e.parentNode.querySelector(".signature-pad-wrapper canvas");
+		function resizeCanvas(e, signaturePad) {
+			const ratio = Math.max(window.devicePixelRatio || 1, 1);
+			const canvas = signaturePad.canvas;
 
-			const signaturePad = new SignaturePad(canvas);
-			resizeCanvas(signaturePad);
-			addEventListener("resize", (e) => {
-				resizeCanvas(signaturePad);
-			});
-			addEventListener("shown.bs.tab", (e) => {
-				resizeCanvas(signaturePad);
-			});
+			canvas.width = canvas.offsetWidth * ratio;
+			canvas.height = canvas.offsetHeight * ratio;
+			canvas.getContext("2d").scale(ratio, ratio);
 
-			if (e.value) {
-				const currentSignature = new Image();
-				currentSignature.onload = function() {
-					const currentSignatureW = currentSignature.width;
-					const currentSignatureH = currentSignature.height;
-					signaturePad.fromDataURL(e.value, {
-						width: currentSignatureW,
-						height: currentSignatureH,
-						xOffset: (canvas.width - currentSignatureW) / 2,
-						yOffset: (canvas.height - currentSignatureH) / 2
-					});
-				};
-				currentSignature.src = e.value;
-			}
+			setSignature(e, signaturePad);
+		}
 
-			signaturePad.addEventListener("afterUpdateStroke", () => {
+		function setSignature(e, signaturePad) {
+			const currentSignImg = new Image();
+			currentSignImg.onload = function() {
+				const currentSignImgW = currentSignImg.width;
+				const currentSignImgH = currentSignImg.height;
+				signaturePad.fromDataURL(e.value, {
+					width: currentSignImgW,
+					height: currentSignImgH,
+					xOffset: (signaturePad.canvas.width - currentSignImgW) / 2,
+					yOffset: (signaturePad.canvas.height - currentSignImgH) / 2
+				});
+			};
+			currentSignImg.src = e.value;
+		}
+
+		function setValue(e, signaturePad) {
+			if (signaturePad.isEmpty()) {
+				e.value = null;
+			} else {
 				const dataUrl = signaturePad.toDataURL("image/png");
 				cropDataURL(dataUrl)
 					.then((newDataUrl) => {
@@ -60,71 +112,7 @@ import SignaturePad from "signature_pad";
 					.catch((error) => {
 						e.value = null;
 					});
-			});
-
-			const canvasActions = e.parentNode.querySelector(".signature-pad-actions");
-
-			let undoBtn = canvasActions.querySelector("[data-action='undo']");
-			let clearBtn = canvasActions.querySelector("[data-action='clear']");
-			if (undoBtn) {
-				if (!showUndo) {
-					undoBtn.classList.add("d-none");
-				} else {
-					undoBtn.disabled = signaturePad.isEmpty();
-					signaturePad.addEventListener("afterUpdateStroke", () => {
-						undoBtn.disabled = signaturePad.isEmpty();
-					});
-					undoBtn.addEventListener("click", () => {
-						var data = signaturePad.toData();
-						if (data) {
-							data.pop();
-							signaturePad.fromData(data);
-							const dataUrl = signaturePad.isEmpty() ? "" : signaturePad.toDataURL("image/png");
-							e.value = dataUrl;
-							if (showClear) {
-								clearBtn.disabled = signaturePad.isEmpty();
-							}
-							undoBtn.disabled = signaturePad.isEmpty();
-						}
-					});
-				}
 			}
-			if (clearBtn) {
-				if (!showClear) {
-					clearBtn.classList.add("d-none");
-				} else {
-					clearBtn.disabled = signaturePad.isEmpty();
-					signaturePad.addEventListener("afterUpdateStroke", () => {
-						clearBtn.disabled = signaturePad.isEmpty();
-					});
-					clearBtn.addEventListener("click", () => {
-						signaturePad.clear();
-						const dataUrl = signaturePad.isEmpty() ? "" : signaturePad.toDataURL("image/png");
-						e.value = dataUrl;
-						clearBtn.disabled = signaturePad.isEmpty();
-						if (showUndo) {
-							undoBtn.disabled = signaturePad.isEmpty();
-						}
-					});
-				}
-			}
-			if (showUndo || showClear) {
-				e.parentNode.insertBefore(canvasActions, e.nextSibling);
-			}
-		});
-
-		function resizeCanvas(signaturePad) {
-			const ratio = Math.max(window.devicePixelRatio || 1, 1);
-			const canvas = signaturePad.canvas;
-
-			canvas.width = canvas.offsetWidth * ratio;
-			canvas.height = canvas.offsetHeight * ratio;
-			canvas.getContext("2d").scale(ratio, ratio);
-
-			signaturePad.fromData(signaturePad.toData());
-
-			const afterUpdateStrokeEvent = new CustomEvent("afterUpdateStroke");
-			signaturePad.dispatchEvent(afterUpdateStrokeEvent);
 		}
 
 		function cropDataURL(dataUrl) {
