@@ -175,11 +175,13 @@
 					var renameMessage = "{{ 'title.rename.file'|trans }}"
 					var downloadMessage = "{{ 'title.download'|trans }}"
 					var previewMessage = "{{ 'title.preview.file'|trans }}"
-					
+
 					function displayAlert(type, msg) {
 						Swal.fire({html: msg, icon: type, showConfirmButton: false});
 					}
+				</script>
 
+				<script type="module">
 					// display session flash messages
 					{% for type, messages in app.session.flashbag.all %}
 						{% for message in messages %}
