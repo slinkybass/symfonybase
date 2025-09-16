@@ -36,6 +36,21 @@ import SignaturePad from "signature_pad";
 				resizeCanvas(signaturePad);
 			});
 
+			if (e.value) {
+				const currentSignature = new Image();
+				currentSignature.onload = function() {
+					const currentSignatureW = currentSignature.width;
+					const currentSignatureH = currentSignature.height;
+					signaturePad.fromDataURL(e.value, {
+						width: currentSignatureW,
+						height: currentSignatureH,
+						xOffset: (canvas.width - currentSignatureW) / 2,
+						yOffset: (canvas.height - currentSignatureH) / 2
+					});
+				};
+				currentSignature.src = e.value;
+			}
+
 			signaturePad.addEventListener("afterUpdateStroke", () => {
 				const dataUrl = signaturePad.toDataURL("image/png");
 				cropDataURL(dataUrl)
