@@ -36,6 +36,7 @@
 		<tbody>
 			{% for fileEntity in fileArray %}
 				{% set file = fileEntity.file %}
+				{% set fileSelectionable = 'class="select"' in fileEntity.attribut %}
 				<tr class="file-wrapper {{ fileEntity.isImage() ? 'img' : file.type }}">
 					{% if canEdit %}
 						<td>
@@ -60,7 +61,10 @@
 							{% endif %}
 						{% endblock %}
 					</td>
-					<td data-value="{{ file.fileName }}" {{ fileEntity.attribut|raw }}>
+					<td data-value="{{ file.fileName }}">
+						{% if fileSelectionable %}
+							<input type="radio" class="form-check-input me-2 select" {{ fileEntity.attribut|replace({'class="select"': ''})|raw }}>
+						{% endif %}
 						{% block file_name %}
 							{{ (fileEntity.preview.folder is defined ? fileEntity.preview.folder|raw : file.fileName) }}
 						{% endblock %}

@@ -19,6 +19,7 @@
 <div class="row row-cards">
 	{% for fileEntity in fileArray %}
 		{% set file = fileEntity.file %}
+		{% set fileSelectionable = 'class="select"' in fileEntity.attribut %}
 		<div class="file-wrapper col-sm-6 col-lg-4">
 			<div class="card">
 				<div class="card-body pe-4">
@@ -46,7 +47,10 @@
 								{% endif %}
 							</div>
 						{% endblock %}
-						<div {{ fileEntity.attribut|raw }} class="w-100 text-truncate">
+						{% if fileSelectionable %}
+							<input type="radio" class="form-check-input me-2 select" {{ fileEntity.attribut|replace({'class="select"': ''})|raw }}>
+						{% endif %}
+						<div class="w-100 text-truncate">
 							{% block file_name %}
 								<div>{{ (fileEntity.preview.folder is defined ? fileEntity.preview.folder|raw : file.fileName) }}</div>
 							{% endblock %}
