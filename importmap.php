@@ -80,6 +80,10 @@ return [
         'path' => './assets/js/fields/form-type-datetime.js',
         'entrypoint' => true,
     ],
+    'form-type-file' => [
+        'path' => './assets/js/fields/form-type-file.js',
+        'entrypoint' => true,
+    ],
     'form-type-mask' => [
         'path' => './assets/js/fields/form-type-mask.js',
         'entrypoint' => true,

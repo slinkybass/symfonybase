@@ -102,7 +102,8 @@ textarea.no-resize {
 
 /* UX-Media */
 .ux-media .img-preview > img,
-.ux-media .img-preview > svg {
+.ux-media .img-preview > svg,
+[data-file-field] .img-preview svg {
 	object-fit: scale-down;
 	object-position: center;
 	height: 36px;
@@ -112,7 +113,7 @@ textarea.no-resize {
 	border-radius: var(--tblr-border-radius);
 	box-shadow: var(--tblr-shadow-input);
 	padding: 8px;
-	margin: 0;
+	margin: 0 !important;
 }
 
 .ux-media .collection-error-message-button > svg {

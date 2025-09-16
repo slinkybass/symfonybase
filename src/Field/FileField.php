@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraints\File;
@@ -26,6 +27,7 @@ class FileField
             ->setUploadDir('public/media')
             ->setTemplatePath('field/file.html.twig')
             ->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()])
+            ->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms())
             ->setDefaultColumns(12);
 
         return $instance;
