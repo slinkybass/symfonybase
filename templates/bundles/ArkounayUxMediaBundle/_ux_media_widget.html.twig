@@ -36,64 +36,58 @@
 			{% endblock %}
 
 			{# label + input #}
-			<div class="row w-100">
-				<div class="col">
-					{% block fields %}
-						<input type="text" class="form-control" data-action="arkounay--ux-media--media#updatePathValue"
-							data-arkounay--ux-media--media-target="inputPath" id="{{ form.vars.id }}"
-							name="{{ form.vars.full_name }}" {% if form.vars.required %}required="required"{% endif %}
-							value="{{ form.vars.value }}"
-							{{ form.vars.readonly|default ? 'readonly="readonly"' }}>
-						<div class="progress progress-sm d-none" data-arkounay--ux-media--media-target="progress">
-							<div class="progress-bar" role="progressbar" aria-valuenow="10"
-								aria-valuemin="0" aria-valuemax="100" style="width: 25%"></div>
-						</div>
-					{% endblock %}
-				</div>
-
-				<div class="col-auto">
-					<div class="btn-group" role="group">
-						{% block media_buttons %}
-							{% if form.vars.allow_crop %}
-								<button type="button" class="btn btn-icon btn-outline-secondary rounded-start-0" data-base-path="{{ base_path }}"
-										data-bs-toggle="modal" data-bs-target="#crop-modal-{{ id }}"
-										title="{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}"
-										data-bs-backdrop="static" data-arkounay--ux-media--media-target="cropButton">
-									<twig:ux:icon class="icon" name="tabler:crop" />
-								</button>
-								{% include '@ArkounayUxMedia/_ux_crop_modal.html.twig' with {crop_options: form.vars.crop_options} %}
-							{% endif %}
-
-							{% if form.vars.display_clear_button %}
-								<button type="button" class="btn btn-icon btn-outline-secondary rounded-start-0 btn-upload"
-										data-action="arkounay--ux-media--media#clear"
-										title="{{ 'action.delete'|trans({}, 'EasyAdminBundle') }}"
-										data-arkounay--ux-media--media-target="clearButton">
-									<twig:ux:icon class="icon" name="tabler:trash" />
-								</button>
-							{% endif %}
-
-							<button type="button" class="btn btn-icon btn-outline-secondary rounded-start-0 btn-upload"
-									data-controller="arkounay--ux-media--upload"
-									title="{{ 'action.choose_file'|trans({}, 'EasyAdminBundle') }}"
-									data-action="arkounay--ux-media--upload#click">
-								<twig:ux:icon class="icon" name="tabler:upload" />
-								<input class="fileupload d-none" data-arkounay--ux-media--upload-target="inputFile"
-										data-action="arkounay--ux-media--media#upload" type="file" name="files[]"
-										multiple="">
-							</button>
-
-							{% if form.vars.display_file_manager %}
-								<button type="button" class="btn btn-icon btn-outline-secondary rounded-start-0 btn-manager" data-bs-toggle="modal"
-										data-bs-target="#filemanager-modal-{{ id }}"
-										title="{{ 'entities.media.plural'|trans }}"
-										data-action="arkounay--ux-media--media#openFileManager">
-									<twig:ux:icon class="icon" name="tabler:folder" />
-								</button>
-							{% endif %}
-						{% endblock %}
+			<div class="input-group">
+				{% block fields %}
+					<input type="text" class="form-control" data-action="arkounay--ux-media--media#updatePathValue"
+						data-arkounay--ux-media--media-target="inputPath" id="{{ form.vars.id }}"
+						name="{{ form.vars.full_name }}" {% if form.vars.required %}required="required"{% endif %}
+						value="{{ form.vars.value }}"
+						{{ form.vars.readonly|default ? 'readonly="readonly"' }}>
+					<div class="progress progress-sm d-none" data-arkounay--ux-media--media-target="progress">
+						<div class="progress-bar" role="progressbar" aria-valuenow="10"
+							aria-valuemin="0" aria-valuemax="100" style="width: 25%"></div>
 					</div>
-				</div>
+				{% endblock %}
+
+				{% block media_buttons %}
+					{% if form.vars.allow_crop %}
+						<button type="button" class="btn btn-icon" data-base-path="{{ base_path }}"
+								data-bs-toggle="modal" data-bs-target="#crop-modal-{{ id }}"
+								title="{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}"
+								data-bs-backdrop="static" data-arkounay--ux-media--media-target="cropButton">
+							<twig:ux:icon class="icon" name="tabler:crop" />
+						</button>
+						{% include '@ArkounayUxMedia/_ux_crop_modal.html.twig' with {crop_options: form.vars.crop_options} %}
+					{% endif %}
+
+					{% if form.vars.display_clear_button %}
+						<button type="button" class="btn btn-icon btn-upload"
+								data-action="arkounay--ux-media--media#clear"
+								title="{{ 'action.delete'|trans({}, 'EasyAdminBundle') }}"
+								data-arkounay--ux-media--media-target="clearButton">
+							<twig:ux:icon class="icon" name="tabler:trash" />
+						</button>
+					{% endif %}
+
+					<button type="button" class="btn btn-icon btn-upload"
+							data-controller="arkounay--ux-media--upload"
+							title="{{ 'action.choose_file'|trans({}, 'EasyAdminBundle') }}"
+							data-action="arkounay--ux-media--upload#click">
+						<twig:ux:icon class="icon" name="tabler:upload" />
+						<input class="fileupload d-none" data-arkounay--ux-media--upload-target="inputFile"
+								data-action="arkounay--ux-media--media#upload" type="file" name="files[]"
+								multiple="">
+					</button>
+
+					{% if form.vars.display_file_manager %}
+						<button type="button" class="btn btn-icon btn-manager" data-bs-toggle="modal"
+								data-bs-target="#filemanager-modal-{{ id }}"
+								title="{{ 'entities.media.plural'|trans }}"
+								data-action="arkounay--ux-media--media#openFileManager">
+							<twig:ux:icon class="icon" name="tabler:folder" />
+						</button>
+					{% endif %}
+				{% endblock %}
 			</div>
 
 			{% if form.vars.display_file_manager %}
