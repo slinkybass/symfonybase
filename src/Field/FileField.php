@@ -23,8 +23,7 @@ class FileField
         $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
-            ->setBasePath('media')
-            ->setUploadDir('public/media')
+            ->setDir('media')
             ->setTemplatePath('field/file.html.twig')
             ->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()])
             ->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms())
@@ -36,6 +35,14 @@ class FileField
     public function setAccept(?string $filetype): self
     {
         $this->setHtmlAttribute(self::OPTION_ACCEPT, $filetype);
+
+        return $this;
+    }
+
+    public function setDir(string $dir): self
+    {
+        $this->field->setBasePath($dir);
+        $this->field->setUploadDir('public/' . $dir);
 
         return $this;
     }

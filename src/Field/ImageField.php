@@ -18,8 +18,7 @@ class ImageField
         $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
-            ->setBasePath('media')
-            ->setUploadDir('public/media')
+            ->setDir('media')
             ->setDefaultColumns(12);
 
         return $instance;
@@ -28,6 +27,14 @@ class ImageField
     public function setAccept(?string $filetype): self
     {
         $this->setHtmlAttribute(FileField::OPTION_ACCEPT, $filetype);
+
+        return $this;
+    }
+
+    public function setDir(string $dir): self
+    {
+        $this->field->setBasePath($dir);
+        $this->field->setUploadDir('public/' . $dir);
 
         return $this;
     }
