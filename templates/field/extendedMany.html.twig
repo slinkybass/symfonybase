@@ -18,7 +18,11 @@
 									</{% if url %}a{% else %}div{% endif %}>
 								{% else %}
 									<div class="list-group-item">
-										{{ val }}
+										{% if val is not iterable %}
+											{{ val }}
+										{% else %}
+											{{ val|json_encode(constant('JSON_PRETTY_PRINT')) }}
+										{% endif %}
 									</div>
 								{% endif %}
 							{% endfor %}
@@ -39,7 +43,11 @@
 							{{ val }}
 						</{% if url %}a{% else %}div{% endif %}>
 					{% else %}
-						{{ val }}
+						{% if val is not iterable %}
+							{{ val }}
+						{% else %}
+							{{ val|json_encode(constant('JSON_PRETTY_PRINT')) }}
+						{% endif %}
 					{% endif %}
 				</li>
 			{% endfor %}
