@@ -22,10 +22,8 @@ class TextareaField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
-            ->addAssetMapperEntries(Asset::new('form-type-textarea')->onlyOnForms())
             ->plugin()
             ->setRows(5)
             ->setDefaultColumns(12);
@@ -35,6 +33,11 @@ class TextareaField
 
     public function plugin(bool $enable = true): self
     {
+        $this->field->getAsDto()->setAssets(new AssetsDto());
+        if ($enable) {
+            $this->addAssetMapperEntries(Asset::new('form-type-textarea')->onlyOnForms());
+        }
+
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

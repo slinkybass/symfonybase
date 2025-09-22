@@ -22,10 +22,8 @@ class TextEditorField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
-            ->addAssetMapperEntries(Asset::new('form-type-texteditor')->onlyOnForms())
             ->plugin()
             ->setDefaultColumns(12);
 
@@ -34,6 +32,11 @@ class TextEditorField
 
     public function plugin(bool $enable = true): self
     {
+        $this->field->getAsDto()->setAssets(new AssetsDto());
+        if ($enable) {
+            $this->addAssetMapperEntries(Asset::new('form-type-texteditor')->onlyOnForms());
+        }
+
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

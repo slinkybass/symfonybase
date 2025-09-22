@@ -19,12 +19,10 @@ class DateMultipleField
     {
         $instance = new self();
         $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
             ->plugin()
             ->setFormTypeOption('entry_type', DateType::class)
-            ->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms())
             ->setDefaultColumns(12);
 
         return $instance;
@@ -32,9 +30,14 @@ class DateMultipleField
 
     public function plugin(bool $enable = true): self
     {
+        $this->field->getAsDto()->setAssets(new AssetsDto());
+        if ($enable) {
+            $this->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms());
+        }
+
         $this->setHtmlAttribute(DateField::OPTION_PLUGIN, json_encode($enable));
         $this->setFormType($enable ? DateMultipleType::class : CollectionType::class);
-        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $enable ? DateField::DATE_MODE_MULTIPLE : null);
+        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $enable ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_SINGLE);
 
         if ($enable) {
             $this->setTemplatePath('field/dateMultiple.html.twig');

@@ -3,6 +3,7 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField as EasyField;
 
 class ColorField
@@ -32,7 +33,6 @@ class ColorField
         $instance->field = EasyField::new($propertyName, $label);
 
         $instance
-            ->addAssetMapperEntries(Asset::new('form-type-color')->onlyOnForms())
             ->plugin()
             ->setDefaultColumns(12);
 
@@ -41,6 +41,11 @@ class ColorField
 
     public function plugin(bool $enable = true): self
     {
+        $this->field->getAsDto()->setAssets(new AssetsDto());
+        if ($enable) {
+            $this->addAssetMapperEntries(Asset::new('form-type-color')->onlyOnForms());
+        }
+
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

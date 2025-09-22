@@ -3,6 +3,7 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 
 class SignatureField
@@ -34,6 +35,11 @@ class SignatureField
 
     public function plugin(bool $enable = true): self
     {
+        $this->field->getAsDto()->setAssets(new AssetsDto());
+        if ($enable) {
+            $this->addAssetMapperEntries(Asset::new('form-type-signature')->onlyOnForms());
+        }
+
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

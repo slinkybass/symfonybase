@@ -3,6 +3,7 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField as EasyField;
 
 class DateField
@@ -22,6 +23,7 @@ class DateField
     public const OPTION_DATE_DISABLED = 'data-date-disabled';
 
     /** modes */
+    public const DATE_MODE_SINGLE = 'single';
     public const DATE_MODE_MULTIPLE = 'multiple';
     public const DATE_MODE_RANGE = 'range';
 
@@ -40,7 +42,6 @@ class DateField
         $instance->field = EasyField::new($propertyName, $label);
 
         $instance
-            ->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms())
             ->plugin()
             ->setDefaultColumns(12);
 
@@ -49,6 +50,11 @@ class DateField
 
     public function plugin(bool $enable = true): self
     {
+        $this->field->getAsDto()->setAssets(new AssetsDto());
+        if ($enable) {
+            $this->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms());
+        }
+
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

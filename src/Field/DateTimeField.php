@@ -3,6 +3,7 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField as EasyField;
 
 class DateTimeField
@@ -19,7 +20,6 @@ class DateTimeField
         $instance->field = EasyField::new($propertyName, $label);
 
         $instance
-            ->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms())
             ->plugin()
             ->setDefaultColumns(12);
 
@@ -28,6 +28,11 @@ class DateTimeField
 
     public function plugin(bool $enable = true): self
     {
+        $this->field->getAsDto()->setAssets(new AssetsDto());
+        if ($enable) {
+            $this->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms());
+        }
+
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;
