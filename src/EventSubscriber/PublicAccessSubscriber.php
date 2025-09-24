@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Redirects users accessing public routes based on config settings and user roles.
@@ -28,6 +29,7 @@ class PublicAccessSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
+        /** @var User $user */
         $user = $this->security->getUser();
         $request = $event->getRequest();
         $session = $request->getSession();
@@ -56,6 +58,8 @@ class PublicAccessSubscriber implements EventSubscriberInterface
             } elseif (!$session->get('config')->enablePublic) {
                 $redirect = $this->router->generate('login');
             }
+        } elseif ($controllerName == "AuthController" && $user) {
+            $redirect = $this->router->generate('home');
         }
 
         if ($redirect) {
