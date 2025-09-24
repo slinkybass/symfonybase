@@ -53,7 +53,7 @@ class ConfigCrudController extends AbstractCrudController
         yield from $this->yieldFields([
             $dataPanel,
             $enablePublic->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
-            ...(!$entity || $entity->isEnablePublic() ? [
+            ...($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnablePublic()) ? [
                 $privacyPanel,
                 $enableCookies->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
             ] : []),
