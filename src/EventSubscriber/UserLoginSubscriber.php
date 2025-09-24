@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function Symfony\Component\Translation\t;
 
@@ -15,6 +16,13 @@ use function Symfony\Component\Translation\t;
  */
 class UserLoginSubscriber implements EventSubscriberInterface
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
         /** @var User $user */
@@ -24,9 +32,9 @@ class UserLoginSubscriber implements EventSubscriberInterface
 
         $error = null;
         if (!$user->isActive()) {
-            $error = t('app.messages.userDeactivated');
+            $error = $this->translator->trans('app.messages.userDeactivated');
         } elseif (!$user->isVerified()) {
-            $error = t('app.messages.userUnverified');
+            $error = $this->translator->trans('app.messages.userUnverified');
         }
 
         if ($error) {
