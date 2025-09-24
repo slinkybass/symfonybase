@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class AuthController extends AbstractController
+final class PrivacyController extends AbstractController
 {
     #[Route('/privacy', name: 'privacy')]
     public function privacy(Request $request): Response
