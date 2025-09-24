@@ -59,7 +59,7 @@
 										<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
 											{% for locale in supportedLocales %}
 												<a href="?_locale={{ locale }}" class="dropdown-item">
-													<twig:ux:icon class="icon" name="tabler:language" /> <span>{{ locale|locale_name }} ({{ locale }})</span>
+													<twig:ux:icon class="icon" name="tabler:language" /> <span>{{ locale|locale_name|capitalize }} ({{ locale }})</span>
 												</a>
 											{% endfor %}
 										</div>
