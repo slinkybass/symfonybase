@@ -26,7 +26,7 @@ import "flatpickr/dist/flatpickr.min.css";
 			const mode = e.hasAttribute("data-date-mode") ? e.getAttribute("data-date-mode") : "single";
 			const enableSeconds = e.hasAttribute("data-enable-seconds") ? e.getAttribute("data-enable-seconds") !== "false" : false;
 			const dateFormat = e.hasAttribute("data-date-format") ? e.getAttribute("data-date-format") : "YYYY-MM-DDTHH:mm" + (enableSeconds ? ":ss" : "");
-			const altFormat = e.hasAttribute("data-date-alt-format") ? e.getAttribute("data-date-alt-format") : moment.localeData().longDateFormat("L") + " " + moment.localeData().longDateFormat("LT");
+			const altFormat = e.hasAttribute("data-date-alt-format") ? e.getAttribute("data-date-alt-format") : moment.localeData().longDateFormat("L") + " " + moment.localeData().longDateFormat("LT" + (enableSeconds ? "S" : ""));
 			const minuteIncrement = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : 1;
 			const enabledDates = e.hasAttribute("data-date-enabled") ? e.getAttribute("data-date-enabled") : null;
 			const disabledDates = e.hasAttribute("data-date-disabled") ? e.getAttribute("data-date-disabled") : null;
