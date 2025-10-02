@@ -24,7 +24,8 @@ import "flatpickr/dist/flatpickr.min.css";
 			const min = e.hasAttribute("min") ? e.getAttribute("min") : null;
 			const inline = e.hasAttribute("data-date-inline") ? e.getAttribute("data-date-inline") !== "false" : false;
 			const mode = e.hasAttribute("data-date-mode") ? e.getAttribute("data-date-mode") : "single";
-			const dateFormat = e.hasAttribute("data-date-format") ? e.getAttribute("data-date-format") : "YYYY-MM-DDTHH:mm";
+			const enableSeconds = e.hasAttribute("data-enable-seconds") ? e.getAttribute("data-enable-seconds") !== "false" : false;
+			const dateFormat = e.hasAttribute("data-date-format") ? e.getAttribute("data-date-format") : "YYYY-MM-DDTHH:mm" + (enableSeconds ? ":ss" : "");
 			const altFormat = e.hasAttribute("data-date-alt-format") ? e.getAttribute("data-date-alt-format") : moment.localeData().longDateFormat("L") + " " + moment.localeData().longDateFormat("LT");
 			const minuteIncrement = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : 1;
 			const enabledDates = e.hasAttribute("data-date-enabled") ? e.getAttribute("data-date-enabled") : null;
@@ -42,6 +43,7 @@ import "flatpickr/dist/flatpickr.min.css";
 				disableMobile: true,
 				enableTime: true,
 				time_24hr: true,
+				enableSeconds: enableSeconds,
 				minuteIncrement: minuteIncrement,
 				locale: {
 					rangeSeparator: ', '

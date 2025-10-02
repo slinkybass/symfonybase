@@ -23,6 +23,7 @@ import "flatpickr/dist/flatpickr.min.css";
 			const max = e.hasAttribute("max") ? e.getAttribute("max") : null;
 			const min = e.hasAttribute("min") ? e.getAttribute("min") : null;
 			const inline = e.hasAttribute("data-date-inline") ? e.getAttribute("data-date-inline") !== "false" : false;
+			const enableSeconds = e.hasAttribute("data-enable-seconds") ? e.getAttribute("data-enable-seconds") !== "false" : false;
 			const minuteIncrement = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : 1;
 
 			const flatPickrOtps = {
@@ -34,6 +35,7 @@ import "flatpickr/dist/flatpickr.min.css";
 				disableMobile: true,
 				enableTime: true,
 				time_24hr: true,
+				enableSeconds: enableSeconds,
 				minuteIncrement: minuteIncrement,
 				noCalendar: true,
 				onOpen: function (selectedDates, dateStr, instance) {
