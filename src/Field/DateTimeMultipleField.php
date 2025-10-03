@@ -112,6 +112,13 @@ class DateTimeMultipleField
         return $this;
     }
 
+    public function enableSeconds(bool $enable = true): self
+    {
+        $this->setHtmlAttribute(TimeField::OPTION_DATE_ENABLE_SECONDS, json_encode($enable));
+
+        return $this;
+    }
+
     public function setMinuteIncrement(int $val): self
     {
         $this->setHtmlAttribute(TimeField::OPTION_DATE_MINUTE_INCREMENT, $val);

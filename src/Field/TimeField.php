@@ -12,6 +12,7 @@ class TimeField
 
     public const OPTION_PLUGIN = 'data-time-field';
 
+    public const OPTION_DATE_ENABLE_SECONDS = 'data-date-enable-seconds';
     public const OPTION_DATE_MINUTE_INCREMENT = 'data-date-minute-increment';
 
     private EasyField $field;
@@ -57,6 +58,13 @@ class TimeField
     public function isInline(bool $inline = true): self
     {
         $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($inline));
+
+        return $this;
+    }
+
+    public function enableSeconds(bool $enable = true): self
+    {
+        $this->setHtmlAttribute(self::OPTION_DATE_ENABLE_SECONDS, json_encode($enable));
 
         return $this;
     }
