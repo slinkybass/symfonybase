@@ -180,9 +180,9 @@
 			}
 		} else if (isTomSelect) {
 			if (save && saved !== null) {
-				child.tomselect.setValue(child.multiple ? saved.split(",") : saved);
+				child.tomselect.setValue(child.multiple ? saved.toString().split(",") : saved);
 			} else if (defVal && !child.value) {
-				child.tomselect.setValue(child.multiple ? defVal.split(",") : defVal);
+				child.tomselect.setValue(child.multiple ? defVal.toString().split(",") : defVal);
 			}
 		} else if (isFlatpickr) {
 			if (save && saved !== null) {
