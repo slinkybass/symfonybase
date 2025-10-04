@@ -2,7 +2,7 @@
  * Hierarchical Field Visibility Handler
  *
  * Author: slinkybass
- * Version: 3.0
+ * Version: 3.1
  *
  * Description:
  * This plugin dynamically manages form field visibility and behavior based on hierarchical parent-child relationships.
@@ -95,7 +95,7 @@
 	 * @param {HTMLElement} child - The child element to process.
 	 */
 	function processChild(parentValue, parentIsCheckboxOrRadio, child) {
-		const container = child.closest(".form-group")?.parentNode;
+		const container = child.closest(".form-group");
 		if (!container) return;
 
 		const childType = child.type;
@@ -104,13 +104,15 @@
 		const isFlatpickr = child.classList.contains("flatpickr-input") && child._flatpickr;
 
 		const defaultValue = parseFieldValue(child.dataset.hfDefaultValue);
-		const valueToShow = child.dataset.hfParentValue !== undefined ? parseFieldValue(child.dataset.hfParentValue) : parentIsCheckboxOrRadio ? true : null;
+		const hfParentValue = parseFieldValue(child.dataset.hfParentValue);
+		const hfParentValues = hfParentValue !== null ? hfParentValue.toString().split("|").map((v) => parseFieldValue(v)) : [];
+		const valuesToShow = hfParentValues.length ? hfParentValues : parentIsCheckboxOrRadio ? [ true ] : [];
 		const keepValue = parseFieldValue(child.dataset.hfKeepValue);
 		const saveValue = parseFieldValue(child.dataset.hfSaveValue);
 		const savedValue = parseFieldValue(child.dataset.hfSavedValue);
 		const forceShow = parseFieldValue(child.dataset.hfShow);
 
-		const shouldShow = (valueToShow !== null && valueToShow === parentValue) || (valueToShow === null && parentValue !== null);
+		const shouldShow = (valuesToShow.length && valuesToShow.includes(parentValue)) || (!valuesToShow.length && parentValue !== null);
 
 		if (shouldShow) {
 			showChild(child, container, forceShow);
@@ -294,7 +296,7 @@
 		const card = child.closest(".card");
 		if (!card) return;
 		const groups = card.querySelectorAll(".form-group");
-		const visible = Array.from(groups).some((g) => !g.parentNode.classList.contains("d-none"));
+		const visible = Array.from(groups).some((g) => !g.classList.contains("d-none"));
 		card.classList.toggle("d-none", !visible);
 	}
 
