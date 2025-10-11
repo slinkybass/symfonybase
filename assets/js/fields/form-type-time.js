@@ -25,13 +25,14 @@ import "flatpickr/dist/flatpickr.min.css";
 			const inline = e.hasAttribute("data-date-inline") ? e.getAttribute("data-date-inline") !== "false" : false;
 			const enableSeconds = e.hasAttribute("data-enable-seconds") ? e.getAttribute("data-enable-seconds") !== "false" : false;
 			const minuteIncrement = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : 1;
+			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") == "false" : true;
 
 			const flatPickrOtps = {
 				locale: moment.locale(),
 				inline: inline,
 				altInputClass: inline ? "d-none" : "",
 				altInput: inline,
-				allowInput: true,
+				allowInput: allowInput,
 				disableMobile: true,
 				enableTime: true,
 				time_24hr: true,

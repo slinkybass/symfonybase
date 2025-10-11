@@ -28,6 +28,7 @@ import "flatpickr/dist/flatpickr.min.css";
 			const altFormat = e.hasAttribute("data-date-alt-format") ? e.getAttribute("data-date-alt-format") : moment.localeData().longDateFormat("L");
 			const enabledDates = e.hasAttribute("data-date-enabled") ? e.getAttribute("data-date-enabled") : null;
 			const disabledDates = e.hasAttribute("data-date-disabled") ? e.getAttribute("data-date-disabled") : null;
+			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") == "false" : true;
 
 			const flatPickrOtps = {
 				locale: moment.locale(),
@@ -37,7 +38,7 @@ import "flatpickr/dist/flatpickr.min.css";
 				altInput: true,
 				altInputClass: inline ? "d-none" : "",
 				altFormat: altFormat,
-				allowInput: true,
+				allowInput: allowInput,
 				disableMobile: true,
 				locale: {
 					rangeSeparator: ', '
