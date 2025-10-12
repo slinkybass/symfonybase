@@ -177,25 +177,25 @@
 		if (isCheckbox) {
 			if (save && saved !== null) {
 				child.checked = saved;
-			} else if (defVal) {
+			} else if (defVal !== null) {
 				child.checked = defVal;
 			}
 		} else if (isTomSelect) {
 			if (save && saved !== null) {
 				child.tomselect.setValue(child.multiple ? saved.toString().split(",") : saved);
-			} else if (defVal && !child.value) {
+			} else if (defVal !== null && !child.value) {
 				child.tomselect.setValue(child.multiple ? defVal.toString().split(",") : defVal);
 			}
 		} else if (isFlatpickr) {
 			if (save && saved !== null) {
 				child._flatpickr.setDate(saved);
-			} else if (defVal && !child.value) {
+			} else if (defVal !== null && !child.value) {
 				child._flatpickr.setDate(defVal);
 			}
 		} else {
 			if (save && saved !== null) {
 				child.value = saved;
-			} else if (defVal && !child.value) {
+			} else if (defVal !== null && !child.value) {
 				child.value = defVal;
 			}
 		}
