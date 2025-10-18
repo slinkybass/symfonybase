@@ -68,6 +68,9 @@ input[type="number"].no-spinners {
 .form-control[readonly] {
 	background-color: var(--tblr-disabled-bg);
 	color: var(--tblr-disabled-color);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 	pointer-events: none;
 }
 
@@ -75,6 +78,9 @@ input[type="number"].no-spinners {
 .form-check:has(.form-check-input[disabled]),
 .form-check:has(.form-check-input.readonly),
 .form-check:has(.form-check-input[readonly]) {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 	pointer-events: none;
 }
 
