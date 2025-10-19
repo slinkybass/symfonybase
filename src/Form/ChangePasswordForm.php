@@ -14,6 +14,8 @@ class ChangePasswordForm extends AbstractType
         $fields = [];
         $fields[] = FieldGenerator::password('plainPassword')
             ->isRepeated()
+            ->renderSwitch()
+            ->renderGenerator()
             ->setFirstLabel('entities.user.fields.password')
             ->setSecondLabel('entities.user.fields.repeatPassword')
             ->setFormTypeOption('first_options.attr.autofocus', true)
