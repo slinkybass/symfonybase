@@ -159,17 +159,17 @@ final class AuthController extends AbstractController
             return $this->redirectToRoute('reset_sent');
         }
 
-        $subject = t('email.reset.subject');
+        $subject = $this->translator->trans('email.reset.subject');
         $content = [
-            t('email.reset.content1'),
-            t('email.reset.content2'),
+            $this->translator->trans('email.reset.content1'),
+            $this->translator->trans('email.reset.content2'),
         ];
         $buttons = [
             $this->translator->trans('email.reset.button') => $this->generateUrl('reset_token', ['token' => $resetToken->getToken()], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
         $timeToExpire = t($resetToken->getExpirationMessageKey(), $resetToken->getExpirationMessageData(), 'ResetPasswordBundle');
         $postContent = [
-            t('email.reset.postContent1', ['%time%' => $timeToExpire]),
+            $this->translator->trans('email.reset.postContent1', ['%time%' => $timeToExpire]),
         ];
         $html = $this->renderView('mails/template.html.twig', ['subject' => $subject, 'content' => $content, 'buttons' => $buttons, 'postContent' => $postContent]);
         $emails = [$user->getEmail()];
