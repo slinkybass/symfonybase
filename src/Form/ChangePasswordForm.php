@@ -2,30 +2,24 @@
 
 namespace App\Form;
 
+use App\Field\FieldGenerator;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use function Symfony\Component\Translation\t;
 
 class ChangePasswordForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => [
-                    'label' => t('entities.user.fields.password'),
-                ],
-                'second_options' => [
-                    'label' => t('entities.user.fields.repeatPassword'),
-                ],
-                'mapped' => false,
-            ])
-        ;
+        $fields = [];
+        $fields[] = FieldGenerator::password('plainPassword')
+            ->isRepeated()
+            ->setFirstLabel('entities.user.fields.password')
+            ->setSecondLabel('entities.user.fields.repeatPassword')
+            ->setFormTypeOption('first_options.attr.autofocus', true)
+            ->isMapped(false);
+
+        $builder = FormGenerator::getFormBuilder($builder, $fields);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
