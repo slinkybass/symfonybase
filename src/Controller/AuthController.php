@@ -60,7 +60,7 @@ final class AuthController extends AbstractController
         ]);
     }
 
-    #[Route('/reset', name: 'reset')]
+    #[Route('/reset-password-request', name: 'reset')]
     public function request(Request $request): Response
     {
         $form = $this->createForm(ResetPasswordRequestForm::class);
@@ -93,7 +93,7 @@ final class AuthController extends AbstractController
         ]);
     }
 
-    #[Route('/reset/sent', name: 'reset_sent')]
+    #[Route('/reset-password-request/sent', name: 'reset_sent')]
     public function checkEmail(): Response
     {
         $this->getTokenObjectFromSession();
@@ -101,7 +101,7 @@ final class AuthController extends AbstractController
         return $this->redirectToRoute('login');
     }
 
-    #[Route('/reset/{token}', name: 'reset_token')]
+    #[Route('/reset-password/{token}', name: 'reset_token')]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, ?string $token = null): Response
     {
         if ($token) {
