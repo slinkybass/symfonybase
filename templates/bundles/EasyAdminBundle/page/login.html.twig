@@ -65,6 +65,11 @@
 					</div>
 				</div>
 			</form>
+			{% if app.session.get('config').enableRegister %}
+				<div class="text-center text-muted mt-3">
+					{{ 'public.login.register'|trans }} <a href="#">{{ 'public.login.registerLink'|trans }}</a>
+				</div>
+			{% endif %}
 		{% endblock %}
 	</main>
 {% endblock %}

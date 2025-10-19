@@ -32,6 +32,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         $this->config->appTimezone = 'Europe/Madrid';
         $this->config->enablePublic = false;
         $this->config->enableResetPassword = false;
+        $this->config->enableRegister = false;
         $this->config->enableCookies = false;
         $this->config->senderEmail = 'israel@garaballu.com';
         $this->config->privacyText = null;
@@ -52,6 +53,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             $this->config->appTimezone = $dcConfig->getAppTimezone() ?? $this->config->appTimezone;
             $this->config->enablePublic = $dcConfig->isEnablePublic() ?? $this->config->enablePublic;
             $this->config->enableResetPassword = $dcConfig->isEnableResetPassword() ?? $this->config->enableResetPassword;
+            $this->config->enableRegister = $dcConfig->isEnableRegister() ?? $this->config->enableRegister;
             $this->config->enableCookies = $dcConfig->isEnableCookies() ?? $this->config->enableCookies;
             $this->config->senderEmail = $dcConfig->getSenderEmail() ?? $this->config->senderEmail;
             $this->config->privacyText = $dcConfig->getPrivacyText() ?? $this->config->privacyText;

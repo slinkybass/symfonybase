@@ -43,6 +43,9 @@ class Config
     private ?bool $enableResetPassword = null;
 
     #[ORM\Column]
+    private ?bool $enableRegister = null;
+
+    #[ORM\Column]
     private ?bool $enableCookies = false;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -168,6 +171,18 @@ class Config
     public function setEnableResetPassword(bool $enableResetPassword): static
     {
         $this->enableResetPassword = $enableResetPassword;
+
+        return $this;
+    }
+
+    public function isEnableRegister(): ?bool
+    {
+        return $this->enableRegister;
+    }
+
+    public function setEnableRegister(bool $enableRegister): static
+    {
+        $this->enableRegister = $enableRegister;
 
         return $this;
     }

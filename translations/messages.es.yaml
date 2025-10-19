@@ -13,6 +13,9 @@ public:
     title: Política de privacidad
   cookies:
     title: Política de cookies
+  login:
+    register: ¿Aún no tienes cuenta?
+    registerLink: Regístrate
   reset:
     title: Recuperar contraseña
     resetText: Ingrese su email y se le enviará un correo electrónico con un enlace para recuperarla.
@@ -36,6 +39,7 @@ entities:
     fields:
       enablePublic: Habilitar zona pública
       enableResetPassword: Habilitar restablecimiento de contraseña
+      enableRegister: Habilitar registro de usuarios
       enableCookies: Habilitar cookies
   settings:
     singular: Ajustes
