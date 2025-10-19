@@ -24,7 +24,7 @@ email:
     subject: Solicitud de recuperación de contraseña.
     content1: ¡Hola!
     content2: Has recibido este email porque has solicitado la recuperación de tu contraseña.
-    postContent1: Este enlace caducará en aproximadamente %time%.
+    postContent1: Este enlace caducará aproximadamente en %time%.
     button: Recuperar contraseña
 entities:
   config:
