@@ -2,7 +2,8 @@ app:
   messages:
     userDeactivated: Tu cuenta está desactivada.
     userUnverified: Tu cuenta de correo electrónico no está confirmada. Por favor revisa tu bandeja de entrada y haz click en el enlace que te hemos enviado.
-    recoverySended: Se acaba de enviar un email que contiene un enlace que puede usar para restablecer su contraseña. Si no recibe este email, revise en la carpeta de SPAM.
+    resetPasswordSended: Se acaba de enviar un email que contiene un enlace que puede usar para restablecer su contraseña. Si no recibe este email, revise en la carpeta de SPAM.
+    resetPasswordDone: Se ha realizado el cambio de contraseña correctamente. Puede iniciar sesión.
 admin:
   home:
     title: Inicio

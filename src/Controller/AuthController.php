@@ -97,7 +97,7 @@ final class AuthController extends AbstractController
     public function checkEmail(): Response
     {
         $this->getTokenObjectFromSession();
-        $this->addFlash('success', $this->translator->trans('app.messages.recoverySended'));
+        $this->addFlash('success', $this->translator->trans('app.messages.resetPasswordSended'));
         return $this->redirectToRoute('login');
     }
 
@@ -118,11 +118,7 @@ final class AuthController extends AbstractController
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash('danger', sprintf(
-                '%s - %s',
-                $this->translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle'),
-                $this->translator->trans($e->getReason(), [], 'ResetPasswordBundle')
-            ));
+			$this->addFlash('error', $this->translator->trans($e->getReason(), [], 'ResetPasswordBundle'));
             return $this->redirectToRoute('reset');
         }
 
@@ -131,14 +127,12 @@ final class AuthController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->resetPasswordHelper->removeResetRequest($token);
-
-            $plainPassword = $form->get('plainPassword')->getData();
-
-            $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+			$encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
+			$user->setPassword($encodedPassword);
+			$this->em->persist($user);
             $this->em->flush();
-
             $this->cleanSessionAfterReset();
-
+			$this->addFlash('success', $this->translator->trans('app.messages.resetPasswordDone'));
             return $this->redirectToRoute('login');
         }
 
