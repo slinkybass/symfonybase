@@ -17,7 +17,9 @@ class ChangePasswordForm extends AbstractType
             ->renderSwitch()
             ->renderGenerator()
             ->setFirstLabel('entities.user.fields.password')
+            ->setFirstPlaceholder('entities.user.fields.password')
             ->setSecondLabel('entities.user.fields.repeatPassword')
+            ->setSecondPlaceholder('entities.user.fields.repeatPassword')
             ->setFormTypeOption('first_options.attr.autofocus', true)
             ->isMapped(false);
 
