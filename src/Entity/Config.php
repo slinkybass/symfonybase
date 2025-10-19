@@ -40,6 +40,9 @@ class Config
     private ?bool $enablePublic = false;
 
     #[ORM\Column]
+    private ?bool $enableResetPassword = null;
+
+    #[ORM\Column]
     private ?bool $enableCookies = false;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -153,6 +156,18 @@ class Config
     public function setEnablePublic(bool $enablePublic): static
     {
         $this->enablePublic = $enablePublic;
+
+        return $this;
+    }
+
+    public function isEnableResetPassword(): ?bool
+    {
+        return $this->enableResetPassword;
+    }
+
+    public function setEnableResetPassword(bool $enableResetPassword): static
+    {
+        $this->enableResetPassword = $enableResetPassword;
 
         return $this;
     }

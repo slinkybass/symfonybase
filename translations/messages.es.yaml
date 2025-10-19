@@ -2,6 +2,7 @@ app:
   messages:
     userDeactivated: Tu cuenta está desactivada.
     userUnverified: Tu cuenta de correo electrónico no está confirmada. Por favor revisa tu bandeja de entrada y haz click en el enlace que te hemos enviado.
+    recoverySended: Se acaba de enviar un email que contiene un enlace que puede usar para restablecer su contraseña. Si no recibe este email, revise en la carpeta de SPAM.
 admin:
   home:
     title: Inicio
@@ -12,6 +13,19 @@ public:
     title: Política de privacidad
   cookies:
     title: Política de cookies
+  reset:
+    title: Recuperar contraseña
+    resetText: Ingrese su email y se le enviará un correo electrónico con un enlace para recuperarla.
+    resetBtn: Enviar correo electrónico de recuperación
+    tokenText: Ingrese su nueva contraseña. Tras darle a restaurar, podrá iniciar sesión de nuevo con ella.
+    tokenBtn: Restaurar contraseña
+email:
+  reset:
+    subject: Solicitud de recuperación de contraseña.
+    content1: ¡Hola!
+    content2: Has recibido este email porque has solicitado la recuperación de tu contraseña.
+    postContent1: Este enlace caducará en aproximadamente %time%.
+    button: Recuperar contraseña
 entities:
   config:
     singular: Configuración
@@ -21,6 +35,7 @@ entities:
       privacy: Datos de RGPD
     fields:
       enablePublic: Habilitar zona pública
+      enableResetPassword: Habilitar restablecimiento de contraseña
       enableCookies: Habilitar cookies
   settings:
     singular: Ajustes

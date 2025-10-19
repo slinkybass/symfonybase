@@ -41,6 +41,10 @@ class ConfigCrudController extends AbstractCrudController
             ->setLabel($this->transEntityField('enablePublic'))
             ->setHtmlAttribute('data-hf-parent', 'enablePublic')
             ->setColumns(12);
+        $enableResetPassword = FieldGenerator::switch('enableResetPassword')
+            ->setLabel($this->transEntityField('enableResetPassword'))
+            ->setHtmlAttribute('data-hf-child', 'enablePublic')
+            ->setColumns(12);
 
         /*** Privacy ***/
         $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))
@@ -54,6 +58,7 @@ class ConfigCrudController extends AbstractCrudController
             $dataPanel,
             $enablePublic->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
             ...($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnablePublic()) ? [
+                $enableResetPassword->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
                 $privacyPanel,
                 $enableCookies->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
             ] : []),
