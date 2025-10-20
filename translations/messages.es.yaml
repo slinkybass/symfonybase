@@ -4,6 +4,8 @@ app:
     userUnverified: Tu cuenta de correo electrónico no está confirmada. Por favor revisa tu bandeja de entrada y haz click en el enlace que te hemos enviado.
     resetPasswordSended: Se acaba de enviar un email que contiene un enlace que puede usar para restablecer su contraseña. Si no recibe este email, revise en la carpeta de SPAM.
     resetPasswordDone: Se ha realizado el cambio de contraseña correctamente. Puede iniciar sesión.
+    verifySended: Se acaba de enviar un email que contiene un enlace que debe usar para verificar su dirección de correo electrónico. Si no recibe este email, revise en la carpeta de SPAM.
+    verifyDone: Se ha realizado la confirmación de email correctamente. Puede iniciar sesión.
 admin:
   home:
     title: Inicio
@@ -23,6 +25,12 @@ public:
     resetBtn: Enviar correo electrónico de recuperación
     tokenText: Ingrese su nueva contraseña. Tras darle a restaurar, podrá iniciar sesión de nuevo con ella.
     tokenBtn: Restaurar contraseña
+  register:
+    title: Registro
+    registerText: Se le enviará un correo electrónico con un enlace para confirmar su dirección de email.
+    registerBtn: Registrarse
+    acceptTerms: Acepto los términos de uso y privacidad
+    acceptTermsUrl: Acepto los <a href="%url%" target="_blank">términos de uso y privacidad</a>
 email:
   reset:
     subject: Solicitud de recuperación de contraseña.
@@ -30,6 +38,12 @@ email:
     content2: Has recibido este email porque has solicitado la recuperación de tu contraseña.
     postContent1: Este enlace caducará aproximadamente en %time%.
     button: Recuperar contraseña
+  verify:
+    subject: Confirmación de dirección de email.
+    content1: ¡Hola!
+    content2: Confirme su dirección de correo electrónico haciendo clic en el siguiente enlace
+    postContent1: Este enlace caducará aproximadamente en %time%.
+    button: Confirmar mi dirección de correo
 entities:
   config:
     singular: Configuración
@@ -41,6 +55,7 @@ entities:
       enablePublic: Habilitar zona pública
       enableResetPassword: Habilitar restablecimiento de contraseña
       enableRegister: Habilitar registro de usuarios
+      roleDefaultRegister: Rol por defecto para el registro
       enableCookies: Habilitar cookies
   settings:
     singular: Ajustes

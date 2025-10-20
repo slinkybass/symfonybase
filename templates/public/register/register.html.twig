@@ -1,0 +1,38 @@
+{% extends "public/layout/base.html.twig" %}
+
+{% block page_title %}
+	{{ 'public.register.title'|trans }}
+{% endblock %}
+
+{% block page_class %}page-center{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block page_body %}
+	<main class="container container-tight py-4">
+		{% block main %}
+            {{ form_start(registerForm, { 'attr': { 'class': 'card card-md' } }) }}
+				<div class="card-status-top bg-primary"></div>
+				<div class="card-body">
+					<h2 class="card-title text-center mb-4">
+						<a href="{{ path('home') }}" class="navbar-brand navbar-brand-autodark">
+							<img src="{{ app.session.get('config').appLogo }}" alt="{{ app.session.get('config').appName }}" style="max-height: 30px;">
+						</a>
+					</h2>
+					{{ form_row(registerForm.name) }}
+					{{ form_row(registerForm.email) }}
+					{{ form_row(registerForm.plainPassword) }}
+					{{ form_row(registerForm.acceptTerms) }}
+					<p class="text-muted">{{ 'public.register.registerText'|trans }}</p>
+					<div class="form-footer">
+						<button type="submit" class="btn btn-primary w-100">
+							<twig:ux:icon class="icon" name="tabler:check" /> {{ 'public.register.registerBtn'|trans }}
+						</button>
+					</div>
+                </div>
+            {{ form_end(registerForm) }}
+		{% endblock %}
+	</main>
+{% endblock %}
+
+{% block footer %}{% endblock %}

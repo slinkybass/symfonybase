@@ -45,6 +45,10 @@ class Config
     #[ORM\Column]
     private ?bool $enableRegister = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Role $roleDefaultRegister = null;
+
     #[ORM\Column]
     private ?bool $enableCookies = false;
 
@@ -183,6 +187,18 @@ class Config
     public function setEnableRegister(bool $enableRegister): static
     {
         $this->enableRegister = $enableRegister;
+
+        return $this;
+    }
+
+    public function getRoleDefaultRegister(): ?Role
+    {
+        return $this->roleDefaultRegister;
+    }
+
+    public function setRoleDefaultRegister(?Role $roleDefaultRegister): static
+    {
+        $this->roleDefaultRegister = $roleDefaultRegister;
 
         return $this;
     }

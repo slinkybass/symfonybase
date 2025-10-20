@@ -33,6 +33,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         $this->config->enablePublic = false;
         $this->config->enableResetPassword = false;
         $this->config->enableRegister = false;
+        $this->config->roleDefaultRegister = null;
         $this->config->enableCookies = false;
         $this->config->senderEmail = 'israel@garaballu.com';
         $this->config->privacyText = null;
@@ -54,6 +55,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             $this->config->enablePublic = $dcConfig->isEnablePublic() ?? $this->config->enablePublic;
             $this->config->enableResetPassword = $dcConfig->isEnableResetPassword() ?? $this->config->enableResetPassword;
             $this->config->enableRegister = $dcConfig->isEnableRegister() ?? $this->config->enableRegister;
+            $this->config->roleDefaultRegister = $dcConfig->getRoleDefaultRegister() ?? $this->config->roleDefaultRegister;
             $this->config->enableCookies = $dcConfig->isEnableCookies() ?? $this->config->enableCookies;
             $this->config->senderEmail = $dcConfig->getSenderEmail() ?? $this->config->senderEmail;
             $this->config->privacyText = $dcConfig->getPrivacyText() ?? $this->config->privacyText;

@@ -48,7 +48,12 @@ class ConfigCrudController extends AbstractCrudController
         $enableRegister = FieldGenerator::switch('enableRegister')
             ->setLabel($this->transEntityField('enableRegister'))
             ->setHtmlAttribute('data-hf-child', 'enablePublic')
+            ->setHtmlAttribute('data-hf-parent', 'enableRegister')
             ->setColumns(12);
+        $roleDefaultRegister = FieldGenerator::association('roleDefaultRegister')
+            ->setLabel($this->transEntityField('roleDefaultRegister'))
+            ->setHtmlAttribute('data-hf-child', 'enableRegister')
+            ->isRequired();
 
         /*** Privacy ***/
         $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))
@@ -64,6 +69,9 @@ class ConfigCrudController extends AbstractCrudController
             ...($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnablePublic()) ? [
                 $enableResetPassword->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
                 $enableRegister->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
+                ...($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnableRegister()) ? [
+                    $roleDefaultRegister,
+                ] : []),
                 $privacyPanel,
                 $enableCookies->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
             ] : []),

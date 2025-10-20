@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ChangePasswordForm;
+use App\Form\RegistrationForm;
 use App\Form\ResetPasswordRequestForm;
 use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +21,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 use function Symfony\Component\Translation\t;
 
@@ -30,13 +34,15 @@ final class AuthController extends AbstractController
     private MailService $mailService;
     private TranslatorInterface $translator;
     private ResetPasswordHelperInterface $resetPasswordHelper;
+    private VerifyEmailHelperInterface $verifyEmailHelper;
 
-    public function __construct(EntityManagerInterface $em, MailService $mailService, TranslatorInterface $translator, ResetPasswordHelperInterface $resetPasswordHelper)
+    public function __construct(EntityManagerInterface $em, MailService $mailService, TranslatorInterface $translator, ResetPasswordHelperInterface $resetPasswordHelper, VerifyEmailHelperInterface $verifyEmailHelper)
     {
         $this->em = $em;
         $this->mailService = $mailService;
         $this->translator = $translator;
         $this->resetPasswordHelper = $resetPasswordHelper;
+        $this->verifyEmailHelper = $verifyEmailHelper;
     }
 
     #[Route('/login', name: 'login')]
@@ -69,7 +75,7 @@ final class AuthController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
             $user = $this->em->getRepository(User::class)->findOneBy([
-                'email' => $email
+                'email' => $email,
             ]);
 
             $error = null;
@@ -118,7 +124,7 @@ final class AuthController extends AbstractController
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
-			$this->addFlash('error', $this->translator->trans($e->getReason(), [], 'ResetPasswordBundle'));
+            $this->addFlash('error', $this->translator->trans($e->getReason(), [], 'ResetPasswordBundle'));
             return $this->redirectToRoute('reset');
         }
 
@@ -127,12 +133,12 @@ final class AuthController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->resetPasswordHelper->removeResetRequest($token);
-			$encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
-			$user->setPassword($encodedPassword);
-			$this->em->persist($user);
+            $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
+            $user->setPassword($encodedPassword);
+            $this->em->persist($user);
             $this->em->flush();
             $this->cleanSessionAfterReset();
-			$this->addFlash('success', $this->translator->trans('app.messages.resetPasswordDone'));
+            $this->addFlash('success', $this->translator->trans('app.messages.resetPasswordDone'));
             return $this->redirectToRoute('login');
         }
 
@@ -159,7 +165,7 @@ final class AuthController extends AbstractController
             $this->translator->trans('email.reset.content2'),
         ];
         $buttons = [
-            $this->translator->trans('email.reset.button') => $this->generateUrl('reset_token', ['token' => $resetToken->getToken()], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->translator->trans('email.reset.button') => $this->generateUrl('reset_token', ['token' => $resetToken->getToken()], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
         $timeToExpire = t($resetToken->getExpirationMessageKey(), $resetToken->getExpirationMessageData(), 'ResetPasswordBundle');
         $postContent = [
@@ -172,5 +178,78 @@ final class AuthController extends AbstractController
         $this->setTokenObjectInSession($resetToken);
 
         return $this->redirectToRoute('reset_sent');
+    }
+
+    #[Route('/register', name: 'register')]
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, Security $security): Response
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationForm::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $session = $this->container->get('request_stack')->getSession();
+
+            $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
+            $user->setPassword($encodedPassword);
+            $user->setRole($session->get('config')->roleDefaultRegister);
+            $user->setVerified(false);
+            $this->em->persist($user);
+            $this->em->flush();
+            return $this->processSendingVerifyEmail($user);
+        }
+
+        return $this->render('public/register/register.html.twig', [
+            'registerForm' => $form,
+        ]);
+    }
+
+    #[Route('/verify', name: 'verify')]
+    public function verifyUserEmail(Request $request): Response
+    {
+		$id = $request->query->get('id');
+		if (!$id) {
+			return $this->redirectToRoute('register');
+		}
+		$user = $this->em->getRepository(User::class)->find($id);
+		if (!$user) {
+			return $this->redirectToRoute('register');
+		}
+
+        try {
+            $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
+            $user->setVerified(true);
+            $this->em->persist($user);
+            $this->em->flush();
+        } catch (VerifyEmailExceptionInterface $e) {
+            $this->addFlash('verify_email_error', $this->translator->trans($e->getReason(), [], 'VerifyEmailBundle'));
+            return $this->redirectToRoute('register');
+        }
+        $this->addFlash('success', $this->translator->trans('app.messages.verifyDone'));
+        return $this->redirectToRoute('home');
+    }
+
+    private function processSendingVerifyEmail(User $user): RedirectResponse
+    {
+        $signatureComponents = $this->verifyEmailHelper->generateSignature('verify', (string) $user->getId(), $user->getEmail(), ['id' => $user->getId()]);
+
+        $subject = $this->translator->trans('email.verify.subject');
+        $content = [
+            $this->translator->trans('email.verify.content1'),
+            $this->translator->trans('email.verify.content2'),
+        ];
+        $buttons = [
+            $this->translator->trans('email.verify.button') => $signatureComponents->getSignedUrl(),
+        ];
+        $timeToExpire = t($signatureComponents->getExpirationMessageKey(), $signatureComponents->getExpirationMessageData(), 'VerifyEmailBundle');
+        $postContent = [
+            $this->translator->trans('email.verify.postContent1', ['%time%' => $timeToExpire]),
+        ];
+        $html = $this->container->get('twig')->render('mails/template.html.twig', ['subject' => $subject, 'content' => $content, 'buttons' => $buttons, 'postContent' => $postContent]);
+        $emails = [$user->getEmail()];
+        $this->mailService->sendEmail($subject, $html, $emails);
+
+        $this->addFlash('success', $this->translator->trans('app.messages.verifySended'));
+        return $this->redirectToRoute('home');
     }
 }
