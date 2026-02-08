@@ -4,5 +4,5 @@ artgris_bundle_file_manager:
     prefix: /media
 ux_media:
     resource: "@ArkounayUxMediaBundle/Controller"
-    type:     attribute
-    prefix:   /ux-media
+    type: attribute
+    prefix: /ux-media

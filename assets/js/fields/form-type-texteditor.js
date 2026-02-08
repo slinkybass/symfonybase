@@ -104,6 +104,7 @@ import "tinymce/plugins/wordcount";
 				content_css: false,
 				branding: false,
 				convert_urls: false,
+				license_key: 'gpl',
 			});
 		});
 	};

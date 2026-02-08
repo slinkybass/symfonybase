@@ -1,5 +1,5 @@
 // Stimulus
-import "../bootstrap.js";
+import "../stimulus_bootstrap.js";
 
 // Tabler
 import * as bootstrap from "@tabler/core";
@@ -60,10 +60,8 @@ import "nouislider/dist/nouislider.min.css";
 import "@tabler/core/dist/css/tabler-vendors.min.css";
 
 // UX Translator
-import { trans } from "@symfony/ux-translator";
-import * as translations from "@app/translations";
+import { trans } from '../translator.js';
 window.trans = trans;
-window.translations = translations;
 
 // Page color scheme
 import "./app/page-color-scheme.js";
