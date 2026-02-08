@@ -9,14 +9,7 @@ use App\Field\FieldGenerator;
 use App\Form\DemoFormType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
-use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class DemoCrudController extends AbstractCrudController
 {
@@ -258,25 +251,28 @@ class DemoCrudController extends AbstractCrudController
         $choicePanel = FieldGenerator::panel('CHOICE')->setIcon('input-search');
         $choice = FieldGenerator::choice('choice')
             ->setLabel('Single choice')
+            ->setFormTypeOption('choice_label', fn(UserGender $e) => $e->translationKey())
             ->setColumns(4);
         $choice2 = FieldGenerator::choice('choice2')
             ->setLabel('Single choice expanded optional')
+            ->setFormTypeOption('choice_label', fn(UserGender $e) => $e->translationKey())
             ->isExpanded()
             ->setColumns(4);
         $choice3 = FieldGenerator::choice('choice3')
             ->setLabel('Single choice expanded required')
+            ->setFormTypeOption('choice_label', fn(UserGender $e) => $e->translationKey())
             ->isExpanded()
             ->isRequired()
             ->setColumns(4);
         $choiceRow = FieldGenerator::row();
         $choice4 = FieldGenerator::choice('choice4')
             ->setLabel('Multiple choice')
-			->setChoices(UserGender::getChoices())
+			->setChoices(UserGender::choices())
             ->isMultiple()
             ->setColumns(4);
         $choice5 = FieldGenerator::choice('choice5')
             ->setLabel('Multiple choice expanded')
-			->setChoices(UserGender::getChoices())
+			->setChoices(UserGender::choices())
             ->isExpanded()
             ->isMultiple()
             ->setColumns(4);

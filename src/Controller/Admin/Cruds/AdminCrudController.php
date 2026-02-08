@@ -185,7 +185,7 @@ class AdminCrudController extends AbstractCrudController
         $user = $this->getUser();
 
         $filters->add(ChoiceFilter::new('gender', $this->transEntityField('gender', 'user'))
-            ->setChoices(UserGender::getChoices())
+            ->setChoices(UserGender::choices())
             ->setFormTypeOption('translation_domain', 'messages')
         );
 

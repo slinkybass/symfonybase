@@ -168,7 +168,7 @@ class UserCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         $filters->add(ChoiceFilter::new('gender', $this->transEntityField('gender'))
-            ->setChoices(UserGender::getChoices())
+            ->setChoices(UserGender::choices())
             ->setFormTypeOption('translation_domain', 'messages')
         );
 
