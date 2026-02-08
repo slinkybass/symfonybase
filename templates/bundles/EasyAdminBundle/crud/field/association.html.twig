@@ -1,0 +1,53 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% set isToMany = field.customOptions.get('associationType') == 'toMany' %}
+
+{% if isToMany %}
+    {% if ea.crud.currentAction == 'index' %}
+        <a data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button">
+            <span class="badge badge-outline text-primary">{{ field.value|length }}</span>
+        </a>
+        <div class="modal modal-blur fade" id="info-{{ field.uniqueId }}" tabindex="-1" aria-labelledby="info-{{ field.uniqueId }}Label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="list-group list-group-flush">
+                            {% for val in field.value %}
+                                {{ _self.render_value(val, field.customOptions.get('crudControllerFqcn')) }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <ul class="list-unstyled mb-0">
+            {% for val in field.value %}
+                <li>
+                    {{ _self.render_value(val, field.customOptions.get('crudControllerFqcn')) }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% else %}
+    {{ _self.render_value(field.value, field.customOptions.get('crudControllerFqcn')) }}
+{% endif %}
+
+{% macro render_value(val, crudControllerFqcn) %}
+    {% if crudControllerFqcn %}
+        {% set controllerName = crudControllerFqcn|split('\\')|last|replace({'CrudController': ''})|lower %}
+        {% set hasPermission = app.user.hasPermissionCrudAction('detail', controllerName) %}
+        {% set url = hasPermission ? ea_url().setController(crudControllerFqcn).setAction('detail').setEntityId(val.id) : null %}
+        <{% if url %}a{% else %}div{% endif %} {% if url %}href="{{ url }}" title="{{ val }}"{% endif %}>
+            {{ val }}
+        </{% if url %}a{% else %}div{% endif %}>
+    {% else %}
+        {% if val is not iterable %}
+            {{ val }}
+        {% else %}
+            {{ val|json_encode(constant('JSON_PRETTY_PRINT')) }}
+        {% endif %}
+    {% endif %}
+{% endmacro %}

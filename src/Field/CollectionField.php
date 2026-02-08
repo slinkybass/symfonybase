@@ -19,7 +19,6 @@ class CollectionField
         $instance->field->getAsDto()->setAssets(new AssetsDto());
 
         $instance
-            ->setTemplatePath('field/extendedMany.html.twig')
             ->addAssetMapperEntries(Asset::new('form-type-collection')->onlyOnForms())
             ->setDefaultColumns(12);
 
