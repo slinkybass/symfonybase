@@ -40,19 +40,18 @@ class Config
     private ?bool $enablePublic = false;
 
     #[ORM\Column]
-    private ?bool $enableResetPassword = null;
+    private ?bool $enableResetPassword = false;
 
     #[ORM\Column]
-    private ?bool $enableRegister = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Role $roleDefaultRegister = null;
+    private ?bool $enableRegister = false;
 
     #[ORM\Column]
     private ?bool $enableCookies = false;
 
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\ManyToOne]
+    private ?Role $roleDefaultRegister = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $senderEmail = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -191,18 +190,6 @@ class Config
         return $this;
     }
 
-    public function getRoleDefaultRegister(): ?Role
-    {
-        return $this->roleDefaultRegister;
-    }
-
-    public function setRoleDefaultRegister(?Role $roleDefaultRegister): static
-    {
-        $this->roleDefaultRegister = $roleDefaultRegister;
-
-        return $this;
-    }
-
     public function isEnableCookies(): ?bool
     {
         return $this->enableCookies;
@@ -211,6 +198,18 @@ class Config
     public function setEnableCookies(bool $enableCookies): static
     {
         $this->enableCookies = $enableCookies;
+
+        return $this;
+    }
+
+    public function getRoleDefaultRegister(): ?Role
+    {
+        return $this->roleDefaultRegister;
+    }
+
+    public function setRoleDefaultRegister(?Role $roleDefaultRegister): static
+    {
+        $this->roleDefaultRegister = $roleDefaultRegister;
 
         return $this;
     }
