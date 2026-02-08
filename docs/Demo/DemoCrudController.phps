@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Cruds;
 
 use App\Controller\Admin\AbstractCrudController;
-use App\Entity\Demo;
+use App\Entity\DemoEntity;
 use App\Entity\Enum\UserGender;
 use App\Field\FieldGenerator;
 use App\Form\DemoFormType;
@@ -22,7 +22,7 @@ class DemoCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Demo::class;
+        return DemoEntity::class;
     }
 
     public function configureCrud(Crud $crud): Crud
