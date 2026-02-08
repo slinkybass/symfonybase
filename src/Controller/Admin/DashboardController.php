@@ -20,8 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\Security\Core\User\UserInterface;
-
-use function Symfony\Component\Translation\t;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
@@ -100,38 +99,38 @@ class DashboardController extends AbstractDashboardController
         $session = $this->container->get('request_stack')->getSession();
         $configSession = $session->get('config');
 
-        yield MenuItem::linkToRoute(t('admin.home.title'), 'home', 'admin_home');
+        yield MenuItem::linkToRoute($this->translator->trans('admin.home.title'), 'home', 'admin_home');
 
         $userItems = [];
         if ($configSession->enablePublic && $user->hasPermissionCrud('user')) {
-            $userItems[] = MenuItem::linkToCrud(t('entities.user.plural'), 'user', User::class)->setController(Cruds\UserCrudController::class);
+            $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.user.plural'), 'user', User::class)->setController(Cruds\UserCrudController::class);
         }
         if ($user->hasPermissionCrud('admin')) {
             $label = $configSession->enablePublic ? 'admin' : 'user';
             $icon = $configSession->enablePublic ? 'user-shield' : 'user';
-            $userItems[] = MenuItem::linkToCrud(t('entities.' . $label . '.plural'), $icon, User::class)->setController(Cruds\AdminCrudController::class);
+            $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.' . $label . '.plural'), $icon, User::class)->setController(Cruds\AdminCrudController::class);
         }
         if ($user->hasPermissionCrud('role')) {
-            $userItems[] = MenuItem::linkToCrud(t('entities.role.plural'), 'lock', Role::class)->setController(Cruds\RoleCrudController::class);
+            $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.role.plural'), 'lock', Role::class)->setController(Cruds\RoleCrudController::class);
         }
         if (count($userItems) == 1) {
             yield $userItems[0];
         } elseif (count($userItems) > 1) {
-            yield MenuItem::subMenu(t('entities.user.plural'), 'users')->setSubItems($userItems);
+            yield MenuItem::subMenu($this->translator->trans('entities.user.plural'), 'users')->setSubItems($userItems);
         }
 
         if ($user->hasPermission('media')) {
-            yield MenuItem::linkToRoute(t('entities.media.plural'), 'file', 'admin_media');
+            yield MenuItem::linkToRoute($this->translator->trans('entities.media.plural'), 'file', 'admin_media');
         }
 
         if ($user->hasPermissionCrud('settings')) {
-            $settingsLink = MenuItem::linkToCrud(t('entities.settings.singular'), 'tool', Config::class)->setController(Cruds\SettingsCrudController::class);
+            $settingsLink = MenuItem::linkToCrud($this->translator->trans('entities.settings.singular'), 'tool', Config::class)->setController(Cruds\SettingsCrudController::class);
             $settingsLink = $config ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $settingsLink->setAction(Crud::PAGE_NEW);
             yield $settingsLink;
         }
 
         if ($user->hasPermissionCrud('config')) {
-            $configLink = MenuItem::linkToCrud(t('entities.config.singular'), 'settings', Config::class)->setController(Cruds\ConfigCrudController::class);
+            $configLink = MenuItem::linkToCrud($this->translator->trans('entities.config.singular'), 'settings', Config::class)->setController(Cruds\ConfigCrudController::class);
             $configLink = $config ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $configLink->setAction(Crud::PAGE_NEW);
             yield $configLink;
         }
@@ -149,9 +148,9 @@ class DashboardController extends AbstractDashboardController
 
         $menuItems = [];
         if ($this->isGranted('IS_IMPERSONATOR')) {
-            $menuItems[] = MenuItem::linkToExitImpersonation(t('user.exit_impersonation', [], 'EasyAdminBundle'), 'user-x');
+            $menuItems[] = MenuItem::linkToExitImpersonation($this->translator->trans('user.exit_impersonation', [], 'EasyAdminBundle'), 'user-x');
         } else {
-            $menuItems[] = MenuItem::linkToLogout(t('user.sign_out', [], 'EasyAdminBundle'), 'logout');
+            $menuItems[] = MenuItem::linkToLogout($this->translator->trans('user.sign_out', [], 'EasyAdminBundle'), 'logout');
         }
         $userMenu->setMenuItems($menuItems);
 

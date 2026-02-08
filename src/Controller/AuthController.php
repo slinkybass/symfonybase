@@ -24,8 +24,6 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
-use function Symfony\Component\Translation\t;
-
 final class AuthController extends AbstractController
 {
     use ResetPasswordControllerTrait;
@@ -55,10 +53,10 @@ final class AuthController extends AbstractController
             'last_username' => $authenticationUtils->getLastUsername(),
             'translation_domain' => 'admin',
             'favicon_path' => $session->get('config')->appFavicon,
-            'page_title' => t('login_page.sign_in', [], 'EasyAdminBundle'),
+            'page_title' => $this->translator->trans('login_page.sign_in', [], 'EasyAdminBundle'),
             'csrf_token_intention' => 'authenticate',
             'target_path' => $this->generateUrl('home'),
-            'username_label' => t('entities.user.fields.email'),
+            'username_label' => $this->translator->trans('entities.user.fields.email'),
             'remember_me_enabled' => true,
             'remember_me_checked' => true,
             'forgot_password_enabled' => $session->get('config')->enableResetPassword,
@@ -167,7 +165,7 @@ final class AuthController extends AbstractController
         $buttons = [
             $this->translator->trans('email.reset.button') => $this->generateUrl('reset_token', ['token' => $resetToken->getToken()], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
-        $timeToExpire = t($resetToken->getExpirationMessageKey(), $resetToken->getExpirationMessageData(), 'ResetPasswordBundle');
+        $timeToExpire = $this->translator->trans($resetToken->getExpirationMessageKey(), $resetToken->getExpirationMessageData(), 'ResetPasswordBundle');
         $postContent = [
             $this->translator->trans('email.reset.postContent1', ['%time%' => $timeToExpire]),
         ];
@@ -241,7 +239,7 @@ final class AuthController extends AbstractController
         $buttons = [
             $this->translator->trans('email.verify.button') => $signatureComponents->getSignedUrl(),
         ];
-        $timeToExpire = t($signatureComponents->getExpirationMessageKey(), $signatureComponents->getExpirationMessageData(), 'VerifyEmailBundle');
+        $timeToExpire = $this->translator->trans($signatureComponents->getExpirationMessageKey(), $signatureComponents->getExpirationMessageData(), 'VerifyEmailBundle');
         $postContent = [
             $this->translator->trans('email.verify.postContent1', ['%time%' => $timeToExpire]),
         ];

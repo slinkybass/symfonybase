@@ -10,8 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-
-use function Symfony\Component\Translation\t;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationForm extends AbstractType
 {
@@ -48,7 +47,7 @@ class RegistrationForm extends AbstractType
             ->setSecondPlaceholder('entities.user.fields.repeatPassword')
             ->isMapped(false);
         $termsLabel = $session->get('config')->privacyText ? 'public.register.acceptTermsUrl' : 'public.register.acceptTerms';
-        $termsLabel = t($termsLabel, ['%url%' => $this->router->generate('privacy')]);
+        $termsLabel = $this->translator->trans($termsLabel, ['%url%' => $this->router->generate('privacy')]);
         $fields[] = FieldGenerator::switch('acceptTerms')
             ->setLabel($termsLabel)
             ->setFormTypeOption('label_html', true)
