@@ -1,13 +1,13 @@
-{% set icon = icon == "-up" ? 'arrow-narrow-up' : (icon == "-down" ? 'arrow-narrow-down' : 'arrows-sort') %}
+{% set icon = icon == "-up" ? 'chevron-up' : (icon == "-down" ? 'chevron-down' : 'selector') %}
 
 {% if islist %}
-	<a href="{{ href }}">
-		{{ ('table.' ~ type)|trans }}
-		<twig:ux:icon class="icon" name="tabler:{{ icon }}" style="width: 0.75em; height: 0.75em;" />
-	</a>
+    <a href="{{ href }}">
+        {{ ('table.' ~ type)|trans }}
+        <twig:ux:icon class="icon icon-sm" name="tabler:{{ icon }}" />
+    </a>
 {% else %}
-	<a href="{{ href }}" class="btn btn{{ not active ? '-ghost' }}-primary">
-		<twig:ux:icon class="icon" name="tabler:{{ icon }}"/>
-		{{ ('table.' ~ type)|trans }}
-	</a>
+    <a href="{{ href }}" class="btn btn{{ not active ? '-ghost' }}-primary">
+        <twig:ux:icon class="icon" name="tabler:{{ icon }}" />
+        {{ ('table.' ~ type)|trans }}
+    </a>
 {% endif %}

@@ -210,7 +210,7 @@ class RoleCrudController extends AbstractCrudController
                 })
                 ->displayIf(static function ($entity) use ($hasPermissionToAdmins) {
                     return $entity->isAdmin() && $hasPermissionToAdmins;
-                });
+                })->asPrimaryAction()->addCssClass('btn-outline');
             $actions->add(Crud::PAGE_INDEX, $admins);
             $actions->add(Crud::PAGE_DETAIL, $admins);
 
@@ -229,9 +229,12 @@ class RoleCrudController extends AbstractCrudController
                 })
                 ->displayIf(static function ($entity) use ($hasPermissionToUsers) {
                     return !$entity->isAdmin() && $hasPermissionToUsers;
-                });
+                })->asPrimaryAction()->addCssClass('btn-outline');
             $actions->add(Crud::PAGE_INDEX, $users);
             $actions->add(Crud::PAGE_DETAIL, $users);
+
+            $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'users', 'admins', Action::EDIT, Action::DELETE ]);
+            $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'users', 'admins', Action::INDEX ]);
         }
 
         return $actions;

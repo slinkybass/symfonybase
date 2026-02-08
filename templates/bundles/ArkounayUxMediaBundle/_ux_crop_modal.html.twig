@@ -1,75 +1,75 @@
 <!-- Modal -->
 <div class="modal fade ux-crop-modal"
-	 data-controller="arkounay--ux-media--crop"
-	 data-arkounay--ux-media--media-target="cropModal"
-	 data-arkounay--ux-media--crop-path-value="{{ form.vars.value }}"
-	 data-ratio="{{ crop_options.ratio|default('free') }}"
-	 id="crop-modal-{{ form.vars.id }}"
-	 tabindex="-1"
-	 role="dialog"
-	 data-conf="{{ conf }}"
-	 data-extra="{{ extra|json_encode }}"
-	 aria-labelledby="crop-modal-label"
+     data-controller="arkounay--ux-media--crop"
+     data-arkounay--ux-media--media-target="cropModal"
+     data-arkounay--ux-media--crop-path-value="{{ form.vars.value }}"
+     data-ratio="{{ crop_options.ratio|default('free') }}"
+     id="crop-modal-{{ form.vars.id }}"
+     tabindex="-1"
+     role="dialog"
+     data-conf="{{ conf }}"
+     data-extra="{{ extra|json_encode }}"
+     aria-labelledby="crop-modal-label"
 >
-	<div class="modal-dialog modal-xl" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-6">
-						<div class="btn-toolbar pb-3">
-							<div class="btn-group me-2">
-								<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}" data-bs-toggle="button" aria-pressed="true" data-action="arkounay--ux-media--crop#toggleCrop">
-									<twig:ux:icon class="icon" name="tabler:crop" />
-								</button>
-							</div>
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="btn-toolbar pb-3">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}" data-bs-toggle="button" aria-pressed="true" data-action="arkounay--ux-media--crop#toggleCrop">
+                                    <twig:ux:icon class="icon" name="tabler:crop" />
+                                </button>
+                            </div>
 
-							{% if crop_options.allow_rotation %}
-								<div class="btn-group me-2">
-									<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.rotateLeft'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#rotateLeft">
-										<twig:ux:icon class="icon" name="tabler:rotate" />
-									</button>
-									<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.rotateRight'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#rotateRight">
-										<twig:ux:icon class="icon" name="tabler:rotate-clockwise" />
-									</button>
-								</div>
-							{% endif %}
+                            {% if crop_options.allow_rotation %}
+                                <div class="btn-group me-2">
+                                    <button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.rotateLeft'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#rotateLeft">
+                                        <twig:ux:icon class="icon" name="tabler:rotate" />
+                                    </button>
+                                    <button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.rotateRight'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#rotateRight">
+                                        <twig:ux:icon class="icon" name="tabler:rotate-clockwise" />
+                                    </button>
+                                </div>
+                            {% endif %}
 
-							{% if crop_options.allow_flip %}
-								<div class="btn-group me-2">
-									<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.flipHorizontal'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#flipHorizontal">
-										<twig:ux:icon class="icon" name="tabler:arrows-horizontal" />
-									</button>
-									<button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.flipVertical'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#flipVertical">
-										<twig:ux:icon class="icon" name="tabler:arrows-vertical" />
-									</button>
-								</div>
-							{% endif %}
-						</div>
-					</div>
-					{% if crop_options.display_crop_data %}
-						<div class="col-md-6">
-							<div class="float-end image-data py-2 ">
-								{% for el in ['x', 'y', 'width', 'height'] %}
-									<span class="label"> {{ ('size.' ~ el)|trans({}, 'ArkounayUxMediaBundle') ~ ':' }} <span data-arkounay--ux-media--crop-target="{{ el }}"> 0</span></span>
-								{% endfor %}
-								{% if crop_options.ratio|default %}
-									<span class="label label-primary"> {{ 'size.ratio'|trans({}, 'ArkounayUxMediaBundle') ~ ':' ~ crop_options.ratio|round(2) }}  </span>
-								{% endif %}
-							</div>
-						</div>
-					{% endif %}
-				</div>
-				<div class="modal-crop-container" data-arkounay--ux-media--crop-target="container"></div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'action.cancel'|trans({}, 'EasyAdminBundle') }}</button>
-				<button type="button" class="btn btn-primary" data-action="arkounay--ux-media--crop#save" data-bs-dismiss="modal" data-arkounay--ux-media--crop-target="saveButton" data-crop-url="{{ path('ux_media_ajax_crop') }}">{{ 'action.save'|trans({}, 'EasyAdminBundle') }}</button>
-			</div>
-		</div>
-	</div>
+                            {% if crop_options.allow_flip %}
+                                <div class="btn-group me-2">
+                                    <button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.flipHorizontal'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#flipHorizontal">
+                                        <twig:ux:icon class="icon" name="tabler:arrows-horizontal" />
+                                    </button>
+                                    <button type="button" class="btn btn-icon btn-outline-secondary" title="{{ 'action.flipVertical'|trans({}, 'ArkounayUxMediaBundle') }}" data-action="arkounay--ux-media--crop#flipVertical">
+                                        <twig:ux:icon class="icon" name="tabler:arrows-vertical" />
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if crop_options.display_crop_data %}
+                        <div class="col-md-6">
+                            <div class="float-end image-data py-2 ">
+                                {% for el in ['x', 'y', 'width', 'height'] %}
+                                    <span class="label"> {{ ('size.' ~ el)|trans({}, 'ArkounayUxMediaBundle') ~ ':' }} <span data-arkounay--ux-media--crop-target="{{ el }}"> 0</span></span>
+                                {% endfor %}
+                                {% if crop_options.ratio|default %}
+                                    <span class="label label-primary"> {{ 'size.ratio'|trans({}, 'ArkounayUxMediaBundle') ~ ':' ~ crop_options.ratio|round(2) }}  </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="modal-crop-container" data-arkounay--ux-media--crop-target="container"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'action.cancel'|trans({}, 'EasyAdminBundle') }}</button>
+                <button type="button" class="btn btn-primary" data-action="arkounay--ux-media--crop#save" data-bs-dismiss="modal" data-arkounay--ux-media--crop-target="saveButton" data-crop-url="{{ path('ux_media_ajax_crop') }}">{{ 'action.save'|trans({}, 'EasyAdminBundle') }}</button>
+            </div>
+        </div>
+    </div>
 </div>

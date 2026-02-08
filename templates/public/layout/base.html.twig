@@ -59,7 +59,8 @@
                                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             {% for locale in supportedLocales %}
                                                 <a href="?_locale={{ locale }}" class="dropdown-item">
-                                                    <twig:ux:icon class="icon" name="tabler:language" /> <span>{{ locale|locale_name|capitalize }} ({{ locale }})</span>
+                                                    <twig:ux:icon class="icon dropdown-item-icon" name="tabler:language" />
+                                                    <span class="action-label">{{ locale|locale_name|capitalize }} ({{ locale }})</span>
                                                 </a>
                                             {% endfor %}
                                         </div>
@@ -75,11 +76,13 @@
                                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             {% if is_granted('IS_IMPERSONATOR') %}
                                                 <a href="{{ impersonation_exit_path(path('home')) }}" class="dropdown-item">
-                                                    <twig:ux:icon class="icon" name="tabler:user-x" /> {{ 'user.exit_impersonation'|trans({}, 'EasyAdminBundle') }}
+                                                    <twig:ux:icon class="icon dropdown-item-icon" name="tabler:user-x" />
+                                                    <span class="action-label">{{ 'user.exit_impersonation'|trans({}, 'EasyAdminBundle') }}</span>
                                                 </a>
                                             {% else %}
                                                 <a href="{{ path('_logout_main') }}" class="dropdown-item">
-                                                    <twig:ux:icon class="icon" name="tabler:logout" /> {{ 'user.sign_out'|trans({}, 'EasyAdminBundle') }}
+                                                    <twig:ux:icon class="icon dropdown-item-icon" name="tabler:logout" />
+                                                    <span class="action-label">{{ 'user.sign_out'|trans({}, 'EasyAdminBundle') }}</span>
                                                 </a>
                                             {% endif %}
                                         </div>

@@ -46,6 +46,15 @@ $(function () {
 				if (data.node) {
 					document.location = data.node.a_attr.href;
 				}
+			})
+			.bind("loaded.jstree", function (e, data) {
+				// Replace label CSS class with badge
+				console.log($("#tree").find(".label"));
+				$("#tree").find(".label")
+					.removeClass("label label-default")
+					.addClass("badge badge-sm badge-outline rounded-pill text-primary")
+					.css("top", "-3px")
+					.css("position", "relative");
 			});
 	}
 

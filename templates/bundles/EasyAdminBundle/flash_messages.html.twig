@@ -1,27 +1,28 @@
-{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider #}
-{% trans_default_domain ea.hasContext ? ea.i18n.translationDomain : (translation_domain is defined ? translation_domain ?? 'messages') %}
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContext #}
+{% set ea = ea() %}
+{% trans_default_domain null != ea ? ea.i18n.translationDomain : (translation_domain is defined ? translation_domain ?? 'messages') %}
 
 {% set flash_messages = app.flashes %}
 
 {% if flash_messages|length > 0 %}
-	<script type="module">
-		{% for label, messages in flash_messages %}
-			{% for message in messages %}
-				{% if label == "success" or label == "done" %}
-					{% set icon = 'success' %}
-				{% elseif label == "info" %}
-					{% set icon = 'info' %}
-				{% elseif label == "warning" or label == "exception" %}
-					{% set icon = 'warning' %}
-				{% elseif label == "danger" or label == "error" %}
-					{% set icon = 'error' %}
-				{% endif %}
-				Swal.fire({
-					html: '{{ message|trans(domain = "messages")|raw }}',
-					icon: '{{ icon }}',
-					showConfirmButton: false
-				});
-			{% endfor %}
-		{% endfor %}
-	</script>
+    <script type="module">
+        {% for label, messages in flash_messages %}
+            {% for message in messages %}
+                {% if label == "success" or label == "done" %}
+                    {% set icon = 'success' %}
+                {% elseif label == "info" %}
+                    {% set icon = 'info' %}
+                {% elseif label == "warning" or label == "exception" %}
+                    {% set icon = 'warning' %}
+                {% elseif label == "danger" or label == "error" %}
+                    {% set icon = 'error' %}
+                {% endif %}
+                Swal.fire({
+                    html: '{{ message|trans }}',
+                    icon: '{{ icon }}',
+                    showConfirmButton: false
+                });
+            {% endfor %}
+        {% endfor %}
+    </script>
 {% endif %}

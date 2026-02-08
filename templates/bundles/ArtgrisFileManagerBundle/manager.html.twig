@@ -10,186 +10,193 @@
 
 <!doctype html>
 <html lang="{{ app.request.locale }}" id="dropzone" data-turbo="false">
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-		<title>
-			{% block title %}
-				{{ 'entities.media.plural'|trans }}
-			{% endblock %}
-		</title>
-		{% block head_favicon %}
-			<link rel="shortcut icon" href="{{ asset(app.session.get('config').appFavicon) }}">
-		{% endblock %}
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <title>
+            {% block title %}
+                {{ 'entities.media.plural'|trans }}
+            {% endblock %}
+        </title>
+        {% block head_favicon %}
+            <link rel="shortcut icon" href="{{ asset(app.session.get('config').appFavicon) }}">
+        {% endblock %}
 
-		{% block importmap %}
-			{{ importmap('app') }}
-			{{ importmap('public') }}
-			{{ importmap('artgris_manager') }}
-		{% endblock %}
+        {% block importmap %}
+            {{ importmap('app') }}
+            {{ importmap('public') }}
+            {{ importmap('artgris_manager') }}
+        {% endblock %}
 
-		{% block stylesheets %}
-			<link rel="stylesheet" href="{{ asset('bundles/artgrisfilemanager/libs/jstree/dist/themes/default/style.min.css') }}">
-			<link rel="stylesheet" href="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/css/jquery.fileupload.css') }}">
-			{% set hexColor = app.session.get('config').appColor %}
-			{% set rgbColor = hexColor|hex_to_rgb %}
-		{% endblock %}
-	</head>
-	<body>
-		{% block body %}
-			<div class="container-fluid ">
-				{% block progress_bar %}
-					<div class="row mb-3">
-						<div class="progress bg-transparent">
-							<div class="progress-bar" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-						</div>
-					</div>
-				{% endblock %}
-				<div class="row mb-3">
-					{% block actions %}
-						<div class="col">
-							<div class="btn-list">
-								{% if showTree %}
-									<a title="{{ 'button.tree'|trans }}" href="{{ path('file_manager', fileManager.queryParameters|merge({'tree': fileManager.tree == true ? 0 : 1 })) }}" class="btn btn-icon btn{{ not fileManager.tree ? '-ghost' }}-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom">
-										<twig:ux:icon class="icon" name="tabler:menu-2"/>
-									</a>
-								{% endif %}
-								{% if not isRoot %}
-									<a title="{{ 'button.parent'|trans }}" href="{{ fileManager.parent }}" class="btn btn-icon btn-ghost-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom">
-										<twig:ux:icon class="icon" name="tabler:chevron-left"/>
-									</a>
-								{% endif %}
-								<button type="button" title="{{ 'button.refresh'|trans }}" onclick="window.location.reload()" class="btn btn-icon btn-ghost-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom">
-									<twig:ux:icon class="icon" name="tabler:refresh"/>
-								</button>
-								{% if canUpload %}
-									<span class="btn btn-success fileinput-button">
-										<twig:ux:icon class="icon" name="tabler:upload"/>
-										{{ 'button.add.files'|trans }}
-										<input id="fileupload" type="file" data-url="{{ path('file_manager_upload', fileManager.queryParameters) }}" name="files[]" multiple="" accept="{{ fileManager.configuration.accept is defined ? fileManager.configuration.accept : (fileManager.type ? accept(fileManager.type)) }}">
-									</span>
-								{% endif %}
-								{% if canCreateFolders %}
-									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFolder">
-										<twig:ux:icon class="icon" name="tabler:folder"/>
-										{{ 'button.add.folder'|trans }}
-									</button>
-									{% if not isRoot %}
-										<button type="button" class="btn btn-danger js-delete-modal" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-delete" data-bs-placement="left" data-bs-html="true" data-href='{{ path('file_manager_delete', fileManager.queryParameters) }}'>
-											<twig:ux:icon class="icon" name="tabler:trash"/>
-											{{ 'button.delete.current'|trans }}
-										</button>
-									{% endif %}
-								{% endif %}
-								{% if canEdit %}
-									<a id="js-delete-multiple-modal" class="btn btn-danger d-none" type="button" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-delete" data-bs-placement="left" data-bs-html="true">
-										<twig:ux:icon class="icon" name="tabler:trash"/>
-										<span class="bar-action">{{ 'button.delete.selected'|trans }}</span>
-									</a>
-								{% endif %}
-							</div>
-						</div>
-					{% endblock %}
-					{% block display %}
-						<div class="col-auto ms-auto">
-							<div class="row">
-								<div class="col">
-									<div class="input-icon">
-										<span class="input-icon-addon">
-											<twig:ux:icon class="icon" name="tabler:search"/>
-										</span>
-										<input type="search" class="form-control search" name="search" id="search" placeholder="{{ 'search.placeholder'|trans }}" aria-describedby="search">
-									</div>
-								</div>
-								<div class="col-auto">
-									<div class="btn-list">
-										<a href="{{ path('file_manager', fileManager.queryParameters|merge({'view':"list"})) }}" class="btn btn-icon btn{{ fileManager.view != 'list' ? '-ghost' }}-secondary">
-											<twig:ux:icon class="icon" name="tabler:layout-list"/>
-										</a>
-										<a href="{{ path('file_manager', fileManager.queryParameters|merge({'view':'thumbnail'})) }}" class="btn btn-icon btn{{ fileManager.view != 'thumbnail' ? '-ghost' }}-secondary">
-											<twig:ux:icon class="icon" name="tabler:layout-grid"/>
-										</a>
-									</div>
-								</div>
-							</div>
-							{% if fileManager.view != "list" %}
-								<div class="row mt-3">
-									<div class="col">
-										<div class="btn-list justify-content-end">
-											{{ order(fileManager, 'name') }}
-											{{ order(fileManager, 'date') }}
-											{{ order(fileManager, 'size') }}
-											{{ order(fileManager, 'dimension') }}
-										</div>
-									</div>
-								</div>
-							{% endif %}
-						</div>
-					{% endblock %}
-				</div>
-				<div class="row">
-					{% if fileManager.tree and showTree %}
-						<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-							{% block tree %}
-								<div class="table-responsive">
-									<div id="tree"></div>
-								</div>
-							{% endblock %}
-						</div>
-						<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 no-tree-blk">
-						{% else %}
-							<div class="col-lg-12">
-							{% endif %}
-							{% block content %}
-								<form id="form-multiple-delete">
-									{% include '@ArtgrisFileManager/views/_manager_view.html.twig' with {'fileManager' :fileManager,  'fileArray' : fileArray, 'formDelete' : formDelete} only %}
-								</form>
-							{% endblock %}
-						</div>
-					</div>
-					{% include '@ArtgrisFileManager/views/_modals.html.twig' %}
-				</div>
-			{% endblock %}
-			{% block javascripts %}
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/jquery/dist/jquery.min.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/jstree/dist/jstree.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.fileupload-process.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/sticky-kit/jquery.sticky-kit.min.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js') }}"></script>
-				<script src="{{ asset('bundles/artgrisfilemanager/libs/jQuery-contextMenu/dist/jquery.contextMenu.min.js') }}"></script>
-				<script type="text/javascript" src="{{ asset('bundles/artgrisfilemanager/libs/jquery-lazy/jquery.lazy.min.js') }}"></script>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bundles/artgrisfilemanager/libs/jstree/dist/themes/default/style.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/css/jquery.fileupload.css') }}">
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+            {% set hexColor = app.session.get('config').appColor %}
+            {% set rgbColor = hexColor|hex_to_rgb %}
+            <style>
+                :root, [data-bs-theme="light"] {
+                    --tblr-primary: {{ hexColor }} !important;
+                    --tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }} !important;
+                }
+            </style>
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+            <div class="container-fluid ">
+                {% block progress_bar %}
+                    <div class="row mb-3">
+                        <div class="progress bg-transparent">
+                            <div class="progress-bar" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                {% endblock %}
+                <div class="row mb-3">
+                    {% block actions %}
+                        <div class="col">
+                            <div class="btn-list">
+                                {% if showTree %}
+                                    <a title="{{ 'button.tree'|trans }}" href="{{ path('file_manager', fileManager.queryParameters|merge({'tree': fileManager.tree == true ? 0 : 1 })) }}" class="btn btn-icon btn{{ not fileManager.tree ? '-ghost' }}-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <twig:ux:icon class="icon" name="tabler:menu-2" />
+                                    </a>
+                                {% endif %}
+                                {% if not isRoot %}
+                                    <a title="{{ 'button.parent'|trans }}" href="{{ fileManager.parent }}" class="btn btn-icon btn-ghost-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <twig:ux:icon class="icon" name="tabler:chevron-left" />
+                                    </a>
+                                {% endif %}
+                                <button type="button" title="{{ 'button.refresh'|trans }}" onclick="window.location.reload()" class="btn btn-icon btn-ghost-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                    <twig:ux:icon class="icon" name="tabler:refresh" />
+                                </button>
+                                {% if canUpload %}
+                                    <span class="btn btn-success fileinput-button">
+                                        <twig:ux:icon class="icon" name="tabler:upload" />
+                                        {{ 'button.add.files'|trans }}
+                                        <input id="fileupload" type="file" data-url="{{ path('file_manager_upload', fileManager.queryParameters) }}" name="files[]" multiple="" accept="{{ fileManager.configuration.accept is defined ? fileManager.configuration.accept : (fileManager.type ? accept(fileManager.type)) }}">
+                                    </span>
+                                {% endif %}
+                                {% if canCreateFolders %}
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFolder">
+                                        <twig:ux:icon class="icon" name="tabler:folder" />
+                                        {{ 'button.add.folder'|trans }}
+                                    </button>
+                                    {% if not isRoot %}
+                                        <button type="button" class="btn btn-danger js-delete-modal" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-delete" data-bs-placement="left" data-bs-html="true" data-href='{{ path('file_manager_delete', fileManager.queryParameters) }}'>
+                                            <twig:ux:icon class="icon" name="tabler:trash" />
+                                            {{ 'button.delete.current'|trans }}
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                                {% if canEdit %}
+                                    <a id="js-delete-multiple-modal" class="btn btn-danger d-none" type="button" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-delete" data-bs-placement="left" data-bs-html="true">
+                                        <twig:ux:icon class="icon" name="tabler:trash" />
+                                        <span class="bar-action">{{ 'button.delete.selected'|trans }}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endblock %}
+                    {% block display %}
+                        <div class="col-auto ms-auto">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon">
+                                            <twig:ux:icon class="icon" name="tabler:search" />
+                                        </span>
+                                        <input type="search" class="form-control search" name="search" id="search" placeholder="{{ 'search.placeholder'|trans }}" aria-describedby="search">
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="btn-list">
+                                        <a href="{{ path('file_manager', fileManager.queryParameters|merge({'view':"list"})) }}" class="btn btn-icon btn{{ fileManager.view != 'list' ? '-ghost' }}-secondary">
+                                            <twig:ux:icon class="icon" name="tabler:layout-list" />
+                                        </a>
+                                        <a href="{{ path('file_manager', fileManager.queryParameters|merge({'view':'thumbnail'})) }}" class="btn btn-icon btn{{ fileManager.view != 'thumbnail' ? '-ghost' }}-secondary">
+                                            <twig:ux:icon class="icon" name="tabler:layout-grid" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if fileManager.view != "list" %}
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <div class="btn-list justify-content-end">
+                                            {{ order(fileManager, 'name') }}
+                                            {{ order(fileManager, 'date') }}
+                                            {{ order(fileManager, 'size') }}
+                                            {{ order(fileManager, 'dimension') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endblock %}
+                </div>
+                <div class="row">
+                    {% if fileManager.tree and showTree %}
+                        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
+                            {% block tree %}
+                                <div class="table-responsive">
+                                    <div id="tree"></div>
+                                </div>
+                            {% endblock %}
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 no-tree-blk">
+                        {% else %}
+                            <div class="col-lg-12">
+                            {% endif %}
+                            {% block content %}
+                                <form id="form-multiple-delete">
+                                    {% include '@ArtgrisFileManager/views/_manager_view.html.twig' with {'fileManager' :fileManager,  'fileArray' : fileArray, 'formDelete' : formDelete} only %}
+                                </form>
+                            {% endblock %}
+                        </div>
+                    </div>
+                    {% include '@ArtgrisFileManager/views/_modals.html.twig' %}
+                </div>
+            {% endblock %}
+            {% block javascripts %}
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/jquery/dist/jquery.min.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/jstree/dist/jstree.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.fileupload-process.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/sticky-kit/jquery.sticky-kit.min.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js') }}"></script>
+                <script src="{{ asset('bundles/artgrisfilemanager/libs/jQuery-contextMenu/dist/jquery.contextMenu.min.js') }}"></script>
+                <script type="text/javascript" src="{{ asset('bundles/artgrisfilemanager/libs/jquery-lazy/jquery.lazy.min.js') }}"></script>
 
-				<script>
-					var treedata = {{ treeData|raw }};
-					var tree = {{ fileManager.tree and showTree ? 'true' : 'false' }}
-					var moduleName = '{{ fileManager.module ? fileManager.module : 0 }}';
-					var successMessage = '{{ 'file.add.success'|trans }}';
-					var url = "{{ path('file_manager', fileManager.queryParameters|merge({'json':true}))|e('js') }}"
-					var urldelete = "{{ path('file_manager_delete', fileManager.queryParameters )|e('js') }}"
-					var deleteMessage = "{{ 'title.delete'|trans }}"
-					var renameMessage = "{{ 'title.rename.file'|trans }}"
-					var downloadMessage = "{{ 'title.download'|trans }}"
-					var previewMessage = "{{ 'title.preview.file'|trans }}"
+                <script>
+                    var treedata = {{ treeData|raw }};
+                    var tree = {{ fileManager.tree and showTree ? 'true' : 'false' }}
+                    var moduleName = '{{ fileManager.module ? fileManager.module : 0 }}';
+                    var successMessage = '{{ 'file.add.success'|trans }}';
+                    var url = "{{ path('file_manager', fileManager.queryParameters|merge({'json':true}))|e('js') }}"
+                    var urldelete = "{{ path('file_manager_delete', fileManager.queryParameters )|e('js') }}"
+                    var deleteMessage = "{{ 'title.delete'|trans }}"
+                    var renameMessage = "{{ 'title.rename.file'|trans }}"
+                    var downloadMessage = "{{ 'title.download'|trans }}"
+                    var previewMessage = "{{ 'title.preview.file'|trans }}"
 
-					function displayAlert(type, msg) {
-						Swal.fire({html: msg, icon: type, showConfirmButton: false});
-					}
-				</script>
+                    function displayAlert(type, msg) {
+                        Swal.fire({html: msg, icon: type, showConfirmButton: false});
+                    }
+                </script>
 
-				<script type="module">
-					// display session flash messages
-					{% for type, messages in app.session.flashbag.all %}
-						{% for message in messages %}
-							displayAlert('{{ type }}', '{{ message|trans|e('js') }}')
-						{% endfor %}
-					{% endfor %}
-				</script>
-			{% endblock %}
-		</body>
-	</body>
+                <script type="module">
+                    // display session flash messages
+                    {% for type, messages in app.session.flashbag.all %}
+                        {% for message in messages %}
+                            displayAlert('{{ type }}', '{{ message|trans|e('js') }}')
+                        {% endfor %}
+                    {% endfor %}
+                </script>
+            {% endblock %}
+        </body>
+    </body>
 </html>

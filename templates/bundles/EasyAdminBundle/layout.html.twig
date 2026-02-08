@@ -1,4 +1,5 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% set ea = ea() %}
 {% trans_default_domain ea.i18n.translationDomain %}
 
 <!DOCTYPE html>
@@ -6,310 +7,314 @@
 {% set bsTheme = darkMode ? 'dark' : 'light' %}
 <html lang="{{ ea.i18n.htmlLocale }}" dir="{{ ea.i18n.textDirection }}" data-turbo="false" data-bs-theme="{{ bsTheme }}">
 <head>
-	{% block head_metas %}
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache" />
-		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-		<meta name="generator" content="EasyAdmin" />
-	{% endblock head_metas %}
+    {% block head_metas %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <meta name="generator" content="EasyAdmin" />
+    {% endblock head_metas %}
 
-	{% set page_title_block_output %}{% block page_title %}{{ app.session.get('config').appName }} - {{ block('content_title') }}{% endblock %}{% endset %}
-	<title>{{ page_title_block_output|striptags|raw }}</title>
+    {% set page_title_block_output %}{% block page_title %}{{ app.session.get('config').appName }} - {{ block('content_title') }}{% endblock %}{% endset %}
+    <title>{{ page_title_block_output|striptags|raw }}</title>
 
-	{% block head_stylesheets %}{% endblock %}
+    {% block head_stylesheets %}{% endblock %}
 
-	{% block configured_stylesheets %}
-		{{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea.assets.cssAssets ?? [] }, with_context = false) }}
-		{{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
-		{% set hexColor = app.session.get('config').appColor %}
-		{% set rgbColor = hexColor|hex_to_rgb %}
-		<style>
-			:root, [data-bs-theme="light"] {
-				--tblr-primary: {{ hexColor }} !important;
-				--tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }} !important;
-			}
-		</style>
-	{% endblock %}
+    {% block configured_stylesheets %}
+        {{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea.assets.cssAssets ?? [] }, with_context = false) }}
+        {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
+        {% set hexColor = app.session.get('config').appColor %}
+        {% set rgbColor = hexColor|hex_to_rgb %}
+        <style>
+            :root, [data-bs-theme="light"] {
+                --tblr-primary: {{ hexColor }} !important;
+                --tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }} !important;
+            }
+        </style>
+    {% endblock %}
 
-	{% block head_favicon %}
-		<link rel="shortcut icon" href="{{ asset(ea.dashboardFaviconPath) }}">
-	{% endblock %}
+    {% block head_favicon %}
+        <link rel="shortcut icon" href="{{ asset(ea.dashboardFaviconPath) }}">
+    {% endblock %}
 
-	{% block head_javascript %}
-		{% block importmap %}
-			{{ include('@EasyAdmin/includes/_importmap.html.twig', { assets: ea.assets.assetMapperAssets ?? [] }, with_context = false) }}
-		{% endblock %}
-	{% endblock head_javascript %}
+    {% block head_javascript %}
+        {% block importmap %}
+            {{ include('@EasyAdmin/includes/_importmap.html.twig', { assets: ea.assets.assetMapperAssets ?? [] }, with_context = false) }}
+        {% endblock %}
+    {% endblock head_javascript %}
 
-	{% block configured_javascripts %}
-		{{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: ea.assets.jsAssets ?? [] }, with_context = false) }}
-		{{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
-	{% endblock %}
+    {% block configured_javascripts %}
+        {{ include('@EasyAdmin/includes/_js_assets.html.twig', { assets: ea.assets.jsAssets ?? [] }, with_context = false) }}
+        {{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
+    {% endblock %}
 
-	{% block configured_head_contents %}
-		{% for htmlContent in ea.assets.headContents ?? [] %}
-			{{ htmlContent|raw }}
-		{% endfor %}
-	{% endblock %}
+    {% block configured_head_contents %}
+        {% for htmlContent in ea.assets.headContents ?? [] %}
+            {{ htmlContent|raw }}
+        {% endfor %}
+    {% endblock %}
 </head>
 
 {% block body %}
-	{% set contentWidth = ea.crud.contentWidth ?? ea.dashboardContentWidth ?? '' %}
-	{% set contentWidthClass = contentWidth == 'normal' ? '' : 'layout-fluid' %}
-	{% set sidebarWidth = ea.crud.sidebarWidth ?? ea.dashboardSidebarWidth ?? '' %}
-	{% set sidebarWidthClass = sidebarWidth == 'normal' ? '' : '' %}
-	<body {% block body_attr %}{% endblock %} id="{% block body_id %}{% endblock %}" class="{{ contentWidthClass }} {% block body_class %}{% endblock %}">
-		{% block wrapper_wrapper %}
-			{% block flash_messages %}
-				{{ include(ea.templatePath('flash_messages')) }}
-			{% endblock flash_messages %}
+    {% set contentWidth = ea.crud.contentWidth ?? ea.dashboardContentWidth ?? '' %}
+    {% set contentWidthClass = contentWidth == 'normal' ? '' : 'layout-fluid' %}
+    {% set sidebarWidth = ea.crud.sidebarWidth ?? ea.dashboardSidebarWidth ?? '' %}
+    {% set sidebarWidthClass = sidebarWidth == 'normal' ? '' : '' %}
+    <body {% block body_attr %}{% endblock %} id="{% block body_id %}{% endblock %}" class="{{ contentWidthClass }} {% block body_class %}{% endblock %}">
+        {% block wrapper_wrapper %}
+            {% block flash_messages %}
+                {{ include(ea.templatePath('flash_messages')) }}
+            {% endblock flash_messages %}
 
-			{% set user_menu_dropdown %}
-				{% block header_custom_menu_wrapper %}
-					<div class="nav-item dropdown">
-						{% block header_custom_menu %}
-							<a type="button" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-								{% if null == ea.userMenu.avatarUrl %}
-									<span class="avatar avatar-sm">{{ ea.userMenu.name|first|upper }}</span>
-								{% else %}
-									<span class="avatar avatar-sm" style="background-image: url('{{ ea.userMenu.avatarUrl }}')"></span>
-								{% endif %}
-								{% if ea.userMenu.isNameDisplayed %}
-									<div class="d-none d-xl-block ps-2">
-										{{ ea.user is null ? 'user.anonymous'|trans(domain = 'EasyAdminBundle') : ea.userMenu.name }}
-									</div>
-								{% endif %}
-							</a>
-							<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-								{% if ea.dashboardHasDarkModeEnabled %}
-									<label class="dropdown-item form-switch cursor-pointer">
-										<twig:ux:icon class="icon" name="tabler:moon" />
-										<span class="me-2">{{ 'settings.appearance.label'|trans(domain = 'EasyAdminBundle') }} {{ ('settings.appearance.dark')|trans(domain = 'EasyAdminBundle') }}</span>
-										<input class="form-check-input m-0 ms-auto" type="checkbox" data-color-scheme {% if darkMode %}checked{% endif %}>
-									</label>
-								{% endif %}
-								{% if ea.dashboardHasDarkModeEnabled and ea.dashboardLocales|length %}
-									<div class="dropdown-divider"></div>
-								{% endif %}
-								{% if ea.dashboardLocales|length %}
-									<div class="dropdown dropstart">
-										<a class="dropdown-item dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-											<twig:ux:icon class="icon" name="tabler:language" /> {{ 'settings.locale'|trans(domain = 'EasyAdminBundle') }}
-										</a>
-										<div class="dropdown-menu">
-										{% for localeDto in ea.dashboardLocales %}
-											{% if ea.usePrettyUrls %}
-												{% set url = ea_url().set('_locale', localeDto.locale).set('entityId', app.request.attributes.get('entityId')) %}
-											{% else %}
-												{% set url = ea_url().set('_locale', localeDto.locale) %}
-											{% endif %}
-											<a class="dropdown-item {{ app.request.locale == localeDto.locale ? 'active' }}" href="{{ url.generateUrl() }}">
-												<twig:ea:Icon name="{{ localeDto.icon }}" /> {{ localeDto.name }}
-											</a>
-										{% endfor %}
-										</div>
-									</div>
-								{% endif %}
-								{% if ea.dashboardHasDarkModeEnabled or ea.dashboardLocales|length %}
-									<div class="dropdown-divider"></div>
-								{% endif %}
-								{% for item in ea.userMenu.items %}
-									{% if item.isMenuSection %}
-										{% if not loop.first %}
-											<div class="dropdown-divider"></div>
-										{% endif %}
-										<span class="dropdown-header {{ item.cssClass }}">
-											<twig:ea:Icon name="{{ item.icon }}" /> {{ item.label|trans }}
-										</span>
-									{% else %}
-										<a class="dropdown-item {{ item.cssClass }}" href="{{ item.linkUrl }}" target="{{ item.linkTarget }}" rel="{{ item.linkRel }}">
-											<twig:ea:Icon name="{{ item.icon }}" /> {{ item.label|trans }}
-										</a>
-									{% endif %}
-								{% endfor %}
-							</div>
-						{% endblock header_custom_menu %}
-					</div>
-				{% endblock header_custom_menu_wrapper %}
-			{% endset %}
+            {% set user_menu_dropdown %}
+                {% block header_custom_menu_wrapper %}
+                    <div class="nav-item dropdown">
+                        {% block header_custom_menu %}
+                            <a type="button" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                                {% if null == ea.userMenu.avatarUrl %}
+                                    <span class="avatar avatar-sm">{{ ea.userMenu.name|first|upper }}</span>
+                                {% else %}
+                                    <span class="avatar avatar-sm" style="background-image: url('{{ ea.userMenu.avatarUrl }}')"></span>
+                                {% endif %}
+                                {% if ea.userMenu.isNameDisplayed %}
+                                    <div class="d-none d-xl-block ps-2">
+                                        {{ ea.user is null ? 'user.anonymous'|trans(domain: 'EasyAdminBundle') : ea.userMenu.name }}
+                                    </div>
+                                {% endif %}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                {% if ea.dashboardHasDarkModeEnabled %}
+                                    <label class="dropdown-item form-switch cursor-pointer">
+                                        <twig:ea:Icon name="moon" class="dropdown-item-icon" />
+                                        <span class="me-2">{{ 'settings.appearance.label'|trans(domain: 'EasyAdminBundle') }} {{ ('settings.appearance.dark')|trans(domain: 'EasyAdminBundle') }}</span>
+                                        <input class="form-check-input m-0 ms-auto" type="checkbox" data-color-scheme {% if darkMode %}checked{% endif %}>
+                                    </label>
+                                {% endif %}
+                                {% if ea.dashboardHasDarkModeEnabled and ea.dashboardLocales|length %}
+                                    <div class="dropdown-divider"></div>
+                                {% endif %}
+                                {% if ea.dashboardLocales|length %}
+                                    <div class="dropdown dropstart">
+                                        <a class="dropdown-item dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <twig:ea:Icon name="language" class="dropdown-item-icon" />
+                                            <span class="action-label">{{ 'settings.locale'|trans(domain: 'EasyAdminBundle') }}</span>
+                                        </a>
+                                        <div class="dropdown-menu">
+                                        {% for localeDto in ea.dashboardLocales %}
+                                            {% if ea.usePrettyUrls %}
+                                                {% set url = ea_url().set('_locale', localeDto.locale).set('entityId', app.request.attributes.get('entityId')) %}
+                                            {% else %}
+                                                {% set url = ea_url().set('_locale', localeDto.locale) %}
+                                            {% endif %}
+                                            <a class="dropdown-item {{ app.request.locale == localeDto.locale ? 'active' }}" href="{{ url.generateUrl() }}">
+                                                <twig:ea:Icon name="{{ localeDto.icon }}" class="dropdown-item-icon" />
+                                                <span class="action-label">{{ localeDto.name }}</span>
+                                            </a>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if ea.dashboardHasDarkModeEnabled or ea.dashboardLocales|length %}
+                                    <div class="dropdown-divider"></div>
+                                {% endif %}
+                                {% for item in ea.userMenu.items %}
+                                    {% if item.isMenuSection %}
+                                        {% if not loop.first %}
+                                            <div class="dropdown-divider"></div>
+                                        {% endif %}
+                                        <span class="dropdown-header {{ item.cssClass }}">
+                                            <twig:ea:Icon name="{{ item.icon }}" class="dropdown-item-icon" />
+                                            <span class="action-label">{{ item.label|trans }}</span>
+                                        </span>
+                                    {% else %}
+                                        <a class="dropdown-item {{ item.cssClass }}" href="{{ item.linkUrl }}" target="{{ item.linkTarget }}" rel="{{ item.linkRel }}">
+                                            <twig:ea:Icon name="{{ item.icon }}" class="dropdown-item-icon" />
+                                            <span class="action-label">{{ item.label|trans }}</span>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endblock header_custom_menu %}
+                    </div>
+                {% endblock header_custom_menu_wrapper %}
+            {% endset %}
 
-			<div class="page">
-				{% block wrapper %}
-					<aside class="navbar navbar-transparent navbar-vertical navbar-expand-lg">
-						{% block sidebar %}
-							<div class="container-fluid">
-								<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
-									<span class="navbar-toggler-icon"></span>
-								</button>
-								{% block header %}
-									{% block header_navbar %}
-										<div class="navbar-brand navbar-brand-autodark">
-											{% block header_logo %}
-												<a href="{{ path(ea.dashboardRouteName) }}">
-													{{ ea.dashboardTitle|raw }}
-												</a>
-											{% endblock header_logo %}
-										</div>
-									{% endblock header_navbar %}
-								{% endblock header %}
-								<div class="navbar-nav flex-row d-lg-none">
-									{{ user_menu_dropdown }}
-								</div>
-								{% block main_menu_wrapper %}
-									{{ include(ea.templatePath('main_menu')) }}
-								{% endblock main_menu_wrapper %}
-							{% endblock sidebar %}
-						</div>
-					</aside>
+            <div class="page">
+                {% block wrapper %}
+                    <aside class="navbar navbar-transparent navbar-vertical navbar-expand-lg">
+                        {% block sidebar %}
+                            <div class="container-fluid">
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                {% block header %}
+                                    {% block header_navbar %}
+                                        <div class="navbar-brand navbar-brand-autodark">
+                                            {% block header_logo %}
+                                                <a href="{{ path(ea.dashboardRouteName) }}">
+                                                    {{ ea.dashboardTitle|raw }}
+                                                </a>
+                                            {% endblock header_logo %}
+                                        </div>
+                                    {% endblock header_navbar %}
+                                {% endblock header %}
+                                <div class="navbar-nav flex-row d-lg-none">
+                                    {{ user_menu_dropdown }}
+                                </div>
+                                {% block main_menu_wrapper %}
+                                    {{ include(ea.templatePath('main_menu')) }}
+                                {% endblock main_menu_wrapper %}
+                            {% endblock sidebar %}
+                        </div>
+                    </aside>
 
-					{% block content_top_header %}
-						{% set has_search = ea.crud is not null and ea.crud.isSearchEnabled %}
-						<header class="navbar navbar-transparent navbar-expand-md d-none d-lg-flex d-print-none">
-							<div class="container-xl">
-								{% block search_wrapper %}
-									<div>
-										{% if has_search %}
-											{% block search %}
-												{% set formActionUrl = null %}
-												{% if ea.usePrettyUrls %}
-													{# even if the app uses pretty URLs, the user might be using an ugly URL, so the controller might be defined in the query string #}
-													{% set crudController = ea.request.attributes.get('crudControllerFqcn') ?? ea.request.query.get('crudControllerFqcn') %}
-													{% set formActionUrl = ea_url().setController(crudController).setAction('index').set('page', 1) %}
-												{% endif %}
-												<form class="form-action-search" method="get" {% if formActionUrl %}action="{{ formActionUrl }}"{% endif %}>
-													{% block search_form %}
-														{% block search_form_filters %}
-															{% for field, fieldValue in ea.search.appliedFilters %}
-																{% if fieldValue is iterable %}
-																	{% for key, value in fieldValue %}
-																		{# This code re-applies your filters on searches, an iterable check is needed in cases we have more than one object for a filter #}
-																		{% if value is iterable %}
-																			{% for index, iterValue in value %}
-																				{# This sub-level iterable check is needed in cases we have more complex filters like the DateTimeFilter cf. issue #5038 #}
-																				{% if iterValue is iterable %}
-																					{% for subIndex, subIterValue in iterValue %}
-																						<input type="hidden" name="filters[{{ field }}][{{ key }}][{{ index }}][{{ subIndex }}]" value="{{ subIterValue }}">
-																					{% endfor %}
-																				{% else %}
-																					<input type="hidden" name="filters[{{ field }}][{{ key }}][{{ index }}]" value="{{ iterValue }}">
-																				{% endif %}
-																			{% endfor %}
-																		{% else %}
-																			<input type="hidden" name="filters[{{ field }}][{{ key }}]" value="{{ value }}">
-																		{% endif %}
-																	{% endfor %}
-																{% else %}
-																	<input type="hidden" name="filters[{{ field }}]" value="{{ fieldValue }}">
-																{% endif %}
-															{% endfor %}
-														{% endblock %}
+                    {% block content_top_header %}
+                        {% set has_search = ea.crud is not null and ea.crud.isSearchEnabled %}
+                        <header class="navbar navbar-transparent navbar-expand-md d-none d-lg-flex d-print-none">
+                            <div class="container-xl">
+                                {% block search_wrapper %}
+                                    <div>
+                                        {% if has_search %}
+                                            {% block search %}
+                                                {% set formActionUrl = null %}
+                                                {% if ea.usePrettyUrls %}
+                                                    {# even if the app uses pretty URLs, the user might be using an ugly URL, so the controller might be defined in the query string #}
+                                                    {% set crudController = ea.request.attributes.get('crudControllerFqcn') ?? ea.request.query.get('crudControllerFqcn') %}
+                                                    {% set formActionUrl = ea_url().setController(crudController).setAction('index').set('page', 1) %}
+                                                {% endif %}
+                                                <form class="form-action-search" method="get" {% if formActionUrl %}action="{{ formActionUrl }}"{% endif %}>
+                                                    {% block search_form %}
+                                                        {% block search_form_filters %}
+                                                            {% for field, fieldValue in ea.search.appliedFilters %}
+                                                                {% if fieldValue is iterable %}
+                                                                    {% for key, value in fieldValue %}
+                                                                        {# This code re-applies your filters on searches, an iterable check is needed in cases we have more than one object for a filter #}
+                                                                        {% if value is iterable %}
+                                                                            {% for index, iterValue in value %}
+                                                                                {# This sub-level iterable check is needed in cases we have more complex filters like the DateTimeFilter cf. issue #5038 #}
+                                                                                {% if iterValue is iterable %}
+                                                                                    {% for subIndex, subIterValue in iterValue %}
+                                                                                        <input type="hidden" name="filters[{{ field }}][{{ key }}][{{ index }}][{{ subIndex }}]" value="{{ subIterValue }}">
+                                                                                    {% endfor %}
+                                                                                {% else %}
+                                                                                    <input type="hidden" name="filters[{{ field }}][{{ key }}][{{ index }}]" value="{{ iterValue }}">
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        {% else %}
+                                                                            <input type="hidden" name="filters[{{ field }}][{{ key }}]" value="{{ value }}">
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                {% else %}
+                                                                    <input type="hidden" name="filters[{{ field }}]" value="{{ fieldValue }}">
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endblock %}
 
-														{% if not ea.usePrettyUrls %}
-															<input type="hidden" name="crudAction" value="index">
-															<input type="hidden" name="crudControllerFqcn" value="{{ ea.request.query.get('crudControllerFqcn') }}">
-															<input type="hidden" name="page" value="1">
-														{% endif %}
+                                                        {% if not ea.usePrettyUrls %}
+                                                            <input type="hidden" name="crudAction" value="index">
+                                                            <input type="hidden" name="crudControllerFqcn" value="{{ ea.request.query.get('crudControllerFqcn') }}">
+                                                            <input type="hidden" name="page" value="1">
+                                                        {% endif %}
 
-														<div class="row g-2">
-															<div class="col">
-																<div class="input-icon">
-																	<span class="input-icon-addon">
-																		<twig:ux:icon class="icon" name="tabler:search" />
-																	</span>
-																	<input class="form-control" type="search" name="query"
-																		value="{{ app.request.query.get('query') ?? '' }}"
-																		placeholder="{{ t('action.search', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}"
-																		spellcheck="false" autocorrect="off" onInput="this.parentNode.dataset.value=this.value"
-																		{% if ea.crud.currentAction == 'index' and ea.crud.autofocusSearch == true %}autofocus="autofocus"{% endif %}>
-																</div>
-															</div>
-															{% if app.request.query.get('query') %}
-																<div class="col-auto">
-																	{% set search_reset_url = ea_url().unset('query') %}
-																	{% if ea.usePrettyUrls %}
-																		{% set search_reset_url = ea_url().unset('query').setController(crudController).setAction('index').set('page', 1) %}
-																	{% endif %}
-																	<a class="btn btn-icon" href="{{ search_reset_url }}">
-																		<twig:ux:icon class="icon" name="tabler:x" />
-																	</a>
-																</div>
-															{% endif %}
-														</div>
-													{% endblock %}
-												</form>
-											{% endblock search %}
-										{% endif %}
-									</div>
-								{% endblock search_wrapper %}
+                                                        <div class="row g-2">
+                                                            <div class="col">
+                                                                <div class="input-icon">
+                                                                    <span class="input-icon-addon">
+                                                                        <twig:ea:Icon name="search" />
+                                                                    </span>
+                                                                    <input class="form-control" type="search" name="query"
+                                                                        value="{{ app.request.query.get('query') ?? '' }}"
+                                                                        placeholder="{{ t('action.search', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}"
+                                                                        spellcheck="false" autocorrect="off" onInput="this.parentNode.dataset.value=this.value"
+                                                                        {% if ea.crud.currentAction == 'index' and ea.crud.autofocusSearch == true %}autofocus="autofocus"{% endif %}>
+                                                                </div>
+                                                            </div>
+                                                            {% if app.request.query.get('query') %}
+                                                                <div class="col-auto">
+                                                                    {% set search_reset_url = ea_url().unset('query') %}
+                                                                    {% if ea.usePrettyUrls %}
+                                                                        {% set search_reset_url = ea_url().unset('query').setController(crudController).setAction('index').set('page', 1) %}
+                                                                    {% endif %}
+                                                                    <a class="btn btn-icon" href="{{ search_reset_url }}">
+                                                                        <twig:ea:Icon name="x" />
+                                                                    </a>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endblock %}
+                                                </form>
+                                            {% endblock search %}
+                                        {% endif %}
+                                    </div>
+                                {% endblock search_wrapper %}
 
-								<div class="navbar-nav flex-row order-md-last">
-									{{ user_menu_dropdown }}
-								</div>
-							</div>
-						</header>
-					{% endblock content_top_header %}
+                                <div class="navbar-nav flex-row order-md-last">
+                                    {{ user_menu_dropdown }}
+                                </div>
+                            </div>
+                        </header>
+                    {% endblock content_top_header %}
 
-					{% block main_content_wrapper %}
-						<section class="page-wrapper">
-							{% block content %}
-								{% block content_header_wrapper %}
-									{% set has_help_message = (ea.crud.helpMessage ?? '') is not empty %}
-									<section class="page-header d-print-none">
-										<div class="container-xl">
-											<div class="row align-items-center">
-												{% block content_header %}
-													<div class="col-lg-auto col-12">
-														<h3 class="page-title">
-															{% block content_title %}{% endblock %}
-															{% block content_help %}
-																{% if has_help_message %}
-																	<a role="button" tabindex="0" class="content-header-help" data-bs-toggle="popover" data-bs-custom-class="ea-content-help-popover" data-bs-animation="true" data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="focus" data-bs-content="{{ ea.crud.helpMessage|trans|e('html') }}">
-																		<twig:ux:icon class="icon ms-1" name="tabler:help" />
-																	</a>
-																{% endif %}
-															{% endblock %}
-														</h3>
-													</div>
-													{% block page_actions_wrapper %}
-														<div class="col-auto ms-auto d-print-none">
-															{% block page_actions %}{% endblock %}
-														</div>
-													{% endblock %}
-												{% endblock content_header %}
-											</div>
-										</div>
-									</section>
-								{% endblock content_header_wrapper %}
+                    {% block main_content_wrapper %}
+                        <section class="page-wrapper">
+                            {% block content %}
+                                {% block content_header_wrapper %}
+                                    {% set has_help_message = (ea.crud.helpMessage ?? '') is not empty %}
+                                    <section class="page-header d-print-none">
+                                        <div class="container-xl">
+                                            <div class="row align-items-center">
+                                                {% block content_header %}
+                                                    <div class="col-lg-auto col-12">
+                                                        <h3 class="page-title">
+                                                            {% block content_title %}{% endblock %}
+                                                            {% block content_help %}
+                                                                {% if has_help_message %}
+                                                                    <a role="button" tabindex="0" class="content-header-help" data-bs-toggle="popover" data-bs-custom-class="ea-content-help-popover" data-bs-animation="true" data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="focus" data-bs-content="{{ ea.crud.helpMessage|trans|e('html') }}">
+                                                                        <twig:ea:Icon class="icon ms-1" name="help" />
+                                                                    </a>
+                                                                {% endif %}
+                                                            {% endblock %}
+                                                        </h3>
+                                                    </div>
+                                                    {% block page_actions_wrapper %}
+                                                        <div class="col-auto ms-auto d-print-none">
+                                                            {% block page_actions %}{% endblock %}
+                                                        </div>
+                                                    {% endblock %}
+                                                {% endblock content_header %}
+                                            </div>
+                                        </div>
+                                    </section>
+                                {% endblock content_header_wrapper %}
 
-								<div class="page-body">
-									<div class="container-xl">
-										{% block main %}{% endblock %}
-									</div>
-								</div>
+                                <div class="page-body">
+                                    <div class="container-xl">
+                                        {% block main %}{% endblock %}
+                                    </div>
+                                </div>
 
-								{% block content_footer_wrapper %}
-									{% set content_footer = block('content_footer') is defined ? block('content_footer') : '' %}
-									{% if content_footer is not empty %}
-										<footer class="footer footer-transparent d-print-none">
-											{{ content_footer }}
-										</footer>
-									{% endif %}
-								{% endblock %}
-							{% endblock content %}
-						</section>
-					{% endblock main_content_wrapper %}
-				{% endblock wrapper %}
-			</div>
-		{% endblock wrapper_wrapper %}
+                                {% block content_footer_wrapper %}
+                                    {% set content_footer = block('content_footer') is defined ? block('content_footer') : '' %}
+                                    {% if content_footer is not empty %}
+                                        <footer class="footer footer-transparent d-print-none">
+                                            {{ content_footer }}
+                                        </footer>
+                                    {% endif %}
+                                {% endblock %}
+                            {% endblock content %}
+                        </section>
+                    {% endblock main_content_wrapper %}
+                {% endblock wrapper %}
+            </div>
+        {% endblock wrapper_wrapper %}
 
-		{% block body_javascript %}{% endblock body_javascript %}
+        {% block body_javascript %}{% endblock body_javascript %}
 
-		{% block configured_body_contents %}
-			{% for htmlContent in ea.assets.bodyContents ?? [] %}
-				{{ htmlContent|raw }}
-			{% endfor %}
-		{% endblock %}
-	</body>
+        {% block configured_body_contents %}
+            {% for htmlContent in ea.assets.bodyContents ?? [] %}
+                {{ htmlContent|raw }}
+            {% endfor %}
+        {% endblock %}
+    </body>
 {% endblock body %}
 </html>

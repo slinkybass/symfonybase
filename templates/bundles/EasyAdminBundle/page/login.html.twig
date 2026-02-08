@@ -1,95 +1,98 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider #}
+{% set ea = ea() %}
 {% extends "public/layout/base.html.twig" %}
+{% trans_default_domain null != ea ? ea.i18n.translationDomain : (translation_domain is defined ? translation_domain ?? 'messages') %}
 
-{% block page_title %}
-	{{ page_title is defined ? page_title|trans : (ea.hasContext ? ea.dashboardTitle|raw : '') }}
-{% endblock %}
-
-{% block page_class %}page-center{% endblock %}
+{% block page_class 'page-center' %}
+{% block page_title %}{{ page_title is defined ? page_title|raw : (null != ea ? ea.dashboardTitle|raw : '') }}{% endblock %}
 
 {% block header %}{% endblock %}
 
 {% block page_body %}
-	{% set _username_label = username_label is defined ? username_label|trans : 'login_page.username'|trans({}, 'EasyAdminBundle') %}
-	{% set _password_label = password_label is defined ? password_label|trans : 'login_page.password'|trans({}, 'EasyAdminBundle') %}
-	{% set _forgot_password_label = forgot_password_label is defined ? forgot_password_label|trans : 'login_page.forgot_password'|trans({}, 'EasyAdminBundle') %}
-	{% set _remember_me_label = remember_me_label is defined ? remember_me_label|trans : 'login_page.remember_me'|trans({}, 'EasyAdminBundle') %}
-	{% set _sign_in_label = sign_in_label is defined ? sign_in_label|trans : 'login_page.sign_in'|trans({}, 'EasyAdminBundle') %}
+    {% set page_title = block('page_title') %}
+    {% set _username_label = username_label is defined ? username_label|trans : 'login_page.username'|trans({}, 'EasyAdminBundle') %}
+    {% set _password_label = password_label is defined ? password_label|trans : 'login_page.password'|trans({}, 'EasyAdminBundle') %}
+    {% set _forgot_password_label = forgot_password_label is defined ? forgot_password_label|trans : 'login_page.forgot_password'|trans({}, 'EasyAdminBundle') %}
+    {% set _remember_me_label = remember_me_label is defined ? remember_me_label|trans : 'login_page.remember_me'|trans({}, 'EasyAdminBundle') %}
+    {% set _sign_in_label = sign_in_label is defined ? sign_in_label|trans : 'login_page.sign_in'|trans({}, 'EasyAdminBundle') %}
 
-	<main class="container container-tight py-4">
-		{% block main %}
-			<form class="card card-md" action="{{ action|default('') }}" method="post" autocomplete="off">
-				<div class="card-status-top bg-primary"></div>
+    <main class="container container-tight py-4">
+        {% block main %}
+            <form class="card card-md" action="{{ action|default('') }}" method="post" autocomplete="off">
+                <div class="card-status-top bg-primary"></div>
 
-				{% if csrf_token_intention|default(false) %}
-					<input type="hidden" name="_csrf_token" value="{{ csrf_token(csrf_token_intention) }}">
-				{% endif %}
-				<input type="hidden" name="{{ target_path_parameter|default('_target_path') }}" value="{{ target_path|default(ea.hasContext ? path(ea.dashboardRouteName) : '/') }}" />
+                {% if csrf_token_intention|default(false) %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrf_token_intention) }}">
+                {% endif %}
+                <input type="hidden" name="{{ target_path_parameter|default('_target_path') }}" value="{{ target_path|default(null != ea ? path(ea.dashboardRouteName) : '/') }}" />
 
-				<div class="card-body">
-					<h2 class="card-title text-center mb-4">
-						<a href="{{ path('home') }}" class="navbar-brand navbar-brand-autodark">
-							<img src="{{ app.session.get('config').appLogo }}" alt="{{ app.session.get('config').appName }}" style="max-height: 30px;">
-						</a>
-					</h2>
-					<div class="mb-3">
-						<label class="form-label required" for="username">{{ _username_label }}</label>
-						<input type="email" id="username" name="{{ username_parameter|default('_username') }}" class="form-control" value="{{ last_username|default('') }}" placeholder="{{ _username_label }}" required autofocus>
-					</div>
-					<div class="mb-2">
-						<label class="form-label required" for="password">
-							{{ _password_label }}
-							{% if forgot_password_enabled|default(false) %}
-							<span class="form-label-description">
-								<a href="{{ forgot_password_path|default('#') }}" tabindex="-1">{{ _forgot_password_label }}</a>
-							</span>
-							{% endif %}
-						</label>
-						<div class="input-group">
-							<input type="password" id="password" name="{{ password_parameter|default('_password') }}" class="form-control" placeholder="{{ _password_label }}" required>
-							<button type="button" class="btn btn-icon btn-pass" data-input="password">
-								<twig:ux:icon class="icon btn-pass-show" name="tabler:eye" />
-								<twig:ux:icon class="icon btn-pass-hide d-none" name="tabler:eye-off" />
-							</button>
-						</div>
-					</div>
-					{% if remember_me_enabled|default(false) %}
-					<div class="mb-2">
-						<label class="form-check">
-							<input type="checkbox" id="remember_me" class="form-check-input" name="{{ remember_me_parameter|default('_remember_me') }}" {{ remember_me_checked|default(false) ? 'checked' }}>
-							<span class="form-check-label" for="remember_me">{{ _remember_me_label }}</span>
-						</label>
-					</div>
-					{% endif %}
-					<div class="form-footer">
-						<button type="submit" class="btn btn-primary w-100">{{ _sign_in_label }}</button>
-					</div>
-				</div>
-			</form>
-			{% if app.session.get('config').enableRegister %}
-				<div class="text-center text-muted mt-3">
-					{{ 'public.login.register'|trans }} <a href="{{ path('register') }}">{{ 'public.login.registerLink'|trans }}</a>
-				</div>
-			{% endif %}
-		{% endblock %}
-	</main>
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">
+                        <a href="{{ path('home') }}" class="navbar-brand navbar-brand-autodark">
+                            <img src="{{ app.session.get('config').appLogo }}" alt="{{ app.session.get('config').appName }}" style="max-height: 30px;">
+                        </a>
+                    </h2>
+                    {% block login_form_credentials_wrapper %}
+                        <div class="mb-3">
+                            <label class="form-label required" for="username">{{ _username_label }}</label>
+                            <input type="email" id="username" name="{{ username_parameter|default('_username') }}" class="form-control" value="{{ last_username|default('') }}" placeholder="{{ _username_label }}" required autofocus>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label required" for="password">
+                                {{ _password_label }}
+                                {% if forgot_password_enabled|default(false) %}
+                                <span class="form-label-description">
+                                    <a href="{{ forgot_password_path|default('#') }}" tabindex="-1">{{ _forgot_password_label }}</a>
+                                </span>
+                                {% endif %}
+                            </label>
+                            <div class="input-group">
+                                <input type="password" id="password" name="{{ password_parameter|default('_password') }}" class="form-control" placeholder="{{ _password_label }}" required>
+                                <button type="button" class="btn btn-icon btn-pass" data-input="password">
+                                    <twig:ux:icon class="icon btn-pass-show" name="tabler:eye" />
+                                    <twig:ux:icon class="icon btn-pass-hide d-none" name="tabler:eye-off" />
+                                </button>
+                            </div>
+                        </div>
+                    {% endblock login_form_credentials_wrapper %}
+                    {% if remember_me_enabled|default(false) %}
+                    <div class="mb-2">
+                        <label class="form-check">
+                            <input type="checkbox" id="remember_me" class="form-check-input" name="{{ remember_me_parameter|default('_remember_me') }}" {{ remember_me_checked|default(false) ? 'checked' }}>
+                            <span class="form-check-label" for="remember_me">{{ _remember_me_label }}</span>
+                        </label>
+                    </div>
+                    {% endif %}
+                    <div class="form-footer">
+                        <twig:ea:Button type="submit" variant="primary" isBlock>{{ _sign_in_label }}</twig:ea:Button>
+                    </div>
+                </div>
+            </form>
+            {% if app.session.get('config').enableRegister %}
+                <div class="text-center text-muted mt-3">
+                    {{ 'public.login.register'|trans(domain: 'messages') }} <a href="{{ path('register') }}">{{ 'public.login.registerLink'|trans(domain: 'messages') }}</a>
+                </div>
+            {% endif %}
+        {% endblock %}
+    </main>
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block js %}
-	{{ parent() }}
+    {{ parent() }}
 
-	{% if error|default(false) %}
-		<script type="module">
-			Toast.fire({
-				title: "{{ error.messageKey|trans(error.messageData, 'security') }}",
-				icon: 'error',
-				position: 'top'
-			});
-		</script>
-	{% endif %}
+    {% if error|default(false) %}
+        <script type="module">
+            Toast.fire({
+                title: "{{ error.messageKey|trans(error.messageData, 'security') }}",
+                icon: 'error',
+                position: 'top'
+            });
+        </script>
+    {% endif %}
 
-	{% include '@EasyAdmin/flash_messages.html.twig' %}
+    {% include '@EasyAdmin/flash_messages.html.twig' %}
 
-	{{ importmap('form-type-password') }}
+    {{ importmap('form-type-password') }}
 {% endblock %}

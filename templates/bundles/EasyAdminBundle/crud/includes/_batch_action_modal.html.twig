@@ -1,21 +1,21 @@
 <div id="modal-batch-action" class="modal modal-blur fade" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-status bg-warning"></div>
-			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'action.close'|trans({}, 'EasyAdminBundle') }}"></button>
-			<div class="modal-body text-center py-4">
-				<twig:ux:icon class="text-warning" name="tabler:alert-triangle" height="72" />
-				<h3 class="mt-3" id="batch-action-confirmation-title">{{ 'batch_action_modal.title'|trans(domain = 'EasyAdminBundle') }}</h3>
-				<div class="text-muted">{{ 'batch_action_modal.content'|trans(domain = 'EasyAdminBundle') }}</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" data-bs-dismiss="modal" class="btn btn-secondary">
-					<twig:ux:icon class="icon" name="tabler:x" /> {{ 'action.cancel'|trans(domain = 'EasyAdminBundle') }}
-				</button>
-				<button type="button" data-bs-dismiss="modal" class="btn btn-warning" id="modal-batch-action-button">
-					<twig:ux:icon class="icon" name="tabler:check" /> {{ 'batch_action_modal.action'|trans(domain = 'EasyAdminBundle') }}
-				</button>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-status bg-warning"></div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'action.close'|trans({}, 'EasyAdminBundle') }}"></button>
+            <div class="modal-body text-center py-4">
+                <twig:ea:Icon class="icon-lg text-warning" name="alert-triangle" />
+                <h4 class="mt-3" id="batch-action-confirmation-title">{{ 'batch_action_modal.title'|trans(domain: 'EasyAdminBundle') }}</h4>
+                <div class="text-muted">{{ 'batch_action_modal.content'|trans(domain: 'EasyAdminBundle') }}</div>
+            </div>
+            <div class="modal-footer">
+                <twig:ea:Button type="button" data-bs-dismiss="modal">
+                    <twig:ea:Icon name="x" /> {{ 'action.cancel'|trans([], 'EasyAdminBundle') }}
+                </twig:ea:Button>
+                <twig:ea:Button type="button" variant="warning" data-bs-dismiss="modal" id="modal-batch-action-button">
+                    <twig:ea:Icon name="check" /> {{ 'batch_action_modal.action'|trans(domain: 'EasyAdminBundle') }}
+                </twig:ea:Button>
+            </div>
+        </div>
+    </div>
 </div>

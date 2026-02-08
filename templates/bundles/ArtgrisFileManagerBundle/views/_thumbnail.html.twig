@@ -6,103 +6,103 @@
 {% set isRoot = not fileManager.parent or app.request.get('route') == '\\' %}
 
 <div class="row mb-3">
-	{% block select_all %}
-		{% if canEdit %}
-			<div class="col-md-12">
-				<input type="checkbox" id="select-all" class="form-check-input" title="{{ 'select-all'|trans }}">
-				<label for="select-all">{{ 'select-all'|trans }}</label>
-			</div>
-		{% endif %}
-	{% endblock %}
+    {% block select_all %}
+        {% if canEdit %}
+            <div class="col-md-12">
+                <input type="checkbox" id="select-all" class="form-check-input" title="{{ 'select-all'|trans }}">
+                <label for="select-all">{{ 'select-all'|trans }}</label>
+            </div>
+        {% endif %}
+    {% endblock %}
 </div>
 
 <div class="row row-cards">
-	{% for fileEntity in fileArray %}
-		{% set file = fileEntity.file %}
-		{% set fileSelectionable = 'class="select"' in fileEntity.attribut %}
-		<div class="file-wrapper col-sm-6 col-lg-4">
-			<div class="card">
-				<div class="card-body pe-4">
-					{% block file_checkbox %}
-						{% if canEdit %}
-							<div class="position-absolute top-0 end-0 p-1">
-								<input type="checkbox" class="checkbox form-check-input" name="delete[]" value="{{ file.fileName }}" title="{{ file.fileName }}">
-							</div>
-						{% endif %}
-					{% endblock %}
-					<div class="d-flex align-items-center">
-						{% block file_preview %}
-							<div class="me-3">
-								{% set preview = fileEntity.isImage() and fileEntity.preview ? fileEntity.preview.html : null %}
-								{% if preview %}
-									{{ preview|raw }}
-								{% else %}
-									{% set icon = fileEntity.preview.folder is defined ? 'folder' : 'file' %}
-									<span class="avatar bg-transparent {% if fileEntity.preview.folder is defined %}shadow-none{% endif %}">
-										<twig:ux:icon class="icon" name="tabler:{{ icon }}"/>
-										{% if not fileEntity.preview.folder is defined %}
-											<a href="{{ fileEntity.preview.path }}" target="_blank" class="stretched-link" style="cursor: zoom-in;"></a>
-										{% endif %}
-									</span>
-								{% endif %}
-							</div>
-						{% endblock %}
-						{% if fileSelectionable %}
-							<input type="radio" class="form-check-input me-2 select" {{ fileEntity.attribut|replace({'class="select"': ''})|raw }}>
-						{% endif %}
-						<div class="w-100 text-truncate">
-							{% block file_name %}
-								<div>{{ (fileEntity.preview.folder is defined ? fileEntity.preview.folder|raw : file.fileName) }}</div>
-							{% endblock %}
-							<div class="text-muted">
-								{% block file_date %}
-									{{ fileEntity.file.mTime|date('d/m/Y') }}
-								{% endblock %}
-							</div>
-							<div class="text-muted">
-								{% block file_size %}
-									{{ fileEntity.HTMLSize ? fileEntity.HTMLSize|trans|raw }}
-								{% endblock %}
-								{{ fileEntity.HTMLDimension ? ' - ' ~ fileEntity.HTMLDimension }}&nbsp;</div>
-						</div>
-						<div class="ms-auto">
-							{% block list_action %}
-								{% if file.type == "file" or canEdit %}
-									<div class="dropdown dropdown-actions">
-										<a class="link-secondary text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<twig:ux:icon class="icon" name="tabler:dots"/>
-										</a>
-										<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-											{% if file.type == "file" %}
-												<a class="dropdown-item" href="{{ path('file_manager_file', fileManager.queryParameters|merge({'fileName':file.fileName})) }}" download>
-													<twig:ux:icon class="icon" name="tabler:download"/>
-													{{ 'title.download'|trans }}
-												</a>
-												{% if fileEntity.isImage() %}
-													<a class="dropdown-item" href="{{ fileEntity.preview.path }}" data-action="zoom">
-														<twig:ux:icon class="icon" name="tabler:eye"/>
-														{{ 'title.preview.file'|trans }}
-													</a>
-												{% endif %}
-											{% endif %}
-											{% if canEdit %}
-												<a class="dropdown-item js-rename-modal" href="#" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-rename" data-placement="left" data-html="true" data-name='{{ file.basename('.'~file.extension) }}' data-extension='{{ file.extension }}' data-href='{{ path('file_manager_rename', fileManager.queryParameters|merge({'fileName':file.fileName})) }}'>
-													<twig:ux:icon class="icon" name="tabler:edit"/>
-													{{ 'title.rename.file'|trans }}
-												</a>
-												<a class="dropdown-item text-danger js-delete-modal" href="#" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-delete" data-placement="left" data-html="true" data-href='{{ path('file_manager_delete', fileManager.queryParameters|merge({'delete[]':file.fileName})) }}'>
-													<twig:ux:icon class="icon" name="tabler:trash"/>
-													{{ 'title.delete'|trans }}
-												</a>
-											{% endif %}
-										</div>
-									</div>
-								{% endif %}
-							{% endblock %}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	{% endfor %}
+    {% for fileEntity in fileArray %}
+        {% set file = fileEntity.file %}
+        {% set fileSelectionable = 'class="select"' in fileEntity.attribut %}
+        <div class="file-wrapper col-sm-6 col-lg-4">
+            <div class="card">
+                <div class="card-body pe-4">
+                    {% block file_checkbox %}
+                        {% if canEdit %}
+                            <div class="position-absolute top-0 end-0 p-1">
+                                <input type="checkbox" class="checkbox form-check-input" name="delete[]" value="{{ file.fileName }}" title="{{ file.fileName }}">
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                    <div class="d-flex align-items-center">
+                        {% block file_preview %}
+                            <div class="me-3">
+                                {% set preview = fileEntity.isImage() and fileEntity.preview ? fileEntity.preview.html : null %}
+                                {% if preview %}
+                                    {{ preview|raw }}
+                                {% else %}
+                                    {% set icon = fileEntity.preview.folder is defined ? 'folder' : 'file' %}
+                                    <span class="avatar bg-transparent {% if fileEntity.preview.folder is defined %}shadow-none{% endif %}">
+                                        <twig:ux:icon class="icon" name="tabler:{{ icon }}" />
+                                        {% if not fileEntity.preview.folder is defined %}
+                                            <a href="{{ fileEntity.preview.path }}" target="_blank" class="stretched-link" style="cursor: zoom-in;"></a>
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        {% endblock %}
+                        {% if fileSelectionable %}
+                            <input type="radio" class="form-check-input me-2 select" {{ fileEntity.attribut|replace({'class="select"': ''})|raw }}>
+                        {% endif %}
+                        <div class="w-100 text-truncate">
+                            {% block file_name %}
+                                <div>{{ (fileEntity.preview.folder is defined ? fileEntity.preview.folder|raw : file.fileName) }}</div>
+                            {% endblock %}
+                            <div class="text-muted">
+                                {% block file_date %}
+                                    {{ fileEntity.file.mTime|date('d/m/Y') }}
+                                {% endblock %}
+                            </div>
+                            <div class="text-muted">
+                                {% block file_size %}
+                                    {{ fileEntity.HTMLSize ? fileEntity.HTMLSize|trans|raw }}
+                                {% endblock %}
+                                {{ fileEntity.HTMLDimension ? ' - ' ~ fileEntity.HTMLDimension }}&nbsp;</div>
+                        </div>
+                        <div class="ms-auto">
+                            {% block list_action %}
+                                {% if file.type == "file" or canEdit %}
+                                    <div class="dropdown dropdown-actions">
+                                        <a class="link-secondary text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <twig:ux:icon class="icon" name="tabler:dots" />
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            {% if file.type == "file" %}
+                                                <a class="dropdown-item" href="{{ path('file_manager_file', fileManager.queryParameters|merge({'fileName':file.fileName})) }}" download>
+                                                    <twig:ux:icon class="icon dropdown-item-icon" name="tabler:download" />
+                                                    <span class="action-label">{{ 'title.download'|trans }}</span>
+                                                </a>
+                                                {% if fileEntity.isImage() %}
+                                                    <a class="dropdown-item" href="{{ fileEntity.preview.path }}" data-action="zoom">
+                                                        <twig:ux:icon class="icon dropdown-item-icon" name="tabler:eye" />
+                                                        <span class="action-label">{{ 'title.preview.file'|trans }}</span>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if canEdit %}
+                                                <a class="dropdown-item js-rename-modal" href="#" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-rename" data-placement="left" data-html="true" data-name='{{ file.basename('.'~file.extension) }}' data-extension='{{ file.extension }}' data-href='{{ path('file_manager_rename', fileManager.queryParameters|merge({'fileName':file.fileName})) }}'>
+                                                    <twig:ux:icon class="icon dropdown-item-icon" name="tabler:edit" />
+                                                    <span class="action-label">{{ 'title.rename.file'|trans }}</span>
+                                                </a>
+                                                <a class="dropdown-item text-danger js-delete-modal" href="#" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-delete" data-placement="left" data-html="true" data-href='{{ path('file_manager_delete', fileManager.queryParameters|merge({'delete[]':file.fileName})) }}'>
+                                                    <twig:ux:icon class="icon dropdown-item-icon text-danger" name="tabler:trash" />
+                                                    <span class="action-label">{{ 'title.delete'|trans }}</span>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 </div>

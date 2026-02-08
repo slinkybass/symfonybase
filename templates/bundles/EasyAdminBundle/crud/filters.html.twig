@@ -1,22 +1,22 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var filters_form \EasyCorp\Bundle\EasyAdminBundle\Form\Type\FiltersFormType #}
-{% form_theme filters_form with ea.crud.formThemes only %}
+{% form_theme filters_form with ea().crud.formThemes only %}
 
-{{ form_start(filters_form, { attr: {
-	id: filters_form.vars.id,
-	'data-ea-filters-form-id': filters_form.vars.id
-} }) }}
-	{# browsers remove the query string when submitting forms using GET;
-	   that's why all query string parameters are added as hidden form fields #}
-	{% for paramName, paramValue in form_action_query_string_as_array|ea_flatten_array %}
-		<input type="hidden" name="{{ paramName }}" value="{{ paramValue }}">
-	{% endfor %}
+{{ form_start(filters_form, {attr: {
+    id: filters_form.vars.id,
+    'data-ea-filters-form-id': filters_form.vars.id,
+}}) }}
+    {# browsers remove the query string when submitting forms using GET;
+       that's why all query string parameters are added as hidden form fields #}
+    {% for paramName, paramValue in form_action_query_string_as_array|ea_flatten_array %}
+        <input type="hidden" name="{{ paramName }}" value="{{ paramValue }}">
+    {% endfor %}
 
-	{{ form_widget(filters_form) }}
+    {{ form_widget(filters_form) }}
 
-	{# Add fields for hidden filters  #}
-	{% set hidden_filters = app.request.query.all()['filters']|default([])['hidden_filters']|default([]) %}
-	{% for hidden_filter, val in hidden_filters %}
-		<input type="hidden" name="filters[hidden_filters][{{ hidden_filter }}]" value="{{ val }}">
-	{% endfor %}
+    {# Add fields for hidden filters  #}
+    {% set hidden_filters = app.request.query.all()['filters']|default([])['hidden_filters']|default([]) %}
+    {% for hidden_filter, val in hidden_filters %}
+        <input type="hidden" name="filters[hidden_filters][{{ hidden_filter }}]" value="{{ val }}">
+    {% endfor %}
 {{ form_end(filters_form) }}

@@ -17,6 +17,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Twig\Component\Option\ButtonStyle;
+use EasyCorp\Bundle\EasyAdminBundle\Twig\Component\Option\ButtonVariant;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -162,7 +164,7 @@ class DashboardController extends AbstractDashboardController
         $actions = Actions::new();
 
         $actions->addBatchAction(Action::BATCH_DELETE);
-        $actions->update(Crud::PAGE_INDEX, Action::BATCH_DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger text-white'); });
+        $actions->update(Crud::PAGE_INDEX, Action::BATCH_DELETE, function (Action $action) { return $action->setIcon('trash'); });
 
         $actions->add(Crud::PAGE_INDEX, Action::NEW);
         $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
@@ -176,26 +178,38 @@ class DashboardController extends AbstractDashboardController
         $actions->add(Crud::PAGE_NEW, Action::INDEX);
         $actions->add(Crud::PAGE_NEW, Action::SAVE_AND_RETURN);
         $actions->update(Crud::PAGE_NEW, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
-        $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) { return $action->setIcon('device-floppy')->addCssClass('btn-success'); });
+        $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) {
+                $action->getAsDto()->setVariant(ButtonVariant::Success);
+                return $action->setIcon('device-floppy');
+        });
 
         $actions->add(Crud::PAGE_DETAIL, Action::INDEX);
         $actions->add(Crud::PAGE_DETAIL, Action::DELETE);
         $actions->add(Crud::PAGE_DETAIL, Action::EDIT);
         $actions->update(Crud::PAGE_DETAIL, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
-        $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger text-white'); });
+        $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) {
+            $action->getAsDto()->setStyle(ButtonStyle::Solid);
+            return $action->setIcon('trash');
+        });
         $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) { return $action->setIcon('edit'); });
 
         $actions->add(Crud::PAGE_EDIT, Action::INDEX);
         $actions->add(Crud::PAGE_EDIT, Action::DELETE);
         $actions->add(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN);
         $actions->update(Crud::PAGE_EDIT, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
-        $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) { return $action->setIcon('trash')->addCssClass('btn-danger text-white'); });
-        $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) { return $action->setIcon('device-floppy')->addCssClass('btn-success'); });
+        $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) {
+            $action->getAsDto()->setStyle(ButtonStyle::Solid);
+            return $action->setIcon('trash');
+        });
+        $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) {
+            $action->getAsDto()->setVariant(ButtonVariant::Success);
+            return $action->setIcon('device-floppy');
+        });
 
-        $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE]);
-        $actions->reorder(Crud::PAGE_NEW, [Action::INDEX, Action::SAVE_AND_RETURN]);
-        $actions->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::DELETE, Action::EDIT]);
-        $actions->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DELETE, Action::SAVE_AND_RETURN]);
+        $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, Action::EDIT, Action::DELETE ]);
+        $actions->reorder(Crud::PAGE_NEW, [ Action::SAVE_AND_RETURN, Action::INDEX ]);
+        $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, Action::INDEX ]);
+        $actions->reorder(Crud::PAGE_EDIT, [ Action::SAVE_AND_RETURN, Action::DELETE, Action::INDEX ]);
 
         return $actions;
     }
