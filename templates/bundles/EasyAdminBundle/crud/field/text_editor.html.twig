@@ -1,16 +1,23 @@
-{% if ea.crud.currentAction == 'detail' %}
-	{{ field.formattedValue|raw|nl2br }}
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if ea().crud.currentAction == 'detail' %}
+    {{ field.formattedValue|raw|nl2br }}
 {% else %}
-	<a data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button" class="btn btn-sm btn-ghost btn-primary" title="{{ 'field.text_editor.view_content'|trans([], domain = 'EasyAdminBundle') }}">
-		<twig:ux:icon class="icon me-0" name="tabler:eye"/>
-	</a>
-	<div class="modal modal-xl modal-blur fade" id="info-{{ field.uniqueId }}" tabindex="-1" aria-labelledby="info-{{ field.uniqueId }}Label" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-body">
-					{{ field.formattedValue|raw|nl2br }}
-				</div>
-			</div>
-		</div>
-	</div>
+    {% set html_id = 'ea-text-editor-' ~ field.uniqueId %}
+    <twig:ea:Button type="button" variant="primary" size="sm" isInvisible="true" data-bs-toggle="modal" data-bs-target="#{{ html_id }}">
+        <twig:ea:Icon name="eye" class="me-0" />
+    </twig:ea:Button>
+
+    <div class="modal modal-xl modal-blur fade" id="{{ html_id }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-status bg-primary"></div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'action.close'|trans({}, 'EasyAdminBundle') }}"></button>
+                <div class="modal-body">
+                    {{ field.formattedValue|raw|nl2br }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endif %}

@@ -1,3 +1,13 @@
-<span class="avatar {{ ea.crud.currentAction == 'detail' ? 'avatar-xl' : '' }}" style="background-image: url('{{ asset(field.formattedValue) }}')" title="{{ field.formattedValue }}">
-	<a href="{{ asset(field.formattedValue) }}" class="stretched-link" data-action="zoom" style="cursor: zoom-in;"></a>
-</span>
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% set images = field.formattedValue %}
+{% if images is not iterable %}
+    {% set images = [images] %}
+{% endif %}
+
+{% for image in images %}
+    <span class="avatar {{ ea.crud.currentAction == 'detail' ? 'avatar-xl' : '' }}" style="background-image: url('{{ asset(image) }}')" title="{{ image }}">
+        <a href="{{ asset(image) }}" class="stretched-link" data-action="zoom" style="cursor: zoom-in;"></a>
+    </span>
+{% endfor %}
