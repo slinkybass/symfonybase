@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "user")]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'userEmailAlreadyExists')]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -57,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $verified = true;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTime $createdAt = null;
 
     public function __toString(): string
     {
@@ -111,17 +112,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(?string $plainPassword): void
+    public function setPlainPassword(?string $plainPassword): static
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
     /**
-     * @see UserInterface
+     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
      */
+    public function __serialize(): array
+    {
+        $data = (array) $this;
+        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+
+        return $data;
+    }
+
+    #[\Deprecated]
     public function eraseCredentials(): void
     {
-        $this->plainPassword = null;
+        // @deprecated, to be removed when upgrading to Symfony 8
     }
 
     public function getRole(): ?Role
@@ -265,12 +277,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(\DateTime $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -280,6 +292,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime('now');
     }
 }
