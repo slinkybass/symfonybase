@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class InactiveUserSubscriber implements EventSubscriberInterface
 {
-    private $security;
+    private Security $security;
 
     public function __construct(Security $security)
     {

@@ -15,8 +15,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class ConfigSubscriber implements EventSubscriberInterface
 {
-    private $em;
-    private $config;
+    private EntityManagerInterface $em;
+    private \stdClass $config;
 
     public function __construct(EntityManagerInterface $em, AssetMapperInterface $assetMapper)
     {

@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class MediaSubscriber implements EventSubscriberInterface
 {
-    private $artgrisFileManager;
+    private array $artgrisFileManager;
 
     public function __construct(array $artgrisFileManager)
     {

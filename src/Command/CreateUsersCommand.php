@@ -15,9 +15,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[AsCommand(name: 'app:create-users')]
 class CreateUsersCommand extends Command
 {
-    private $em;
-    private $passwordHasher;
-    private $rolePermissions;
+    private EntityManagerInterface $em;
+    private UserPasswordHasherInterface $passwordHasher;
+    private RolePermissions $rolePermissions;
 
     public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, RolePermissions $rolePermissions)
     {

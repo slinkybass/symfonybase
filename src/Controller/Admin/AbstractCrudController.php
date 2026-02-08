@@ -16,8 +16,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
-    public $translator;
-    public $transEntity;
+    public TranslatorInterface $translator;
+    public string $transEntity;
 
     public function __construct(TranslatorInterface $translator)
     {

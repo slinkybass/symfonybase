@@ -16,9 +16,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class PublicAccessSubscriber implements EventSubscriberInterface
 {
-    private $router;
-    private $authorizationChecker;
-    private $security;
+    private RouterInterface $router;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    private Security $security;
 
     public function __construct(RouterInterface $router, AuthorizationCheckerInterface $authorizationChecker, Security $security)
     {

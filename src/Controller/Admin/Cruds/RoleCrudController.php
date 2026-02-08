@@ -27,7 +27,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RoleCrudController extends AbstractCrudController
 {
-    private $rolePermissions;
+    private RolePermissions $rolePermissions;
 
     public function __construct(TranslatorInterface $translator, RolePermissions $rolePermissions)
     {

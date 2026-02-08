@@ -32,7 +32,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserCrudController extends AbstractCrudController
 {
-    private $passwordHasher;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher)
     {

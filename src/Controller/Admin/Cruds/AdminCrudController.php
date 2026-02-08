@@ -34,8 +34,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminCrudController extends AbstractCrudController
 {
-    private $passwordHasher;
-    private $rolePermissions;
+    private UserPasswordHasherInterface $passwordHasher;
+    private RolePermissions $rolePermissions;
 
     public function __construct(TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher, RolePermissions $rolePermissions)
     {

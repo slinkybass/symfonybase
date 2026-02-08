@@ -17,11 +17,13 @@ class RegistrationForm extends AbstractType
 {
     private Request $request;
     private RouterInterface $router;
+    private TranslatorInterface $translator;
 
-    public function __construct(RequestStack $requestStack, RouterInterface $router)
+    public function __construct(RequestStack $requestStack, RouterInterface $router, TranslatorInterface $translator)
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

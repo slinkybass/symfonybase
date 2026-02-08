@@ -26,12 +26,14 @@ use function Symfony\Component\Translation\t;
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
-    private $em;
-    private $adminUrl;
+    private EntityManagerInterface $em;
+    private TranslatorInterface $translator;
+    private AdminUrlGenerator $adminUrl;
 
-    public function __construct(EntityManagerInterface $em, AdminUrlGenerator $adminUrl)
+    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, AdminUrlGenerator $adminUrl)
     {
         $this->em = $em;
+        $this->translator = $translator;
         $this->adminUrl = $adminUrl;
     }
 

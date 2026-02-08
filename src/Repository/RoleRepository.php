@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RoleRepository extends ServiceEntityRepository
 {
-    private $rolePermissions;
+    private RolePermissions $rolePermissions;
 
     public function __construct(ManagerRegistry $registry, RolePermissions $rolePermissions)
     {
