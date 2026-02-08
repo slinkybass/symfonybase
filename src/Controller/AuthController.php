@@ -205,14 +205,14 @@ final class AuthController extends AbstractController
     #[Route('/verify', name: 'verify')]
     public function verifyUserEmail(Request $request): Response
     {
-		$id = $request->query->get('id');
-		if (!$id) {
-			return $this->redirectToRoute('register');
-		}
-		$user = $this->em->getRepository(User::class)->find($id);
-		if (!$user) {
-			return $this->redirectToRoute('register');
-		}
+        $id = $request->query->get('id');
+        if (!$id) {
+            return $this->redirectToRoute('register');
+        }
+        $user = $this->em->getRepository(User::class)->find($id);
+        if (!$user) {
+            return $this->redirectToRoute('register');
+        }
 
         try {
             $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
