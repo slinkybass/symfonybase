@@ -92,7 +92,11 @@ class RolePermissions
     public function getCrudPermissions(): array
     {
         $finder = new Finder();
-        $finder->files()->in($this->kernel->getProjectDir() . '/src/Controller/Admin/Cruds')->name('*.php');
+        $crudsPath = $this->kernel->getProjectDir() . '/src/Controller/Admin/Cruds';
+        if (!file_exists($crudsPath)) {
+            return self::CRUD_PERMISSIONS;
+        }
+        $finder->files()->in($crudsPath)->name('*.php');
 
         $crudPermissions = [];
         foreach ($finder as $file) {
