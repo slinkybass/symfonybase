@@ -1,137 +1,137 @@
 <!DOCTYPE html>
 {% set bsTheme = app.request.cookies.get('colorScheme') == 'dark' ? 'dark' : 'light' %}
 <html lang="{{ app.request.locale }}" data-bs-theme="{{ bsTheme }}" data-turbo="{{ enable_turbo|default(false) ? 'true' : 'false' }}">
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-		<title>{{ app.session.get('config').appName }} - {% block page_title %}{% endblock %}</title>
-		{% block head_favicon %}
-			<link rel="shortcut icon" href="{{ asset(app.session.get('config').appFavicon) }}">
-		{% endblock %}
-		{% block importmap %}
-			{{ importmap('app') }}
-			{{ importmap('public') }}
-			{{ include('public/includes/_flash_messages.html.twig') }}
-			{% set hexColor = app.session.get('config').appColor %}
-			{% set rgbColor = hexColor|hex_to_rgb %}
-			<style>
-				:root, [data-bs-theme="light"] {
-					--tblr-primary: {{ hexColor }} !important;
-					--tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }} !important;
-				}
-			</style>
-		{% endblock %}
-		{% block css %}{% endblock %}
-	</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <title>{{ app.session.get('config').appName }} - {% block page_title %}{% endblock %}</title>
+        {% block head_favicon %}
+            <link rel="shortcut icon" href="{{ asset(app.session.get('config').appFavicon) }}">
+        {% endblock %}
+        {% block importmap %}
+            {{ importmap('app') }}
+            {{ importmap('public') }}
+            {{ include('public/includes/_flash_messages.html.twig') }}
+            {% set hexColor = app.session.get('config').appColor %}
+            {% set rgbColor = hexColor|hex_to_rgb %}
+            <style>
+                :root, [data-bs-theme="light"] {
+                    --tblr-primary: {{ hexColor }} !important;
+                    --tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }} !important;
+                }
+            </style>
+        {% endblock %}
+        {% block css %}{% endblock %}
+    </head>
 
-	{% block body %}
-		<body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}" {% block body_attr %}{% endblock %}>
-			<div class="page {% block page_class %}{% endblock %}">
-				{% block header %}
-					<header class="navbar navbar-expand-md d-print-none">
-						<div class="container-xl">
-							{# Collapse menu icon #}
-							<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader">
-								<span class="navbar-toggler-icon"></span>
-							</button>
-							{# Logo #}
-							<a class="navbar-brand me-auto me-md-3 ms-2 ms-md-0" href="{{ path('home') }}">
-								<img src="{{ app.session.get('config').appLogo }}" alt="{{ app.session.get('config').appName }}" style="max-height: 30px;">
-							</a>
-							{# Right Menu #}
-							<div class="navbar-nav flex-row order-md-last">
-								{# Color scheme #}
-								<a class="nav-link hide-theme-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="colorScheme.click()" data-bs-original-title="{{ 'settings.appearance.label'|trans(domain = 'EasyAdminBundle') }} {{ ('settings.appearance.dark')|trans(domain = 'EasyAdminBundle') }}" role="button">
-									<twig:ux:icon class="icon" name="tabler:moon" />
-								</a>
-								<a class="nav-link hide-theme-light" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="colorScheme.click()" data-bs-original-title="{{ 'settings.appearance.label'|trans(domain = 'EasyAdminBundle') }} {{ ('settings.appearance.light')|trans(domain = 'EasyAdminBundle') }}" role="button">
-									<twig:ux:icon class="icon" name="tabler:sun" />
-								</a>
-								<input id="colorScheme" class="d-none" type="checkbox" data-color-scheme="true" {% if app.request.cookies.get('ea/colorScheme') == "dark" %}checked{% endif %}>
-								{# Language #}
-								{% set supportedLocales = locales|split('|') %}
-								{% if supportedLocales|length %}
-									<div class="nav-item dropdown">
-										<a href="#" class="nav-link" data-bs-toggle="dropdown">
-											<twig:ux:icon class="icon" name="tabler:language" />
-										</a>
-										<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-											{% for locale in supportedLocales %}
-												<a href="?_locale={{ locale }}" class="dropdown-item">
-													<twig:ux:icon class="icon" name="tabler:language" /> <span>{{ locale|locale_name|capitalize }} ({{ locale }})</span>
-												</a>
-											{% endfor %}
-										</div>
-									</div>
-								{% endif %}
-								{# User menu / Login button #}
-								<div class="nav-item {% if is_granted('IS_AUTHENTICATED') %}dropdown{% endif %}">
-									{% if is_granted('IS_AUTHENTICATED') %}
-										<a href="#" class="nav-link" data-bs-toggle="dropdown" title="{{ app.user }}">
-											<span class="avatar avatar-sm" {% if app.user.avatar %}style="background-image: url({{ app.user.avatar }})"{% endif %}>{% if not app.user.avatar %}{{ app.user|first|upper }}{% endif %}</span>
-											<div class="d-none d-md-block ps-2">{{ app.user }}</div>
-										</a>
-										<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-											{% if is_granted('IS_IMPERSONATOR') %}
-												<a href="{{ impersonation_exit_path(path('home')) }}" class="dropdown-item">
-													<twig:ux:icon class="icon" name="tabler:user-x" /> {{ 'user.exit_impersonation'|trans({}, 'EasyAdminBundle') }}
-												</a>
-											{% else %}
-												<a href="{{ path('_logout_main') }}" class="dropdown-item">
-													<twig:ux:icon class="icon" name="tabler:logout" /> {{ 'user.sign_out'|trans({}, 'EasyAdminBundle') }}
-												</a>
-											{% endif %}
-										</div>
-									{% else %}
-										<a href="{{ path('login') }}" class="btn btn-ghost-primary" title="{{ 'login_page.sign_in'|trans({}, 'EasyAdminBundle') }}">
-											<twig:ux:icon class="icon me-0 me-md-2 ms-0" name="tabler:user" />
-											<span class="d-none d-md-block">{{ 'login_page.sign_in'|trans({}, 'EasyAdminBundle') }}</span>
-										</a>
-									{% endif %}
-								</div>
-							</div>
-							{# Main Menu #}
-							<div id="navbarHeader" class="navbar-collapse collapse">
-								<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-									<ul class="navbar-nav">
-										<li class="nav-item {{ app.request.attributes.get('_route') == 'home' ? 'active' : '' }}">
-											<a class="nav-link" href="{{ path('home') }}">
-												<span class="nav-link-icon">
-													<twig:ux:icon class="icon" name="tabler:home" />
-												</span>
-												<span class="nav-link-title">{{ 'public.home.title'|trans }}</span>
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</header>
-				{% endblock %}
+    {% block body %}
+        <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}" {% block body_attr %}{% endblock %}>
+            <div class="page {% block page_class %}{% endblock %}">
+                {% block header %}
+                    <header class="navbar navbar-expand-md d-print-none">
+                        <div class="container-xl">
+                            {# Collapse menu icon #}
+                            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            {# Logo #}
+                            <a class="navbar-brand me-auto me-md-3 ms-2 ms-md-0" href="{{ path('home') }}">
+                                <img src="{{ app.session.get('config').appLogo }}" alt="{{ app.session.get('config').appName }}" style="max-height: 30px;">
+                            </a>
+                            {# Right Menu #}
+                            <div class="navbar-nav flex-row order-md-last">
+                                {# Color scheme #}
+                                <a class="nav-link hide-theme-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="colorScheme.click()" data-bs-original-title="{{ 'settings.appearance.label'|trans(domain: 'EasyAdminBundle') }} {{ ('settings.appearance.dark')|trans(domain: 'EasyAdminBundle') }}" role="button">
+                                    <twig:ux:icon class="icon" name="tabler:moon" />
+                                </a>
+                                <a class="nav-link hide-theme-light" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="colorScheme.click()" data-bs-original-title="{{ 'settings.appearance.label'|trans(domain: 'EasyAdminBundle') }} {{ ('settings.appearance.light')|trans(domain: 'EasyAdminBundle') }}" role="button">
+                                    <twig:ux:icon class="icon" name="tabler:sun" />
+                                </a>
+                                <input id="colorScheme" class="d-none" type="checkbox" data-color-scheme="true" {% if app.request.cookies.get('ea/colorScheme') == "dark" %}checked{% endif %}>
+                                {# Language #}
+                                {% set supportedLocales = locales|split('|') %}
+                                {% if supportedLocales|length %}
+                                    <div class="nav-item dropdown">
+                                        <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                                            <twig:ux:icon class="icon" name="tabler:language" />
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            {% for locale in supportedLocales %}
+                                                <a href="?_locale={{ locale }}" class="dropdown-item">
+                                                    <twig:ux:icon class="icon" name="tabler:language" /> <span>{{ locale|locale_name|capitalize }} ({{ locale }})</span>
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {# User menu / Login button #}
+                                <div class="nav-item {% if is_granted('IS_AUTHENTICATED') %}dropdown{% endif %}">
+                                    {% if is_granted('IS_AUTHENTICATED') %}
+                                        <a href="#" class="nav-link" data-bs-toggle="dropdown" title="{{ app.user }}">
+                                            <span class="avatar avatar-sm" {% if app.user.avatar %}style="background-image: url({{ app.user.avatar }})"{% endif %}>{% if not app.user.avatar %}{{ app.user|first|upper }}{% endif %}</span>
+                                            <div class="d-none d-md-block ps-2">{{ app.user }}</div>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            {% if is_granted('IS_IMPERSONATOR') %}
+                                                <a href="{{ impersonation_exit_path(path('home')) }}" class="dropdown-item">
+                                                    <twig:ux:icon class="icon" name="tabler:user-x" /> {{ 'user.exit_impersonation'|trans({}, 'EasyAdminBundle') }}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ path('_logout_main') }}" class="dropdown-item">
+                                                    <twig:ux:icon class="icon" name="tabler:logout" /> {{ 'user.sign_out'|trans({}, 'EasyAdminBundle') }}
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        <a href="{{ path('login') }}" class="btn btn-ghost-primary" title="{{ 'login_page.sign_in'|trans({}, 'EasyAdminBundle') }}">
+                                            <twig:ux:icon class="icon me-0 me-md-2 ms-0" name="tabler:user" />
+                                            <span class="d-none d-md-block">{{ 'login_page.sign_in'|trans({}, 'EasyAdminBundle') }}</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {# Main Menu #}
+                            <div id="navbarHeader" class="navbar-collapse collapse">
+                                <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item {{ app.request.attributes.get('_route') == 'home' ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ path('home') }}">
+                                                <span class="nav-link-icon">
+                                                    <twig:ux:icon class="icon" name="tabler:home" />
+                                                </span>
+                                                <span class="nav-link-title">{{ 'public.home.title'|trans }}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                {% endblock %}
 
-				{% block page_body %}
-					<main class="page-body">
-						<div class="{% block container_class %}container-xl{% endblock %}">
-							{% block main %}{% endblock %}
-						</div>
-					</main>
-				{% endblock %}
+                {% block page_body %}
+                    <main class="page-body">
+                        <div class="{% block container_class %}container-xl{% endblock %}">
+                            {% block main %}{% endblock %}
+                        </div>
+                    </main>
+                {% endblock %}
 
-				{% block footer %}
-					<footer class="footer footer-transparent d-print-none">
-						<div class="container-xl">
-							<div class="row text-center align-items-center flex-row-reverse">
-								<span class="text-muted">
-									© {{ "now"|date("Y") }}
-								</span>
-							</div>
-						</div>
-					</footer>
-				{% endblock %}
-			</div>
-		</body>
-	{% endblock %}
+                {% block footer %}
+                    <footer class="footer footer-transparent d-print-none">
+                        <div class="container-xl">
+                            <div class="row text-center align-items-center flex-row-reverse">
+                                <span class="text-muted">
+                                    © {{ "now"|date("Y") }}
+                                </span>
+                            </div>
+                        </div>
+                    </footer>
+                {% endblock %}
+            </div>
+        </body>
+    {% endblock %}
 
-	{% block js %}{% endblock %}
+    {% block js %}{% endblock %}
 </html>

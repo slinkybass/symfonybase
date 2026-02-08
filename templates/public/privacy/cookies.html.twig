@@ -1,13 +1,13 @@
 {% extends "public/layout/base.html.twig" %}
 
 {% block page_title %}
-	{{ 'public.cookies.title'|trans }}
+    {{ 'public.cookies.title'|trans }}
 {% endblock %}
 
 {% block main %}
-	<div class="card card-md">
-		<div class="card-body">
-			{{ app.session.get('config').cookiesText|raw }}
-		</div>
-	</div>
+    <div class="card card-md">
+        <div class="card-body">
+            {{ app.session.get('config').cookiesText|raw }}
+        </div>
+    </div>
 {% endblock %}
