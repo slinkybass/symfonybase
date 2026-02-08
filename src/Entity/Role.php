@@ -69,23 +69,15 @@ class Role
     {
         $this->displayName = $displayName;
         if (!$this->id) {
-            $this->setName("ROLE_" . $this->cleanString($displayName));
+            $roleName = $displayName;
+            $roleName = preg_replace('~[^\pL\d]+~u', '', $roleName);
+            $roleName = iconv('utf-8', 'us-ascii//TRANSLIT', $roleName);
+            $roleName = preg_replace('~[^-\w]+~', '', $roleName);
+            $roleName = strtoupper($roleName);
+            $this->setName("ROLE_" . $roleName);
         }
 
         return $this;
-    }
-
-    private function cleanString($text)
-    {
-        // Remove non letter or digits
-        $text = preg_replace('~[^\pL\d]+~u', '', $text);
-        // Transliterate
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        // Remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-        // Uppercase
-        $text = strtoupper($text);
-        return $text;
     }
 
     public function isAdmin(): ?bool
@@ -105,6 +97,11 @@ class Role
         return $this->permissions;
     }
 
+    public function getPermission($name): ?bool
+    {
+        return $this->permissions[$name] ?? false;
+    }
+
     public function setPermissions(array $permissions): static
     {
         $this->permissions = $permissions;
@@ -112,11 +109,9 @@ class Role
         return $this;
     }
 
-    public function getPermission($name): ?bool
-    {
-        return $this->permissions[$name] ?? false;
-    }
-
+    /**
+     * @return Collection<int, User>
+     */
     public function getUsers(): Collection
     {
         return $this->users;
@@ -135,6 +130,7 @@ class Role
     public function removeUser(User $user): static
     {
         if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
             if ($user->getRole() === $this) {
                 $user->setRole(null);
             }
