@@ -6,15 +6,78 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    /**
+     * Used to upgrade (rehash) the user's password automatically over time.
+     * 
+     * @param PasswordAuthenticatedUserInterface $user
+     * @param string $newHashedPassword
+     */
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    {
+        if (!$user instanceof User) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
+        }
+
+        $user->setPassword($newHashedPassword);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * Generates a random password.
+     * 
+     * @param int $length
+     * @param bool $mayus
+     * @param bool $minus
+     * @param bool $numbers
+     * @param bool $symbols
+     * 
+     * @return string
+     */
+    public function generatePassword($length = 8)
+    {
+        $uppercase = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+        $lowercase = "abcdefghijkmnpqrstuvwxyz";
+        $numbers = "23456789";
+        $specials = "!@#$%&_";
+        $all = $uppercase . $lowercase . $numbers . $specials;
+
+        $pick = function($str, $count = 1) {
+            $result = '';
+            $max = strlen($str) - 1;
+            for ($i = 0; $i < $count; $i++) {
+                $result .= $str[mt_rand(0, $max)];
+            }
+            return $result;
+        };
+
+        $password = '';
+        $password .= $pick($specials, 1);
+        $password .= $pick($lowercase, 1);
+        $password .= $pick($uppercase, 1);
+        $password .= $pick($numbers, 1);
+
+        if ($length > 4) {
+            $password .= $pick($all, $length - 4);
+        }
+
+        $passwordArray = str_split($password);
+        shuffle($passwordArray);
+        return implode('', $passwordArray);
     }
 
     /**
