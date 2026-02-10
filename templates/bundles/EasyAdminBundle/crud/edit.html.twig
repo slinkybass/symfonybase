@@ -1,7 +1,6 @@
 {% extends "@!EasyAdmin/crud/edit.html.twig" %}
 
-{% block head_javascript %}
-    {% block importmap %}
-        {{ parent() }}
-    {% endblock %}
-{% endblock head_javascript %}
+{% block importmap %}
+    {{ parent() }}
+    {{ include('@EasyAdmin/includes/_importmap.html.twig', { assets: ea_field_assets.assetMapperAssets ?? [] }, with_context = false) }}
+{% endblock %}
