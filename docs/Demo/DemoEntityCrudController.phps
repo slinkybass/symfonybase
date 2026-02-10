@@ -6,12 +6,12 @@ use App\Controller\Admin\AbstractCrudController;
 use App\Entity\DemoEntity;
 use App\Entity\Enum\UserGender;
 use App\Field\FieldGenerator;
-use App\Form\DemoFormType;
+use App\Form\DemoEntityType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
-class DemoCrudController extends AbstractCrudController
+class DemoEntityCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
@@ -400,7 +400,7 @@ class DemoCrudController extends AbstractCrudController
             ->setColumns(4);
         $collectionFormType = FieldGenerator::collection('collectionFormType')
             ->setLabel('Collection with a FormType')
-            ->setEntryType(DemoFormType::class)
+            ->setEntryType(DemoEntityType::class)
             ->setColumns(4);
 
         $mediaFieldsTab = FieldGenerator::tab('Media');
