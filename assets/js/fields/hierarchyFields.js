@@ -2,7 +2,7 @@
  * Hierarchical Field Visibility Handler
  *
  * Author: slinkybass
- * Version: 3.1
+ * Version: 3.2
  *
  * Description:
  * This plugin dynamically manages form field visibility and behavior based on hierarchical parent-child relationships.
@@ -79,6 +79,9 @@
 			case "radio":
 				parentValue = document.querySelector(`[name="${parent.name}"]:checked`)?.value;
 				break;
+			case "select-multiple":
+				parentValue = Array.from(parent.selectedOptions).map((option) => option.value);
+				break;
 			default:
 				parentValue = parent.value;
 		}
@@ -112,7 +115,9 @@
 		const savedValue = parseFieldValue(child.dataset.hfSavedValue);
 		const forceShow = parseFieldValue(child.dataset.hfShow);
 
-		const shouldShow = (valuesToShow.length && valuesToShow.includes(parentValue)) || (!valuesToShow.length && parentValue !== null);
+		const shouldShow = (
+			valuesToShow.length && (Array.isArray(parentValue) ? valuesToShow.every(v => parentValue.some(p => p == v)) : valuesToShow.some(v => v == parentValue))
+		) || (!valuesToShow.length && parentValue !== null);
 
 		if (shouldShow) {
 			showChild(child, container, forceShow);
