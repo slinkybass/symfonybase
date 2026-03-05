@@ -2,7 +2,7 @@
  * Hierarchical Field Visibility Handler
  *
  * Author: slinkybass
- * Version: 3.2
+ * Version: 3.3
  *
  * Description:
  * This plugin dynamically manages form field visibility and behavior based on hierarchical parent-child relationships.
@@ -24,6 +24,7 @@
  * Supported `data-hf-*` Attributes:
  * - data-hf-parent: Attribute for parent input; identifies a group name.
  * - data-hf-child: Attribute for child input; matches a parent name.
+ * - data-hf-container: Optional. Selector for a parent container that should be hidden when children are hidden.
  * - data-hf-default-value: Optional. Default value to restore when shown.
  * - data-hf-parent-value: Optional. Specific value required from parent to show this child.
  * - data-hf-keep-value: Optional. Prevents clearing value when hiding.
@@ -98,7 +99,7 @@
 	 * @param {HTMLElement} child - The child element to process.
 	 */
 	function processChild(parentValue, parentIsCheckboxOrRadio, child) {
-		const container = child.closest(".form-group");
+		const container = child.dataset.hfContainer ? child.closest(child.dataset.hfContainer) : child.closest(".form-group").parentElement;
 		if (!container) return;
 
 		const childType = child.type;
@@ -136,7 +137,7 @@
 	 * Shows a child element and restores its value/required attributes if necessary.
 	 *
 	 * @param {HTMLElement} child - The child element to show.
-	 * @param {HTMLElement} container - The container element around the child (usually .form-group parent).
+	 * @param {HTMLElement} container - The container element around the child.
 	 * @param {boolean} forceShow - If true, disables hiding and just sets the field as readonly instead.
 	 */
 	function showChild(child, container, forceShow) {
@@ -152,7 +153,7 @@
 	 * Hides a child element and optionally stores and clears its value.
 	 *
 	 * @param {HTMLElement} child - The child element to hide.
-	 * @param {HTMLElement} container - The container element around the child (usually .form-group parent).
+	 * @param {HTMLElement} container - The container element around the child.
 	 * @param {boolean} forceShow - If true, disables hiding and only sets the field as readonly instead.
 	 */
 	function hideChild(child, container, forceShow) {
@@ -250,7 +251,7 @@
 	 * Restores the `required` attribute and label formatting for a child element when it becomes visible again.
 	 *
 	 * @param {HTMLElement} child - The child field element.
-	 * @param {HTMLElement} container - The surrounding DOM container (usually .form-group parent).
+	 * @param {HTMLElement} container - The surrounding DOM container.
 	 * @param {boolean} isFlatpickr - Whether the field is a Flatpickr instance.
 	 */
 	function restoreRequired(child, container, isFlatpickr) {
@@ -273,7 +274,7 @@
 	 * Also adjusts associated label classes for visual consistency.
 	 *
 	 * @param {HTMLElement} child - The child field element.
-	 * @param {HTMLElement} container - The surrounding DOM container (usually .form-group parent).
+	 * @param {HTMLElement} container - The surrounding DOM container.
 	 * @param {boolean} isFlatpickr - Whether the field is a Flatpickr instance.
 	 */
 	function storeRequired(child, container, isFlatpickr) {
@@ -300,9 +301,15 @@
 	function updateCardVisibility(child) {
 		const card = child.closest(".card");
 		if (!card) return;
-		const groups = card.querySelectorAll(".form-group");
-		const visible = Array.from(groups).some((g) => !g.classList.contains("d-none"));
-		card.classList.toggle("d-none", !visible);
+		const childs = card.querySelectorAll("[data-hf-child]");
+		const visible = Array.from(childs).some(function (ch) {
+			const container = ch.dataset.hfContainer ? ch.closest(ch.dataset.hfContainer) : ch.closest(".form-group").parentElement;
+			return !container.classList.contains("d-none");
+		});
+		const otherFields = Array.from(card.querySelectorAll("input, select, textarea")).filter(
+			el => el.type !== 'hidden' && !el.dataset.hfChild
+		);
+		card.classList.toggle("d-none", !visible && otherFields.length === 0);
 	}
 
 	/**
