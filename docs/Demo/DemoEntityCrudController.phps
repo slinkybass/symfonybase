@@ -6,7 +6,7 @@ use App\Controller\Admin\AbstractCrudController;
 use App\Entity\DemoEntity;
 use App\Entity\Enum\UserGender;
 use App\Field\FieldGenerator;
-use App\Form\DemoEntityType;
+use App\Form\Type\DemoEntityType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
