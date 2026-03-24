@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -17,11 +18,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
     public TranslatorInterface $translator;
+    public RolePermissions $rolePermissions;
+
     public string $transEntity;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, RolePermissions $rolePermissions)
     {
         $this->translator = $translator;
+        $this->rolePermissions = $rolePermissions;
+
         $this->transEntity = $this->transEntity ?? $this->crud();
     }
 
@@ -225,17 +230,17 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
     public function hasPermission($permission): bool
     {
-        return $this->user()->hasPermission($permission);
+        return $this->rolePermissions->userHasPermission($this->user(), $permission);
     }
 
     public function hasPermissionCrud($crud = null): bool
     {
-        return $this->user()->hasPermissionCrud($crud ?? $this->crud());
+        return $this->rolePermissions->userHasPermissionCrud($this->user(), $crud ?? $this->crud());
     }
 
     public function hasPermissionCrudAction($action, $crud = null): bool
     {
-        return $this->user()->hasPermissionCrudAction($action, $crud ?? $this->crud());
+        return $this->rolePermissions->userHasPermissionCrudAction($this->user(), $crud ?? $this->crud(), $action);
     }
 
     public function transEntitySingular($entity = null): string

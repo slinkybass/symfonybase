@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Field\FieldGenerator;
 use App\Repository\RoleRepository;
+use App\Service\RolePermissions;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -34,9 +35,9 @@ class UserCrudController extends AbstractCrudController
 {
     private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(TranslatorInterface $translator, RolePermissions $rolePermissions, UserPasswordHasherInterface $passwordHasher)
     {
-        parent::__construct($translator);
+        parent::__construct($translator, $rolePermissions);
         $this->passwordHasher = $passwordHasher;
     }
 

@@ -35,13 +35,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AdminCrudController extends AbstractCrudController
 {
     private UserPasswordHasherInterface $passwordHasher;
-    private RolePermissions $rolePermissions;
 
-    public function __construct(TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher, RolePermissions $rolePermissions)
+    public function __construct(TranslatorInterface $translator, RolePermissions $rolePermissions, UserPasswordHasherInterface $passwordHasher)
     {
-        parent::__construct($translator);
+        parent::__construct($translator, $rolePermissions);
         $this->passwordHasher = $passwordHasher;
-        $this->rolePermissions = $rolePermissions;
     }
 
     public static function getEntityFqcn(): string

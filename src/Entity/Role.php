@@ -97,11 +97,6 @@ class Role
         return $this->permissions;
     }
 
-    public function getPermission($name): ?bool
-    {
-        return $this->permissions[$name] ?? false;
-    }
-
     public function setPermissions(array $permissions): static
     {
         $this->permissions = $permissions;

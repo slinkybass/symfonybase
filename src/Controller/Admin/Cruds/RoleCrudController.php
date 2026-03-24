@@ -6,7 +6,6 @@ use App\Controller\Admin\AbstractCrudController;
 use App\Entity\Role;
 use App\Field\BooleanField;
 use App\Field\FieldGenerator;
-use App\Service\RolePermissions;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -23,18 +22,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RoleCrudController extends AbstractCrudController
 {
-    private RolePermissions $rolePermissions;
-
-    public function __construct(TranslatorInterface $translator, RolePermissions $rolePermissions)
-    {
-        parent::__construct($translator);
-        $this->rolePermissions = $rolePermissions;
-    }
-
     public static function getEntityFqcn(): string
     {
         return Role::class;
@@ -70,11 +60,12 @@ class RoleCrudController extends AbstractCrudController
         $permissionsFields = [];
         $this->rolePermissions->loopPermissions($permissions, function ($permission, $parentPermission, $level) use (&$permissionsFields) {
             if ($this->hasPermission($permission)) {
-                $isCrudPermission = strpos($permission, 'crud') !== false;
+                $isCrudPermission = str_starts_with($permission, $this->rolePermissions::CRUD_PREFIX . '_');
                 if ($isCrudPermission) {
-                    $permissionWithoutCrud = str_replace('crud', '', $permission);
-                    $entity = lcfirst(preg_split('/(?=[A-Z])/', $permissionWithoutCrud)[1]);
-                    $action = lcfirst(str_replace(ucfirst($entity), '', $permissionWithoutCrud));
+                    $permissionWithoutCrud = str_replace($this->rolePermissions::CRUD_PREFIX . '_', '', $permission);
+                    $parts = explode('_', $permissionWithoutCrud, 2);
+                    $entity = $parts[0];
+                    $action = $parts[1] ?? null;
 
                     $entityLabel = $this->translator->trans('entities.' . $entity . '.plural');
                     if (!$action) {
@@ -287,8 +278,9 @@ class RoleCrudController extends AbstractCrudController
     private function generatePermissionField(string $permission, string $label, ?string $parentPermission = null, ?int $level = 0): BooleanField
     {
         $entity = $this->entity();
-        $permissionValue = $entity && $entity->getPermission($permission) ? true : false;
-        $label = "<span data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='$permission'>$label</span>";
+        $permissionValue = $entity && $this->rolePermissions->roleHasPermission($entity, $permission) ? true : false;
+        $permissionLabel = $this->transEntityField('permission', 'role') . ': ' . $permission;
+        $label = "<span data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='$permissionLabel'>$label</span>";
 
         $permission = FieldGenerator::switch($permission)->setLabel($label)
             ->setFormTypeOption('mapped', false)

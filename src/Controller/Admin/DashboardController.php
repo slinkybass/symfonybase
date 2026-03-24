@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Config;
 use App\Entity\Role;
 use App\Entity\User;
+use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -30,12 +31,14 @@ class DashboardController extends AbstractDashboardController
     private EntityManagerInterface $em;
     private TranslatorInterface $translator;
     private AdminUrlGenerator $adminUrl;
+    private RolePermissions $rolePermissions;
 
-    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, AdminUrlGenerator $adminUrl)
+    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, AdminUrlGenerator $adminUrl, RolePermissions $rolePermissions)
     {
         $this->em = $em;
         $this->translator = $translator;
         $this->adminUrl = $adminUrl;
+        $this->rolePermissions = $rolePermissions;
     }
 
     public function index(): Response
@@ -104,15 +107,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute($this->translator->trans('admin.home.title'), 'home', 'admin_home');
 
         $userItems = [];
-        if ($configSession->enablePublic && $user->hasPermissionCrud('user')) {
+        if ($configSession->enablePublic && $this->rolePermissions->userHasPermissionCrud($user, 'user')) {
             $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.user.plural'), 'user', User::class)->setController(Cruds\UserCrudController::class);
         }
-        if ($user->hasPermissionCrud('admin')) {
+        if ($this->rolePermissions->userHasPermissionCrud($user, 'admin')) {
             $label = $configSession->enablePublic ? 'admin' : 'user';
             $icon = $configSession->enablePublic ? 'user-shield' : 'user';
             $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.' . $label . '.plural'), $icon, User::class)->setController(Cruds\AdminCrudController::class);
         }
-        if ($user->hasPermissionCrud('role')) {
+        if ($this->rolePermissions->userHasPermissionCrud($user, 'role')) {
             $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.role.plural'), 'lock', Role::class)->setController(Cruds\RoleCrudController::class);
         }
         if (count($userItems) == 1) {
@@ -121,20 +124,25 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::subMenu($this->translator->trans('entities.user.plural'), 'users')->setSubItems($userItems);
         }
 
-        if ($user->hasPermission('media')) {
+        if ($this->rolePermissions->userHasPermissionCrud($user, 'media')) {
             yield MenuItem::linkToRoute($this->translator->trans('entities.media.plural'), 'file', 'admin_media');
         }
 
-        if ($user->hasPermissionCrud('settings')) {
+        $configItems = [];
+        if ($this->rolePermissions->userHasPermissionCrud($user, 'settings')) {
             $settingsLink = MenuItem::linkToCrud($this->translator->trans('entities.settings.singular'), 'tool', Config::class)->setController(Cruds\SettingsCrudController::class);
             $settingsLink = $config ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $settingsLink->setAction(Crud::PAGE_NEW);
-            yield $settingsLink;
+            $configItems[] = $settingsLink;
         }
-
-        if ($user->hasPermissionCrud('config')) {
+        if ($this->rolePermissions->userHasPermissionCrud($user, 'config')) {
             $configLink = MenuItem::linkToCrud($this->translator->trans('entities.config.singular'), 'settings', Config::class)->setController(Cruds\ConfigCrudController::class);
             $configLink = $config ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $configLink->setAction(Crud::PAGE_NEW);
-            yield $configLink;
+            $configItems[] = $configLink;
+        }
+        if (count($configItems) == 1) {
+            yield $configItems[0];
+        } elseif (count($configItems) > 1) {
+            yield MenuItem::subMenu($this->translator->trans('entities.config.singular'), 'settings')->setSubItems($configItems);
         }
     }
 

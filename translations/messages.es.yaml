@@ -117,10 +117,10 @@ entities:
       permissions: Permisos
     permissions:
       media: Media
-      mediaTree: Árbol de carpetas
-      mediaUpload: Subir archivos
-      mediaEdit: Editar archivos
-      mediaFolders: Crear carpetas
+      media_tree: Árbol de carpetas
+      media_upload: Subir archivos
+      media_edit: Editar archivos
+      media_folders: Crear carpetas
   media:
     singular: Media
     plural: Media
