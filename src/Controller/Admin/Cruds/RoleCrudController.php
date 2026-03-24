@@ -154,6 +154,8 @@ class RoleCrudController extends AbstractCrudController
             $user = $this->getUser();
             $rolePermissions = $this->rolePermissions;
 
+            $actions->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE);
+
             $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
             $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
