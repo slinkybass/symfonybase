@@ -86,7 +86,7 @@ final class AuthController extends AbstractController
             }
 
             if ($error) {
-                $this->addFlash('danger', $error);
+                $this->addFlash('error', $error);
             } else {
                 return $this->processSendingPasswordReset($user);
             }

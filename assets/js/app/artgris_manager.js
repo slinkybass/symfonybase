@@ -160,7 +160,7 @@ $(function () {
 	// Global functions
 	// display error alert
 	function displayError(msg) {
-		displayAlert("danger", msg);
+		displayAlert("error", msg);
 	}
 
 	// display success alert

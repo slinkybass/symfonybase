@@ -36,7 +36,7 @@ class UserLoginSubscriber implements EventSubscriberInterface
         }
 
         if ($error) {
-            $session->getFlashBag()->add('danger', $error);
+            $session->getFlashBag()->add('error', $error);
             throw new DisabledException($error);
         }
     }
