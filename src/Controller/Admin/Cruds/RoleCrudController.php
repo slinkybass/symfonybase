@@ -157,29 +157,29 @@ class RoleCrudController extends AbstractCrudController
             $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
             $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
-                    return $hasPermissionEdit && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
+                    return $hasPermissionEdit && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
                 });
             });
             $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
-                    return $hasPermissionEdit && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
+                    return $hasPermissionEdit && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
                 });
             });
 
             $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
             $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
+                    return $hasPermissionDelete && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
                 });
             });
             $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
+                    return $hasPermissionDelete && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
                 });
             });
             $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
                 return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
+                    return $hasPermissionDelete && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
                 });
             });
 
