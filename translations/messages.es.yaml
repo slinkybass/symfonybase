@@ -118,6 +118,7 @@ entities:
       displayName: Nombre
       isAdmin: ¿Es administrador?
       permissions: Permisos
+      permission: Permiso
     permissions:
       media: Media
       media_tree: Árbol de carpetas
