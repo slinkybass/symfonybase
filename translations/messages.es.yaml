@@ -45,6 +45,9 @@ email:
     postContent1: Este enlace caducará aproximadamente en %time%.
     button: Confirmar mi dirección de correo
 entities:
+  demoEntity:
+    singular: Demo
+    plural: Demo
   config:
     singular: Configuración
     plural: Configuración

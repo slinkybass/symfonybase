@@ -139,6 +139,9 @@ class DashboardController extends AbstractDashboardController
             $configLink = $config ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $configLink->setAction(Crud::PAGE_NEW);
             $configItems[] = $configLink;
         }
+        if ($this->rolePermissions->userHasPermissionCrud($user, 'demoEntity') && class_exists('App\\Entity\\DemoEntity')) {
+            $configItems[] = MenuItem::linkToCrud($this->translator->trans('entities.demoEntity.singular'), 'flask', 'App\\Entity\\DemoEntity')->setController('App\\Controller\\Admin\\Cruds\\DemoEntityCrudController');
+        }
         if (count($configItems) == 1) {
             yield $configItems[0];
         } elseif (count($configItems) > 1) {

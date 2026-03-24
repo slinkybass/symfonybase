@@ -27,3 +27,9 @@
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> Demo ###
+/src/Entity/DemoEntity.php
+/src/Controller/Admin/Cruds/DemoEntityCrudController.php
+/src/Form/Type/DemoEntityType.php
+###< Demo ###
