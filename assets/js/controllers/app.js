@@ -32,19 +32,51 @@ const App = (() => {
 	const createUnsavedFormChangesWarning = () => {
 		[".ea-new-form", ".ea-edit-form"].forEach((formSelector) => {
 			const form = document.querySelector(formSelector);
-			if (null === form) {
-				return;
-			}
+			if (!form) return;
 
-			// although DirtyForm supports passing a custom message to display,
-			// modern browsers don't allow to display custom messages to protect users
-			new DirtyForm(form);
+			const dirtyForm = new DirtyForm(form, {
+				onDirty: () => {
+					let submitButtons = form.querySelectorAll('[type="submit"]');
+					if (!submitButtons.length && form.id) {
+						submitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
+					}
+					submitButtons.forEach(startShake);
+				},
+			});
+
+			form.addEventListener("submit", () => {
+				dirtyForm.disconnect();
+				let submitButtons = form.querySelectorAll('[type="submit"]');
+				if (!submitButtons.length && form.id) {
+					submitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
+				}
+				submitButtons.forEach(stopShake);
+			});
 		});
+
+		function startShake(button) {
+			if (button.dataset.shaking === "true") return;
+			button.dataset.shaking = "true";
+			function loop() {
+				if (button.dataset.shaking !== "true") return;
+				button.style.animation = 'pulse 0.9s';
+				setTimeout(() => {
+					button.style.animation = '';
+					setTimeout(loop, 5000);
+				}, 900);
+			}
+			loop();
+		}
+
+		function stopShake(button) {
+			button.dataset.shaking = "false";
+			button.style.animation = '';
+		}
 	};
 
 	const createFieldsWithErrors = () => {
 		document.querySelectorAll("form").forEach((form) => {
-			var submitButtons = form.querySelectorAll('[type="submit"]');
+			let submitButtons = form.querySelectorAll('[type="submit"]');
 			if (!submitButtons.length && form.id) {
 				submitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
 			}
@@ -190,7 +222,7 @@ const App = (() => {
 		document.querySelectorAll('[data-action="zoom"]').forEach((link) => {
 			link.addEventListener("click", (e) => {
 				e.preventDefault();
-				var img = '<img width="1400" height="900" src="' + link.getAttribute("href") + '">';
+				const img = '<img width="1400" height="900" src="' + link.getAttribute("href") + '">';
 				basicLightbox.create(img).show();
 			});
 		});
@@ -215,7 +247,7 @@ const App = (() => {
 				() => {
 					// this timeout is needed to include the disabled button into the submitted form
 					setTimeout(() => {
-						var submitButtons = form.querySelectorAll('[type="submit"]');
+						let submitButtons = form.querySelectorAll('[type="submit"]');
 						if (!submitButtons.length && form.id) {
 							submitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
 						}
