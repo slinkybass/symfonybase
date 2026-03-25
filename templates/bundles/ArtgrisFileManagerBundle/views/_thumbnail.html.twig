@@ -1,8 +1,8 @@
 {% set isModal = fileManager.module == "1" %}
-{% set showTree = app.user and has_permission('media-tree') %}
-{% set canUpload = not isModal and app.user and has_permission('media-upload') %}
-{% set canEdit = not isModal and app.user and has_permission('media-edit') %}
-{% set canCreateFolders = not isModal and app.user and has_permission('media-folders') %}
+{% set showTree = app.user and has_permission('media_tree') %}
+{% set canUpload = not isModal and app.user and has_permission('media_upload') %}
+{% set canEdit = not isModal and app.user and has_permission('media_edit') %}
+{% set canCreateFolders = not isModal and app.user and has_permission('media_folders') %}
 {% set isRoot = not fileManager.parent or app.request.get('route') == '\\' %}
 
 <div class="row mb-3">
