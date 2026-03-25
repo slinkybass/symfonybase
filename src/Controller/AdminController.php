@@ -8,13 +8,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminController extends AbstractController
 {
-    #[Route('/admin/home', name: 'admin_home')]
+    #[Route('/admin/{_locale}/home', name: 'admin_home')]
     public function home(): Response
     {
         return $this->render('admin/home.html.twig');
     }
 
-    #[Route('/admin/media', name: 'admin_media')]
+    #[Route('/admin/{_locale}/media', name: 'admin_media')]
     public function admin_media(): Response
     {
         return $this->render('admin/media.html.twig');
