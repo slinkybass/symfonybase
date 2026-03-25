@@ -289,7 +289,7 @@ class AdminCrudController extends AbstractCrudController
         $redirect = parent::edit($context);
         if ($redirect instanceof RedirectResponse) {
             if (!$this->hasPermissionCrud()) {
-                $url = $this->adminUrl()->setRoute('admin_home')->generateUrl();
+                $url = $this->adminUrl()->setRoute('admin')->generateUrl();
                 return $this->redirect($url);
             }
         }

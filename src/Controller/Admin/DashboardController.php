@@ -43,8 +43,7 @@ class DashboardController extends AbstractDashboardController
 
     public function index(): Response
     {
-        $url = $this->adminUrl->setRoute('admin_home')->generateUrl();
-        return $this->redirect($url);
+        return $this->render('admin/home.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -104,7 +103,7 @@ class DashboardController extends AbstractDashboardController
         $session = $this->container->get('request_stack')->getSession();
         $configSession = $session->get('config');
 
-        yield MenuItem::linkToRoute($this->translator->trans('admin.home.title'), 'home', 'admin_home');
+        yield MenuItem::linkToRoute($this->translator->trans('admin.home.title'), 'home', 'admin');
 
         $userItems = [];
         if ($configSession->enablePublic && $this->rolePermissions->userHasPermissionCrud($user, 'user')) {

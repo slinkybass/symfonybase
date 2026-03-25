@@ -2,20 +2,14 @@
 
 namespace App\Controller;
 
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminController extends AbstractController
 {
-    #[Route('/admin/{_locale}/home', name: 'admin_home')]
-    public function home(): Response
-    {
-        return $this->render('admin/home.html.twig');
-    }
-
-    #[Route('/admin/{_locale}/media', name: 'admin_media')]
-    public function admin_media(): Response
+    #[AdminRoute("/media", name: "media")]
+    public function media(): Response
     {
         return $this->render('admin/media.html.twig');
     }
