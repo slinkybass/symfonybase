@@ -6,37 +6,44 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-/**
- * Sets the request locale based on the session or the `_locale` parameter.
- */
 class LocaleSubscriber implements EventSubscriberInterface
 {
-    private string $defaultLocale;
-    private string $locales;
+    /** @var string[] */
+    private array $locales;
 
-    public function __construct(string $defaultLocale, string $locales)
-    {
-        $this->defaultLocale = $defaultLocale;
-        $this->locales = $locales;
+    public function __construct(
+        private string $defaultLocale,
+        string $locales,
+    ) {
+        $this->locales = explode('|', $locales);
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$request->hasPreviousSession()) {
+        if (!$request->hasSession()) {
             return;
         }
-        $localesStr = explode('|', $this->locales);
-        if ($request->get('_locale') && in_array($request->get('_locale'), $localesStr)) {
-            $request->getSession()->set('_locale', $request->get('_locale'));
+
+        $session = $request->getSession();
+        $requestLocale = $request->query->get('_locale');
+
+        if ($requestLocale && in_array($requestLocale, $this->locales, true)) {
+            $session->set('_locale', $requestLocale);
         }
-        $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
+
+        $locale = $session->get('_locale', $this->defaultLocale);
+        if (!in_array($locale, $this->locales, true)) {
+            $locale = $this->defaultLocale;
+        }
+
+        $request->setLocale($locale);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => [['onKernelRequest', 20]],
+            KernelEvents::REQUEST => ['onKernelRequest', 20],
         ];
     }
 }
