@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Entity\Config;
+use App\Repository\ConfigRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -66,9 +67,11 @@ class ConfigSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $config = $this->buildDefaultConfig();
+        /** @var ConfigRepository $configRepo */
+        $configRepo = $this->em->getRepository(Config::class);
+        $dbConfig = $configRepo->get();
 
-        $dbConfig = $this->em->getRepository(Config::class)->get();
+        $config = $this->buildDefaultConfig();
 
         if ($dbConfig) {
             $config->appName = $dbConfig->getAppName() ?? $config->appName;
