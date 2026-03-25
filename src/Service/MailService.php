@@ -3,41 +3,52 @@
 namespace App\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
+/**
+ * Handles outgoing email delivery for the application.
+ *
+ * Reads the sender address and application name from the session config object,
+ * and delegates transport to Symfony Mailer.
+ *
+ * In non-production environments all recipients are replaced by the configured
+ * sender address, so test emails never reach real users.
+ */
 class MailService
 {
-    private Request $request;
-    private ParameterBagInterface $params;
-    private MailerInterface $mailer;
-
-    public function __construct(RequestStack $requestStack, ParameterBagInterface $params, MailerInterface $mailer)
-    {
-        $this->request = $requestStack->getCurrentRequest();
-        $this->params = $params;
-        $this->mailer = $mailer;
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly ParameterBagInterface $params,
+        private readonly MailerInterface $mailer,
+    ) {
     }
 
     /**
-     * Send an email.
+     * Sends an email.
      *
-     * @param string $subject     the subject of the email
-     * @param string $html        the html content of the email
-     * @param ?array $emails      the emails to send
-     * @param ?array $cc          the cc emails to send
-     * @param ?array $cco         the cco emails to send
-     * @param ?array $attachments attachments to send
+     * @param string   $subject     the email subject
+     * @param string   $html        the HTML body
+     * @param string[] $emails      primary recipients
+     * @param string[] $cc          CC recipients
+     * @param string[] $bcc         BCC recipients
+     * @param string[] $attachments absolute file paths to attach
      *
-     * @return bool returns true if the email was sent
+     * @return bool true if the email was accepted by the transport, false otherwise
      */
-    public function sendEmail(string $subject, string $html, ?array $emails = [], ?array $cc = [], ?array $cco = [], ?array $attachments = [])
-    {
-        $config = $this->request->getSession()->get('config');
+    public function sendEmail(
+        string $subject,
+        string $html,
+        array $emails = [],
+        array $cc = [],
+        array $bcc = [],
+        array $attachments = [],
+    ): bool {
+        $config = $this->requestStack->getCurrentRequest()?->getSession()->get('config');
+
         $addressFrom = new Address($config->senderEmail, $config->appName);
 
         $email = (new Email())
@@ -45,31 +56,30 @@ class MailService
             ->subject($subject)
             ->html($html);
 
-        if ($this->params->get('kernel.environment') == "prod") {
-            foreach ($emails as $emailAccount) {
-                $email = $email->addTo($emailAccount);
+        if ($this->params->get('kernel.environment') === 'prod') {
+            foreach ($emails as $recipient) {
+                $email->addTo($recipient);
             }
-            foreach ($cc as $emailAccount) {
-                $email = $email->addCc($emailAccount);
+            foreach ($cc as $recipient) {
+                $email->addCc($recipient);
             }
-            foreach ($cco as $emailAccount) {
-                $email = $email->addBcc($emailAccount);
+            foreach ($bcc as $recipient) {
+                $email->addBcc($recipient);
             }
         } else {
-            $email = $email->to($config->senderEmail);
-        }
-        foreach ($attachments as $attachment) {
-            $email = $email->attachFromPath($attachment);
+            $email->to($config->senderEmail);
         }
 
-        $emailSended = null;
+        foreach ($attachments as $path) {
+            $email->attachFromPath($path);
+        }
+
         try {
             $this->mailer->send($email);
-            $emailSended = true;
-        } catch (TransportExceptionInterface $e) {
-            $emailSended = false;
-        }
 
-        return $emailSended;
+            return true;
+        } catch (TransportExceptionInterface) {
+            return false;
+        }
     }
 }
