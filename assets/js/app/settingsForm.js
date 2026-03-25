@@ -21,7 +21,7 @@
 		}
 
 		function updateColor() {
-			var hexColor = configAppColor.value ? configAppColor.value : "#7952B3";
+			var hexColor = configAppColor.value ? configAppColor.value : "#22a6b3";
 			var rgbColor = hexToRgb(hexColor);
 			if (rgbColor) {
 				const body = document.querySelector("body");

@@ -10,58 +10,85 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Loads application configuration from the database (or defaults)
- * and stores it in the user session on every request.
+ * Loads application configuration on every main request and stores it in the session.
+ *
+ * Default values are defined inline and overridden by any Config entity found in the
+ * database. The resulting config object is stored under the 'config' session key and
+ * consumed by other services (e.g. MailService) and templates throughout the request.
+ *
+ * Only the master request is processed; internal sub-requests are ignored to avoid
+ * redundant database queries and unintended session writes.
  */
 class ConfigSubscriber implements EventSubscriberInterface
 {
-    private EntityManagerInterface $em;
-    private \stdClass $config;
-
-    public function __construct(EntityManagerInterface $em, AssetMapperInterface $assetMapper)
-    {
-        $this->em = $em;
-
-        $this->config = new \stdClass();
-        $this->config->appName = 'Symfony Base';
-        $this->config->appColor = '#7952B3';
-        $this->config->appLogo = $assetMapper->getPublicPath('images/logo.png');
-        $this->config->appFavicon = $assetMapper->getPublicPath('images/favicon.png');
-        $this->config->appDescription = 'Created with Symfony';
-        $this->config->appKeywords = 'symfony, application';
-        $this->config->appTimezone = 'Europe/Madrid';
-        $this->config->enablePublic = false;
-        $this->config->enableResetPassword = false;
-        $this->config->enableRegister = false;
-        $this->config->roleDefaultRegister = null;
-        $this->config->enableCookies = false;
-        $this->config->senderEmail = 'israel@garaballu.com';
-        $this->config->privacyText = null;
-        $this->config->cookiesText = null;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly AssetMapperInterface $assetMapper,
+    ) {
     }
 
+    /**
+     * Builds a config object populated with application defaults.
+     *
+     * @return \stdClass the default config object
+     */
+    private function buildDefaultConfig(): \stdClass
+    {
+        $config = new \stdClass();
+
+        $config->appName = 'Symfony Base';
+        $config->appColor = '#22a6b3';
+        $config->appLogo = $this->assetMapper->getPublicPath('images/logo.png');
+        $config->appFavicon = $this->assetMapper->getPublicPath('images/favicon.png');
+        $config->appDescription = 'Created with Symfony';
+        $config->appKeywords = 'symfony, application';
+        $config->appTimezone = 'Europe/Madrid';
+        $config->enablePublic = false;
+        $config->enableResetPassword = false;
+        $config->enableRegister = false;
+        $config->roleDefaultRegister = null;
+        $config->enableCookies = false;
+        $config->senderEmail = 'israel@garaballu.com';
+        $config->privacyText = null;
+        $config->cookiesText = null;
+
+        return $config;
+    }
+
+    /**
+     * Builds the config object and stores it in the session.
+     *
+     * @param RequestEvent $event the kernel request event
+     */
     public function onKernelRequest(RequestEvent $event): void
     {
-        $request = $event->getRequest();
-        $dcConfig = $this->em->getRepository(Config::class)->get();
-        if ($dcConfig) {
-            $this->config->appName = $dcConfig->getAppName() ?? $this->config->appName;
-            $this->config->appColor = $dcConfig->getAppColor() ?? $this->config->appColor;
-            $this->config->appLogo = $dcConfig->getAppLogo() ?? $this->config->appLogo;
-            $this->config->appFavicon = $dcConfig->getAppFavicon() ?? $this->config->appFavicon;
-            $this->config->appDescription = $dcConfig->getAppDescription() ?? $this->config->appDescription;
-            $this->config->appKeywords = $dcConfig->getAppKeywords() ?? $this->config->appKeywords;
-            $this->config->appTimezone = $dcConfig->getAppTimezone() ?? $this->config->appTimezone;
-            $this->config->enablePublic = $dcConfig->isEnablePublic() ?? $this->config->enablePublic;
-            $this->config->enableResetPassword = $dcConfig->isEnableResetPassword() ?? $this->config->enableResetPassword;
-            $this->config->enableRegister = $dcConfig->isEnableRegister() ?? $this->config->enableRegister;
-            $this->config->roleDefaultRegister = $dcConfig->getRoleDefaultRegister() ?? $this->config->roleDefaultRegister;
-            $this->config->enableCookies = $dcConfig->isEnableCookies() ?? $this->config->enableCookies;
-            $this->config->senderEmail = $dcConfig->getSenderEmail() ?? $this->config->senderEmail;
-            $this->config->privacyText = $dcConfig->getPrivacyText() ?? $this->config->privacyText;
-            $this->config->cookiesText = $dcConfig->getCookiesText() ?? $this->config->cookiesText;
+        if (!$event->isMainRequest()) {
+            return;
         }
-        $request->getSession()->set('config', $this->config);
+
+        $config = $this->buildDefaultConfig();
+
+        $dbConfig = $this->em->getRepository(Config::class)->get();
+
+        if ($dbConfig) {
+            $config->appName = $dbConfig->getAppName() ?? $config->appName;
+            $config->appColor = $dbConfig->getAppColor() ?? $config->appColor;
+            $config->appLogo = $dbConfig->getAppLogo() ?? $config->appLogo;
+            $config->appFavicon = $dbConfig->getAppFavicon() ?? $config->appFavicon;
+            $config->appDescription = $dbConfig->getAppDescription() ?? $config->appDescription;
+            $config->appKeywords = $dbConfig->getAppKeywords() ?? $config->appKeywords;
+            $config->appTimezone = $dbConfig->getAppTimezone() ?? $config->appTimezone;
+            $config->enablePublic = $dbConfig->isEnablePublic() ?? $config->enablePublic;
+            $config->enableResetPassword = $dbConfig->isEnableResetPassword() ?? $config->enableResetPassword;
+            $config->enableRegister = $dbConfig->isEnableRegister() ?? $config->enableRegister;
+            $config->roleDefaultRegister = $dbConfig->getRoleDefaultRegister() ?? $config->roleDefaultRegister;
+            $config->enableCookies = $dbConfig->isEnableCookies() ?? $config->enableCookies;
+            $config->senderEmail = $dbConfig->getSenderEmail() ?? $config->senderEmail;
+            $config->privacyText = $dbConfig->getPrivacyText() ?? $config->privacyText;
+            $config->cookiesText = $dbConfig->getCookiesText() ?? $config->cookiesText;
+        }
+
+        $event->getRequest()->getSession()->set('config', $config);
     }
 
     public static function getSubscribedEvents(): array
