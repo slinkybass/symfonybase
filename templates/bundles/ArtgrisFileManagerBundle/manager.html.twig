@@ -3,9 +3,6 @@
 
 {% set isModal = fileManager.module == "1" %}
 {% set showTree = app.user and has_permission('media_tree') %}
-<pre>
-    {{ dump(showTree) }}
-</pre>
 {% set canUpload = app.user and has_permission('media_upload') %}
 {% set canEdit = not isModal and app.user and has_permission('media_edit') %}
 {% set canCreateFolders = not isModal and app.user and has_permission('media_folders') %}
