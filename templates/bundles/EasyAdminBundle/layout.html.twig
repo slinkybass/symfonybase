@@ -102,7 +102,8 @@
                                         <div class="dropdown-menu">
                                         {% for localeDto in ea.dashboardLocales %}
                                             {% if ea.usePrettyUrls %}
-                                                {% set url = ea_url().set('_locale', localeDto.locale).set('entityId', app.request.attributes.get('entityId')) %}
+                                                {% set current_route_params = app.request.attributes.get('_route_params') %}
+                                                {% set url = ea_url(current_route_params).set('_locale', localeDto.locale).set('entityId', app.request.attributes.get('entityId')) %}
                                             {% else %}
                                                 {% set url = ea_url().set('_locale', localeDto.locale) %}
                                             {% endif %}

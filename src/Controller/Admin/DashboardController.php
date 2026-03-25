@@ -25,7 +25,7 @@ use Symfony\Component\Intl\Locales;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
+#[AdminDashboard(routePath: '/admin/{_locale}', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
     private EntityManagerInterface $em;
