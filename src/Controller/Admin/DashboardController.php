@@ -124,7 +124,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::subMenu($this->translator->trans('entities.user.plural'), 'users')->setSubItems($userItems);
         }
 
-        if ($this->rolePermissions->userHasPermissionCrud($user, 'media')) {
+        if ($this->rolePermissions->userHasPermission($user, 'media')) {
             yield MenuItem::linkToRoute($this->translator->trans('entities.media.plural'), 'file', 'admin_media');
         }
 
