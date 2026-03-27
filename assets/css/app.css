@@ -104,6 +104,7 @@ textarea.no-resize {
 /* Mark.js fixes */
 [data-markjs] {
 	padding: 0;
+	display: contents;
 }
 
 /* UX-Media */
