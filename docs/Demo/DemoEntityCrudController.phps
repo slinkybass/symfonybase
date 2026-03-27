@@ -42,7 +42,7 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $basicFieldsTab = FieldGenerator::tab('Basic');
 
-        $idPanel = FieldGenerator::panel('ID')->setIcon('input-search');
+        $idPanel = FieldGenerator::panel('ID')->setIcon('input-search')->setHelp("This field is not editable");
         $id = FieldGenerator::id('id')
             ->setLabel('Default')
             ->setDisabled()
