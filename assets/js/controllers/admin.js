@@ -31,27 +31,21 @@ const Admin = (() => {
 		const tokenizeString = (string) => {
 			const regex = /"([^"\\]*(\\.[^"\\]*)*)"|\S+/g;
 			const tokens = [];
-			let match;
 
-			while (null !== (match = regex.exec(string))) {
+			let match = regex.exec(string);
+			while (null !== match) {
 				tokens.push(match[0].replaceAll('"', "").trim());
+				match = regex.exec(string);
 			}
 
 			return tokens;
 		};
 
 		const searchQueryTerms = tokenizeString(searchElement.value);
-		const searchQueryTermsHighlightRegexp = new RegExp(
-			searchQueryTerms
-				// escapes all characters that are special inside a RegExp
-				.map((term) => term.replace(/[|\\{}()[\]^$+*?.-]/g, "\\$&"))
-				.join("|"),
-			"i"
-		);
 
 		const elementsToHighlight = document.querySelectorAll("table tbody td.searchable");
 		const highlighter = new Mark(elementsToHighlight);
-		highlighter.markRegExp(searchQueryTermsHighlightRegexp);
+		highlighter.mark(searchQueryTerms, { separateWordSearch: false });
 	};
 
 	const createFilters = () => {
@@ -77,6 +71,7 @@ const Admin = (() => {
 				})
 				.then((text) => {
 					filterModalBody.innerHTML = text;
+					App.createAutoCompleteFields();
 					Admin.createFilterToggles();
 				})
 				.catch((error) => {
@@ -110,6 +105,274 @@ const Admin = (() => {
 			});
 			filterModal.querySelector("form").submit();
 		});
+	};
+
+	const createBatchActions = () => {
+		let lastUpdatedRowCheckbox = null;
+		const selectAllCheckbox = document.querySelector(".form-batch-checkbox-all");
+		if (null === selectAllCheckbox) {
+			return;
+		}
+
+		const rowCheckboxes = document.querySelectorAll('input[type="checkbox"].form-batch-checkbox');
+		selectAllCheckbox.addEventListener("change", () => {
+			rowCheckboxes.forEach((rowCheckbox) => {
+				rowCheckbox.checked = selectAllCheckbox.checked;
+				rowCheckbox.dispatchEvent(new Event("change"));
+			});
+		});
+
+		const deselectAllButton = document.querySelector(".deselect-batch-button");
+		if (null !== deselectAllButton) {
+			deselectAllButton.addEventListener("click", () => {
+				selectAllCheckbox.checked = false;
+				selectAllCheckbox.dispatchEvent(new Event("change"));
+			});
+		}
+
+		rowCheckboxes.forEach((rowCheckbox, rowCheckboxIndex) => {
+			rowCheckbox.dataset.rowIndex = rowCheckboxIndex;
+
+			rowCheckbox.addEventListener("click", (e) => {
+				if (lastUpdatedRowCheckbox && e.shiftKey) {
+					const lastIndex = Number.parseInt(lastUpdatedRowCheckbox.dataset.rowIndex);
+					const currentIndex = Number.parseInt(e.target.dataset.rowIndex);
+					const valueToApply = e.target.checked;
+					const lowest = Math.min(lastIndex, currentIndex);
+					const highest = Math.max(lastIndex, currentIndex);
+
+					rowCheckboxes.forEach((rowCheckbox2, rowCheckboxIndex2) => {
+						if (lowest <= rowCheckboxIndex2 && rowCheckboxIndex2 <= highest) {
+							rowCheckbox2.checked = valueToApply;
+							rowCheckbox2.dispatchEvent(new Event("change"));
+						}
+					});
+				}
+				lastUpdatedRowCheckbox = e.target;
+			});
+
+			rowCheckbox.addEventListener("change", () => {
+				const selectedRowCheckboxes = document.querySelectorAll('input[type="checkbox"].form-batch-checkbox:checked');
+				const row = rowCheckbox.closest("tr");
+				const content = rowCheckbox.closest('.page-wrapper');
+
+				if (rowCheckbox.checked) {
+					row.classList.add("selected-row");
+				} else {
+					row.classList.remove("selected-row");
+					selectAllCheckbox.checked = false;
+				}
+
+				const rowsAreSelected = 0 !== selectedRowCheckboxes.length;
+				const contentTitle = document.querySelector(".content-header-title > .title");
+				const filters = content.querySelector(".datagrid-filters");
+				const globalActions = content.querySelector(".global-actions");
+				const batchActions = content.querySelector(".batch-actions");
+
+				if (null !== contentTitle) {
+					Admin.toggleVisibilityClasses(contentTitle, rowsAreSelected);
+				}
+				if (null !== filters) {
+					Admin.toggleVisibilityClasses(filters, rowsAreSelected);
+				}
+				if (null !== globalActions) {
+					Admin.toggleVisibilityClasses(globalActions, rowsAreSelected);
+				}
+				if (null !== batchActions) {
+					Admin.toggleVisibilityClasses(batchActions, !rowsAreSelected);
+				}
+			});
+		});
+
+		const modalTitle = document.querySelector("#batch-action-confirmation-title");
+		const titleContentWithPlaceholders = modalTitle?.textContent;
+
+		document.querySelectorAll("[data-action-batch]").forEach((dataActionBatch) => {
+			dataActionBatch.addEventListener("click", (event) => {
+				event.preventDefault();
+
+				const actionElement = event.currentTarget;
+				const selectedItems = document.querySelectorAll('input[type="checkbox"].form-batch-checkbox:checked');
+
+				const submitBatchAction = () => {
+					// prevent double submission of the batch action form
+					actionElement.setAttribute("disabled", "disabled");
+
+					const batchFormFields = {
+						batchActionName: actionElement.getAttribute("data-action-name"),
+						entityFqcn: actionElement.getAttribute("data-entity-fqcn"),
+						batchActionUrl: actionElement.getAttribute("data-action-url"),
+						batchActionCsrfToken: actionElement.getAttribute("data-action-csrf-token"),
+					};
+					selectedItems.forEach((item, i) => {
+						batchFormFields[`batchActionEntityIds[${i}]`] = item.value;
+					});
+
+					const batchForm = document.createElement("form");
+					batchForm.setAttribute("method", "POST");
+					batchForm.setAttribute("action", actionElement.getAttribute("data-action-url"));
+					for (const fieldName in batchFormFields) {
+						const formField = document.createElement("input");
+						formField.setAttribute("type", "hidden");
+						formField.setAttribute("name", fieldName);
+						formField.setAttribute("value", batchFormFields[fieldName]);
+						batchForm.appendChild(formField);
+					}
+
+					document.body.appendChild(batchForm);
+					batchForm.submit();
+				};
+
+				// check if this batch action should skip confirmation
+				if (actionElement.hasAttribute("data-action-batch-no-confirm")) {
+					submitBatchAction();
+				} else {
+					// show confirmation modal
+					const actionName = actionElement.textContent.trim() || actionElement.getAttribute("title");
+
+					// use custom message if provided, otherwise use default modal title
+					const customMessage = actionElement.getAttribute("data-batch-action-confirm-message");
+					const messageTemplate = customMessage ?? titleContentWithPlaceholders;
+
+					modalTitle.textContent = messageTemplate
+						.replace("%action_name%", actionName)
+						.replace("%num_items%", selectedItems.length.toString());
+
+					document.querySelector("#modal-batch-action-button").addEventListener("click", submitBatchAction);
+				}
+			});
+		});
+	};
+
+	const createActionConfirmationModals = () => {
+		const modalStatus = document.querySelector("#action-confirmation-status");
+		const modalIcon = document.querySelector("#action-confirmation-icon");
+		const modalTitle = document.querySelector("#action-confirmation-title");
+		const modalButton = document.querySelector("#modal-action-confirmation-button");
+		const defaultTitleTemplate = modalTitle?.textContent;
+		const defaultButtonLabel = modalButton?.querySelector(".action-label").textContent;
+		const defaultButtonIcon = modalButton?.querySelector(".icon");
+		const variantToClass = {
+			default: "btn-secondary",
+			primary: "btn-primary",
+			success: "btn-success",
+			warning: "btn-warning",
+			danger: "btn-danger",
+		};
+		const allVariantClasses = Object.values(variantToClass);
+		const variantTxtToClass = {
+			default: "text-secondary",
+			primary: "text-primary",
+			success: "text-success",
+			warning: "text-warning",
+			danger: "text-danger",
+		};
+		const allVariantTxtClasses = Object.values(variantTxtToClass);
+		const variantBgToClass = {
+			default: "bg-secondary",
+			primary: "bg-primary",
+			success: "bg-success",
+			warning: "bg-warning",
+			danger: "bg-danger",
+		};
+		const allVariantBgClasses = Object.values(variantBgToClass);
+
+		document.querySelectorAll('[data-action-confirmation="true"]').forEach((actionElement) => {
+			actionElement.addEventListener("click", (event) => {
+				event.preventDefault();
+
+				const actionName = actionElement.textContent.trim() || actionElement.getAttribute("title");
+				const entityName = actionElement.getAttribute("data-action-entity-name") || "";
+				const entityId = actionElement.getAttribute("data-action-entity-id") || "";
+
+				// use custom message if provided, otherwise use default modal title
+				const customMessage = actionElement.getAttribute("data-action-confirmation-message");
+				const messageTemplate = customMessage ?? defaultTitleTemplate;
+
+				modalTitle.textContent = messageTemplate
+					.replace("%action_name%", actionName)
+					.replace("%entity_name%", entityName)
+					.replace("%entity_id%", entityId);
+
+				// use custom button label if provided, otherwise use default
+				const customButtonLabel = actionElement.getAttribute("data-action-confirmation-button") ?? actionName;
+				modalButton.querySelector(".action-label").textContent = customButtonLabel ?? defaultButtonLabel;
+
+				// use custom button icon if provided, otherwise use default
+				const customButtonIcon = actionElement.querySelector(".icon")?.cloneNode(true);
+				customButtonIcon?.classList.remove(...allVariantTxtClasses, "dropdown-item-icon");
+				modalButton.querySelector(".icon").replaceWith(customButtonIcon || defaultButtonIcon);
+
+				// apply to the modal button the same variant as the action that opened the modal
+				const variant = actionElement.getAttribute("data-action-variant") || "danger";
+				modalButton.classList.remove(...allVariantClasses);
+				modalButton.classList.add(variantToClass[variant] || "btn-danger");
+
+				// apply to the modal icon and status message the same variant as the action that opened the modal
+				modalStatus.classList.remove(...allVariantBgClasses);
+				modalStatus.classList.add(variantBgToClass[variant] || "bg-danger");
+				modalIcon.classList.remove(...allVariantTxtClasses);
+				modalIcon.classList.add(variantTxtToClass[variant] || "text");
+
+				modalButton.addEventListener("click", () => {
+					// Case 1: POST action with formaction (like DELETE with CSRF token)
+					const formAction = actionElement.getAttribute("formaction");
+					if (formAction) {
+						const form = document.querySelector("#action-confirmation-form");
+						form.setAttribute("action", formAction);
+						form.submit();
+						return;
+					}
+
+					// Case 2: dropdown action rendered as form (data-ea-action-form-id)
+					const actionFormId = actionElement.getAttribute("data-ea-action-form-id");
+					if (actionFormId) {
+						document.getElementById(actionFormId).submit();
+						return;
+					}
+
+					// Case 3: standalone button inside a <form> (renderAsForm)
+					const parentForm = actionElement.closest("form");
+					if (parentForm?.hasAttribute("action")) {
+						parentForm.submit();
+						return;
+					}
+
+					// Case 4: GET action with href
+					const href = actionElement.getAttribute("href");
+					if (href) {
+						window.location.href = href;
+					}
+				}, { once: true });
+			});
+		});
+	}
+
+	const createActionHandlers = () => {
+        // handle form submissions via data attribute (replaces inline onclick handlers)
+        // skip elements with confirmation modals (handled by #createActionConfirmationModals)
+        document.querySelectorAll("[data-ea-action-form-id]").forEach((element) => {
+            element.addEventListener("click", (event) => {
+                if (element.hasAttribute("data-action-confirmation")) {
+                    return;
+                }
+                event.preventDefault();
+                const formId = element.getAttribute("data-ea-action-form-id");
+                document.getElementById(formId).submit();
+            });
+        });
+
+        // handle navigation via data attribute (replaces inline onclick handlers)
+        // skip elements with confirmation modals (handled by #createActionConfirmationModals)
+        document.querySelectorAll("[data-ea-action-url]").forEach((element) => {
+            element.addEventListener("click", (event) => {
+                if (element.hasAttribute("data-action-confirmation")) {
+                    return;
+                }
+                event.preventDefault();
+                window.location = element.getAttribute("data-ea-action-url");
+            });
+        });
 	};
 
 	const createFilterToggles = () => {
@@ -154,140 +417,6 @@ const Admin = (() => {
 		});
 	};
 
-	const createBatchActions = () => {
-		let lastUpdatedRowCheckbox = null;
-		const selectAllCheckbox = document.querySelector(".form-batch-checkbox-all");
-		if (null === selectAllCheckbox) {
-			return;
-		}
-
-		const rowCheckboxes = document.querySelectorAll('input[type="checkbox"].form-batch-checkbox');
-		selectAllCheckbox.addEventListener("change", () => {
-			rowCheckboxes.forEach((rowCheckbox) => {
-				rowCheckbox.checked = selectAllCheckbox.checked;
-				rowCheckbox.dispatchEvent(new Event("change"));
-			});
-		});
-
-		const deselectAllButton = document.querySelector(".deselect-batch-button");
-		if (null !== deselectAllButton) {
-			deselectAllButton.addEventListener("click", () => {
-				selectAllCheckbox.checked = false;
-				selectAllCheckbox.dispatchEvent(new Event("change"));
-			});
-		}
-
-		rowCheckboxes.forEach((rowCheckbox, rowCheckboxIndex) => {
-			rowCheckbox.dataset.rowIndex = rowCheckboxIndex;
-
-			rowCheckbox.addEventListener("click", (e) => {
-				if (lastUpdatedRowCheckbox && e.shiftKey) {
-					const lastIndex = parseInt(lastUpdatedRowCheckbox.dataset.rowIndex);
-					const currentIndex = parseInt(e.target.dataset.rowIndex);
-					const valueToApply = e.target.checked;
-					const lowest = Math.min(lastIndex, currentIndex);
-					const highest = Math.max(lastIndex, currentIndex);
-
-					rowCheckboxes.forEach((rowCheckbox2, rowCheckboxIndex2) => {
-						if (lowest <= rowCheckboxIndex2 && rowCheckboxIndex2 <= highest) {
-							rowCheckbox2.checked = valueToApply;
-							rowCheckbox2.dispatchEvent(new Event("change"));
-						}
-					});
-				}
-				lastUpdatedRowCheckbox = e.target;
-			});
-
-			rowCheckbox.addEventListener("change", () => {
-				const selectedRowCheckboxes = document.querySelectorAll('input[type="checkbox"].form-batch-checkbox:checked');
-				const row = rowCheckbox.closest("tr");
-
-				if (rowCheckbox.checked) {
-					row.classList.add("selected-row");
-				} else {
-					row.classList.remove("selected-row");
-					selectAllCheckbox.checked = false;
-				}
-
-				const rowsAreSelected = 0 !== selectedRowCheckboxes.length;
-				const contentTitle = document.querySelector(".content-header-title > .title");
-				const filters = document.querySelector(".datagrid-filters");
-				const globalActions = document.querySelector(".global-actions");
-				const batchActions = document.querySelector(".batch-actions");
-
-				if (null !== contentTitle) {
-					Admin.toggleVisibilityClasses(contentTitle, rowsAreSelected);
-				}
-				if (null !== filters) {
-					Admin.toggleVisibilityClasses(filters, rowsAreSelected);
-				}
-				if (null !== globalActions) {
-					Admin.toggleVisibilityClasses(globalActions, rowsAreSelected);
-				}
-				if (null !== batchActions) {
-					Admin.toggleVisibilityClasses(batchActions, !rowsAreSelected);
-				}
-			});
-		});
-
-		const modalTitle = document.querySelector("#batch-action-confirmation-title");
-		const titleContentWithPlaceholders = modalTitle.textContent;
-
-		document.querySelectorAll("[data-action-batch]").forEach((dataActionBatch) => {
-			dataActionBatch.addEventListener("click", (event) => {
-				event.preventDefault();
-
-				const actionElement = event.currentTarget;
-				const actionName = actionElement.textContent.trim() || actionElement.getAttribute("title");
-				const selectedItems = document.querySelectorAll('input[type="checkbox"].form-batch-checkbox:checked');
-				modalTitle.textContent = titleContentWithPlaceholders.replace("%action_name%", actionName).replace("%num_items%", selectedItems.length.toString());
-
-				document.querySelector("#modal-batch-action-button").addEventListener("click", () => {
-					// prevent double submission of the batch action form
-					actionElement.setAttribute("disabled", "disabled");
-
-					const batchFormFields = {
-						batchActionName: actionElement.getAttribute("data-action-name"),
-						entityFqcn: actionElement.getAttribute("data-entity-fqcn"),
-						batchActionUrl: actionElement.getAttribute("data-action-url"),
-						batchActionCsrfToken: actionElement.getAttribute("data-action-csrf-token"),
-					};
-					selectedItems.forEach((item, i) => {
-						batchFormFields[`batchActionEntityIds[${i}]`] = item.value;
-					});
-
-					const batchForm = document.createElement("form");
-					batchForm.setAttribute("method", "POST");
-					batchForm.setAttribute("action", actionElement.getAttribute("data-action-url"));
-					for (let fieldName in batchFormFields) {
-						const formField = document.createElement("input");
-						formField.setAttribute("type", "hidden");
-						formField.setAttribute("name", fieldName);
-						formField.setAttribute("value", batchFormFields[fieldName]);
-						batchForm.appendChild(formField);
-					}
-
-					document.body.appendChild(batchForm);
-					batchForm.submit();
-				});
-			});
-		});
-	};
-
-	const createModalWindowsForDeleteActions = () => {
-		document.querySelectorAll(".action-delete").forEach((actionElement) => {
-			actionElement.addEventListener("click", (event) => {
-				event.preventDefault();
-				document.querySelector("#modal-delete-button").addEventListener("click", () => {
-					const deleteFormAction = actionElement.getAttribute("formaction");
-					const deleteForm = document.querySelector("#delete-form");
-					deleteForm.setAttribute("action", deleteFormAction);
-					deleteForm.submit();
-				});
-			});
-		});
-	};
-
 	const toggleVisibilityClasses = (element, removeVisibility) => {
 		if (removeVisibility) {
 			element.classList.remove("d-block");
@@ -302,9 +431,10 @@ const Admin = (() => {
 		removeHashFormUrl,
 		createSearchHighlight,
 		createFilters,
-		createFilterToggles,
 		createBatchActions,
-		createModalWindowsForDeleteActions,
+		createActionConfirmationModals,
+		createActionHandlers,
+		createFilterToggles,
 		toggleVisibilityClasses,
 	};
 })();
