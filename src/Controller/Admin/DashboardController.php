@@ -80,6 +80,7 @@ class DashboardController extends AbstractDashboardController
         $crud = Crud::new();
 
         $crud->setTimezone($configSession->appTimezone);
+        $crud->setDefaultRowAction(null);
 
         return $crud;
     }

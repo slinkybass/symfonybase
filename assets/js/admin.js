@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	Admin.createFilters();
 	Admin.createBatchActions();
 	Admin.createActionConfirmationModals();
+	Admin.createDefaultRowAction();
 	Admin.createActionHandlers();
 });
 

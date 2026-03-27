@@ -138,7 +138,7 @@
                                     {% set next_sort_direction = is_sorting_field ? (ea.search.sortDirection(field.property) == ea_sort_desc ? ea_sort_asc : ea_sort_desc) : ea_sort_desc %}
                                     {% set column_icon = is_sorting_field ? (next_sort_direction == ea_sort_desc ? 'chevron-up' : 'chevron-down') : 'selector' %}
 
-                                    <th data-column="{{ field.property }}" class="{{ is_searchable ? 'searchable' }} {{ is_sorting_field ? 'sorted' }} {{ field.isVirtual ? 'field-virtual' }} header-for-{{ field.cssClass|split(' ')|filter(class => class starts with 'field-')|join('') }} text-{{ field.textAlign }}" dir="{{ ea.i18n.textDirection }}">
+                                    <th data-column="{{ field.property }}" class="{{ field.cssClass }} {{ is_searchable ? 'searchable' }} {{ is_sorting_field ? 'sorted' }} {{ field.isVirtual ? 'field-virtual' }} header-for-{{ field.cssClass|split(' ')|filter(class => class starts with 'field-')|join('') }} text-{{ field.textAlign }}" dir="{{ ea.i18n.textDirection }}">
                                         {% if field.isSortable %}
                                             {% set sortable_url = ea_url().set('page', 1).set('sort', {(field.property): next_sort_direction}) %}
                                             {% if ea.usePrettyUrls %}
@@ -163,8 +163,9 @@
                     <tbody>
                         {% block table_body %}
                             {% for entity in entities %}
+                                {% block table_body_row %}
                                 {% if entity.isAccessible %}
-                                    <tr data-id="{{ entity.primaryKeyValueAsString }}" {% block entity_row_attributes %}{% endblock %}>
+                                    <tr data-id="{{ entity.primaryKeyValueAsString }}" {% if entity.defaultActionUrl %}data-default-action-url="{{ entity.defaultActionUrl }}" class="ea-clickable-row" role="link" tabindex="0"{% endif %} {% block entity_row_attributes %}{% endblock %}>
                                         {% if has_batch_actions %}
                                             <td class="batch-actions-selector">
                                                 <input type="checkbox" class="form-check-input form-batch-checkbox" id="form-batch-checkbox-{{ loop.index0 }}" value="{{ entity.primaryKeyValue }}">
@@ -197,10 +198,28 @@
                                                                             showBlankIcons="{{ hasAnyActionWithIcon }}"
                                                                             entity="{{ entity }}" />
                                                                     {% else %}
+                                                                        {# add confirmation-related attributes if needed #}
+                                                                        {% set item_html_attributes = item.htmlAttributes %}
+                                                                        {% if item.displayableConfirmationMessage is not null %}
+                                                                            {% set item_html_attributes = item_html_attributes|merge({
+                                                                                'data-action-confirmation-message': item.displayableConfirmationMessage|trans,
+                                                                            }) %}
+                                                                        {% endif %}
+                                                                        {% if item.hasConfirmation %}
+                                                                            {% set item_html_attributes = item_html_attributes|merge({
+                                                                                'data-action-entity-name': ea.crud.entityLabelInSingular|default('')|trans,
+                                                                                'data-action-entity-id': entity.primaryKeyValueAsString|default(''),
+                                                                            }) %}
+                                                                            {% if item.confirmationButtonLabel is not null %}
+                                                                                {% set item_html_attributes = item_html_attributes|merge({
+                                                                                    'data-action-confirmation-button': item.confirmationButtonLabel|trans,
+                                                                                }) %}
+                                                                            {% endif %}
+                                                                        {% endif %}
                                                                         <twig:ea:ActionMenu:ActionList:Item
                                                                             class="{{ item.cssClass }} text-{{ item.variant.value }}" url="{{ item.linkUrl }}"
                                                                             icon="{{ item.icon }}" icon:class="dropdown-item-icon text-{{ item.variant.value }}"
-                                                                            htmlAttributes="{{ item.htmlAttributes }}"
+                                                                            htmlAttributes="{{ item_html_attributes }}"
                                                                             renderAsForm="{{ item.isRenderedAsForm }}"
                                                                             label="{{ item.label|trans }}" label:class="action-label" renderLabelRaw
                                                                             showBlankIcons="{{ hasAnyActionWithIcon }}" />
@@ -222,6 +241,7 @@
                                         {% endblock entity_actions %}
                                     </tr>
                                 {% endif %}
+                                {% endblock table_body_row %}
                             {% endfor %}
 
                             {% if some_results_are_hidden %}

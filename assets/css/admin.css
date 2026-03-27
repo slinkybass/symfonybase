@@ -4,3 +4,17 @@ aside {
         max-height: 32px;
     }
 }
+
+/* Clickable rows for default row action */
+.table tr.ea-clickable-row {
+    cursor: pointer;
+}
+.table tr.ea-clickable-row td.actions,
+.table tr.ea-clickable-row td.batch-actions-selector {
+    cursor: default;
+}
+.table tr.ea-clickable-row td.actions a,
+.table tr.ea-clickable-row td.actions button,
+.table tr.ea-clickable-row td.batch-actions-selector .form-check {
+    cursor: pointer;
+}
