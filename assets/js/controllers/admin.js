@@ -131,7 +131,7 @@ const Admin = (() => {
 					return;
 				}
 
-				const filterCheckbox = event.target.closest(".form-check").querySelector(".filter-checkbox");
+				const filterCheckbox = event.target.closest(".filter-field").querySelector(".filter-checkbox");
 				if (!filterCheckbox.checked) {
 					filterCheckbox.checked = true;
 				}

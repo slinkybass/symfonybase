@@ -190,7 +190,7 @@
 
     {% for field in form %}
         <div class="col-12">
-            <div class="form-check px-3 {% if field.vars.name in hidden_filters %}d-none{% endif %}" data-filter-property="{{ field.vars.name }}">
+            <div class="filter-field form-check px-3 {% if field.vars.name in hidden_filters %}d-none{% endif %}" data-filter-property="{{ field.vars.name }}">
                 <div class="filter-heading" id="filter-heading-{{ loop.index }}">
                     <div class="form-switch">
                         <input id="filter-checkbox-{{ loop.index }}" type="checkbox" class="form-check-input filter-checkbox" {% if field.vars.name in applied_filters %}checked{% endif %}>
