@@ -119,7 +119,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $qb
             ->innerJoin('entity.role', 'r')
-            ->where('entity.verified = true')
+            ->andWhere('entity.verified = true')
             ->andWhere('r.name = :roleName')
             ->setParameter('roleName', $roleName);
     }
@@ -163,7 +163,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $qb
             ->leftJoin('entity.role', 'r')
-            ->where('entity.verified = true')
+            ->andWhere('entity.verified = true')
             ->andWhere('r.isAdmin = :isAdmin')
             ->setParameter('isAdmin', $isAdmin);
     }

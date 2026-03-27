@@ -31,7 +31,7 @@ class RoleRepository extends ServiceEntityRepository
     public function get(string $name): ?Role
     {
         return $this->createQueryBuilder('entity')
-            ->where('entity.name = :name')
+            ->andWhere('entity.name = :name')
             ->setParameter('name', $name)
             ->getQuery()->getOneOrNullResult();
     }
@@ -74,7 +74,7 @@ class RoleRepository extends ServiceEntityRepository
     public function getAdminSentence(QueryBuilder $qb, bool $isAdmin = true): QueryBuilder
     {
         return $qb
-            ->where('entity.isAdmin = :isAdmin')
+            ->andWhere('entity.isAdmin = :isAdmin')
             ->setParameter('isAdmin', $isAdmin)
             ->orderBy('entity.displayName', 'ASC');
     }
