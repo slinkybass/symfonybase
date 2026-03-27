@@ -22,10 +22,32 @@ const App = (() => {
 
 		// update the page anchor when the selected tab changes
 		document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((tabElement) => {
-			tabElement.addEventListener("shown.bs.tab", function (event) {
-				const urlHash = "#" + event.target.getAttribute("href").substring(1);
+			tabElement.addEventListener("shown.bs.tab", (event) => {
+				// don't push state when navigating through browser history (back/forward)
+				if (App.isNavigatingHistory) {
+					return;
+				}
+				const urlHash = `#${event.target.getAttribute("href").substring(1)}`;
 				history.pushState({}, "", urlHash);
 			});
+		});
+
+		// handle browser back/forward navigation to restore the correct tab
+		window.addEventListener("popstate", () => {
+			App.isNavigatingHistory = true;
+			const urlHash = window.location.hash;
+			if (urlHash) {
+				const selectedTabPaneId = urlHash.substring(1);
+				const selectedTabId = `tablist-${selectedTabPaneId}`;
+				App.setTabAsActive(selectedTabId);
+			} else {
+				// no hash means show the first tab
+				const firstTab = document.querySelector('a[data-bs-toggle="tab"]');
+				if (firstTab) {
+					App.setTabAsActive(firstTab.id);
+				}
+			}
+			App.isNavigatingHistory = false;
 		});
 	};
 
@@ -248,8 +270,9 @@ const App = (() => {
 					// this timeout is needed to include the disabled button into the submitted form
 					setTimeout(() => {
 						let submitButtons = form.querySelectorAll('[type="submit"]');
-						if (!submitButtons.length && form.id) {
-							submitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
+						if (form.id) {
+							let outerSubmitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
+							submitButtons = [...submitButtons, ...outerSubmitButtons];
 						}
 						submitButtons.forEach((button) => {
 							button.classList.add("btn-loading");
