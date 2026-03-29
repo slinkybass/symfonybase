@@ -245,7 +245,7 @@ class AdminCrudController extends AbstractCrudController
                 ->linkToUrl(function ($entity) {
                     return $this->generateUrl('home', ['_switch_user' => $entity->getEmail()]);
                 })->displayIf(static function ($entity) use ($hasPermissionImpersonate, $rolePermissions, $user) {
-                    return $hasPermissionImpersonate && $entity !== $user && $rolePermissions->isUp($user->getRole(), $entity->getRole());
+                    return $hasPermissionImpersonate && $entity->isActive() && $entity !== $user && $rolePermissions->isUp($user->getRole(), $entity->getRole());
                 })->asPrimaryAction()->addCssClass('btn-outline');
             $actions->add(Crud::PAGE_INDEX, $impersonate);
             $actions->add(Crud::PAGE_DETAIL, $impersonate);

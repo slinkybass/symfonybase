@@ -190,8 +190,8 @@ class UserCrudController extends AbstractCrudController
             $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
                 ->linkToUrl(function ($entity) {
                     return $this->generateUrl('home', ['_switch_user' => $entity->getEmail()]);
-                })->displayIf(static function () use ($hasPermissionImpersonate) {
-                    return $hasPermissionImpersonate;
+                })->displayIf(static function ($entity) use ($hasPermissionImpersonate) {
+                    return $hasPermissionImpersonate && $entity->isActive();
                 })->asPrimaryAction()->addCssClass('btn-outline');
             $actions->add(Crud::PAGE_INDEX, $impersonate);
             $actions->add(Crud::PAGE_DETAIL, $impersonate);
