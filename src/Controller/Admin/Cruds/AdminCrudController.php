@@ -50,6 +50,7 @@ class AdminCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         $this->transEntity = $this->config()->enablePublic ? $this->transEntity : 'user';
+
         $crud = parent::configureCrud($crud);
         $crud->setDefaultSort(['name' => 'ASC', 'lastname' => 'ASC']);
 
@@ -58,6 +59,8 @@ class AdminCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $this->transEntity = 'user';
+
         /** @var User $user */
         $user = $this->getUser();
         $entity = $this->entity();
@@ -68,30 +71,30 @@ class AdminCrudController extends AbstractCrudController
         );
 
         /*** Data ***/
-        $dataPanel = FieldGenerator::panel($this->transEntitySection('data', 'user'))
+        $dataPanel = FieldGenerator::panel($this->transEntitySection('data'))
             ->setIcon('user' . ($this->config()->enablePublic ? '-shield' : ''));
         $fullname = FieldGenerator::text('fullname')
-            ->setLabel($this->transEntityField('name', 'user'));
+            ->setLabel($this->transEntityField('name'));
         $name = FieldGenerator::text('name')
-            ->setLabel($this->transEntityField('name', 'user'))
+            ->setLabel($this->transEntityField('name'))
             ->setColumns(2);
         $lastname = FieldGenerator::text('lastname')
-            ->setLabel($this->transEntityField('lastname', 'user'))
+            ->setLabel($this->transEntityField('lastname'))
             ->setColumns(3);
         $email = FieldGenerator::email('email')
-            ->setLabel($this->transEntityField('email', 'user'))
+            ->setLabel($this->transEntityField('email'))
             ->setColumns(4);
         $phone = FieldGenerator::phone('phone')
-            ->setLabel($this->transEntityField('phone', 'user'))
+            ->setLabel($this->transEntityField('phone'))
             ->setColumns(3);
         $birthdate = FieldGenerator::date('birthdate')
-            ->setLabel($this->transEntityField('birthdate', 'user'))
+            ->setLabel($this->transEntityField('birthdate'))
             ->setColumns(2);
         $gender = FieldGenerator::enum('gender')
-            ->setLabel($this->transEntityField('gender', 'user'))
+            ->setLabel($this->transEntityField('gender'))
             ->setColumns(2);
         $avatar = FieldGenerator::media('avatar')
-            ->setLabel($this->transEntityField('avatar', 'user'))
+            ->setLabel($this->transEntityField('avatar'))
             ->setConf('public_user_images')
             ->setColumns(8);
         $role = FieldGenerator::association('role')
@@ -105,19 +108,19 @@ class AdminCrudController extends AbstractCrudController
             $role->setFormTypeOption('data', $roleDefaultValue)->setColumns('d-none');
         }
         $active = FieldGenerator::switch('active')
-            ->setLabel($this->transEntityField('active', 'user'));
+            ->setLabel($this->transEntityField('active'));
         $createdAt = FieldGenerator::datetime('createdAt')
-            ->setLabel($this->transEntityField('createdAt', 'user'))
+            ->setLabel($this->transEntityField('createdAt'))
             ->setColumns(6);
 
         /*** Password ***/
-        $passwordPanel = FieldGenerator::panel($this->transEntitySection('password', 'user'))
+        $passwordPanel = FieldGenerator::panel($this->transEntitySection('password'))
             ->setIcon('key');
         $password = FieldGenerator::password('plainPassword')
             ->isRepeated()
             ->isRequired($pageName == Crud::PAGE_NEW)
-            ->setFirstLabel($this->transEntityField('password', 'user'))
-            ->setSecondLabel($this->transEntityField('repeatPassword', 'user'));
+            ->setFirstLabel($this->transEntityField('password'))
+            ->setSecondLabel($this->transEntityField('repeatPassword'));
 
         if ($pageName == Crud::PAGE_INDEX) {
             yield from $this->yieldFields([
@@ -168,11 +171,13 @@ class AdminCrudController extends AbstractCrudController
 
     public function configureFilters(Filters $filters): Filters
     {
+        $this->transEntity = 'user';
+
         /** @var User $user */
         $user = $this->getUser();
 
-        $filters->add(DateTimeFilter::new('birthdate', $this->transEntityField('birthdate', 'user')));
-        $filters->add(ChoiceFilter::new('gender', $this->transEntityField('gender', 'user'))
+        $filters->add(DateTimeFilter::new('birthdate', $this->transEntityField('birthdate')));
+        $filters->add(ChoiceFilter::new('gender', $this->transEntityField('gender'))
             ->setChoices(UserGender::choices())
             ->setFormTypeOption('translation_domain', 'messages')
         );
@@ -183,13 +188,15 @@ class AdminCrudController extends AbstractCrudController
                 ->setFormTypeOption('value_type_options.query_builder', static fn (RoleRepository $rep) => $rep->getAdminQB()));
         }
 
-        $filters->add(BooleanFilter::new('active', $this->transEntityField('active', 'user')));
+        $filters->add(BooleanFilter::new('active', $this->transEntityField('active')));
 
         return $filters;
     }
 
     public function configureActions(Actions $actions): Actions
     {
+        $this->transEntity = 'user';
+
         $actions = parent::configureActions($actions);
 
         if ($this->hasPermissionCrud()) {
@@ -234,7 +241,7 @@ class AdminCrudController extends AbstractCrudController
             });
 
             $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
-            $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate', 'user'))->setIcon('user-search')
+            $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
                 ->linkToUrl(function ($entity) {
                     return $this->generateUrl('home', ['_switch_user' => $entity->getEmail()]);
                 })->displayIf(static function ($entity) use ($hasPermissionImpersonate, $rolePermissions, $user) {
