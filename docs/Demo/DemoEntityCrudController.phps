@@ -249,18 +249,15 @@ class DemoEntityCrudController extends AbstractCrudController
         $choiceFieldsTab = FieldGenerator::tab('Choice');
 
         $choicePanel = FieldGenerator::panel('CHOICE')->setIcon('input-search');
-        $choice = FieldGenerator::choice('choice')
+        $choice = FieldGenerator::enum('choice')
             ->setLabel('Single choice')
-            ->setFormTypeOption('choice_label', fn(UserGender $e) => $e->translationKey())
             ->setColumns(4);
-        $choice2 = FieldGenerator::choice('choice2')
+        $choice2 = FieldGenerator::enum('choice2')
             ->setLabel('Single choice expanded optional')
-            ->setFormTypeOption('choice_label', fn(UserGender $e) => $e->translationKey())
             ->isExpanded()
             ->setColumns(4);
-        $choice3 = FieldGenerator::choice('choice3')
+        $choice3 = FieldGenerator::enum('choice3')
             ->setLabel('Single choice expanded required')
-            ->setFormTypeOption('choice_label', fn(UserGender $e) => $e->translationKey())
             ->isExpanded()
             ->isRequired()
             ->setColumns(4);

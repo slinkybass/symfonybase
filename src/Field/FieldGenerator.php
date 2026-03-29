@@ -76,6 +76,11 @@ class FieldGenerator extends AbstractType
         return ChoiceField::new($name);
     }
 
+    public static function enum(string $name)
+    {
+        return EnumField::new($name);
+    }
+
     public static function checkbox(string $name)
     {
         return BooleanField::new($name);

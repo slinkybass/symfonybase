@@ -24,7 +24,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -83,10 +82,8 @@ class AdminCrudController extends AbstractCrudController
         $birthdate = FieldGenerator::date('birthdate')
             ->setLabel($this->transEntityField('birthdate', 'user'))
             ->setColumns(2);
-        $gender = FieldGenerator::choice('gender')
+        $gender = FieldGenerator::enum('gender')
             ->setLabel($this->transEntityField('gender', 'user'))
-            ->setFormType(EnumType::class)
-            ->setFormTypeOption('class', UserGender::class)
             ->setColumns(2);
         $avatar = FieldGenerator::media('avatar')
             ->setLabel($this->transEntityField('avatar', 'user'))
