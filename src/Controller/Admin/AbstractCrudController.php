@@ -53,74 +53,26 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        if (!$this->hasPermissionCrud()) {
-            if ($this->user() !== $this->entity()) {
-                $actions = Actions::new();
-            } else {
-                $actions->remove(Crud::PAGE_DETAIL, Action::INDEX);
-                $actions->remove(Crud::PAGE_DETAIL, Action::DELETE);
-                $actions->remove(Crud::PAGE_EDIT, Action::INDEX);
-                $actions->remove(Crud::PAGE_EDIT, Action::DELETE);
-            }
-        } else {
-            $hasPermissionNew = $this->hasPermissionCrudAction(Action::NEW);
-            $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) use ($hasPermissionNew) {
-                return $action->displayIf(static function () use ($hasPermissionNew) {
-                    return $hasPermissionNew;
-                });
-            });
-            $actions->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) use ($hasPermissionNew) {
-                return $action->displayIf(static function () use ($hasPermissionNew) {
-                    return $hasPermissionNew;
-                });
-            });
+        $hasPermission = $this->hasPermissionCrud();
+        $hasPermissionNew = $this->hasPermissionCrudAction(Action::NEW);
+        $hasPermissionDetail = $this->hasPermissionCrudAction(Action::DETAIL);
+        $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
+        $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
+        $isOwnUser = $this->user() === $this->entity();
 
-            $hasPermissionDetail = $this->hasPermissionCrudAction(Action::DETAIL);
-            $actions->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) use ($hasPermissionDetail) {
-                return $action->displayIf(static function () use ($hasPermissionDetail) {
-                    return $hasPermissionDetail;
-                });
-            });
+        $denied = match(true) {
+            !$hasPermission && !$isOwnUser => [Action::INDEX, Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE, Action::BATCH_DELETE],
+            !$hasPermission && $isOwnUser  => [Action::INDEX, Action::NEW, Action::DETAIL, Action::DELETE, Action::BATCH_DELETE],
+            default                        => array_filter([
+                !$hasPermissionNew ? Action::NEW : null,
+                !$hasPermissionDetail ? Action::DETAIL : null,
+                !$hasPermissionEdit && !$isOwnUser ? Action::EDIT : null,
+                !$hasPermissionDelete || $isOwnUser ? Action::DELETE : null,
+                !$hasPermissionDelete || $isOwnUser ? Action::BATCH_DELETE : null,
+            ]),
+        };
 
-            $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
-            $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($hasPermissionEdit) {
-                return $action->displayIf(static function () use ($hasPermissionEdit) {
-                    return $hasPermissionEdit;
-                });
-            });
-            $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) use ($hasPermissionEdit) {
-                return $action->displayIf(static function () use ($hasPermissionEdit) {
-                    return $hasPermissionEdit;
-                });
-            });
-            $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) use ($hasPermissionEdit) {
-                return $action->displayIf(static function () use ($hasPermissionEdit) {
-                    return $hasPermissionEdit;
-                });
-            });
-
-            $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
-            $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) use ($hasPermissionDelete) {
-                return $action->displayIf(static function () use ($hasPermissionDelete) {
-                    return $hasPermissionDelete;
-                });
-            });
-            $actions->update(Crud::PAGE_INDEX, Action::BATCH_DELETE, function (Action $action) use ($hasPermissionDelete) {
-                return $action->displayIf(static function () use ($hasPermissionDelete) {
-                    return $hasPermissionDelete;
-                });
-            });
-            $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) use ($hasPermissionDelete) {
-                return $action->displayIf(static function () use ($hasPermissionDelete) {
-                    return $hasPermissionDelete;
-                });
-            });
-            $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) use ($hasPermissionDelete) {
-                return $action->displayIf(static function () use ($hasPermissionDelete) {
-                    return $hasPermissionDelete;
-                });
-            });
-        }
+        $actions->setPermissions(array_fill_keys($denied, 'NOPERMISSION_ACTION'));
 
         return $actions;
     }
