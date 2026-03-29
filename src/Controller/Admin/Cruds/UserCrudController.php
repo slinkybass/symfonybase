@@ -55,6 +55,14 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $filterHiddenRole = $this->filterHidden('role');
+        $roles = $this->em()->getRepository(Role::class)->getAdmin(false);
+        $roleDefaultValue = count($roles) == 1 ? $roles[0] : (
+            $filterHiddenRole ? $this->em()->getRepository(Role::class)->find($filterHiddenRole['value']) : null
+        );
+
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection())
             ->setIcon('user');
@@ -82,21 +90,15 @@ class UserCrudController extends AbstractCrudController
             ->setLabel($this->transEntityField('avatar'))
             ->setConf('public_user_images')
             ->setColumns(8);
-        $roles = $this->em()->getRepository(Role::class)->getAdmin(false);
         $role = FieldGenerator::association('role')
             ->setLabel($this->transEntitySingular('role'))
             ->isRequired()
             ->setQueryBuilder(function ($qb) use ($roles) {
                 $rolesIds = array_map(fn ($r) => $r->getId(), $roles);
-                return empty($rolesIds)
-                    ? $qb->andWhere('entity.id IS NULL')
-                    : $qb->andWhere('entity.id IN (' . implode(',', $rolesIds) . ')');
-            })
-            ->setColumns('d-none');
-        if (count($roles) == 1) {
-            $role->setFormTypeOption('data', $roles[0]);
-        } elseif ($this->filterHidden('role')) {
-            $role->setFormTypeOption('data', $this->em()->getRepository(Role::class)->find($this->filterHidden('role')['value']));
+                return empty($rolesIds) ? $qb->andWhere('entity.id IS NULL') : $qb->andWhere('entity.id IN (' . implode(',', $rolesIds) . ')');
+            });
+        if ($roleDefaultValue) {
+            $role->setFormTypeOption('data', $roleDefaultValue)->setColumns('d-none');
         }
         $active = FieldGenerator::switch('active')
             ->setLabel($this->transEntityField('active'));
@@ -117,9 +119,7 @@ class UserCrudController extends AbstractCrudController
                 $avatar->addCssClass('w-1'),
                 $fullname,
                 $email,
-                ...(count($roles) && !$this->filterHidden('role') ? [
-                    $role,
-                ] : []),
+                $role->showIf(count($roles) > 1 && !$filterHiddenRole),
                 $active->renderAsSwitch(false)->addCssClass('w-1'),
             ]);
         } elseif ($pageName == Crud::PAGE_DETAIL) {
@@ -132,9 +132,7 @@ class UserCrudController extends AbstractCrudController
                 $phone,
                 $birthdate,
                 $gender,
-                ...(count($roles) && !$this->filterHidden('role') ? [
-                    $role->setColumns(2),
-                ] : []),
+                $role->showIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2),
                 $active->setColumns(2),
                 $createdAt,
             ]);

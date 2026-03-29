@@ -60,7 +60,11 @@ class AdminCrudController extends AbstractCrudController
         /** @var User $user */
         $user = $this->getUser();
         $entity = $this->entity();
+        $filterHiddenRole = $this->filterHidden('role');
         $roles = $this->em()->getRepository(Role::class)->getAdminIsUp($user->getRole());
+        $roleDefaultValue = count($roles) == 1 ? $roles[0] : (
+            $filterHiddenRole ? $this->em()->getRepository(Role::class)->find($filterHiddenRole['value']) : null
+        );
 
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection('data', 'user'))
@@ -94,15 +98,10 @@ class AdminCrudController extends AbstractCrudController
             ->isRequired()
             ->setQueryBuilder(function ($qb) use ($roles) {
                 $rolesIds = array_map(fn ($r) => $r->getId(), $roles);
-                return empty($rolesIds)
-                    ? $qb->andWhere('entity.id IS NULL')
-                    : $qb->andWhere('entity.id IN (' . implode(',', $rolesIds) . ')');
-            })
-            ->setColumns('d-none');
-        if (count($roles) == 1) {
-            $role->setFormTypeOption('data', $roles[0]);
-        } elseif ($this->filterHidden('role')) {
-            $role->setFormTypeOption('data', $this->em()->getRepository(Role::class)->find($this->filterHidden('role')['value']));
+                return empty($rolesIds) ? $qb->andWhere('entity.id IS NULL') : $qb->andWhere('entity.id IN (' . implode(',', $rolesIds) . ')');
+            });
+        if ($roleDefaultValue) {
+            $role->setFormTypeOption('data', $roleDefaultValue)->setColumns('d-none');
         }
         $active = FieldGenerator::switch('active')
             ->setLabel($this->transEntityField('active', 'user'));
@@ -124,9 +123,7 @@ class AdminCrudController extends AbstractCrudController
                 $avatar->addCssClass('w-1'),
                 $fullname,
                 $email,
-                ...(count($roles) && !$this->filterHidden('role') ? [
-                    $role,
-                ] : []),
+                $role->showIf(count($roles) > 1 && !$filterHiddenRole),
                 $active->renderAsSwitch(false)->addCssClass('w-1'),
             ]);
         } elseif ($pageName == Crud::PAGE_DETAIL) {
@@ -139,12 +136,8 @@ class AdminCrudController extends AbstractCrudController
                 $phone,
                 $birthdate,
                 $gender,
-                ...(count($roles) && !$this->filterHidden('role') ? [
-                    $role->setColumns(2),
-                ] : []),
-                ...($entity !== $user ? [
-                    $active->setColumns(2),
-                ] : []),
+                $role->showIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2),
+                $active->setColumns(2),
                 $createdAt,
             ]);
         } elseif (in_array($pageName, [Crud::PAGE_NEW, Crud::PAGE_EDIT])) {
@@ -157,10 +150,8 @@ class AdminCrudController extends AbstractCrudController
                 $birthdate,
                 $gender,
                 $avatar,
-                ...($entity !== $user ? [
-                    $role,
-                    $active,
-                ] : []),
+                $role->showIf($entity !== $user),
+                $active->showIf($entity !== $user),
                 $passwordPanel,
                 $password->isRequired($pageName == Crud::PAGE_NEW),
             ]);
