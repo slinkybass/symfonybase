@@ -51,7 +51,8 @@ class RoleCrudController extends AbstractCrudController
             ->setLabel($this->transEntityField('displayName'));
         $isAdmin = FieldGenerator::switch('isAdmin')
             ->setLabel($this->transEntityField('isAdmin'))
-            ->setHtmlAttribute('data-hf-parent', 'isAdmin');
+            ->setHtmlAttribute('data-hf-parent', 'isAdmin')
+            ->showIf($publicEnabled);
 
         /*** Permissions ***/
         $permissionsPanel = FieldGenerator::panel($this->transEntitySection('permissions'))
@@ -102,18 +103,14 @@ class RoleCrudController extends AbstractCrudController
         if ($pageName == Crud::PAGE_INDEX) {
             yield from $this->yieldFields([
                 $displayName,
-                ...($publicEnabled ? [
-                    $isAdmin->renderAsSwitch(false),
-                ] : []),
+                $isAdmin->renderAsSwitch(false),
                 $users->addCssClass('w-1')->setTextAlign('center'),
             ]);
         } elseif ($pageName == Crud::PAGE_DETAIL) {
             yield from $this->yieldFields([
                 $dataPanel,
                 $displayName,
-                ...($publicEnabled ? [
-                    $isAdmin,
-                ] : []),
+                $isAdmin,
                 ...($haveAnyPermissions ? [
                     $permissionsPanel,
                     ...$permissionsFields,
@@ -125,9 +122,7 @@ class RoleCrudController extends AbstractCrudController
             yield from $this->yieldFields([
                 $dataPanel,
                 $displayName,
-                ...($publicEnabled ? [
-                    $isAdmin,
-                ] : []),
+                $isAdmin,
                 ...($haveAnyPermissions ? [
                     $permissionsPanel,
                     ...$permissionsFields,
