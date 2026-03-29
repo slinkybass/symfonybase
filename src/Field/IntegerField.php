@@ -19,7 +19,6 @@ class IntegerField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field;
 
         return $field;
     }
@@ -31,12 +30,11 @@ class IntegerField implements FieldInterface
 
     public function pluginSlider(bool $enable = true): self
     {
-        $this->setHtmlAttribute(FloatField::OPTION_PLUGIN_SLIDER, json_encode($enable));
+        $this->dto->setAssets(new AssetsDto());
         if ($enable) {
-            $this->innerField->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
-        } else {
-            $this->innerField->getAsDto()->setAssets(new AssetsDto());
+            $this->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
         }
+        $this->setHtmlAttribute(FloatField::OPTION_PLUGIN_SLIDER, json_encode($enable));
 
         return $this;
     }
@@ -71,7 +69,7 @@ class IntegerField implements FieldInterface
 
     public function sliderPips(bool $pips = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_PIPS, json_encode($pips));
+        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_PIPS, json_encode($pips));
 
         return $this;
     }

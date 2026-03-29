@@ -22,13 +22,7 @@ class FileField implements FieldInterface
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
-        $field->innerField->getAsDto()->setAssets(new AssetsDto());
         $field->initField($field->innerField);
-        $field
-            ->setDir('media')
-            ->setTemplatePath('field/file.html.twig')
-            ->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()])
-            ->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms());
 
         return $field;
     }
@@ -36,6 +30,11 @@ class FileField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->dto->setAssets(new AssetsDto());
+        $this->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms());
+        $this->setDir('media');
+        $this->setTemplatePath('field/file.html.twig');
+        $this->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()]);
     }
 
     public function setAccept(?string $filetype): self

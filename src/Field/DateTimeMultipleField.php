@@ -22,9 +22,6 @@ class DateTimeMultipleField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->plugin()
-            ->setFormTypeOption('entry_type', DateTimeType::class);
 
         return $field;
     }
@@ -32,19 +29,20 @@ class DateTimeMultipleField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->plugin();
+        $this->setFormTypeOption('entry_type', DateTimeType::class);
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->innerField->getAsDto()->setAssets(new AssetsDto());
+        $this->dto->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms());
         }
-
         $this->setHtmlAttribute(DateTimeField::OPTION_PLUGIN, json_encode($enable));
+
         $this->setFormType($enable ? DateMultipleType::class : CollectionType::class);
         $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $enable ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_SINGLE);
-
         if ($enable) {
             $this->setTemplatePath('field/datetimeMultiple.html.twig');
         } else {

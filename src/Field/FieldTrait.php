@@ -30,7 +30,6 @@ trait FieldTrait
     private function applyDefaults(): void
     {
         $this->setDefaultColumns(12);
-        $this->setDefaultColumns(12);
     }
 
     public function isMapped(bool $val = true): self

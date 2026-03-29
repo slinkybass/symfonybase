@@ -17,8 +17,6 @@ class ChoiceField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->plugin();
 
         return $field;
     }
@@ -26,6 +24,7 @@ class ChoiceField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->plugin();
     }
 
     public function plugin(bool $enable = true): self
@@ -44,7 +43,7 @@ class ChoiceField implements FieldInterface
 
     public function isExpanded(bool $expanded = true): self
     {
-        $this->innerField->renderAsNativeWidget($expanded);
+        $this->plugin(!$expanded);
         $this->innerField->renderExpanded($expanded);
 
         return $this;

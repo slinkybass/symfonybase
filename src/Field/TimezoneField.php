@@ -17,7 +17,6 @@ class TimezoneField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field;
 
         return $field;
     }

@@ -21,8 +21,6 @@ class RepeatField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->setFormType(RepeatedType::class);
 
         return $field;
     }
@@ -30,6 +28,7 @@ class RepeatField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->setFormType(RepeatedType::class);
     }
 
     public function setType($type): self

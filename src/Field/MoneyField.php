@@ -17,9 +17,6 @@ class MoneyField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->setCurrency('EUR')
-            ->storedAsCents(false);
 
         return $field;
     }
@@ -27,6 +24,8 @@ class MoneyField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->setCurrency('EUR');
+        $this->storedAsCents(false);
     }
 
     public function setCurrency(string $currency): self

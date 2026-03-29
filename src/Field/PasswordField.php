@@ -23,9 +23,6 @@ class PasswordField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())
-            ->isRepeated(false);
 
         return $field;
     }
@@ -33,6 +30,8 @@ class PasswordField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms());
+        $this->isRepeated(false);
     }
 
     public function checkIsRepeated(): bool

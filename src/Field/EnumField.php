@@ -18,10 +18,6 @@ class EnumField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->plugin()
-            ->setFormType(EnumType::class)
-            ->setFormTypeOption('choice_label', fn($e) => $e->translationKey());
 
         return $field;
     }
@@ -29,6 +25,9 @@ class EnumField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->plugin();
+        $this->setFormType(EnumType::class);
+        $this->setFormTypeOption('choice_label', fn($e) => $e->translationKey());
     }
 
     public function plugin(bool $enable = true): self
@@ -47,7 +46,7 @@ class EnumField implements FieldInterface
 
     public function isExpanded(bool $expanded = true): self
     {
-        $this->innerField->renderAsNativeWidget($expanded);
+        $this->plugin(!$expanded);
         $this->innerField->renderExpanded($expanded);
 
         return $this;

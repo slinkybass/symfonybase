@@ -26,9 +26,6 @@ class MaskField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->addAssetMapperEntries(Asset::new('form-type-mask')->onlyOnForms())
-            ->plugin();
 
         return $field;
     }
@@ -36,15 +33,15 @@ class MaskField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->plugin();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->innerField->getAsDto()->setAssets(new AssetsDto());
+        $this->dto->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-mask')->onlyOnForms());
         }
-
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

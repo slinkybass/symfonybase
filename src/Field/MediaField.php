@@ -30,13 +30,6 @@ class MediaField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->setFormType(UxMediaType::class)
-            ->setTemplatePath('field/media.html.twig')
-            ->setConf()
-            ->displayFileManager(true)
-            ->displayTree(false)
-            ->allowCrop(false);
 
         return $field;
     }
@@ -44,6 +37,12 @@ class MediaField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->setFormType(UxMediaType::class);
+        $this->setTemplatePath('field/media.html.twig');
+        $this->setConf();
+        $this->displayFileManager(true);
+        $this->displayTree(false);
+        $this->allowCrop(false);
     }
 
     public function setConf(string $conf = 'public_all'): self

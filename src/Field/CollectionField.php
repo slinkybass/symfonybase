@@ -18,10 +18,7 @@ class CollectionField implements FieldInterface
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
-        $field->innerField->getAsDto()->setAssets(new AssetsDto());
         $field->initField($field->innerField);
-        $field
-            ->addAssetMapperEntries(Asset::new('form-type-collection')->onlyOnForms());
 
         return $field;
     }
@@ -29,6 +26,8 @@ class CollectionField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->dto->setAssets(new AssetsDto());
+        $this->addAssetMapperEntries(Asset::new('form-type-collection')->onlyOnForms());
     }
 
     public function allowAdd(bool $allow = true): self

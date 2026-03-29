@@ -24,12 +24,12 @@ class AssociationField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->isNative(false);
+        $this->plugin();
     }
 
-    public function isNative(bool $val = true): self
+    public function plugin(bool $enable = true): self
     {
-        $this->innerField->renderAsNativeWidget($val);
+        $this->innerField->renderAsNativeWidget(!$enable);
 
         return $this;
     }

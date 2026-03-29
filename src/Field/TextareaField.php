@@ -25,9 +25,6 @@ class TextareaField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->plugin()
-            ->setRows(5);
 
         return $field;
     }
@@ -35,15 +32,16 @@ class TextareaField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->plugin();
+        $this->setRows(5);
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->innerField->getAsDto()->setAssets(new AssetsDto());
+        $this->dto->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-textarea')->onlyOnForms());
         }
-
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

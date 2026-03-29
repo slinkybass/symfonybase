@@ -34,8 +34,6 @@ class ColorField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->plugin();
 
         return $field;
     }
@@ -43,15 +41,15 @@ class ColorField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->plugin();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->innerField->getAsDto()->setAssets(new AssetsDto());
+        $this->dto->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-color')->onlyOnForms());
         }
-
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

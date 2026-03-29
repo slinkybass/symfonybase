@@ -25,11 +25,6 @@ class SignatureField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->addAssetMapperEntries(Asset::new('form-type-signature')->onlyOnForms())
-            ->setFormTypeOption('block_prefix', 'signature')
-            ->setTemplatePath('field/media.html.twig')
-            ->plugin();
 
         return $field;
     }
@@ -37,15 +32,17 @@ class SignatureField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->plugin();
+        $this->setFormTypeOption('block_prefix', 'signature');
+        $this->setTemplatePath('field/media.html.twig');
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->innerField->getAsDto()->setAssets(new AssetsDto());
+        $this->dto->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-signature')->onlyOnForms());
         }
-
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;

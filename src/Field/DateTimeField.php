@@ -21,8 +21,6 @@ class DateTimeField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->plugin();
 
         return $field;
     }
@@ -30,15 +28,15 @@ class DateTimeField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->plugin();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->innerField->getAsDto()->setAssets(new AssetsDto());
+        $this->dto->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms());
         }
-
         $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
 
         return $this;
@@ -133,8 +131,10 @@ class DateTimeField implements FieldInterface
     {
         if ($choice) {
             $this->innerField->renderAsChoice();
+            $this->plugin(false);
         } else {
             $this->innerField->renderAsNativeWidget();
+            $this->plugin();
         }
 
         return $this;

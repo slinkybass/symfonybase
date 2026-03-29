@@ -17,10 +17,7 @@ class ImageField implements FieldInterface
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
-        $field->innerField->getAsDto()->setAssets(new AssetsDto());
         $field->initField($field->innerField);
-        $field
-            ->setDir('media');
 
         return $field;
     }
@@ -28,6 +25,8 @@ class ImageField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->dto->setAssets(new AssetsDto());
+        $this->setDir('media');
     }
 
     public function setAccept(?string $filetype): self

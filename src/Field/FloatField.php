@@ -35,10 +35,6 @@ class FloatField implements FieldInterface
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
         $field->initField($field->innerField);
-        $field
-            ->setDecimals(2)
-            ->setStep(0.1)
-            ->setFormTypeOption(self::OPTION_HTML5, true);
 
         return $field;
     }
@@ -46,16 +42,18 @@ class FloatField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        $this->setDecimals(2);
+        $this->setStep(0.1);
+        $this->setFormTypeOption(self::OPTION_HTML5, true);
     }
 
     public function pluginSlider(bool $enable = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLUGIN_SLIDER, json_encode($enable));
+        $this->dto->setAssets(new AssetsDto());
         if ($enable) {
-            $this->innerField->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
-        } else {
-            $this->innerField->getAsDto()->setAssets(new AssetsDto());
+            $this->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
         }
+        $this->setHtmlAttribute(self::OPTION_PLUGIN_SLIDER, json_encode($enable));
 
         return $this;
     }

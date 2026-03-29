@@ -1,0 +1,24 @@
+
+Prevenir acceder a Cruds o acciones por URL sin permiso
+Bug al cargar JSs en detail (falla el hierarchy por ejemplo)
+Revisar deprecados de EA en campos
+Mejorar EA en base a nueva documentacion (Permisos, rutas, etc)
+	vendor\easycorp\easyadmin-bundle\doc
+
+Actualizar composer y assets
+
+Revisar Demo
+
+MEJORAS:
+	Repasar todo el código formateando y refatorizando
+	Mostrar como labels los filtros ocultos en los listados?
+
+	Revisar CSS (Eliminar innecesario) y JS (Mejoras en fields como hf y tomselect)
+
+	Formularios públicos (profile, edit, delete)
+	Maquetar un Perfil de usuario en admin
+
+	Envio de email opcional al dar de alta usuarios
+	Enviar emails a usuarios como acción
+
+	Implementar Cookies
