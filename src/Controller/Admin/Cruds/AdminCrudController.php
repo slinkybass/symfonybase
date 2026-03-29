@@ -22,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -170,6 +171,7 @@ class AdminCrudController extends AbstractCrudController
         /** @var User $user */
         $user = $this->getUser();
 
+        $filters->add(DateTimeFilter::new('birthdate', $this->transEntityField('birthdate', 'user')));
         $filters->add(ChoiceFilter::new('gender', $this->transEntityField('gender', 'user'))
             ->setChoices(UserGender::choices())
             ->setFormTypeOption('translation_domain', 'messages')
