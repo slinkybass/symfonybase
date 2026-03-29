@@ -18,7 +18,7 @@ trait FieldTrait
     public const OPTION_MIN_LENGTH = 'minlength';
     public const OPTION_RENDER_AS_HTML = 'renderAsHtml';
     public const OPTION_STRIP_TAGS = 'stripTags';
-    public const OPTION_HIDDEN = 'ROLE_FIELD_HIDDEN';
+    public const OPTION_HIDDEN = 'NOPERMISSION_FIELD';
 
     protected function initField(object $field): void
     {
