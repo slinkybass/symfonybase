@@ -27,7 +27,7 @@ class EnumField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->plugin();
         $this->setFormType(EnumType::class);
-        $this->setFormTypeOption('choice_label', fn($e) => $e->translationKey());
+        $this->setFormTypeOption('choice_label', fn ($e) => $e->translationKey());
     }
 
     public function plugin(bool $enable = true): self

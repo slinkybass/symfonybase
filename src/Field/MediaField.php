@@ -2,8 +2,8 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use Arkounay\Bundle\UxMediaBundle\Form\UxMediaType;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 
 class MediaField implements FieldInterface
@@ -83,7 +83,7 @@ class MediaField implements FieldInterface
     public function displayCropData(bool $val = true): self
     {
         $this->allowCrop();
-        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS . '.' . self::OPTION_CROP_DISPLAY_CROP_DATA, $val);
+        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_DISPLAY_CROP_DATA, $val);
 
         return $this;
     }
@@ -91,7 +91,7 @@ class MediaField implements FieldInterface
     public function allowFlip(bool $val = true): self
     {
         $this->allowCrop();
-        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS . '.' . self::OPTION_CROP_ALLOW_FLIP, $val);
+        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_ALLOW_FLIP, $val);
 
         return $this;
     }
@@ -99,7 +99,7 @@ class MediaField implements FieldInterface
     public function allowRotation(bool $val = true): self
     {
         $this->allowCrop();
-        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS . '.' . self::OPTION_CROP_ALLOW_ROTATION, $val);
+        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_ALLOW_ROTATION, $val);
 
         return $this;
     }
@@ -107,7 +107,7 @@ class MediaField implements FieldInterface
     public function setRatio($val = false): self
     {
         $this->allowCrop();
-        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS . '.' . self::OPTION_CROP_RATIO, $val);
+        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_RATIO, $val);
 
         return $this;
     }

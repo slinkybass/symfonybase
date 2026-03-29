@@ -2,8 +2,8 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraints\File;
@@ -47,7 +47,7 @@ class FileField implements FieldInterface
     public function setDir(string $dir): self
     {
         $this->innerField->setBasePath($dir);
-        $this->innerField->setUploadDir('public/' . $dir);
+        $this->innerField->setUploadDir('public/'.$dir);
 
         return $this;
     }

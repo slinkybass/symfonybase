@@ -2,8 +2,8 @@
 
 namespace App\Field;
 
-use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -44,9 +44,9 @@ class PasswordField implements FieldInterface
         if ($repeated) {
             $parentFormType = $this->getAsDto()->getFormType();
             $parentLabel = $this->getAsDto()->getLabel();
-            $parentPlaceholder = $this->getAsDto()->getFormTypeOption('attr.' . self::OPTION_PLACEHOLDER);
-            $parentMaxLength = $this->getAsDto()->getFormTypeOption('attr.' . self::OPTION_MAX_LENGTH);
-            $parentMinLength = $this->getAsDto()->getFormTypeOption('attr.' . self::OPTION_MIN_LENGTH);
+            $parentPlaceholder = $this->getAsDto()->getFormTypeOption('attr.'.self::OPTION_PLACEHOLDER);
+            $parentMaxLength = $this->getAsDto()->getFormTypeOption('attr.'.self::OPTION_MAX_LENGTH);
+            $parentMinLength = $this->getAsDto()->getFormTypeOption('attr.'.self::OPTION_MIN_LENGTH);
 
             $this->setFormType(RepeatedType::class);
             $this->setFormTypeOption('type', $parentFormType);
@@ -89,7 +89,7 @@ class PasswordField implements FieldInterface
     public function setFirstLabel(?string $label): self
     {
         if ($this->checkIsRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.label', $label);
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.label', $label);
         } else {
             $this->getAsDto()->setLabel($label);
         }
@@ -100,7 +100,7 @@ class PasswordField implements FieldInterface
     public function setSecondLabel(?string $label): self
     {
         if ($this->checkIsRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.label', $label);
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.label', $label);
         } else {
             $this->getAsDto()->setLabel($label);
         }
@@ -123,7 +123,7 @@ class PasswordField implements FieldInterface
     public function setFirstPlaceholder(?string $placeholder): self
     {
         if ($this->checkIsRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $placeholder);
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.self::OPTION_PLACEHOLDER, $placeholder);
         } else {
             $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
         }
@@ -134,7 +134,7 @@ class PasswordField implements FieldInterface
     public function setSecondPlaceholder(?string $placeholder): self
     {
         if ($this->checkIsRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_PLACEHOLDER, $placeholder);
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.attr.'.self::OPTION_PLACEHOLDER, $placeholder);
         } else {
             $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
         }
@@ -145,8 +145,8 @@ class PasswordField implements FieldInterface
     public function setMaxLength(?int $maxLength): self
     {
         if ($this->checkIsRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $maxLength);
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MAX_LENGTH, $maxLength);
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.self::OPTION_MAX_LENGTH, $maxLength);
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.attr.'.self::OPTION_MAX_LENGTH, $maxLength);
         } else {
             $this->setHtmlAttribute(self::OPTION_MAX_LENGTH, $maxLength);
         }
@@ -157,8 +157,8 @@ class PasswordField implements FieldInterface
     public function setMinLength(?int $minLength): self
     {
         if ($this->checkIsRepeated()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $minLength);
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS . '.attr.' . self::OPTION_MIN_LENGTH, $minLength);
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.self::OPTION_MIN_LENGTH, $minLength);
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.attr.'.self::OPTION_MIN_LENGTH, $minLength);
         } else {
             $this->setHtmlAttribute(self::OPTION_MIN_LENGTH, $minLength);
         }

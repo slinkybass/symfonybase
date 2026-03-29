@@ -39,7 +39,7 @@ class ImageField implements FieldInterface
     public function setDir(string $dir): self
     {
         $this->innerField->setBasePath($dir);
-        $this->innerField->setUploadDir('public/' . $dir);
+        $this->innerField->setUploadDir('public/'.$dir);
 
         return $this;
     }
