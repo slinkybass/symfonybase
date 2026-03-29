@@ -55,8 +55,6 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        /** @var User $user */
-        $user = $this->getUser();
         $filterHiddenRole = $this->filterHidden('role');
         $roles = $this->em()->getRepository(Role::class)->getAdmin(false);
         $roleDefaultValue = count($roles) == 1 ? $roles[0] : (
@@ -119,7 +117,7 @@ class UserCrudController extends AbstractCrudController
                 $avatar->addCssClass('w-1'),
                 $fullname,
                 $email,
-                $role->showIf(count($roles) > 1 && !$filterHiddenRole),
+                $role->displayIf(count($roles) > 1 && !$filterHiddenRole),
                 $active->renderAsSwitch(false)->addCssClass('w-1'),
             ]);
         } elseif ($pageName == Crud::PAGE_DETAIL) {
@@ -132,7 +130,7 @@ class UserCrudController extends AbstractCrudController
                 $phone,
                 $birthdate,
                 $gender,
-                $role->showIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2),
+                $role->displayIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2),
                 $active->setColumns(2),
                 $createdAt,
             ]);

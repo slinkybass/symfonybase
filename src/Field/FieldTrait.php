@@ -101,7 +101,7 @@ trait FieldTrait
         return $this;
     }
 
-    public function showIf(bool $val): self
+    public function displayIf(bool $val): self
     {
         $this->field->setPermission($val ? '' : 'FIELD_NO_ACCESS');
 

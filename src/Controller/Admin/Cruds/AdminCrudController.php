@@ -123,7 +123,7 @@ class AdminCrudController extends AbstractCrudController
                 $avatar->addCssClass('w-1'),
                 $fullname,
                 $email,
-                $role->showIf(count($roles) > 1 && !$filterHiddenRole),
+                $role->displayIf(count($roles) > 1 && !$filterHiddenRole),
                 $active->renderAsSwitch(false)->addCssClass('w-1'),
             ]);
         } elseif ($pageName == Crud::PAGE_DETAIL) {
@@ -136,7 +136,7 @@ class AdminCrudController extends AbstractCrudController
                 $phone,
                 $birthdate,
                 $gender,
-                $role->showIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2),
+                $role->displayIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2),
                 $active->setColumns(2),
                 $createdAt,
             ]);
@@ -150,8 +150,8 @@ class AdminCrudController extends AbstractCrudController
                 $birthdate,
                 $gender,
                 $avatar,
-                $role->showIf($entity !== $user),
-                $active->showIf($entity !== $user),
+                $role->displayIf($entity !== $user),
+                $active->displayIf($entity !== $user),
                 $passwordPanel,
                 $password->isRequired($pageName == Crud::PAGE_NEW),
             ]);

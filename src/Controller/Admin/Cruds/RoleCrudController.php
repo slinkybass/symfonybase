@@ -52,7 +52,7 @@ class RoleCrudController extends AbstractCrudController
         $isAdmin = FieldGenerator::switch('isAdmin')
             ->setLabel($this->transEntityField('isAdmin'))
             ->setHtmlAttribute('data-hf-parent', 'isAdmin')
-            ->showIf($publicEnabled);
+            ->displayIf($publicEnabled);
 
         /*** Permissions ***/
         $permissionsPanel = FieldGenerator::panel($this->transEntitySection('permissions'))
