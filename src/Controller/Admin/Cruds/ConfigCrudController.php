@@ -66,10 +66,10 @@ class ConfigCrudController extends AbstractCrudController
         yield $dataPanel;
         yield $enablePublic->isSwitch($pageName !== Crud::PAGE_INDEX);
         if ($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnablePublic())) {
-            $enableResetPassword->isSwitch($pageName !== Crud::PAGE_INDEX);
-            $enableRegister->isSwitch($pageName !== Crud::PAGE_INDEX);
+            yield $enableResetPassword->isSwitch($pageName !== Crud::PAGE_INDEX);
+            yield $enableRegister->isSwitch($pageName !== Crud::PAGE_INDEX);
             if ($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnableRegister())) {
-                $roleDefaultRegister;
+                yield $roleDefaultRegister;
             }
             yield $privacyPanel;
             yield $enableCookies->isSwitch($pageName !== Crud::PAGE_INDEX);
