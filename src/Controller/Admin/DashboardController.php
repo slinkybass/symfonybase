@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\AdminController;
 use App\Entity\Config;
-use App\Entity\Role;
 use App\Entity\User;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +17,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Locale;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Twig\Component\Option\ButtonStyle;
 use EasyCorp\Bundle\EasyAdminBundle\Twig\Component\Option\ButtonVariant;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,14 +29,12 @@ class DashboardController extends AbstractDashboardController
 {
     private EntityManagerInterface $em;
     private TranslatorInterface $translator;
-    private AdminUrlGenerator $adminUrl;
     private RolePermissions $rolePermissions;
 
-    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, AdminUrlGenerator $adminUrl, RolePermissions $rolePermissions)
+    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, RolePermissions $rolePermissions)
     {
         $this->em = $em;
         $this->translator = $translator;
-        $this->adminUrl = $adminUrl;
         $this->rolePermissions = $rolePermissions;
     }
 
@@ -104,19 +101,19 @@ class DashboardController extends AbstractDashboardController
         $session = $this->container->get('request_stack')->getSession();
         $configSession = $session->get('config');
 
-        yield MenuItem::linkToRoute($this->translator->trans('admin.home.title'), 'home', 'admin');
+        yield MenuItem::linkToDashboard($this->translator->trans('admin.home.title'), 'home');
 
         $userItems = [];
         if ($configSession->enablePublic && $this->rolePermissions->userHasPermissionCrud($user, 'user')) {
-            $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.user.plural'), 'user', User::class)->setController(Cruds\UserCrudController::class);
+            $userItems[] = MenuItem::linkTo(Cruds\UserCrudController::class, $this->translator->trans('entities.user.plural'), 'user');
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'admin')) {
             $label = $configSession->enablePublic ? 'admin' : 'user';
             $icon = $configSession->enablePublic ? 'user-shield' : 'user';
-            $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.' . $label . '.plural'), $icon, User::class)->setController(Cruds\AdminCrudController::class);
+            $userItems[] = MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('entities.' . $label . '.plural'), $icon);
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'role')) {
-            $userItems[] = MenuItem::linkToCrud($this->translator->trans('entities.role.plural'), 'lock', Role::class)->setController(Cruds\RoleCrudController::class);
+            $userItems[] = MenuItem::linkTo(Cruds\RoleCrudController::class, $this->translator->trans('entities.role.plural'), 'lock');
         }
         if (count($userItems) == 1) {
             yield $userItems[0];
@@ -130,17 +127,17 @@ class DashboardController extends AbstractDashboardController
 
         $configItems = [];
         if ($this->rolePermissions->userHasPermissionCrud($user, 'settings')) {
-            $settingsLink = MenuItem::linkToCrud($this->translator->trans('entities.settings.singular'), 'tool', Config::class)->setController(Cruds\SettingsCrudController::class);
+            $settingsLink = MenuItem::linkTo(Cruds\SettingsCrudController::class, $this->translator->trans('entities.settings.singular'), 'tool');
             $settingsLink = $config ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $settingsLink->setAction(Crud::PAGE_NEW);
             $configItems[] = $settingsLink;
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'config')) {
-            $configLink = MenuItem::linkToCrud($this->translator->trans('entities.config.singular'), 'settings', Config::class)->setController(Cruds\ConfigCrudController::class);
+            $configLink = MenuItem::linkTo(Cruds\ConfigCrudController::class, $this->translator->trans('entities.config.singular'), 'settings');
             $configLink = $config ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $configLink->setAction(Crud::PAGE_NEW);
             $configItems[] = $configLink;
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'demoEntity') && class_exists('App\\Entity\\DemoEntity')) {
-            $configItems[] = MenuItem::linkToCrud($this->translator->trans('entities.demoEntity.singular'), 'flask', 'App\\Entity\\DemoEntity')->setController('App\\Controller\\Admin\\Cruds\\DemoEntityCrudController');
+            $configItems[] = MenuItem::linkTo('App\\Controller\\Admin\\Cruds\\DemoEntityCrudController', $this->translator->trans('entities.demoEntity.singular'), 'flask');
         }
         if (count($configItems) == 1) {
             yield $configItems[0];
