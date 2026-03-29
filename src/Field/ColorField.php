@@ -2,13 +2,17 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField as EasyField;
 
-class ColorField
+class ColorField implements FieldInterface
 {
-    use FieldTrait;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public const OPTION_PLUGIN = 'data-color-field';
 
@@ -25,23 +29,25 @@ class ColorField
     public const COLOR_TYPE_COLOR = 'color';
     public const COLOR_TYPE_FLAT = 'flat';
 
-    private EasyField $field;
-
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
+            ->plugin();
 
-        $instance
-            ->plugin()
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->field->getAsDto()->setAssets(new AssetsDto());
+        $this->innerField->getAsDto()->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-color')->onlyOnForms());
         }
@@ -95,14 +101,14 @@ class ColorField
 
     public function showSample(bool $show = true): self
     {
-        $this->field->showSample($show);
+        $this->innerField->showSample($show);
 
         return $this;
     }
 
     public function showValue(bool $show = true): self
     {
-        $this->field->showValue($show);
+        $this->innerField->showValue($show);
 
         return $this;
     }

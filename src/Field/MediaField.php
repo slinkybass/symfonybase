@@ -2,12 +2,16 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use Arkounay\Bundle\UxMediaBundle\Form\UxMediaType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 
-class MediaField
+class MediaField implements FieldInterface
 {
-    use FieldTrait;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public const OPTION_CONF = 'conf';
     public const OPTION_DISPLAY_FILE_MANAGER = 'display_file_manager';
@@ -21,23 +25,25 @@ class MediaField
     public const OPTION_CROP_ALLOW_ROTATION = 'allow_rotation';
     public const OPTION_CROP_RATIO = 'ratio';
 
-    private EasyField $field;
-
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
-
-        $instance
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
             ->setFormType(UxMediaType::class)
             ->setTemplatePath('field/media.html.twig')
             ->setConf()
             ->displayFileManager(true)
             ->displayTree(false)
-            ->allowCrop(false)
-            ->setDefaultColumns(12);
+            ->allowCrop(false);
 
-        return $instance;
+        return $field;
+    }
+
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function setConf(string $conf = 'public_all'): self

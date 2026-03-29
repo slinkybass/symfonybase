@@ -2,57 +2,62 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField as EasyField;
 
-class AssociationField
+class AssociationField implements FieldInterface
 {
-    use FieldTrait;
-
-    private EasyField $field;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
 
-        $instance
-            ->plugin()
-            ->setDefaultColumns(12);
-
-        return $instance;
+        return $field;
     }
 
-    public function plugin(bool $enable = true): self
+    private function applyDefaults(): void
     {
-        $this->field->renderAsNativeWidget(!$enable);
+        $this->applyDefaultsTrait();
+        $this->isNative(false);
+    }
+
+    public function isNative(bool $val = true): self
+    {
+        $this->innerField->renderAsNativeWidget($val);
 
         return $this;
     }
 
     public function setCrudController(string $crudController): self
     {
-        $this->field->setCrudController($crudController);
+        $this->innerField->setCrudController($crudController);
 
         return $this;
     }
 
     public function setQueryBuilder(\Closure $queryBuilderCallable): self
     {
-        $this->field->setQueryBuilder($queryBuilderCallable);
+        $this->innerField->setQueryBuilder($queryBuilderCallable);
 
         return $this;
     }
 
     public function renderAsEmbeddedForm(?string $crudController = null, ?string $pageNameNew = null, ?string $pageNameEdit = null): self
     {
-        $this->field->renderAsEmbeddedForm($crudController, $pageNameNew, $pageNameEdit);
+        $this->innerField->renderAsEmbeddedForm($crudController, $pageNameNew, $pageNameEdit);
 
         return $this;
     }
 
     public function setSortProperty(string $property): self
     {
-        $this->field->setSortProperty($property);
+        $this->innerField->setSortProperty($property);
 
         return $this;
     }

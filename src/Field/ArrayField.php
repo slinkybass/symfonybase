@@ -2,26 +2,31 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
 
-class ArrayField
+class ArrayField implements FieldInterface
 {
-    use FieldTrait;
-
-    private EasyField $field;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
 
-        $instance
-            ->addAssetMapperEntries(Asset::new('form-type-collection')->onlyOnForms())
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
+        $this->dto->setAssets(new AssetsDto());
+        $this->addAssetMapperEntries(Asset::new('form-type-collection')->onlyOnForms());
     }
 }

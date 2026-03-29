@@ -2,13 +2,17 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 
-class SignatureField
+class SignatureField implements FieldInterface
 {
-    use FieldTrait;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public const OPTION_PLUGIN = 'data-signature-field';
 
@@ -16,26 +20,28 @@ class SignatureField
     public const OPTION_SIGNATURE_SHOW_UNDO = 'data-signature-show-undo';
     public const OPTION_SIGNATURE_SHOW_CLEAR = 'data-signature-show-clear';
 
-    private EasyField $field;
-
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
-
-        $instance
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
             ->addAssetMapperEntries(Asset::new('form-type-signature')->onlyOnForms())
             ->setFormTypeOption('block_prefix', 'signature')
             ->setTemplatePath('field/media.html.twig')
-            ->plugin()
-            ->setDefaultColumns(12);
+            ->plugin();
 
-        return $instance;
+        return $field;
+    }
+
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->field->getAsDto()->setAssets(new AssetsDto());
+        $this->innerField->getAsDto()->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-signature')->onlyOnForms());
         }

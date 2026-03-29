@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use App\Form\Type\DateMultipleType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
@@ -9,28 +10,33 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class DateTimeMultipleField
+class DateTimeMultipleField implements FieldInterface
 {
-    use FieldTrait;
-
-    private EasyField $field;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
-
-        $instance
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
             ->plugin()
-            ->setFormTypeOption('entry_type', DateTimeType::class)
-            ->setDefaultColumns(12);
+            ->setFormTypeOption('entry_type', DateTimeType::class);
 
-        return $instance;
+        return $field;
+    }
+
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->field->getAsDto()->setAssets(new AssetsDto());
+        $this->innerField->getAsDto()->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms());
         }

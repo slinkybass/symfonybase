@@ -80,24 +80,22 @@ class SettingsCrudController extends AbstractCrudController
         $cookiesText = FieldGenerator::texteditor('cookiesText')
             ->setLabel($this->transEntityField('cookiesText'));
 
-        yield from $this->yieldFields([
-            $dataPanel,
-            $appName,
-            $appColor,
-            $appLogo,
-            $appFavicon,
-            $appTimezone,
-            $senderEmail,
-            ...(!$entity || $entity->isEnablePublic() ? [
-                $appDescription,
-                $appKeywords,
-                $privacyPanel,
-                $privacyText,
-                ...(!$entity || $entity->isEnableCookies() ? [
-                    $cookiesText,
-                ] : []),
-            ] : []),
-        ]);
+        yield $dataPanel;
+        yield $appName;
+        yield $appColor;
+        yield $appLogo;
+        yield $appFavicon;
+        yield $appTimezone;
+        yield $senderEmail;
+        if (!$entity || $entity->isEnablePublic()) {
+            yield $appDescription;
+            yield $appKeywords;
+            yield $privacyPanel;
+            yield $privacyText;
+            if (!$entity || $entity->isEnableCookies()) {
+                yield $cookiesText;
+            }
+        }
     }
 
     public function configureActions(Actions $actions): Actions

@@ -2,50 +2,56 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField as EasyField;
 
-class PercentField
+class PercentField implements FieldInterface
 {
-    use FieldTrait;
-
-    private EasyField $field;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
+            ->storedAsFractional(false);
 
-        $instance
-            ->storedAsFractional(false)
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function setDecimals(int $decimals): self
     {
-        $this->field->setNumDecimals($decimals);
+        $this->innerField->setNumDecimals($decimals);
 
         return $this;
     }
 
     public function storedAsFractional(bool $isFractional = true): self
     {
-        $this->field->setStoredAsFractional($isFractional);
+        $this->innerField->setStoredAsFractional($isFractional);
 
         return $this;
     }
 
     public function setSymbol(?string $symbol): self
     {
-        $this->field->setSymbol($symbol);
+        $this->innerField->setSymbol($symbol);
 
         return $this;
     }
 
     public function setRoundingMode(int $mode): self
     {
-        $this->field->setRoundingMode($mode);
+        $this->innerField->setRoundingMode($mode);
 
         return $this;
     }

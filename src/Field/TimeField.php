@@ -2,36 +2,42 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField as EasyField;
 
-class TimeField
+class TimeField implements FieldInterface
 {
-    use FieldTrait;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public const OPTION_PLUGIN = 'data-time-field';
 
     public const OPTION_DATE_ENABLE_SECONDS = 'data-date-enable-seconds';
     public const OPTION_DATE_MINUTE_INCREMENT = 'data-date-minute-increment';
 
-    private EasyField $field;
-
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
+            ->plugin();
 
-        $instance
-            ->plugin()
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->field->getAsDto()->setAssets(new AssetsDto());
+        $this->innerField->getAsDto()->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-time')->onlyOnForms());
         }
@@ -78,14 +84,14 @@ class TimeField
 
     public function setTimezone(string $timezone): self
     {
-        $this->field->setTimezone($timezone);
+        $this->innerField->setTimezone($timezone);
 
         return $this;
     }
 
     public function setFormat(string $timeFormat): self
     {
-        $this->field->setFormat($timeFormat);
+        $this->innerField->setFormat($timeFormat);
 
         return $this;
     }
@@ -93,9 +99,9 @@ class TimeField
     public function renderAsChoice(bool $choice = true): self
     {
         if ($choice) {
-            $this->field->renderAsChoice();
+            $this->innerField->renderAsChoice();
         } else {
-            $this->field->renderAsNativeWidget();
+            $this->innerField->renderAsNativeWidget();
         }
 
         return $this;

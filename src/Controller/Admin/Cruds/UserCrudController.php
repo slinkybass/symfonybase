@@ -114,42 +114,36 @@ class UserCrudController extends AbstractCrudController
             ->setSecondLabel($this->transEntityField('repeatPassword', 'user'));
 
         if ($pageName == Crud::PAGE_INDEX) {
-            yield from $this->yieldFields([
-                $avatar->addCssClass('w-1'),
-                $fullname,
-                $email,
-                $role->displayIf(count($roles) > 1 && !$filterHiddenRole),
-                $active->renderAsSwitch(false)->addCssClass('w-1'),
-            ]);
+            yield $avatar->addCssClass('w-1');
+            yield $fullname;
+            yield $email;
+            yield $role->displayIf(count($roles) > 1 && !$filterHiddenRole);
+            yield $active->isSwitch(false)->addCssClass('w-1');
         } elseif ($pageName == Crud::PAGE_DETAIL) {
-            yield from $this->yieldFields([
-                $dataPanel,
-                $avatar->setColumns(12),
-                $name,
-                $lastname,
-                $email,
-                $phone,
-                $birthdate,
-                $gender,
-                $role->displayIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2),
-                $active->setColumns(2),
-                $createdAt,
-            ]);
+            yield $dataPanel;
+            yield $avatar->setColumns(12);
+            yield $name;
+            yield $lastname;
+            yield $email;
+            yield $phone;
+            yield $birthdate;
+            yield $gender;
+            yield $role->displayIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2);
+            yield $active->setColumns(2);
+            yield $createdAt;
         } elseif (in_array($pageName, [Crud::PAGE_NEW, Crud::PAGE_EDIT])) {
-            yield from $this->yieldFields([
-                $dataPanel,
-                $name,
-                $lastname,
-                $email,
-                $phone,
-                $birthdate,
-                $gender,
-                $avatar,
-                $role,
-                $active,
-                $passwordPanel,
-                $password->isRequired($pageName == Crud::PAGE_NEW),
-            ]);
+            yield $dataPanel;
+            yield $name;
+            yield $lastname;
+            yield $email;
+            yield $phone;
+            yield $birthdate;
+            yield $gender;
+            yield $avatar;
+            yield $role;
+            yield $active;
+            yield $passwordPanel;
+            yield $password->isRequired($pageName == Crud::PAGE_NEW);
         }
     }
 

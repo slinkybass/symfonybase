@@ -2,22 +2,28 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField as EasyField;
 
-class IdField
+class IdField implements FieldInterface
 {
-    use FieldTrait;
-
-    private EasyField $field;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field;
 
-        $instance
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 }

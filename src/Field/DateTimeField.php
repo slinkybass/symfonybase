@@ -2,33 +2,39 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField as EasyField;
 
-class DateTimeField
+class DateTimeField implements FieldInterface
 {
-    use FieldTrait;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public const OPTION_PLUGIN = 'data-datetime-field';
 
-    private EasyField $field;
-
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
+            ->plugin();
 
-        $instance
-            ->plugin()
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->field->getAsDto()->setAssets(new AssetsDto());
+        $this->innerField->getAsDto()->setAssets(new AssetsDto());
         if ($enable) {
             $this->addAssetMapperEntries(Asset::new('form-type-datetime')->onlyOnForms());
         }
@@ -111,14 +117,14 @@ class DateTimeField
 
     public function setTimezone(string $timezone): self
     {
-        $this->field->setTimezone($timezone);
+        $this->innerField->setTimezone($timezone);
 
         return $this;
     }
 
     public function setFormat(string $dateFormat, string $timeFormat): self
     {
-        $this->field->setFormat($dateFormat, $timeFormat);
+        $this->innerField->setFormat($dateFormat, $timeFormat);
 
         return $this;
     }
@@ -126,9 +132,9 @@ class DateTimeField
     public function renderAsChoice(bool $choice = true): self
     {
         if ($choice) {
-            $this->field->renderAsChoice();
+            $this->innerField->renderAsChoice();
         } else {
-            $this->field->renderAsNativeWidget();
+            $this->innerField->renderAsNativeWidget();
         }
 
         return $this;

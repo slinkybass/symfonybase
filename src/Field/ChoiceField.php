@@ -2,65 +2,71 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 
-class ChoiceField
+class ChoiceField implements FieldInterface
 {
-    use FieldTrait;
-
-    private EasyField $field;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
+            ->plugin();
 
-        $instance
-            ->plugin()
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function plugin(bool $enable = true): self
     {
-        $this->field->renderAsNativeWidget(!$enable);
+        $this->innerField->renderAsNativeWidget(!$enable);
 
         return $this;
     }
 
     public function isMultiple(bool $multiple = true): self
     {
-        $this->field->allowMultipleChoices($multiple);
+        $this->innerField->allowMultipleChoices($multiple);
 
         return $this;
     }
 
     public function isExpanded(bool $expanded = true): self
     {
-        $this->field->renderAsNativeWidget($expanded);
-        $this->field->renderExpanded($expanded);
+        $this->innerField->renderAsNativeWidget($expanded);
+        $this->innerField->renderExpanded($expanded);
 
         return $this;
     }
 
     public function setChoices($choices): self
     {
-        $this->field->setChoices($choices);
+        $this->innerField->setChoices($choices);
 
         return $this;
     }
 
     public function setTransChoices($choices): self
     {
-        $this->field->setTranslatableChoices($choices);
+        $this->innerField->setTranslatableChoices($choices);
 
         return $this;
     }
 
     public function renderAsBadges(bool $badges = true): self
     {
-        $this->field->renderAsBadges($badges);
+        $this->innerField->renderAsBadges($badges);
 
         return $this;
     }

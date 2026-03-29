@@ -63,19 +63,17 @@ class ConfigCrudController extends AbstractCrudController
             ->setHtmlAttribute('data-hf-child', 'enablePublic')
             ->setColumns(12);
 
-        yield from $this->yieldFields([
-            $dataPanel,
-            $enablePublic->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
-            ...($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnablePublic()) ? [
-                $enableResetPassword->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
-                $enableRegister->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
-                ...($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnableRegister()) ? [
-                    $roleDefaultRegister,
-                ] : []),
-                $privacyPanel,
-                $enableCookies->renderAsSwitch($pageName !== Crud::PAGE_INDEX),
-            ] : []),
-        ]);
+        yield $dataPanel;
+        yield $enablePublic->isSwitch($pageName !== Crud::PAGE_INDEX);
+        if ($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnablePublic())) {
+            $enableResetPassword->isSwitch($pageName !== Crud::PAGE_INDEX);
+            $enableRegister->isSwitch($pageName !== Crud::PAGE_INDEX);
+            if ($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnableRegister())) {
+                $roleDefaultRegister;
+            }
+            yield $privacyPanel;
+            yield $enableCookies->isSwitch($pageName !== Crud::PAGE_INDEX);
+        }
     }
 
     public function configureActions(Actions $actions): Actions

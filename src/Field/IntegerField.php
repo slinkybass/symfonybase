@@ -2,34 +2,40 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField as EasyField;
 
-class IntegerField
+class IntegerField implements FieldInterface
 {
-    use FieldTrait;
-
-    private EasyField $field;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field;
 
-        $instance
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function pluginSlider(bool $enable = true): self
     {
         $this->setHtmlAttribute(FloatField::OPTION_PLUGIN_SLIDER, json_encode($enable));
         if ($enable) {
-            $this->field->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
+            $this->innerField->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
         } else {
-            $this->field->getAsDto()->setAssets(new AssetsDto());
+            $this->innerField->getAsDto()->setAssets(new AssetsDto());
         }
 
         return $this;
@@ -86,14 +92,14 @@ class IntegerField
 
     public function setNumberFormat(string $numberFormat): self
     {
-        $this->field->setNumberFormat($numberFormat);
+        $this->innerField->setNumberFormat($numberFormat);
 
         return $this;
     }
 
     public function setThousandsSeparator(string $separator): self
     {
-        $this->field->setThousandsSeparator($separator);
+        $this->innerField->setThousandsSeparator($separator);
 
         return $this;
     }

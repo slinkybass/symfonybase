@@ -549,185 +549,184 @@ class DemoEntityCrudController extends AbstractCrudController
             ->showClear(false)
             ->setColumns(6);
 
-        yield from $this->yieldFields([
-            $basicFieldsTab,
 
-            $idPanel,
-            $id,
+        yield $basicFieldsTab;
 
-            $textPanel,
-            $text,
-            $textCustom,
-            $textHelp,
-            $textRow,
-            $email,
-            $phone,
-            $url,
-            $password,
+        yield $idPanel;
+        yield $id;
 
-            $confirmPanel,
-            $confirmPassword,
-            $confirmEmail,
+        yield $textPanel;
+        yield $text;
+        yield $textCustom;
+        yield $textHelp;
+        yield $textRow;
+        yield $email;
+        yield $phone;
+        yield $url;
+        yield $password;
 
-            $numbersPanel,
-            $integer,
-            $integerPositive,
-            $float,
-            $floatPositive,
-            $floatStep05,
-            $percent,
-            $money,
-            $moneyCustomCurrency,
-            $slider,
-            $sliderFloat,
+        yield $confirmPanel;
+        yield $confirmPassword;
+        yield $confirmEmail;
 
-            $checkboxPanel,
-            $checkbox,
-            $switch,
+        yield $numbersPanel;
+        yield $integer;
+        yield $integerPositive;
+        yield $float;
+        yield $floatPositive;
+        yield $floatStep05;
+        yield $percent;
+        yield $money;
+        yield $moneyCustomCurrency;
+        yield $slider;
+        yield $sliderFloat;
 
-            $colorPanel,
-            $color,
-            $colorPalette,
-            $colorPaletteOnly,
-            $colorInline,
-            $colorInlinePalette,
-            $colorInlinePaletteOnly,
-            $colorAlpha,
+        yield $checkboxPanel;
+        yield $checkbox;
+        yield $switch;
 
-            $maskPanel,
-            $mask,
-            $mask2,
-            $mask3,
+        yield $colorPanel;
+        yield $color;
+        yield $colorPalette;
+        yield $colorPaletteOnly;
+        yield $colorInline;
+        yield $colorInlinePalette;
+        yield $colorInlinePaletteOnly;
+        yield $colorAlpha;
 
-            $slugPanel,
-            $slugTarget,
-            $slug,
-            $slug2,
+        yield $maskPanel;
+        yield $mask;
+        yield $mask2;
+        yield $mask3;
 
-            $textareaFieldsTab,
+        yield $slugPanel;
+        yield $slugTarget;
+        yield $slug;
+        yield $slug2;
 
-            $textareaPanel,
-            $textarea,
-            $textarea2,
-            $textarea3,
-            $textarea4,
+        yield $textareaFieldsTab;
 
-            $texteditorPanel,
-            $texteditor,
-            $texteditor2,
-            $texteditor3,
+        yield $textareaPanel;
+        yield $textarea;
+        yield $textarea2;
+        yield $textarea3;
+        yield $textarea4;
 
-            $codeeditorPanel,
-            $codeeditor,
-            $codeeditor2,
+        yield $texteditorPanel;
+        yield $texteditor;
+        yield $texteditor2;
+        yield $texteditor3;
 
-            $choiceFieldsTab,
+        yield $codeeditorPanel;
+        yield $codeeditor;
+        yield $codeeditor2;
 
-            $choicePanel,
-            $choice,
-            $choice2,
-            $choice3,
-            $choiceRow,
-            $choice4,
-            $choice5,
+        yield $choiceFieldsTab;
 
-            $dateFieldsTab,
+        yield $choicePanel;
+        yield $choice;
+        yield $choice2;
+        yield $choice3;
+        yield $choiceRow;
+        yield $choice4;
+        yield $choice5;
 
-            $datePanel,
-            $date,
-            $datetime,
-            $time,
+        yield $dateFieldsTab;
 
-            $dateDefaultValuesPanel,
-            $dateDefaultValue,
-            $datetimeDefaultValue,
-            $timeDefaultValue,
+        yield $datePanel;
+        yield $date;
+        yield $datetime;
+        yield $time;
 
-            $dateMinMaxPanel,
-            $dateMinMax,
-            $datetimeMinMax,
-            $timeMinMax,
+        yield $dateDefaultValuesPanel;
+        yield $dateDefaultValue;
+        yield $datetimeDefaultValue;
+        yield $timeDefaultValue;
 
-            $dateEnableDisablePanel,
-            $dateEnable,
-            $dateDisable,
+        yield $dateMinMaxPanel;
+        yield $dateMinMax;
+        yield $datetimeMinMax;
+        yield $timeMinMax;
 
-            $dateMultiplePanel,
-            $dateMultiple,
-            $datetimeMultiple,
-            $dateMultipleRow,
-            $dateMultipleCustom,
-            $datetimeMultipleCustom,
+        yield $dateEnableDisablePanel;
+        yield $dateEnable;
+        yield $dateDisable;
 
-            $dateRangePanel,
-            $dateRange,
-            $datetimeRange,
-            $dateRangeCustom,
+        yield $dateMultiplePanel;
+        yield $dateMultiple;
+        yield $datetimeMultiple;
+        yield $dateMultipleRow;
+        yield $dateMultipleCustom;
+        yield $datetimeMultipleCustom;
 
-            $dateInlinePanel,
-            $dateInline,
-            $datetimeInline,
-            $timeInline,
+        yield $dateRangePanel;
+        yield $dateRange;
+        yield $datetimeRange;
+        yield $dateRangeCustom;
 
-            $collectionFieldsTab,
+        yield $dateInlinePanel;
+        yield $dateInline;
+        yield $datetimeInline;
+        yield $timeInline;
 
-            $collectionPanel,
-            $array,
-            $collection,
-            $collectionFormType,
+        yield $collectionFieldsTab;
 
-            $mediaFieldsTab,
+        yield $collectionPanel;
+        yield $array;
+        yield $collection;
+        yield $collectionFormType;
 
-            $mediaPanel,
-            $media,
-            $mediaImage,
-            $mediaImageUsers,
-            $mediaWithoutFileManager,
-            $mediaWithCrop,
+        yield $mediaFieldsTab;
 
-            $filesPanel,
-            $file,
-            $filePDF,
-            $image,
+        yield $mediaPanel;
+        yield $media;
+        yield $mediaImage;
+        yield $mediaImageUsers;
+        yield $mediaWithoutFileManager;
+        yield $mediaWithCrop;
 
-            $hierarchyFieldsTab,
+        yield $filesPanel;
+        yield $file;
+        yield $filePDF;
+        yield $image;
 
-            $hierarchyPanel,
-            $hierarchySwitch,
-            $hierarchySwitchChild,
-            $hierarchyRow1,
-            $hierarchySwitchChecked,
-            $hierarchySwitchCheckedChild,
-            $hierarchyRow2,
-            $hierarchySwitchShow,
-            $hierarchySwitchShowChild,
-            $hierarchyRow3,
-            $hierarchySwitchDefaultValue,
-            $hierarchySwitchDefaultValueChild,
-            $hierarchyRow4,
-            $hierarchySwitchInvertValue,
-            $hierarchySwitchInvertValueChild,
-            $hierarchyRow5,
-            $hierarchyText,
-            $hierarchyTextChild,
-            $hierarchyRow6,
-            $hierarchyTextCustomValue,
-            $hierarchyTextCustomValueChild,
-            $hierarchyRow7,
-            $hierarchyKeepValue,
-            $hierarchyKeepValueChild,
-            $hierarchyRow8,
-            $hierarchySaveValue,
-            $hierarchySaveValueChild,
+        yield $hierarchyFieldsTab;
 
-            $signatureFieldsTab,
+        yield $hierarchyPanel;
+        yield $hierarchySwitch;
+        yield $hierarchySwitchChild;
+        yield $hierarchyRow1;
+        yield $hierarchySwitchChecked;
+        yield $hierarchySwitchCheckedChild;
+        yield $hierarchyRow2;
+        yield $hierarchySwitchShow;
+        yield $hierarchySwitchShowChild;
+        yield $hierarchyRow3;
+        yield $hierarchySwitchDefaultValue;
+        yield $hierarchySwitchDefaultValueChild;
+        yield $hierarchyRow4;
+        yield $hierarchySwitchInvertValue;
+        yield $hierarchySwitchInvertValueChild;
+        yield $hierarchyRow5;
+        yield $hierarchyText;
+        yield $hierarchyTextChild;
+        yield $hierarchyRow6;
+        yield $hierarchyTextCustomValue;
+        yield $hierarchyTextCustomValueChild;
+        yield $hierarchyRow7;
+        yield $hierarchyKeepValue;
+        yield $hierarchyKeepValueChild;
+        yield $hierarchyRow8;
+        yield $hierarchySaveValue;
+        yield $hierarchySaveValueChild;
 
-            $signaturePanel,
-            $signature,
-            $signatureWithInput,
-            $signatureWithoutUndo,
-            $signatureWithoutClear,
-        ]);
+        yield $signatureFieldsTab;
+
+        yield $signaturePanel;
+        yield $signature;
+        yield $signatureWithInput;
+        yield $signatureWithoutUndo;
+        yield $signatureWithoutClear;
     }
 
     public function configureActions(Actions $actions): Actions

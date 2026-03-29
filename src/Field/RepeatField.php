@@ -2,28 +2,34 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class RepeatField
+class RepeatField implements FieldInterface
 {
-    use FieldTrait;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public const OPTION_FIRST_OPTIONS = 'first_options';
     public const OPTION_SECOND_OPTIONS = 'second_options';
 
-    private EasyField $field;
-
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
+            ->setFormType(RepeatedType::class);
 
-        $instance
-            ->setFormType(RepeatedType::class)
-            ->setDefaultColumns(12);
+        return $field;
+    }
 
-        return $instance;
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function setType($type): self
@@ -35,7 +41,7 @@ class RepeatField
 
     public function setLabel(?string $label): self
     {
-        $this->field->setLabel($label);
+        $this->innerField->setLabel($label);
         $this->setFirstLabel($label);
         $this->setSecondLabel($label);
 

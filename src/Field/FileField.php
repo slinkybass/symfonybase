@@ -2,34 +2,40 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraints\File;
 
-class FileField
+class FileField implements FieldInterface
 {
-    use FieldTrait;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public const OPTION_ACCEPT = 'accept';
     public const OPTION_FILE_CONSTRAINTS = 'fileConstraints';
 
-    private EasyField $field;
-
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
-        $instance->field->getAsDto()->setAssets(new AssetsDto());
-
-        $instance
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->innerField->getAsDto()->setAssets(new AssetsDto());
+        $field->initField($field->innerField);
+        $field
             ->setDir('media')
             ->setTemplatePath('field/file.html.twig')
             ->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()])
-            ->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms())
-            ->setDefaultColumns(12);
+            ->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms());
 
-        return $instance;
+        return $field;
+    }
+
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function setAccept(?string $filetype): self
@@ -41,36 +47,36 @@ class FileField
 
     public function setDir(string $dir): self
     {
-        $this->field->setBasePath($dir);
-        $this->field->setUploadDir('public/' . $dir);
+        $this->innerField->setBasePath($dir);
+        $this->innerField->setUploadDir('public/' . $dir);
 
         return $this;
     }
 
     public function setBasePath(string $path): self
     {
-        $this->field->setBasePath($path);
+        $this->innerField->setBasePath($path);
 
         return $this;
     }
 
     public function setUploadDir(string $dir): self
     {
-        $this->field->setUploadDir($dir);
+        $this->innerField->setUploadDir($dir);
 
         return $this;
     }
 
     public function setUploadedFileNamePattern($pattern): self
     {
-        $this->field->setUploadedFileNamePattern($pattern);
+        $this->innerField->setUploadedFileNamePattern($pattern);
 
         return $this;
     }
 
     public function setFileConstraints($constraints): self
     {
-        $this->field->setFileConstraints($constraints);
+        $this->innerField->setFileConstraints($constraints);
 
         return $this;
     }

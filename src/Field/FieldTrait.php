@@ -2,8 +2,12 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait as EasyTrait;
+
 trait FieldTrait
 {
+    use EasyTrait;
+
     public const OPTION_MAPPED = 'mapped';
     public const OPTION_REQUIRED = 'required';
     public const OPTION_DISABLED = 'disabled';
@@ -14,96 +18,94 @@ trait FieldTrait
     public const OPTION_MIN_LENGTH = 'minlength';
     public const OPTION_RENDER_AS_HTML = 'renderAsHtml';
     public const OPTION_STRIP_TAGS = 'stripTags';
+    public const OPTION_HIDDEN = 'ROLE_FIELD_HIDDEN';
 
-    public function __call(string $method, array $args)
+    protected function initField(object $field): void
     {
-        $result = $this->field->$method(...$args);
-
-        if ($result === $this->field) {
-            return $this;
-        }
-
-        return $result;
+        $this->dto = $field->getAsDto();
+        $this->dto->setFieldFqcn($field::class);
+        $this->applyDefaults();
     }
 
-    public function getField(): object
+    private function applyDefaults(): void
     {
-        return $this->field;
+        $this->setDefaultColumns(12);
+        $this->setDefaultColumns(12);
     }
 
     public function isMapped(bool $val = true): self
     {
-        $this->field->setFormTypeOption(self::OPTION_MAPPED, $val);
+        $this->setFormTypeOption(self::OPTION_MAPPED, $val);
 
         return $this;
     }
 
     public function isRequired(bool $val = true): self
     {
-        $this->field->setFormTypeOption(self::OPTION_REQUIRED, $val);
+        $this->setFormTypeOption(self::OPTION_REQUIRED, $val);
 
         return $this;
     }
 
     public function isDisabled(bool $val = true): self
     {
-        $this->field->setFormTypeOption(self::OPTION_DISABLED, $val);
+        $this->setFormTypeOption(self::OPTION_DISABLED, $val);
 
         return $this;
     }
 
     public function isReadonly(bool $val = true): self
     {
-        $this->field->setHtmlAttribute(self::OPTION_READ_ONLY, $val);
+        $this->setHtmlAttribute(self::OPTION_READ_ONLY, $val);
 
         return $this;
     }
 
     public function setData(mixed $val): self
     {
-        $this->field->setFormTypeOption(self::OPTION_DATA, $val);
+        $this->setFormTypeOption(self::OPTION_DATA, $val);
 
         return $this;
     }
 
     public function setPlaceholder(?string $val): self
     {
-        $this->field->setHtmlAttribute(self::OPTION_PLACEHOLDER, $val);
+        $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $val);
 
         return $this;
     }
 
     public function setMaxLength(?int $val): self
     {
-        $this->field->setHtmlAttribute(self::OPTION_MAX_LENGTH, $val);
+        $this->setHtmlAttribute(self::OPTION_MAX_LENGTH, $val);
 
         return $this;
     }
 
     public function setMinLength(?int $val): self
     {
-        $this->field->setHtmlAttribute(self::OPTION_MIN_LENGTH, $val);
+        $this->setHtmlAttribute(self::OPTION_MIN_LENGTH, $val);
 
         return $this;
     }
 
-    public function renderAsHtml(bool $val = true): self
+    public function isHtml(bool $val = true): self
     {
-        $this->field->setCustomOption(self::OPTION_RENDER_AS_HTML, $val);
+        $this->setCustomOption(self::OPTION_RENDER_AS_HTML, $val);
 
         return $this;
     }
 
-    public function stripTags(bool $val = true): self
+    public function isSanitized(bool $val = true): self
     {
-        $this->field->setCustomOption(self::OPTION_STRIP_TAGS, $val);
+        $this->setCustomOption(self::OPTION_STRIP_TAGS, $val);
 
         return $this;
     }
 
     public function displayIf(bool $val): self
     {
-        $this->field->setPermission($val ? '' : 'FIELD_NO_ACCESS');
+        $this->setPermission($val ? '' : self::OPTION_HIDDEN);
 
         return $this;
     }

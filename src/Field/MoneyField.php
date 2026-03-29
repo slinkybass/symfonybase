@@ -2,51 +2,57 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField as EasyField;
 
-class MoneyField
+class MoneyField implements FieldInterface
 {
-    use FieldTrait;
-
-    private EasyField $field;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
-
-        $instance
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
             ->setCurrency('EUR')
-            ->storedAsCents(false)
-            ->setDefaultColumns(12);
+            ->storedAsCents(false);
 
-        return $instance;
+        return $field;
+    }
+
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function setCurrency(string $currency): self
     {
-        $this->field->setCurrency($currency);
+        $this->innerField->setCurrency($currency);
 
         return $this;
     }
 
     public function setCurrencyPropertyPath(string $currency): self
     {
-        $this->field->setCurrencyPropertyPath($currency);
+        $this->innerField->setCurrencyPropertyPath($currency);
 
         return $this;
     }
 
     public function setDecimals(int $decimals): self
     {
-        $this->field->setNumDecimals($decimals);
+        $this->innerField->setNumDecimals($decimals);
 
         return $this;
     }
 
     public function storedAsCents(bool $asCents = true): self
     {
-        $this->field->setStoredAsCents($asCents);
+        $this->innerField->setStoredAsCents($asCents);
 
         return $this;
     }

@@ -2,13 +2,17 @@
 
 namespace App\Field;
 
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField as EasyField;
 
-class FloatField
+class FloatField implements FieldInterface
 {
-    use FieldTrait;
+    use FieldTrait {
+        applyDefaults as applyDefaultsTrait;
+    }
+    private EasyField $innerField;
 
     public const OPTION_HTML5 = 'html5';
     public const OPTION_MAX = 'max';
@@ -26,29 +30,31 @@ class FloatField
     public const SLIDER_CONNECT_UPPER = 'upper';
     public const SLIDER_CONNECT_LOWER = 'lower';
 
-    private EasyField $field;
-
     public static function new(string $propertyName, $label = null): self
     {
-        $instance = new self();
-        $instance->field = EasyField::new($propertyName, $label);
-
-        $instance
+        $field = new self();
+        $field->innerField = EasyField::new($propertyName, $label);
+        $field->initField($field->innerField);
+        $field
             ->setDecimals(2)
             ->setStep(0.1)
-            ->setFormTypeOption(self::OPTION_HTML5, true)
-            ->setDefaultColumns(12);
+            ->setFormTypeOption(self::OPTION_HTML5, true);
 
-        return $instance;
+        return $field;
+    }
+
+    private function applyDefaults(): void
+    {
+        $this->applyDefaultsTrait();
     }
 
     public function pluginSlider(bool $enable = true): self
     {
         $this->setHtmlAttribute(self::OPTION_PLUGIN_SLIDER, json_encode($enable));
         if ($enable) {
-            $this->field->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
+            $this->innerField->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
         } else {
-            $this->field->getAsDto()->setAssets(new AssetsDto());
+            $this->innerField->getAsDto()->setAssets(new AssetsDto());
         }
 
         return $this;
@@ -105,49 +111,49 @@ class FloatField
 
     public function setStep(int|float|null $step): self
     {
-        $this->field->setHtmlAttribute(self::OPTION_STEP, $step);
+        $this->innerField->setHtmlAttribute(self::OPTION_STEP, $step);
 
         return $this;
     }
 
     public function setDecimals(int $decimals): self
     {
-        $this->field->setNumDecimals($decimals);
+        $this->innerField->setNumDecimals($decimals);
 
         return $this;
     }
 
     public function setRoundingMode(int $mode): self
     {
-        $this->field->setRoundingMode($mode);
+        $this->innerField->setRoundingMode($mode);
 
         return $this;
     }
 
     public function storedAsString(bool $asString = true): self
     {
-        $this->field->setStoredAsString($asString);
+        $this->innerField->setStoredAsString($asString);
 
         return $this;
     }
 
     public function setNumberFormat(string $numberFormat): self
     {
-        $this->field->setNumberFormat($numberFormat);
+        $this->innerField->setNumberFormat($numberFormat);
 
         return $this;
     }
 
     public function setThousandsSeparator(string $separator): self
     {
-        $this->field->setThousandsSeparator($separator);
+        $this->innerField->setThousandsSeparator($separator);
 
         return $this;
     }
 
     public function setDecimalSeparator(string $separator): self
     {
-        $this->field->setDecimalSeparator($separator);
+        $this->innerField->setDecimalSeparator($separator);
 
         return $this;
     }

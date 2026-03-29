@@ -28,7 +28,7 @@ class RegistrationForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $session = $this->request->getSession();
-
+        $field->initField($field->innerField);
         $fields = [];
         $fields[] = FieldGenerator::text('name')
             ->setLabel('entities.user.fields.name')

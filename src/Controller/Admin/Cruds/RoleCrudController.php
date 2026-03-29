@@ -101,33 +101,31 @@ class RoleCrudController extends AbstractCrudController
             ->setLabel($this->transEntityPlural('user'));
 
         if ($pageName == Crud::PAGE_INDEX) {
-            yield from $this->yieldFields([
-                $displayName,
-                $isAdmin->renderAsSwitch(false),
-                $users->addCssClass('w-1')->setTextAlign('center'),
-            ]);
+            yield $displayName;
+            yield $isAdmin->isSwitch(false);
+            yield $users->addCssClass('w-1')->setTextAlign('center');
         } elseif ($pageName == Crud::PAGE_DETAIL) {
-            yield from $this->yieldFields([
-                $dataPanel,
-                $displayName,
-                $isAdmin,
-                ...($haveAnyPermissions ? [
-                    $permissionsPanel,
-                    ...$permissionsFields,
-                ] : []),
-                $usersPanel,
-                $users->setLabel(false),
-            ]);
+            yield $dataPanel;
+            yield $displayName;
+            yield $isAdmin;
+            if ($haveAnyPermissions) {
+                yield $permissionsPanel;
+                foreach ($permissionsFields as $permissionsField) {
+                    yield $permissionsField;
+                }
+            }
+            yield $usersPanel;
+            yield $users->setLabel(false);
         } elseif ($pageName == Crud::PAGE_NEW || $pageName == Crud::PAGE_EDIT) {
-            yield from $this->yieldFields([
-                $dataPanel,
-                $displayName,
-                $isAdmin,
-                ...($haveAnyPermissions ? [
-                    $permissionsPanel,
-                    ...$permissionsFields,
-                ] : []),
-            ]);
+            yield $dataPanel;
+            yield $displayName;
+            yield $isAdmin;
+            if ($haveAnyPermissions) {
+                yield $permissionsPanel;
+                foreach ($permissionsFields as $permissionsField) {
+                    yield $permissionsField;
+                }
+            }
         }
     }
 
