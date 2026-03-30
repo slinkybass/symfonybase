@@ -5,6 +5,8 @@ namespace App\Command;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Repository\Filter\User as UserFilter;
+use App\Repository\RoleRepository;
+use App\Repository\UserRepository;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -42,6 +44,7 @@ class CreateUsersCommand extends Command
 
     private function roles(OutputInterface $output): void
     {
+        /** @var RoleRepository $roleRepo */
         $roleRepo = $this->em->getRepository(Role::class);
 
         $roleSuperAdmin = $roleRepo->get(self::ROLE_SUPERADMIN);
@@ -85,7 +88,9 @@ class CreateUsersCommand extends Command
 
     private function users(OutputInterface $output): void
     {
+        /** @var UserRepository $userRepo */
         $userRepo = $this->em->getRepository(User::class);
+        /** @var RoleRepository $roleRepo */
         $roleRepo = $this->em->getRepository(Role::class);
 
         $superAdmins = $userRepo->filter([
