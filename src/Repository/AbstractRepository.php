@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Repository;
+
+use App\Repository\Filter\FilterInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+
+/**
+ * Base repository providing filter-based querying for all entities.
+ *
+ * @template T of object
+ *
+ * @extends ServiceEntityRepository<T>
+ */
+abstract class AbstractRepository extends ServiceEntityRepository
+{
+    protected static string $alias = 'entity';
+
+    /**
+     * Returns all results matching the given filters.
+     *
+     * @param FilterInterface[] $filters
+     *
+     * @return array<int, object>
+     */
+    public function filter(array $filters): array
+    {
+        return $this->applyFilters($filters)->getQuery()->getResult();
+    }
+
+    /**
+     * Returns a QueryBuilder with the given filters applied.
+     *
+     * @param FilterInterface[] $filters
+     */
+    public function applyFilters(array $filters): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder(static::$alias);
+        foreach ($filters as $filter) {
+            $filter->apply($qb);
+        }
+
+        return $qb;
+    }
+}
