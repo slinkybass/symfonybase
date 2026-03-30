@@ -99,7 +99,7 @@ entities:
       genders:
         male: Masculino
         female: Femenino
-        nobinary: No binario
+        nonbinary: No binario
       phone: Teléfono
       avatar: Avatar
       active: Activo
