@@ -49,7 +49,7 @@ class AdminCrudController extends AbstractCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        $this->transEntity = $this->config()->enablePublic ? $this->transEntity : 'user';
+        $this->transEntity = $this->config()->enablePublic ? $this->crud() : 'user';
 
         $crud = parent::configureCrud($crud);
         $crud->setDefaultSort(['name' => 'ASC', 'lastname' => 'ASC']);
