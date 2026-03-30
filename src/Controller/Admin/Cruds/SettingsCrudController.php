@@ -41,6 +41,8 @@ class SettingsCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $entity = $this->entity();
+        $isEnablePublic = $entity && $entity->isEnablePublic();
+        $isEnableCookies = $entity && $entity->isEnableCookies();
 
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection())
@@ -67,18 +69,23 @@ class SettingsCrudController extends AbstractCrudController
             ->setColumns(6);
         $appDescription = FieldGenerator::textarea('appDescription')
             ->setLabel($this->transEntityField('appDescription'))
+            ->displayIf($isEnablePublic)
             ->setColumns(6);
         $appKeywords = FieldGenerator::textarea('appKeywords')
             ->setLabel($this->transEntityField('appKeywords'))
+            ->displayIf($isEnablePublic)
             ->setColumns(6);
 
         /*** Privacy ***/
         $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))
-            ->setIcon('tool');
+            ->setIcon('tool')
+            ->displayIf($isEnablePublic);
         $privacyText = FieldGenerator::texteditor('privacyText')
-            ->setLabel($this->transEntityField('privacyText'));
+            ->setLabel($this->transEntityField('privacyText'))
+            ->displayIf($isEnablePublic);
         $cookiesText = FieldGenerator::texteditor('cookiesText')
-            ->setLabel($this->transEntityField('cookiesText'));
+            ->setLabel($this->transEntityField('cookiesText'))
+            ->displayIf($isEnableCookies);
 
         yield $dataPanel;
         yield $appName;
@@ -87,15 +94,11 @@ class SettingsCrudController extends AbstractCrudController
         yield $appFavicon;
         yield $appTimezone;
         yield $senderEmail;
-        if (!$entity || $entity->isEnablePublic()) {
-            yield $appDescription;
-            yield $appKeywords;
-            yield $privacyPanel;
-            yield $privacyText;
-            if (!$entity || $entity->isEnableCookies()) {
-                yield $cookiesText;
-            }
-        }
+        yield $appDescription;
+        yield $appKeywords;
+        yield $privacyPanel;
+        yield $privacyText;
+        yield $cookiesText;
     }
 
     public function configureActions(Actions $actions): Actions

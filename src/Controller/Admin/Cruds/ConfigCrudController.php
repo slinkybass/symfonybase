@@ -33,47 +33,55 @@ class ConfigCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $entity = $this->entity();
+        $isEnablePublic = $entity && $entity->isEnablePublic();
+        $isEnableRegister = $entity && $entity->isEnableRegister();
+        $isForm = in_array($pageName, [Crud::PAGE_NEW, Crud::PAGE_EDIT]);
 
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection())
             ->setIcon('settings');
         $enablePublic = FieldGenerator::switch('enablePublic')
             ->setLabel($this->transEntityField('enablePublic'))
+            ->isSwitch($isForm)
             ->setHtmlAttribute('data-hf-parent', 'enablePublic')
             ->setColumns(12);
         $enableResetPassword = FieldGenerator::switch('enableResetPassword')
             ->setLabel($this->transEntityField('enableResetPassword'))
+            ->isSwitch($isForm)
             ->setHtmlAttribute('data-hf-child', 'enablePublic')
+            ->displayIf($isForm || $isEnablePublic)
             ->setColumns(12);
         $enableRegister = FieldGenerator::switch('enableRegister')
             ->setLabel($this->transEntityField('enableRegister'))
+            ->isSwitch($isForm)
             ->setHtmlAttribute('data-hf-child', 'enablePublic')
             ->setHtmlAttribute('data-hf-parent', 'enableRegister')
+            ->displayIf($isForm || $isEnablePublic)
             ->setColumns(12);
         $roleDefaultRegister = FieldGenerator::association('roleDefaultRegister')
             ->setLabel($this->transEntityField('roleDefaultRegister'))
             ->setHtmlAttribute('data-hf-child', 'enableRegister')
+            ->displayIf($isForm || $isEnableRegister)
             ->isRequired();
 
         /*** Privacy ***/
         $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))
-            ->setIcon('settings');
+            ->setIcon('settings')
+            ->displayIf($isForm || $isEnablePublic);
         $enableCookies = FieldGenerator::switch('enableCookies')
             ->setLabel($this->transEntityField('enableCookies'))
+            ->isSwitch($isForm)
             ->setHtmlAttribute('data-hf-child', 'enablePublic')
+            ->displayIf($isForm || $isEnablePublic)
             ->setColumns(12);
 
         yield $dataPanel;
-        yield $enablePublic->isSwitch($pageName !== Crud::PAGE_INDEX);
-        if ($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnablePublic())) {
-            yield $enableResetPassword->isSwitch($pageName !== Crud::PAGE_INDEX);
-            yield $enableRegister->isSwitch($pageName !== Crud::PAGE_INDEX);
-            if ($pageName !== Crud::PAGE_DETAIL || ($entity && $entity->isEnableRegister())) {
-                yield $roleDefaultRegister;
-            }
-            yield $privacyPanel;
-            yield $enableCookies->isSwitch($pageName !== Crud::PAGE_INDEX);
-        }
+        yield $enablePublic;
+        yield $enableResetPassword;
+        yield $enableRegister;
+        yield $roleDefaultRegister;
+        yield $privacyPanel;
+        yield $enableCookies;
     }
 
     public function configureActions(Actions $actions): Actions
