@@ -142,86 +142,47 @@ class RoleCrudController extends AbstractCrudController
     {
         $actions = parent::configureActions($actions);
 
-        if ($this->hasPermissionCrud()) {
-            /** @var User $user */
-            $user = $this->getUser();
-            $rolePermissions = $this->rolePermissions;
+        /** @var User $user */
+        $user = $this->getUser();
+        $entity = $this->entity();
 
-            $actions->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE);
+        $actions->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE);
 
-            $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
-            $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
-                    return $hasPermissionEdit && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
-                });
-            });
-            $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
-                    return $hasPermissionEdit && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
-                });
-            });
-
-            $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
-            $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
-                });
-            });
-            $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
-                });
-            });
-            $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && $entity !== $user->getRole() && (!$entity->isAdmin() || ($entity->isAdmin() && $rolePermissions->isUp($user->getRole(), $entity)));
-                });
-            });
-
-            $rolesAdmin = $this->em()->getRepository(Role::class)->getAdmin();
-            $rolesUser = $this->em()->getRepository(Role::class)->getAdmin(false);
-
-            $hasPermissionToAdmins = $this->hasPermissionCrud('admin');
-            $admins = Action::new('admins', $this->transEntityPlural('admin'))->setIcon('user-shield')
-                ->linkToUrl(function ($entity) use ($rolesAdmin) {
-                    $url = $this->adminUrl()->setController(AdminCrudController::class)->setAction(Action::INDEX)
-                        ->setEntityId(null);
-                    if (count($rolesAdmin) > 1) {
-                        $url->set(EA::FILTERS, [
-                            'role' => ['comparison' => ComparisonType::EQ, 'value' => $entity->getId()],
-                            'hidden_filters' => ['role' => true],
-                        ]);
-                    }
-                    return $url->generateUrl();
-                })
-                ->displayIf(static function ($entity) use ($hasPermissionToAdmins) {
-                    return $entity->isAdmin() && $hasPermissionToAdmins;
-                })->asPrimaryAction()->addCssClass('btn-outline');
-            $actions->add(Crud::PAGE_INDEX, $admins);
-            $actions->add(Crud::PAGE_DETAIL, $admins);
-
-            $hasPermissionToUsers = $this->hasPermissionCrud('user');
-            $users = Action::new('users', $this->transEntityPlural('user'))->setIcon('user')
-                ->linkToUrl(function ($entity) use ($rolesUser) {
-                    $url = $this->adminUrl()->setController(UserCrudController::class)->setAction(Action::INDEX)
-                        ->setEntityId(null);
-                    if (count($rolesUser) > 1) {
-                        $url->set(EA::FILTERS, [
-                            'role' => ['comparison' => ComparisonType::EQ, 'value' => $entity->getId()],
-                            'hidden_filters' => ['role' => true],
-                        ]);
-                    }
-                    return $url->generateUrl();
-                })
-                ->displayIf(static function ($entity) use ($hasPermissionToUsers) {
-                    return !$entity->isAdmin() && $hasPermissionToUsers;
-                })->asPrimaryAction()->addCssClass('btn-outline');
-            $actions->add(Crud::PAGE_INDEX, $users);
-            $actions->add(Crud::PAGE_DETAIL, $users);
-
-            $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'users', 'admins', Action::EDIT, Action::DELETE ]);
-            $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'users', 'admins', Action::INDEX ]);
+        $actions->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) =>
+            $action->displayIf(fn (Role $r) => $user->getRole() !== $r && $this->rolePermissions->isUp($user->getRole(), $r))
+        );
+        $actions->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) =>
+            $action->displayIf(fn (Role $r) => $user->getRole() !== $r && $this->rolePermissions->isUp($user->getRole(), $r))
+        );
+        if ($entity && ($user->getRole() === $entity || !$this->rolePermissions->isUp($user->getRole(), $entity))) {
+            $actions->setPermission(Action::EDIT, 'NOPERMISSION_ACTION');
+            $actions->setPermission(Action::DELETE, 'NOPERMISSION_ACTION');
         }
+
+        $admins = Action::new('admins', $this->transEntityPlural('admin'))->setIcon('user-shield')
+            ->linkToUrl(fn (Role $r) => $this->adminUrl()->setController(AdminCrudController::class)->setAction(Action::INDEX)
+                ->set(EA::FILTERS, [
+                    'role' => ['comparison' => ComparisonType::EQ, 'value' => $r->getId()],
+                    'hidden_filters' => ['role' => true],
+                ])->generateUrl())
+            ->displayIf(fn (Role $r) => $this->hasPermissionCrud('admin') && $r->isAdmin())
+            ->asPrimaryAction()->addCssClass('btn-outline');
+        $actions->add(Crud::PAGE_INDEX, $admins);
+        $actions->add(Crud::PAGE_DETAIL, $admins);
+
+        $users = Action::new('users', $this->transEntityPlural('user'))->setIcon('user')
+            ->linkToUrl(fn (Role $r) => $this->adminUrl()->setController(UserCrudController::class)->setAction(Action::INDEX)
+                ->set(EA::FILTERS, [
+                    'role' => ['comparison' => ComparisonType::EQ, 'value' => $r->getId()],
+                    'hidden_filters' => ['role' => true],
+                ])->generateUrl())
+            ->displayIf(fn (Role $r) => $this->hasPermissionCrud('user') && !$r->isAdmin())
+            ->asPrimaryAction()->addCssClass('btn-outline');
+        $actions->add(Crud::PAGE_INDEX, $users);
+        $actions->add(Crud::PAGE_DETAIL, $users);
+
+        $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'users', 'admins', Action::EDIT, Action::DELETE ]);
+        $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'users', 'admins', Action::INDEX ]);
 
         return $actions;
     }

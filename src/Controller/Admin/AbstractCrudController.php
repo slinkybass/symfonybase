@@ -58,18 +58,16 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $hasPermissionDetail = $this->hasPermissionCrudAction(Action::DETAIL);
         $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
         $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
-        $isOwnUser = $this->user() === $this->entity();
 
         $denied = match(true) {
-            !$hasPermission && !$isOwnUser => [Action::INDEX, Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE, Action::BATCH_DELETE],
-            !$hasPermission && $isOwnUser  => [Action::INDEX, Action::NEW, Action::DETAIL, Action::DELETE, Action::BATCH_DELETE],
-            default                        => array_filter([
+            !$hasPermission => [Action::INDEX, Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE, Action::BATCH_DELETE],
+            default => array_filter([
                 !$hasPermissionNew ? Action::NEW : null,
                 !$hasPermissionDetail ? Action::DETAIL : null,
-                !$hasPermissionEdit && !$isOwnUser ? Action::EDIT : null,
-                !$hasPermissionDelete || $isOwnUser ? Action::DELETE : null,
-                !$hasPermissionDelete || $isOwnUser ? Action::BATCH_DELETE : null,
-            ]),
+                !$hasPermissionEdit ? Action::EDIT : null,
+                !$hasPermissionDelete ? Action::DELETE : null,
+                !$hasPermissionDelete ? Action::BATCH_DELETE : null,
+            ])
         };
 
         $actions->setPermissions(array_fill_keys($denied, 'NOPERMISSION_ACTION'));

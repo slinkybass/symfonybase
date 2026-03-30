@@ -177,20 +177,17 @@ class UserCrudController extends AbstractCrudController
     {
         $actions = parent::configureActions($actions);
 
-        if ($this->hasPermissionCrud()) {
-            $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
-            $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
-                ->linkToUrl(function ($entity) {
-                    return $this->generateUrl('home', ['_switch_user' => $entity->getEmail()]);
-                })->displayIf(static function ($entity) use ($hasPermissionImpersonate) {
-                    return $hasPermissionImpersonate && $entity->isActive();
-                })->asPrimaryAction()->addCssClass('btn-outline');
-            $actions->add(Crud::PAGE_INDEX, $impersonate);
-            $actions->add(Crud::PAGE_DETAIL, $impersonate);
+        $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
+        $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
+            ->linkToUrl(fn (User $u) => $this->generateUrl('home', ['_switch_user' => $u->getEmail()]))
+            ->displayIf(fn (User $u) => $u->isActive())
+            ->asPrimaryAction()->addCssClass('btn-outline');
+        $actions->add(Crud::PAGE_INDEX, $impersonate);
+        $actions->add(Crud::PAGE_DETAIL, $impersonate);
+        $actions->setPermission('impersonate', !$hasPermissionImpersonate ? 'NOPERMISSION_ACTION' : '');
 
-            $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE ]);
-            $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX ]);
-        }
+        $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE ]);
+        $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX ]);
 
         return $actions;
     }

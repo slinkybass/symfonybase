@@ -191,62 +191,49 @@ class AdminCrudController extends AbstractCrudController
     {
         $this->transEntity = 'user';
 
-        $actions = parent::configureActions($actions);
+        /** @var User $user */
+        $user = $this->getUser();
+        $entity = $this->entity();
+        $isOwnUser = $user === $entity;
+        $isUp = $entity && $this->rolePermissions->isUp($user->getRole(), $entity->getRole());
+        $hasPermission = $this->hasPermissionCrud();
+        $hasPermissionNew = $this->hasPermissionCrudAction(Action::NEW);
+        $hasPermissionDetail = $this->hasPermissionCrudAction(Action::DETAIL);
+        $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
+        $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
 
-        if ($this->hasPermissionCrud()) {
-            /** @var User $user */
-            $user = $this->getUser();
-            $rolePermissions = $this->rolePermissions;
+        $actions->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE);
 
-            $actions->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE);
+        $actions->update(Crud::PAGE_INDEX, Action::DETAIL, fn (Action $action) =>
+            $action->displayIf(fn (User $u) => $user === $u || $hasPermissionDetail)
+        );
+        $actions->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) =>
+            $action->displayIf(fn (User $u) => $user === $u || ($hasPermissionEdit && $this->rolePermissions->isUp($user->getRole(), $u->getRole())))
+        );
+        $actions->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) =>
+            $action->displayIf(fn (User $u) => $user !== $u && ($hasPermissionDelete && $this->rolePermissions->isUp($user->getRole(), $u->getRole())))
+        );
 
-            $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
-            $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
-                    return ($hasPermissionEdit || $entity === $user) && $rolePermissions->isUp($user->getRole(), $entity->getRole());
-                });
-            });
-            $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
-                    return ($hasPermissionEdit || $entity === $user) && $rolePermissions->isUp($user->getRole(), $entity->getRole());
-                });
-            });
-            $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) use ($hasPermissionEdit, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionEdit, $rolePermissions, $user) {
-                    return ($hasPermissionEdit || $entity === $user) && $rolePermissions->isUp($user->getRole(), $entity->getRole());
-                });
-            });
-
-            $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
-            $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && $entity !== $user && $rolePermissions->isUp($user->getRole(), $entity->getRole());
-                });
-            });
-            $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && $entity !== $user && $rolePermissions->isUp($user->getRole(), $entity->getRole());
-                });
-            });
-            $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) use ($hasPermissionDelete, $rolePermissions, $user) {
-                return $action->displayIf(static function ($entity) use ($hasPermissionDelete, $rolePermissions, $user) {
-                    return $hasPermissionDelete && $entity !== $user && $rolePermissions->isUp($user->getRole(), $entity->getRole());
-                });
-            });
-
-            $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
-            $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
-                ->linkToUrl(function ($entity) {
-                    return $this->generateUrl('home', ['_switch_user' => $entity->getEmail()]);
-                })->displayIf(static function ($entity) use ($hasPermissionImpersonate, $rolePermissions, $user) {
-                    return $hasPermissionImpersonate && $entity->isActive() && $entity !== $user && $rolePermissions->isUp($user->getRole(), $entity->getRole());
-                })->asPrimaryAction()->addCssClass('btn-outline');
-            $actions->add(Crud::PAGE_INDEX, $impersonate);
-            $actions->add(Crud::PAGE_DETAIL, $impersonate);
-
-            $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE ]);
-            $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX ]);
+        $denied = !$hasPermission ? [Action::INDEX] : [];
+        if (!$hasPermissionNew) $denied[] = Action::NEW;
+        if ($entity) {
+            if (!$isOwnUser && !$hasPermissionDetail) $denied[] = Action::DETAIL;
+            if (!$isOwnUser && (!$hasPermissionEdit || !$isUp)) $denied[] = Action::EDIT;
+            if ($isOwnUser || !$hasPermissionDelete || !$isUp) $denied[] = Action::DELETE;
         }
+        $actions->setPermissions(array_fill_keys(array_unique($denied), 'NOPERMISSION_ACTION'));
+
+        $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
+        $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
+            ->linkToUrl(fn (User $u) => $this->generateUrl('home', ['_switch_user' => $u->getEmail()]))
+            ->displayIf(fn (User $u) => $user !== $u && $u->isActive() && $this->rolePermissions->isUp($user->getRole(), $u->getRole()))
+            ->asPrimaryAction()->addCssClass('btn-outline');
+        $actions->add(Crud::PAGE_INDEX, $impersonate);
+        $actions->add(Crud::PAGE_DETAIL, $impersonate);
+        $actions->setPermission('impersonate', !$hasPermissionImpersonate ? 'NOPERMISSION_ACTION' : '');
+
+        $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE ]);
+        $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX ]);
 
         return $actions;
     }

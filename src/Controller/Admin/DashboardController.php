@@ -187,8 +187,8 @@ class DashboardController extends AbstractDashboardController
         $actions->add(Crud::PAGE_NEW, Action::SAVE_AND_RETURN);
         $actions->update(Crud::PAGE_NEW, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
         $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) {
-                $action->getAsDto()->setVariant(ButtonVariant::Success);
-                return $action->setIcon('device-floppy');
+            $action->getAsDto()->setVariant(ButtonVariant::Success);
+            return $action->setIcon('device-floppy');
         });
 
         $actions->add(Crud::PAGE_DETAIL, Action::INDEX);

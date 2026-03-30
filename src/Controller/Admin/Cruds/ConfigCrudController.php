@@ -78,23 +78,15 @@ class ConfigCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $actions = parent::configureActions($actions);
+        $config = $this->em()->getRepository(Config::class)->get();
+        $hasPermission = $this->hasPermissionCrud();
 
-        if ($this->hasPermissionCrud()) {
-            $actions->remove(Crud::PAGE_NEW, Action::INDEX);
-            $actions->remove(Crud::PAGE_DETAIL, Action::INDEX);
-            $actions->remove(Crud::PAGE_EDIT, Action::INDEX);
+        $denied = [Action::INDEX, Action::DELETE, Action::BATCH_DELETE];
+        array_merge($denied, $config || !$hasPermission ? [Action::NEW] : []);
+        array_merge($denied, !$hasPermission ? [Action::DETAIL, Action::EDIT] : []);
 
-            $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) {
-                return $action->displayIf(fn () => true);
-            });
-            $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) {
-                return $action->displayIf(fn () => true);
-            });
-            $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) {
-                return $action->displayIf(fn () => true);
-            });
-        }
+        $actions->setPermissions(array_fill_keys($denied, 'NOPERMISSION_ACTION'));
+
         return $actions;
     }
 
