@@ -10,7 +10,7 @@ use Twig\TwigFilter;
  */
 class JsonDecodeExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('json_decode', [$this, 'getJsonDecode']),
@@ -18,13 +18,9 @@ class JsonDecodeExtension extends AbstractExtension
     }
 
     /**
-     * Returns the decoded JSON string.
-     *
-     * @param string $string The string to decode
-     *
-     * @return mixed The decoded string
+     * Decodes a JSON string.
      */
-    public function getJsonDecode($string)
+    public function getJsonDecode(string $string): mixed
     {
         return json_decode($string);
     }

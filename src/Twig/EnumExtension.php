@@ -8,7 +8,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
- * Twig extension to display enums.
+ * Twig extension to display and resolve PHP enums in Twig templates.
  */
 class EnumExtension extends AbstractExtension
 {
@@ -16,7 +16,7 @@ class EnumExtension extends AbstractExtension
     {
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('enum_label', [$this, 'enumLabel']),
@@ -27,26 +27,25 @@ class EnumExtension extends AbstractExtension
     }
 
     /**
-     * Displays the label corresponding to the enum.
+     * Returns the translated label for an enum case.
      *
-     * @param mixed  $enum   The enum to display
-     * @param string $locale The locale code
-     *
-     * @return string The label corresponding to $value
+     * @param \UnitEnum   $enum   the enum case to display
+     * @param string|null $locale the locale code (defaults to the current locale)
      */
-    public function enumLabel($enum, ?string $locale = null)
+    public function enumLabel(\UnitEnum $enum, ?string $locale = null): string
     {
         if ($enum instanceof TranslatableInterface) {
             return $enum->trans($this->translator, $locale);
         }
+
         return $enum->name;
     }
 
     /**
-     * Returns the enum choices.
+     * Returns all cases of an enum class as a label-value array.
      *
-     * @param string $enumClass Enum class name
-     * @param string $locale    The locale code
+     * @param class-string $enumClass the fully qualified enum class name
+     * @param string|null  $locale    the locale code (defaults to the current locale)
      *
      * @return array<string, mixed>
      */
@@ -54,23 +53,20 @@ class EnumExtension extends AbstractExtension
     {
         $choices = [];
         foreach ($enumClass::cases() as $case) {
-            if ($case instanceof TranslatableInterface) {
-                $label = $case->trans($this->translator, $locale);
-            } else {
-                $label = $case->name;
-            }
+            $label = $case instanceof TranslatableInterface ? $case->trans($this->translator, $locale) : $case->name;
             $choices[$label] = $case->value;
         }
+
         return $choices;
     }
 
     /**
-     * Returns the enum from its value.
+     * Returns the enum case matching the given value, or null if not found.
      *
-     * @param mixed  $value     Enum 'value' property
-     * @param string $enumClass Enum class name
+     * @param mixed        $value     the value to match against enum cases
+     * @param class-string $enumClass the fully qualified enum class name
      */
-    public function enumFromValue($value, string $enumClass): ?object
+    public function enumFromValue(mixed $value, string $enumClass): ?\UnitEnum
     {
         foreach ($enumClass::cases() as $case) {
             if ($case->value === $value) {
@@ -82,12 +78,12 @@ class EnumExtension extends AbstractExtension
     }
 
     /**
-     * Returns the enum from its name.
+     * Returns the enum case matching the given name, or null if not found.
      *
-     * @param string $name      Enum 'name' property
-     * @param string $enumClass Enum class name
+     * @param string       $name      the name to match against enum cases
+     * @param class-string $enumClass the fully qualified enum class name
      */
-    public function enumFromName(string $name, string $enumClass): ?object
+    public function enumFromName(string $name, string $enumClass): ?\UnitEnum
     {
         foreach ($enumClass::cases() as $case) {
             if ($case->name === $name) {

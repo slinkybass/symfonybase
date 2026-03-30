@@ -13,11 +13,13 @@ use Twig\TwigFunction;
  */
 class RolePermissionsExtension extends AbstractExtension
 {
-    public function __construct(private RolePermissions $rolePermissions, private Security $security)
-    {
+    public function __construct(
+        private RolePermissions $rolePermissions,
+        private Security $security,
+    ) {
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('has_permission', [$this, 'hasPermission']),
@@ -29,46 +31,49 @@ class RolePermissionsExtension extends AbstractExtension
     /**
      * Checks whether a user has a specific permission.
      *
-     * @param string $permission  the permission to check
-     * @param User|null $user     the user to check (defaults to the current user)
-     *
-     * @return bool returns true if the user has the permission, false otherwise
+     * @param string    $perm the permission identifier to check
+     * @param User|null $user the user to check (defaults to the current user)
      */
     public function hasPermission(string $perm, ?User $user = null): bool
     {
         $user = $user ?? $this->security->getUser();
-        if (!$user instanceof User) return false;
+        if (!$user instanceof User) {
+            return false;
+        }
+
         return $this->rolePermissions->userHasPermission($user, $perm);
     }
 
     /**
-     * Checks whether a user has a specific CRUD permission.
+     * Checks whether a user has access to a specific CRUD.
      *
-     * @param string $crud        the CRUD name to check
-     * @param User|null $user     the user to check (defaults to the current user)
-     *
-     * @return bool returns true if the user has the CRUD permission, false otherwise
+     * @param string    $crud the CRUD name to check
+     * @param User|null $user the user to check (defaults to the current user)
      */
     public function hasPermissionCrud(string $crud, ?User $user = null): bool
     {
         $user = $user ?? $this->security->getUser();
-        if (!$user instanceof User) return false;
+        if (!$user instanceof User) {
+            return false;
+        }
+
         return $this->rolePermissions->userHasPermissionCrud($user, $crud);
     }
 
     /**
-     * Checks whether a user has a specific CRUD permission.
+     * Checks whether a user has permission to perform a specific action on a CRUD.
      *
-     * @param string $crud        the CRUD name to check
-     * @param string $action      the CRUD action to check
-     * @param User|null $user     the user to check (defaults to the current user)
-     *
-     * @return bool returns true if the user has the CRUD permission, false otherwise
+     * @param string    $crud   the CRUD name to check
+     * @param string    $action the action to check (e.g. 'index', 'new', 'edit', 'delete')
+     * @param User|null $user   the user to check (defaults to the current user)
      */
     public function hasPermissionCrudAction(string $crud, string $action, ?User $user = null): bool
     {
         $user = $user ?? $this->security->getUser();
-        if (!$user instanceof User) return false;
+        if (!$user instanceof User) {
+            return false;
+        }
+
         return $this->rolePermissions->userHasPermissionCrudAction($user, $crud, $action);
     }
 }

@@ -10,7 +10,7 @@ use Twig\TwigFilter;
  */
 class HEXtoRGBExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('hex_to_rgb', [$this, 'HEXtoRGB']),
@@ -18,14 +18,14 @@ class HEXtoRGBExtension extends AbstractExtension
     }
 
     /**
-     * Returns the array of RGB values.
+     * Converts a HEX color code to an array of RGB values.
      *
-     * @param string $hex The HEX color code
+     * @param string $hex the HEX color code (e.g. '#ff0000')
      *
-     * @return array The array of RGB values
+     * @return array<int, int>|null
      */
-    public function HEXtoRGB($hex)
+    public function HEXtoRGB(string $hex): ?array
     {
-        return sscanf($hex, "#%02x%02x%02x");
+        return sscanf($hex, '#%02x%02x%02x');
     }
 }
