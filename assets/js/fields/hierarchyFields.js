@@ -99,7 +99,7 @@
 	 * @param {HTMLElement} child - The child element to process.
 	 */
 	function processChild(parentValue, parentIsCheckboxOrRadio, child) {
-		const container = child.dataset.hfContainer ? child.closest(child.dataset.hfContainer) : child.closest(".form-group").parentElement;
+		const container = child.dataset.hfContainer ? child.closest(child.dataset.hfContainer) : child.closest(".form-group")?.parentElement;
 		if (!container) return;
 
 		const childType = child.type;
@@ -303,8 +303,8 @@
 		if (!card) return;
 		const childs = card.querySelectorAll("[data-hf-child]");
 		const visible = Array.from(childs).some(function (ch) {
-			const container = ch.dataset.hfContainer ? ch.closest(ch.dataset.hfContainer) : ch.closest(".form-group").parentElement;
-			return !container.classList.contains("d-none");
+			const container = ch.dataset.hfContainer ? ch.closest(ch.dataset.hfContainer) : ch.closest(".form-group")?.parentElement;
+			return !container?.classList.contains("d-none");
 		});
 		const otherFields = Array.from(card.querySelectorAll("input, select, textarea")).filter(
 			el => el.type !== 'hidden' && !el.dataset.hfChild
