@@ -60,7 +60,7 @@ class CreateUsersCommand extends Command
             });
             $roleSuperAdmin->setPermissions($permissionsValues);
             $this->em->persist($roleSuperAdmin);
-            $output->writeln('<bg=green;options=bold>CREATED '.self::ROLE_SUPERADMIN.' </>');
+            $output->writeln('<bg=green;options=bold>CREATED '.self::ROLE_SUPERADMIN.'</>');
         }
 
         $roleAdmin = $roleRepo->get(self::ROLE_ADMIN);

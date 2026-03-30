@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Role;
+use App\Repository\RoleRepository;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -33,7 +34,10 @@ class UpdatePermissionsCommand extends Command
 
     private function permissions(OutputInterface $output): void
     {
-        $roleSuperAdmin = $this->em->getRepository(Role::class)->get("ROLE_SUPERADMIN");
+        /** @var RoleRepository $roleRepo */
+        $roleRepo = $this->em->getRepository(Role::class);
+
+        $roleSuperAdmin = $roleRepo->get(CreateUsersCommand::ROLE_SUPERADMIN);
         if ($roleSuperAdmin) {
             $permissions = $this->rolePermissions->getGroupedPermissions();
             $permissionsValues = [];
@@ -42,7 +46,7 @@ class UpdatePermissionsCommand extends Command
             });
             $roleSuperAdmin->setPermissions($permissionsValues);
             $this->em->persist($roleSuperAdmin);
-            $output->writeln('<bg=green;options=bold>UPDATED ROLE_SUPERADMIN</>');
+            $output->writeln('<bg=green;options=bold>UPDATED '.CreateUsersCommand::ROLE_SUPERADMIN.'</>');
         }
 
         $this->em->flush();
