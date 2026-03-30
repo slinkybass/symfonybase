@@ -16,11 +16,14 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[AsCommand(name: 'app:create-users')]
 class CreateUsersCommand extends Command
 {
-    private EntityManagerInterface $em;
-    private UserPasswordHasherInterface $passwordHasher;
-    private RolePermissions $rolePermissions;
+    public const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_USER = 'ROLE_USER';
 
-    public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, RolePermissions $rolePermissions)
+    public function __construct(
+        private EntityManagerInterface $em,
+        private UserPasswordHasherInterface $passwordHasher,
+        private RolePermissions $rolePermissions)
     {
         $this->em = $em;
         $this->passwordHasher = $passwordHasher;
@@ -33,15 +36,18 @@ class CreateUsersCommand extends Command
     {
         $this->roles($output);
         $this->users($output);
+
         return Command::SUCCESS;
     }
 
     private function roles(OutputInterface $output): void
     {
-        $roleSuperAdmin = $this->em->getRepository(Role::class)->get("ROLE_SUPERADMIN");
+        $roleRepo = $this->em->getRepository(Role::class);
+
+        $roleSuperAdmin = $roleRepo->get(self::ROLE_SUPERADMIN);
         if (!$roleSuperAdmin) {
             $roleSuperAdmin = new Role();
-            $roleSuperAdmin->setName('ROLE_SUPERADMIN');
+            $roleSuperAdmin->setName(self::ROLE_SUPERADMIN);
             $roleSuperAdmin->setDisplayName('Superadmin');
             $roleSuperAdmin->setIsAdmin(true);
             $permissions = $this->rolePermissions->getGroupedPermissions();
@@ -51,27 +57,27 @@ class CreateUsersCommand extends Command
             });
             $roleSuperAdmin->setPermissions($permissionsValues);
             $this->em->persist($roleSuperAdmin);
-            $output->writeln('<bg=green;options=bold>CREATED ROLE_SUPERADMIN</>');
+            $output->writeln('<bg=green;options=bold>CREATED '.self::ROLE_SUPERADMIN.' </>');
         }
 
-        $roleAdmin = $this->em->getRepository(Role::class)->get("ROLE_ADMIN");
+        $roleAdmin = $roleRepo->get(self::ROLE_ADMIN);
         if (!$roleAdmin) {
             $roleAdmin = new Role();
             $roleAdmin->setDisplayName('Admin');
-            $roleAdmin->setName('ROLE_ADMIN');
+            $roleAdmin->setName(self::ROLE_ADMIN);
             $roleAdmin->setIsAdmin(true);
             $this->em->persist($roleAdmin);
-            $output->writeln('<bg=green;options=bold>CREATED ROLE_ADMIN</>');
+            $output->writeln('<bg=green;options=bold>CREATED '.self::ROLE_ADMIN.'</>');
         }
 
-        $roleUser = $this->em->getRepository(Role::class)->get("ROLE_USER");
+        $roleUser = $roleRepo->get(self::ROLE_USER);
         if (!$roleUser) {
             $roleUser = new Role();
             $roleUser->setDisplayName('User');
-            $roleUser->setName('ROLE_USER');
+            $roleUser->setName(self::ROLE_USER);
             $roleUser->setIsAdmin(false);
             $this->em->persist($roleUser);
-            $output->writeln('<bg=green;options=bold>CREATED ROLE_USER</>');
+            $output->writeln('<bg=green;options=bold>CREATED '.self::ROLE_USER.'</>');
         }
 
         $this->em->flush();
@@ -79,12 +85,14 @@ class CreateUsersCommand extends Command
 
     private function users(OutputInterface $output): void
     {
-        $superadminRoleName = "ROLE_SUPERADMIN";
-        $superAdmins = $this->em->getRepository(User::class)->filter([
-            new Userfilter\RoleFilter($superadminRoleName),
+        $userRepo = $this->em->getRepository(User::class);
+        $roleRepo = $this->em->getRepository(Role::class);
+
+        $superAdmins = $userRepo->filter([
+            new UserFilter\RoleFilter(self::ROLE_SUPERADMIN),
         ]);
-        if (!count($superAdmins)) {
-            $roleSuperAdmin = $this->em->getRepository(Role::class)->get($superadminRoleName);
+        if (empty($superAdmins)) {
+            $roleSuperAdmin = $roleRepo->get(self::ROLE_SUPERADMIN);
 
             $superAdmin = new User();
             $superAdmin->setName('Superadmin');
@@ -95,12 +103,11 @@ class CreateUsersCommand extends Command
             $output->writeln('<bg=green;options=bold>CREATED USER superadmin@superadmin.com</>');
         }
 
-        $adminRoleName = "ROLE_ADMIN";
-        $admins = $this->em->getRepository(User::class)->filter([
-            new Userfilter\RoleFilter($adminRoleName),
+        $admins = $userRepo->filter([
+            new UserFilter\RoleFilter(self::ROLE_ADMIN),
         ]);
-        if (!count($admins)) {
-            $roleAdmin = $this->em->getRepository(Role::class)->get($adminRoleName);
+        if (empty($admins)) {
+            $roleAdmin = $roleRepo->get(self::ROLE_ADMIN);
 
             $admin = new User();
             $admin->setName('Admin');
