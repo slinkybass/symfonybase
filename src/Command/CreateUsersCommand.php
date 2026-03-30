@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Role;
 use App\Entity\User;
+use App\Repository\Filter\User as UserFilter;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -78,9 +79,12 @@ class CreateUsersCommand extends Command
 
     private function users(OutputInterface $output): void
     {
-        $superAdmins = $this->em->getRepository(User::class)->findByRole("ROLE_SUPERADMIN");
+        $superadminRoleName = "ROLE_SUPERADMIN";
+        $superAdmins = $this->em->getRepository(User::class)->filter([
+            new Userfilter\RoleFilter($superadminRoleName),
+        ]);
         if (!count($superAdmins)) {
-            $roleSuperAdmin = $this->em->getRepository(Role::class)->get("ROLE_SUPERADMIN");
+            $roleSuperAdmin = $this->em->getRepository(Role::class)->get($superadminRoleName);
 
             $superAdmin = new User();
             $superAdmin->setName('Superadmin');
@@ -91,9 +95,12 @@ class CreateUsersCommand extends Command
             $output->writeln('<bg=green;options=bold>CREATED USER superadmin@superadmin.com</>');
         }
 
-        $admins = $this->em->getRepository(User::class)->findByRole("ROLE_ADMIN");
+        $adminRoleName = "ROLE_ADMIN";
+        $admins = $this->em->getRepository(User::class)->filter([
+            new Userfilter\RoleFilter($adminRoleName),
+        ]);
         if (!count($admins)) {
-            $roleAdmin = $this->em->getRepository(Role::class)->get("ROLE_ADMIN");
+            $roleAdmin = $this->em->getRepository(Role::class)->get($adminRoleName);
 
             $admin = new User();
             $admin->setName('Admin');

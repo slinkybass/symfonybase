@@ -7,6 +7,7 @@ use App\Entity\Enum\UserGender;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Field\FieldGenerator;
+use App\Repository\Filter\User as UserFilter;
 use App\Repository\RoleRepository;
 use App\Service\RolePermissions;
 use Doctrine\ORM\QueryBuilder;
@@ -150,9 +151,12 @@ class UserCrudController extends AbstractCrudController
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        return $this->em()->getRepository($this->getEntityFqcn())->findAdminsSentence(
-            $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters), false
-        );
+        $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
+        (new UserFilter\VerifiedFilter())->apply($qb);
+        (new UserFilter\AdminFilter(false))->apply($qb);
+
+        return $qb;
     }
 
     public function configureFilters(Filters $filters): Filters
