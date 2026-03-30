@@ -100,11 +100,11 @@ class RoleCrudController extends AbstractCrudController
         $users = FieldGenerator::association('users')
             ->setLabel($this->transEntityPlural('user'));
 
-        if ($pageName == Crud::PAGE_INDEX) {
+        if ($this->isIndex()) {
             yield $displayName;
             yield $isAdmin->isSwitch(false);
             yield $users->addCssClass('w-1')->setTextAlign('center');
-        } elseif ($pageName == Crud::PAGE_DETAIL) {
+        } elseif ($this->isDetail()) {
             yield $dataPanel;
             yield $displayName;
             yield $isAdmin;
@@ -116,7 +116,7 @@ class RoleCrudController extends AbstractCrudController
             }
             yield $usersPanel;
             yield $users->setLabel(false);
-        } elseif ($pageName == Crud::PAGE_NEW || $pageName == Crud::PAGE_EDIT) {
+        } elseif ($this->isForm()) {
             yield $dataPanel;
             yield $displayName;
             yield $isAdmin;

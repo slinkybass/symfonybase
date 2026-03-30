@@ -118,17 +118,17 @@ class AdminCrudController extends AbstractCrudController
             ->setIcon('key');
         $password = FieldGenerator::password('plainPassword')
             ->isRepeated()
-            ->isRequired($pageName == Crud::PAGE_NEW)
+            ->isRequired($this->isNew())
             ->setFirstLabel($this->transEntityField('password'))
             ->setSecondLabel($this->transEntityField('repeatPassword'));
 
-        if ($pageName == Crud::PAGE_INDEX) {
+        if ($this->isIndex()) {
             yield $avatar->addCssClass('w-1');
             yield $fullname;
             yield $email;
             yield $role->displayIf(count($roles) > 1 && !$filterHiddenRole);
             yield $active->isSwitch(false)->addCssClass('w-1');
-        } elseif ($pageName == Crud::PAGE_DETAIL) {
+        } elseif ($this->isDetail()) {
             yield $dataPanel;
             yield $avatar->setColumns(12);
             yield $name;
@@ -140,7 +140,7 @@ class AdminCrudController extends AbstractCrudController
             yield $role->displayIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2);
             yield $active->setColumns(2);
             yield $createdAt;
-        } elseif (in_array($pageName, [Crud::PAGE_NEW, Crud::PAGE_EDIT])) {
+        } elseif ($this->isForm()) {
             yield $dataPanel;
             yield $name;
             yield $lastname;
@@ -152,7 +152,7 @@ class AdminCrudController extends AbstractCrudController
             yield $role->displayIf($entity !== $user);
             yield $active->displayIf($entity !== $user);
             yield $passwordPanel;
-            yield $password->isRequired($pageName == Crud::PAGE_NEW);
+            yield $password;
         }
     }
 

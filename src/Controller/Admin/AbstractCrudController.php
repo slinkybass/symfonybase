@@ -133,6 +133,31 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $this->getContext()?->getCrud()?->getCurrentAction();
     }
 
+    public function isIndex(): ?string
+    {
+        return $this->action() === Action::INDEX;
+    }
+
+    public function isDetail(): ?string
+    {
+        return $this->action() === Action::DETAIL;
+    }
+
+    public function isNew(): ?string
+    {
+        return $this->action() === Action::NEW;
+    }
+
+    public function isEdit(): ?string
+    {
+        return $this->action() === Action::EDIT;
+    }
+
+    public function isForm(): ?string
+    {
+        return $this->isNew() || $this->isEdit();
+    }
+
     public function filters($withHiddenFilters = false): array
     {
         $filters = filter_input(INPUT_GET, EA::FILTERS, FILTER_SANITIZE_URL, FILTER_REQUIRE_ARRAY) ?? [];

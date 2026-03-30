@@ -35,7 +35,7 @@ class ConfigCrudController extends AbstractCrudController
         $entity = $this->entity();
         $isEnablePublic = $entity && $entity->isEnablePublic();
         $isEnableRegister = $entity && $entity->isEnableRegister();
-        $isForm = in_array($pageName, [Crud::PAGE_NEW, Crud::PAGE_EDIT]);
+        $isForm = $this->isForm();
 
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection())
