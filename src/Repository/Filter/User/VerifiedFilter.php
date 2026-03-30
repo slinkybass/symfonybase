@@ -10,8 +10,14 @@ use Doctrine\ORM\QueryBuilder;
  */
 class VerifiedFilter extends AbstractFilter
 {
+    public function __construct(private readonly bool $isVerified = true)
+    {
+    }
+
     public function apply(QueryBuilder $qb): void
     {
-        $qb->andWhere($this->getRootAlias($qb).'.verified = true');
+        $qb
+            ->andWhere($this->getRootAlias($qb).'.verified = :isVerified')
+            ->setParameter('isVerified', $this->isVerified);
     }
 }
