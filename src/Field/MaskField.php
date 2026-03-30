@@ -33,10 +33,10 @@ class MaskField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->plugin();
+        $this->enablePlugin();
     }
 
-    public function plugin(bool $enable = true): self
+    public function enablePlugin(bool $enable = true): self
     {
         $this->dto->setAssets(new AssetsDto());
         if ($enable) {

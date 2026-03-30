@@ -29,11 +29,11 @@ class DateTimeMultipleField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->plugin();
+        $this->enablePlugin();
         $this->setFormTypeOption('entry_type', DateTimeType::class);
     }
 
-    public function plugin(bool $enable = true): self
+    public function enablePlugin(bool $enable = true): self
     {
         $this->dto->setAssets(new AssetsDto());
         if ($enable) {

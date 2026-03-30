@@ -25,12 +25,12 @@ class EnumField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->plugin();
+        $this->enablePlugin();
         $this->setFormType(EnumType::class);
         $this->setFormTypeOption('choice_label', fn ($e) => $e->translationKey());
     }
 
-    public function plugin(bool $enable = true): self
+    public function enablePlugin(bool $enable = true): self
     {
         $this->innerField->renderAsNativeWidget(!$enable);
 
@@ -46,7 +46,7 @@ class EnumField implements FieldInterface
 
     public function isExpanded(bool $expanded = true): self
     {
-        $this->plugin(!$expanded);
+        $this->enablePlugin(!$expanded);
         $this->innerField->renderExpanded($expanded);
 
         return $this;

@@ -28,7 +28,7 @@ class IntegerField implements FieldInterface
         $this->applyDefaultsTrait();
     }
 
-    public function pluginSlider(bool $enable = true): self
+    public function isSlider(bool $enable = true): self
     {
         $this->dto->setAssets(new AssetsDto());
         if ($enable) {

@@ -47,7 +47,7 @@ class FloatField implements FieldInterface
         $this->setFormTypeOption(self::OPTION_HTML5, true);
     }
 
-    public function pluginSlider(bool $enable = true): self
+    public function isSlider(bool $enable = true): self
     {
         $this->dto->setAssets(new AssetsDto());
         if ($enable) {

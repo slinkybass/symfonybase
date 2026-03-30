@@ -116,13 +116,13 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(3);
         $slider = FieldGenerator::integer('slider')
             ->setLabel('Slider')
-            ->pluginSlider()
+            ->isSlider()
             ->setMin(3)
             ->setMax(8)
             ->setColumns(6);
         $sliderFloat = FieldGenerator::float('sliderFloat')
             ->setLabel('Slider float with step 0.5 and pips and with min 0 and max 10')
-            ->pluginSlider()
+            ->isSlider()
             ->setMin(0)
             ->setMax(10)
             ->setStep(0.5)
@@ -213,11 +213,11 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(3);
         $textarea3 = FieldGenerator::textarea('textarea3')
             ->setLabel('Disable autogrow')
-            ->plugin(false)
+            ->enablePlugin(false)
             ->setColumns(3);
         $textarea4 = FieldGenerator::textarea('textarea4')
             ->setLabel('Disable autogrow and resize')
-            ->plugin(false)
+            ->enablePlugin(false)
             ->isResizeable(false)
             ->setColumns(3);
 

@@ -32,12 +32,12 @@ class SignatureField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->plugin();
+        $this->enablePlugin();
         $this->setFormTypeOption('block_prefix', 'signature');
         $this->setTemplatePath('field/media.html.twig');
     }
 
-    public function plugin(bool $enable = true): self
+    public function enablePlugin(bool $enable = true): self
     {
         $this->dto->setAssets(new AssetsDto());
         if ($enable) {

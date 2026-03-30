@@ -31,10 +31,10 @@ class TimeField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->plugin();
+        $this->enablePlugin();
     }
 
-    public function plugin(bool $enable = true): self
+    public function enablePlugin(bool $enable = true): self
     {
         $this->dto->setAssets(new AssetsDto());
         if ($enable) {
@@ -98,10 +98,10 @@ class TimeField implements FieldInterface
     {
         if ($choice) {
             $this->innerField->renderAsChoice();
-            $this->plugin(false);
+            $this->enablePlugin(false);
         } else {
             $this->innerField->renderAsNativeWidget();
-            $this->plugin();
+            $this->enablePlugin();
         }
 
         return $this;
