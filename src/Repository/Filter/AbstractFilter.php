@@ -10,13 +10,20 @@ use Doctrine\ORM\QueryBuilder;
 abstract class AbstractFilter implements FilterInterface
 {
     /**
+     * Returns the root alias of the given QueryBuilder.
+     */
+    protected function getRootAlias(QueryBuilder $qb): string
+    {
+        return $qb->getRootAliases()[0];
+    }
+
+    /**
      * Adds a join to the QueryBuilder only if it has not already been applied.
      *
-     * @param string $alias     the root alias to join from
      * @param string $relation  the relation name on the root entity
      * @param string $joinAlias the alias to assign to the joined entity
      */
-    protected function ensureJoin(QueryBuilder $qb, string $alias, string $relation, string $joinAlias): void
+    protected function ensureJoin(QueryBuilder $qb, string $relation, string $joinAlias): void
     {
         foreach ($qb->getDQLPart('join') as $joins) {
             foreach ($joins as $join) {
@@ -26,6 +33,6 @@ abstract class AbstractFilter implements FilterInterface
             }
         }
 
-        $qb->leftJoin("$alias.$relation", $joinAlias);
+        $qb->leftJoin($this->getRootAlias($qb).".$relation", $joinAlias);
     }
 }

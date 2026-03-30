@@ -3,7 +3,6 @@
 namespace App\Repository\Filter\User;
 
 use App\Repository\Filter\AbstractFilter;
-use App\Repository\UserRepository;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -13,6 +12,6 @@ class VerifiedFilter extends AbstractFilter
 {
     public function apply(QueryBuilder $qb): void
     {
-        $qb->andWhere(UserRepository::$alias.'.verified = true');
+        $qb->andWhere($this->getRootAlias($qb).'.verified = true');
     }
 }

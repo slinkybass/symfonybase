@@ -3,7 +3,6 @@
 namespace App\Repository\Filter\User;
 
 use App\Repository\Filter\AbstractFilter;
-use App\Repository\UserRepository;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -17,7 +16,7 @@ class AdminFilter extends AbstractFilter
 
     public function apply(QueryBuilder $qb): void
     {
-        $this->ensureJoin($qb, UserRepository::$alias, 'role', 'r');
+        $this->ensureJoin($qb, 'role', 'r');
         $qb
             ->andWhere('r.isAdmin = :isAdmin')
             ->setParameter('isAdmin', $this->isAdmin);
