@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Model\AppConfig;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -95,7 +96,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $this->request()?->getSession();
     }
 
-    public function config(): ?\stdClass
+    public function config(): ?AppConfig
     {
         return $this->session()?->get('config');
     }
