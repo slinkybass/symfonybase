@@ -44,7 +44,7 @@ class UserLoginSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            SecurityEvents::INTERACTIVE_LOGIN => ['onSecurityInteractiveLogin', 0],
         ];
     }
 }

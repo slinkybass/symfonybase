@@ -82,7 +82,7 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => [['onKernelRequest', 20]],
+            KernelEvents::REQUEST => ['onKernelRequest', 20],
         ];
     }
 }

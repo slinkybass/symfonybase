@@ -69,7 +69,7 @@ class PublicAccessSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => [['onKernelRequest', -100]],
+            KernelEvents::REQUEST => ['onKernelRequest', 7],
         ];
     }
 }
