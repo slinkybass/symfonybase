@@ -7,6 +7,7 @@ use App\Entity\Enum\UserGender;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Field\FieldGenerator;
+use App\Repository\Filter\Role as RoleFilter;
 use App\Repository\Filter\User as UserFilter;
 use App\Repository\RoleRepository;
 use App\Service\RolePermissions;
@@ -58,7 +59,7 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $filterHiddenRole = $this->filterHidden('role');
-        $roles = $this->em()->getRepository(Role::class)->getAdmin(false);
+        $roles = $this->em()->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter(false)]);
         $roleDefaultValue = count($roles) == 1 ? $roles[0] : (
             $filterHiddenRole ? $this->em()->getRepository(Role::class)->find($filterHiddenRole['value']) : null
         );
@@ -167,7 +168,7 @@ class UserCrudController extends AbstractCrudController
             ->setFormTypeOption('translation_domain', 'messages')
         );
 
-        $roles = $this->em()->getRepository(Role::class)->getAdmin(false);
+        $roles = $this->em()->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter(false)]);
         if (count($roles) > 1) {
             $filters->add(EntityFilter::new('role', $this->transEntitySingular('role'))
                 ->setFormTypeOption('value_type_options.query_builder', static fn (RoleRepository $rep) => $rep->getAdminQB(false)));

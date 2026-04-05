@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Role;
+use App\Repository\Filter\Role as RoleFilter;
 use App\Repository\RoleRepository;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,7 +38,7 @@ class UpdatePermissionsCommand extends Command
         /** @var RoleRepository $roleRepo */
         $roleRepo = $this->em->getRepository(Role::class);
 
-        $roleSuperAdmin = $roleRepo->get(CreateUsersCommand::ROLE_SUPERADMIN);
+        $roleSuperAdmin = $roleRepo->filterOne([new RoleFilter\NameFilter(CreateUsersCommand::ROLE_SUPERADMIN)]);
         if ($roleSuperAdmin) {
             $permissions = $this->rolePermissions->getGroupedPermissions();
             $permissionsValues = [];

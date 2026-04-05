@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Role;
 use App\Entity\User;
+use App\Repository\Filter\Role as RoleFilter;
 use App\Repository\Filter\User as UserFilter;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
@@ -47,7 +48,7 @@ class CreateUsersCommand extends Command
         /** @var RoleRepository $roleRepo */
         $roleRepo = $this->em->getRepository(Role::class);
 
-        $roleSuperAdmin = $roleRepo->get(self::ROLE_SUPERADMIN);
+        $roleSuperAdmin = $roleRepo->filterOne([new RoleFilter\NameFilter(self::ROLE_SUPERADMIN)]);
         if (!$roleSuperAdmin) {
             $roleSuperAdmin = new Role();
             $roleSuperAdmin->setName(self::ROLE_SUPERADMIN);
@@ -63,7 +64,7 @@ class CreateUsersCommand extends Command
             $output->writeln('<bg=green;options=bold>CREATED '.self::ROLE_SUPERADMIN.'</>');
         }
 
-        $roleAdmin = $roleRepo->get(self::ROLE_ADMIN);
+        $roleAdmin = $roleRepo->filterOne([new RoleFilter\NameFilter(self::ROLE_ADMIN)]);
         if (!$roleAdmin) {
             $roleAdmin = new Role();
             $roleAdmin->setDisplayName('Admin');
@@ -73,7 +74,7 @@ class CreateUsersCommand extends Command
             $output->writeln('<bg=green;options=bold>CREATED '.self::ROLE_ADMIN.'</>');
         }
 
-        $roleUser = $roleRepo->get(self::ROLE_USER);
+        $roleUser = $roleRepo->filterOne([new RoleFilter\NameFilter(self::ROLE_USER)]);
         if (!$roleUser) {
             $roleUser = new Role();
             $roleUser->setDisplayName('User');
@@ -97,7 +98,7 @@ class CreateUsersCommand extends Command
             new UserFilter\RoleFilter(self::ROLE_SUPERADMIN),
         ]);
         if (empty($superAdmins)) {
-            $roleSuperAdmin = $roleRepo->get(self::ROLE_SUPERADMIN);
+            $roleSuperAdmin = $roleRepo->filterOne([new RoleFilter\NameFilter(self::ROLE_SUPERADMIN)]);
 
             $superAdmin = new User();
             $superAdmin->setName('Superadmin');
@@ -112,7 +113,7 @@ class CreateUsersCommand extends Command
             new UserFilter\RoleFilter(self::ROLE_ADMIN),
         ]);
         if (empty($admins)) {
-            $roleAdmin = $roleRepo->get(self::ROLE_ADMIN);
+            $roleAdmin = $roleRepo->filterOne([new RoleFilter\NameFilter(self::ROLE_ADMIN)]);
 
             $admin = new User();
             $admin->setName('Admin');
