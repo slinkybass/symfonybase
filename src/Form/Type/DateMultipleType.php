@@ -33,6 +33,7 @@ class DateMultipleType extends AbstractType
                     return null;
                 }
                 $dates = array_values(array_filter(array_map('trim', explode(',', $value)), fn ($item) => $item !== ''));
+
                 return empty($dates) ? null : $dates;
             }
         });
