@@ -171,7 +171,7 @@ final class AuthController extends AbstractController
         ];
         $html = $this->renderView('mails/template.html.twig', ['subject' => $subject, 'content' => $content, 'buttons' => $buttons, 'postContent' => $postContent]);
         $emails = [$user->getEmail()];
-        $this->mailService->sendEmail($subject, $html, $emails);
+        $this->mailService->send($subject, $html, $emails);
 
         $this->setTokenObjectInSession($resetToken);
 
@@ -245,7 +245,7 @@ final class AuthController extends AbstractController
         ];
         $html = $this->container->get('twig')->render('mails/template.html.twig', ['subject' => $subject, 'content' => $content, 'buttons' => $buttons, 'postContent' => $postContent]);
         $emails = [$user->getEmail()];
-        $this->mailService->sendEmail($subject, $html, $emails);
+        $this->mailService->send($subject, $html, $emails);
 
         $this->addFlash('success', $this->translator->trans('app.messages.verifySended'));
         return $this->redirectToRoute('home');
