@@ -3,13 +3,13 @@
 namespace App\Service;
 
 use App\Model\AppConfig;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Psr\Log\LoggerInterface;
 
 /**
  * Handles outgoing email delivery for the application.
@@ -53,6 +53,7 @@ class MailService
 
         if (!$config instanceof AppConfig) {
             $this->logger->error('MailService: config not found in session.');
+
             return false;
         }
 
@@ -60,6 +61,7 @@ class MailService
 
         if ($isProd && empty($to)) {
             $this->logger->error('MailService: no recipients provided.');
+
             return false;
         }
 
@@ -88,12 +90,14 @@ class MailService
 
         try {
             $this->mailer->send($email);
+
             return true;
         } catch (TransportExceptionInterface $e) {
             $this->logger->error('MailService: failed to send email.', [
                 'subject' => $subject,
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
+
             return false;
         }
     }
