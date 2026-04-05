@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 class LastnameFilter extends AbstractFilter
 {
     public function __construct(
-        private readonly string|null $lastname,
+        private readonly ?string $lastname,
         private readonly ComparisonOperator $operator = ComparisonOperator::LIKE,
     ) {
         $this->assertOperator($this->operator, [
