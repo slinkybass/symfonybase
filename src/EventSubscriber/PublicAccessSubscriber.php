@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Redirects users accessing public routes based on config settings and user roles.
@@ -52,21 +51,19 @@ class PublicAccessSubscriber implements EventSubscriberInterface
 
         $redirect = null;
 
-        if ($controllerName == "PublicController" && !in_array($routeName, $availablePublicRoutes)) {
+        if ($controllerName == 'PublicController' && !in_array($routeName, $availablePublicRoutes)) {
             if ($user && $this->authorizationChecker->isGranted('ROLE_ADMIN')) {
                 $redirect = $this->router->generate('admin');
             } elseif (!$session->get('config')->enablePublic) {
                 $redirect = $this->router->generate('login');
             }
-        } elseif ($controllerName == "AuthController" && $user) {
+        } elseif ($controllerName == 'AuthController' && $user) {
             $redirect = $this->router->generate('home');
         }
 
         if ($redirect) {
             $event->setResponse(new RedirectResponse($redirect));
         }
-
-        return;
     }
 
     public static function getSubscribedEvents()

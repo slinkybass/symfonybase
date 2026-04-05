@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
-#[ORM\Table(name: "role")]
+#[ORM\Table(name: 'role')]
 #[UniqueEntity(fields: 'name', errorPath: 'displayName')]
 class Role
 {
@@ -74,7 +74,7 @@ class Role
             $roleName = iconv('utf-8', 'us-ascii//TRANSLIT', $roleName);
             $roleName = preg_replace('~[^-\w]+~', '', $roleName);
             $roleName = strtoupper($roleName);
-            $this->setName("ROLE_" . $roleName);
+            $this->setName('ROLE_'.$roleName);
         }
 
         return $this;

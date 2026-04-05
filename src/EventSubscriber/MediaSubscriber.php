@@ -22,7 +22,7 @@ class MediaSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
-        if ($request->get('_route') == "file_manager" && $request->get('conf') && array_key_exists($request->get('conf'), $this->artgrisFileManager)) {
+        if ($request->get('_route') == 'file_manager' && $request->get('conf') && array_key_exists($request->get('conf'), $this->artgrisFileManager)) {
             $config = $this->artgrisFileManager[$request->get('conf')];
             $filesystem = new Filesystem();
             if (!$filesystem->exists($config['dir'])) {

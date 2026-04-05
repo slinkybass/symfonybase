@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\AdminController;
 use App\Entity\Config;
 use App\Entity\User;
 use App\Service\RolePermissions;
@@ -50,7 +49,7 @@ class DashboardController extends AbstractDashboardController
 
         $dashboard = Dashboard::new();
 
-        $dashboard->setTitle('<img src="' . $configSession->appLogo . '" class="mx-auto d-block">');
+        $dashboard->setTitle('<img src="'.$configSession->appLogo.'" class="mx-auto d-block">');
         $dashboard->setFaviconPath($configSession->appFavicon);
         $dashboard->setDefaultColorScheme('light');
         $dashboard->renderContentMaximized();
@@ -59,7 +58,7 @@ class DashboardController extends AbstractDashboardController
         $locales = [];
         foreach ($localesStr as $localeStr) {
             if ($localeStr) {
-                $locales[] = Locale::new($localeStr, ucfirst(Locales::getName($localeStr)) . ' (' . $localeStr . ')', 'language');
+                $locales[] = Locale::new($localeStr, ucfirst(Locales::getName($localeStr)).' ('.$localeStr.')', 'language');
             }
         }
         if (count($locales) > 1) {
@@ -110,7 +109,7 @@ class DashboardController extends AbstractDashboardController
         if ($this->rolePermissions->userHasPermissionCrud($user, 'admin')) {
             $label = $configSession->enablePublic ? 'admin' : 'user';
             $icon = $configSession->enablePublic ? 'user-shield' : 'user';
-            $userItems[] = MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('entities.' . $label . '.plural'), $icon);
+            $userItems[] = MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('entities.'.$label.'.plural'), $icon);
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'role')) {
             $userItems[] = MenuItem::linkTo(Cruds\RoleCrudController::class, $this->translator->trans('entities.role.plural'), 'lock');
@@ -188,6 +187,7 @@ class DashboardController extends AbstractDashboardController
         $actions->update(Crud::PAGE_NEW, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
         $actions->update(Crud::PAGE_NEW, Action::SAVE_AND_RETURN, function (Action $action) {
             $action->getAsDto()->setVariant(ButtonVariant::Success);
+
             return $action->setIcon('device-floppy');
         });
 
@@ -197,6 +197,7 @@ class DashboardController extends AbstractDashboardController
         $actions->update(Crud::PAGE_DETAIL, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
         $actions->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) {
             $action->getAsDto()->setStyle(ButtonStyle::Solid);
+
             return $action->setIcon('trash');
         });
         $actions->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) { return $action->setIcon('edit'); });
@@ -207,17 +208,19 @@ class DashboardController extends AbstractDashboardController
         $actions->update(Crud::PAGE_EDIT, Action::INDEX, function (Action $action) { return $action->setIcon('chevron-left')->addCssClass('btn-animate-icon btn-animate-icon-move-start'); });
         $actions->update(Crud::PAGE_EDIT, Action::DELETE, function (Action $action) {
             $action->getAsDto()->setStyle(ButtonStyle::Solid);
+
             return $action->setIcon('trash');
         });
         $actions->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) {
             $action->getAsDto()->setVariant(ButtonVariant::Success);
+
             return $action->setIcon('device-floppy');
         });
 
-        $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, Action::EDIT, Action::DELETE ]);
-        $actions->reorder(Crud::PAGE_NEW, [ Action::SAVE_AND_RETURN, Action::INDEX ]);
-        $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, Action::INDEX ]);
-        $actions->reorder(Crud::PAGE_EDIT, [ Action::SAVE_AND_RETURN, Action::DELETE, Action::INDEX ]);
+        $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE]);
+        $actions->reorder(Crud::PAGE_NEW, [Action::SAVE_AND_RETURN, Action::INDEX]);
+        $actions->reorder(Crud::PAGE_DETAIL, [Action::EDIT, Action::DELETE, Action::INDEX]);
+        $actions->reorder(Crud::PAGE_EDIT, [Action::SAVE_AND_RETURN, Action::DELETE, Action::INDEX]);
 
         return $actions;
     }

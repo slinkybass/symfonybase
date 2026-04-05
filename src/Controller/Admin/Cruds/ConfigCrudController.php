@@ -107,8 +107,10 @@ class ConfigCrudController extends AbstractCrudController
                 ->setAction(Crud::PAGE_DETAIL)
                 ->setEntityId($config->getId())
                 ->generateUrl();
+
             return $this->redirect($url);
         }
+
         return $redirect;
     }
 
@@ -120,8 +122,10 @@ class ConfigCrudController extends AbstractCrudController
                 ->setAction(Crud::PAGE_DETAIL)
                 ->setEntityId($this->entity()->getId())
                 ->generateUrl();
+
             return $this->redirect($url);
         }
+
         return $redirect;
     }
 }

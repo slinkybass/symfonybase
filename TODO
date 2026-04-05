@@ -1,9 +1,4 @@
-
-Prevenir acceder a Cruds o acciones por URL sin permiso
-Bug al cargar JSs en detail (falla el hierarchy por ejemplo)
-Revisar deprecados de EA en campos
-Mejorar EA en base a nueva documentacion (Permisos, rutas, etc)
-	vendor\easycorp\easyadmin-bundle\doc
+Bug al acceder a rol admin cuando solo hay acceso a user por el crudController (crear template user)
 
 Actualizar composer y assets
 

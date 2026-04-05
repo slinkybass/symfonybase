@@ -30,18 +30,18 @@ class DemoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $docsPath = $this->projectDir . '/docs/Demo';
-        $srcPath = $this->projectDir . '/src';
+        $docsPath = $this->projectDir.'/docs/Demo';
+        $srcPath = $this->projectDir.'/src';
         $map = [
-            $docsPath . '/DemoEntity.phps' => $srcPath . '/Entity/DemoEntity.php',
-            $docsPath . '/DemoEntityCrudController.phps' => $srcPath . '/Controller/Admin/Cruds/DemoEntityCrudController.php',
-            $docsPath . '/DemoEntityType.phps' => $srcPath . '/Form/Type/DemoEntityType.php',
+            $docsPath.'/DemoEntity.phps' => $srcPath.'/Entity/DemoEntity.php',
+            $docsPath.'/DemoEntityCrudController.phps' => $srcPath.'/Controller/Admin/Cruds/DemoEntityCrudController.php',
+            $docsPath.'/DemoEntityType.phps' => $srcPath.'/Form/Type/DemoEntityType.php',
         ];
 
-        $enabled = !$this->fs->exists($docsPath . '/DemoEntity.phps');
+        $enabled = !$this->fs->exists($docsPath.'/DemoEntity.phps');
 
         $indicator = new ProgressIndicator($output);
-        $indicator->start(($enabled ? 'Disabling' : 'Enabling') . ' demo...');
+        $indicator->start(($enabled ? 'Disabling' : 'Enabling').' demo...');
 
         // Move files
         foreach ($map as $disabedPath => $enabledPath) {
@@ -49,28 +49,32 @@ class DemoCommand extends Command
             $to = $enabled ? $disabedPath : $enabledPath;
             if (!$this->fs->exists($from)) {
                 $io->error("$from doesn't exist.");
+
                 return Command::FAILURE;
             }
             $this->fs->rename($from, $to, true);
         }
 
         // Update schema
-        $process = new Process([ 'php', $this->projectDir . '/bin/console', 'doctrine:schema:update', '--force' ]);
+        $process = new Process(['php', $this->projectDir.'/bin/console', 'doctrine:schema:update', '--force']);
         $process->setTimeout(300)->run();
         if (!$process->isSuccessful()) {
             $io->error('Schema update failed.');
+
             return Command::FAILURE;
         }
 
         // Update permissions
-        $process = new Process([ 'php', $this->projectDir . '/bin/console', 'app:update-permissions' ]);
+        $process = new Process(['php', $this->projectDir.'/bin/console', 'app:update-permissions']);
         $process->setTimeout(300)->run();
         if (!$process->isSuccessful()) {
             $io->error('Permissions update failed.');
+
             return Command::FAILURE;
         }
 
-        $indicator->finish('Demo is currently ' . ($enabled ? 'disabled' : 'enabled') . '.');
+        $indicator->finish('Demo is currently '.($enabled ? 'disabled' : 'enabled').'.');
+
         return Command::SUCCESS;
     }
 }

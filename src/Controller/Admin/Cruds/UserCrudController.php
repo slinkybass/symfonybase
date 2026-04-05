@@ -96,7 +96,8 @@ class UserCrudController extends AbstractCrudController
             ->isRequired()
             ->setQueryBuilder(function ($qb) use ($roles) {
                 $rolesIds = array_map(fn ($r) => $r->getId(), $roles);
-                return empty($rolesIds) ? $qb->andWhere('entity.id IS NULL') : $qb->andWhere('entity.id IN (' . implode(',', $rolesIds) . ')');
+
+                return empty($rolesIds) ? $qb->andWhere('entity.id IS NULL') : $qb->andWhere('entity.id IN ('.implode(',', $rolesIds).')');
             });
         if ($roleDefaultValue) {
             $role->setFormTypeOption('data', $roleDefaultValue)->setColumns('d-none');
@@ -192,8 +193,8 @@ class UserCrudController extends AbstractCrudController
         $actions->add(Crud::PAGE_DETAIL, $impersonate);
         $actions->setPermission('impersonate', !$hasPermissionImpersonate ? 'NOPERMISSION_ACTION' : '');
 
-        $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE ]);
-        $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX ]);
+        $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE]);
+        $actions->reorder(Crud::PAGE_DETAIL, [Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX]);
 
         return $actions;
     }
@@ -202,6 +203,7 @@ class UserCrudController extends AbstractCrudController
     {
         $formBuilder = parent::createNewFormBuilder($entityDto, $formOptions, $context);
         $this->addEncodePasswordEventListener($formBuilder);
+
         return $formBuilder;
     }
 
@@ -209,6 +211,7 @@ class UserCrudController extends AbstractCrudController
     {
         $formBuilder = parent::createEditFormBuilder($entityDto, $keyValueStore, $context);
         $this->addEncodePasswordEventListener($formBuilder);
+
         return $formBuilder;
     }
 

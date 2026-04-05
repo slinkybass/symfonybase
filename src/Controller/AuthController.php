@@ -102,6 +102,7 @@ final class AuthController extends AbstractController
     {
         $this->getTokenObjectFromSession();
         $this->addFlash('success', $this->translator->trans('app.messages.resetPasswordSended'));
+
         return $this->redirectToRoute('login');
     }
 
@@ -110,6 +111,7 @@ final class AuthController extends AbstractController
     {
         if ($token) {
             $this->storeTokenInSession($token);
+
             return $this->redirectToRoute('reset_token');
         }
 
@@ -123,6 +125,7 @@ final class AuthController extends AbstractController
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
             $this->addFlash('error', $this->translator->trans($e->getReason(), [], 'ResetPasswordBundle'));
+
             return $this->redirectToRoute('reset');
         }
 
@@ -137,6 +140,7 @@ final class AuthController extends AbstractController
             $this->em->flush();
             $this->cleanSessionAfterReset();
             $this->addFlash('success', $this->translator->trans('app.messages.resetPasswordDone'));
+
             return $this->redirectToRoute('login');
         }
 
@@ -194,6 +198,7 @@ final class AuthController extends AbstractController
             $user->setVerified(false);
             $this->em->persist($user);
             $this->em->flush();
+
             return $this->processSendingVerifyEmail($user);
         }
 
@@ -221,9 +226,11 @@ final class AuthController extends AbstractController
             $this->em->flush();
         } catch (VerifyEmailExceptionInterface $e) {
             $this->addFlash('verify_email_error', $this->translator->trans($e->getReason(), [], 'VerifyEmailBundle'));
+
             return $this->redirectToRoute('register');
         }
         $this->addFlash('success', $this->translator->trans('app.messages.verifyDone'));
+
         return $this->redirectToRoute('home');
     }
 
@@ -248,6 +255,7 @@ final class AuthController extends AbstractController
         $this->mailService->send($subject, $html, $emails);
 
         $this->addFlash('success', $this->translator->trans('app.messages.verifySended'));
+
         return $this->redirectToRoute('home');
     }
 }

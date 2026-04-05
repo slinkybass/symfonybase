@@ -18,6 +18,7 @@ final class PrivacyController extends AbstractController
         if (empty($configSession->privacyText)) {
             return $this->redirectToRoute('home');
         }
+
         return $this->render('public/privacy/privacy.html.twig');
     }
 
@@ -30,6 +31,7 @@ final class PrivacyController extends AbstractController
         if ($configSession->enableCookies === false || empty($configSession->cookiesText)) {
             return $this->redirectToRoute('home');
         }
+
         return $this->render('public/privacy/cookies.html.twig');
     }
 }

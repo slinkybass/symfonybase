@@ -77,7 +77,7 @@ class AdminCrudController extends AbstractCrudController
 
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection('data'))
-            ->setIcon('user' . ($this->config()->enablePublic ? '-shield' : ''));
+            ->setIcon('user'.($this->config()->enablePublic ? '-shield' : ''));
         $fullname = FieldGenerator::text('fullname')
             ->setLabel($this->transEntityField('name'));
         $name = FieldGenerator::text('name')
@@ -107,7 +107,8 @@ class AdminCrudController extends AbstractCrudController
             ->isRequired()
             ->setQueryBuilder(function ($qb) use ($roles) {
                 $rolesIds = array_map(fn ($r) => $r->getId(), $roles);
-                return empty($rolesIds) ? $qb->andWhere('entity.id IS NULL') : $qb->andWhere('entity.id IN (' . implode(',', $rolesIds) . ')');
+
+                return empty($rolesIds) ? $qb->andWhere('entity.id IS NULL') : $qb->andWhere('entity.id IN ('.implode(',', $rolesIds).')');
             });
         if ($roleDefaultValue) {
             $role->setFormTypeOption('data', $roleDefaultValue)->setColumns('d-none');
@@ -226,11 +227,19 @@ class AdminCrudController extends AbstractCrudController
         );
 
         $denied = !$hasPermission ? [Action::INDEX] : [];
-        if (!$hasPermissionNew) $denied[] = Action::NEW;
+        if (!$hasPermissionNew) {
+            $denied[] = Action::NEW;
+        }
         if ($entity) {
-            if (!$isOwnUser && !$hasPermissionDetail) $denied[] = Action::DETAIL;
-            if (!$isOwnUser && (!$hasPermissionEdit || !$isUp)) $denied[] = Action::EDIT;
-            if ($isOwnUser || !$hasPermissionDelete || !$isUp) $denied[] = Action::DELETE;
+            if (!$isOwnUser && !$hasPermissionDetail) {
+                $denied[] = Action::DETAIL;
+            }
+            if (!$isOwnUser && (!$hasPermissionEdit || !$isUp)) {
+                $denied[] = Action::EDIT;
+            }
+            if ($isOwnUser || !$hasPermissionDelete || !$isUp) {
+                $denied[] = Action::DELETE;
+            }
         }
         $actions->setPermissions(array_fill_keys(array_unique($denied), 'NOPERMISSION_ACTION'));
 
@@ -243,8 +252,8 @@ class AdminCrudController extends AbstractCrudController
         $actions->add(Crud::PAGE_DETAIL, $impersonate);
         $actions->setPermission('impersonate', !$hasPermissionImpersonate ? 'NOPERMISSION_ACTION' : '');
 
-        $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE ]);
-        $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX ]);
+        $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE]);
+        $actions->reorder(Crud::PAGE_DETAIL, [Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX]);
 
         return $actions;
     }
@@ -253,6 +262,7 @@ class AdminCrudController extends AbstractCrudController
     {
         $formBuilder = parent::createNewFormBuilder($entityDto, $formOptions, $context);
         $this->addEncodePasswordEventListener($formBuilder);
+
         return $formBuilder;
     }
 
@@ -260,6 +270,7 @@ class AdminCrudController extends AbstractCrudController
     {
         $formBuilder = parent::createEditFormBuilder($entityDto, $keyValueStore, $context);
         $this->addEncodePasswordEventListener($formBuilder);
+
         return $formBuilder;
     }
 
@@ -279,9 +290,11 @@ class AdminCrudController extends AbstractCrudController
         if ($redirect instanceof RedirectResponse) {
             if (!$this->hasPermissionCrud()) {
                 $url = $this->adminUrl()->setRoute('admin')->generateUrl();
+
                 return $this->redirect($url);
             }
         }
+
         return $redirect;
     }
 }

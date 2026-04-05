@@ -37,7 +37,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
         $entity = $this->entity();
         if ($entity) {
-            $pageTitle = $this->transEntitySingular() . ': ' . $entity;
+            $pageTitle = $this->transEntitySingular().': '.$entity;
             $editTitle = $this->translator->trans('page_title.edit', ['%entity_label_singular%' => $pageTitle], 'EasyAdminBundle');
             $crud->setPageTitle(Crud::PAGE_DETAIL, $pageTitle);
             $crud->setPageTitle(Crud::PAGE_EDIT, $editTitle);
@@ -59,7 +59,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $hasPermissionEdit = $this->hasPermissionCrudAction(Action::EDIT);
         $hasPermissionDelete = $this->hasPermissionCrudAction(Action::DELETE);
 
-        $denied = match(true) {
+        $denied = match (true) {
             !$hasPermission => [Action::INDEX, Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE, Action::BATCH_DELETE],
             default => array_filter([
                 !$hasPermissionNew ? Action::NEW : null,
@@ -67,7 +67,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
                 !$hasPermissionEdit ? Action::EDIT : null,
                 !$hasPermissionDelete ? Action::DELETE : null,
                 !$hasPermissionDelete ? Action::BATCH_DELETE : null,
-            ])
+            ]),
         };
 
         $actions->setPermissions(array_fill_keys($denied, 'NOPERMISSION_ACTION'));
@@ -116,6 +116,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         if ($entityId) {
             return $this->em()->getRepository($this->getEntityFqcn())->find($entityId);
         }
+
         return null;
     }
 
@@ -125,6 +126,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $crudClassNameParts = explode('\\', $className);
         $crudClassName = end($crudClassNameParts);
         $crud = str_replace('CrudController', '', $crudClassName);
+
         return lcfirst($crud);
     }
 
@@ -164,6 +166,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         if (!$withHiddenFilters) {
             unset($filters['hidden_filters']);
         }
+
         return $filters;
     }
 
@@ -173,6 +176,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $hiddenFilters = $filters['hidden_filters'] ?? [];
         $filters = array_diff_key($filters, array_flip(array_keys($hiddenFilters)));
         unset($filters['hidden_filters']);
+
         return $filters;
     }
 
@@ -182,24 +186,28 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $hiddenFilters = $filters['hidden_filters'] ?? [];
         $filters = array_intersect_key($filters, array_flip(array_keys($hiddenFilters)));
         unset($filters['hidden_filters']);
+
         return $filters;
     }
 
     public function filter($name): array|string|null
     {
         $filters = $this->filters();
+
         return $filters[$name] ?? null;
     }
 
     public function filterShown($name): array|string|null
     {
         $filters = $this->filtersShown();
+
         return $filters[$name] ?? null;
     }
 
     public function filterHidden($name): array|string|null
     {
         $filters = $this->filtersHidden();
+
         return $filters[$name] ?? null;
     }
 
@@ -221,30 +229,35 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     public function transEntitySingular($entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return $this->translator->trans('entities.' . $entity . '.singular');
+
+        return $this->translator->trans('entities.'.$entity.'.singular');
     }
 
     public function transEntityPlural($entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return $this->translator->trans('entities.' . $entity . '.plural');
+
+        return $this->translator->trans('entities.'.$entity.'.plural');
     }
 
     public function transEntitySection($section = 'data', $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return $this->translator->trans('entities.' . $entity . '.sections.' . $section);
+
+        return $this->translator->trans('entities.'.$entity.'.sections.'.$section);
     }
 
     public function transEntityAction($action, $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return $this->translator->trans('entities.' . $entity . '.actions.' . $action);
+
+        return $this->translator->trans('entities.'.$entity.'.actions.'.$action);
     }
 
     public function transEntityField($field, $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
-        return $this->translator->trans('entities.' . $entity . '.fields.' . $field);
+
+        return $this->translator->trans('entities.'.$entity.'.fields.'.$field);
     }
 }

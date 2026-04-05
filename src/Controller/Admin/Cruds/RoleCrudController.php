@@ -62,24 +62,24 @@ class RoleCrudController extends AbstractCrudController
         $permissionsFields = [];
         $this->rolePermissions->loopPermissions($permissions, function ($permission, $parentPermission, $level) use (&$permissionsFields) {
             if ($this->hasPermission($permission)) {
-                $isCrudPermission = str_starts_with($permission, $this->rolePermissions::CRUD_PREFIX . '_');
+                $isCrudPermission = str_starts_with($permission, $this->rolePermissions::CRUD_PREFIX.'_');
                 if ($isCrudPermission) {
-                    $permissionWithoutCrud = str_replace($this->rolePermissions::CRUD_PREFIX . '_', '', $permission);
+                    $permissionWithoutCrud = str_replace($this->rolePermissions::CRUD_PREFIX.'_', '', $permission);
                     $parts = explode('_', $permissionWithoutCrud, 2);
                     $entity = $parts[0];
                     $action = $parts[1] ?? null;
 
-                    $entityLabel = $this->translator->trans('entities.' . $entity . '.plural');
+                    $entityLabel = $this->translator->trans('entities.'.$entity.'.plural');
                     if (!$action) {
                         $permissionLabel = $entityLabel;
                     } elseif (in_array($action, [Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE])) {
-                        $permissionLabel = $this->translator->trans('action.' . $action, [], 'EasyAdminBundle');
+                        $permissionLabel = $this->translator->trans('action.'.$action, [], 'EasyAdminBundle');
                         $permissionLabel = str_replace(['%entity_label_singular%', '%entity_label_plural%'], [$entityLabel, $entityLabel], $permissionLabel);
                     } else {
-                        $permissionLabel = $this->translator->trans('entities.' . $entity . '.actions.' . $action);
+                        $permissionLabel = $this->translator->trans('entities.'.$entity.'.actions.'.$action);
                     }
                 } else {
-                    $permissionLabel = $this->translator->trans('entities.role.permissions.' . $permission);
+                    $permissionLabel = $this->translator->trans('entities.role.permissions.'.$permission);
                 }
 
                 $permissionsFields[] = $this->generatePermissionField($permission, $permissionLabel, $parentPermission, $level);
@@ -97,7 +97,7 @@ class RoleCrudController extends AbstractCrudController
         $nameUsers = $publicEnabled && $entityIsAdmin ? 'admin' : 'user';
         $iconUsers = $publicEnabled && $entityIsAdmin ? 'user-shield' : 'user';
         $usersPanel = FieldGenerator::panel($this->transEntityPlural($nameUsers))
-            ->setIcon('' . $iconUsers);
+            ->setIcon($iconUsers);
         $users = FieldGenerator::association('users')
             ->setLabel($this->transEntityPlural('user'));
 
@@ -184,8 +184,8 @@ class RoleCrudController extends AbstractCrudController
         $actions->add(Crud::PAGE_INDEX, $users);
         $actions->add(Crud::PAGE_DETAIL, $users);
 
-        $actions->reorder(Crud::PAGE_INDEX, [ Action::DETAIL, 'users', 'admins', Action::EDIT, Action::DELETE ]);
-        $actions->reorder(Crud::PAGE_DETAIL, [ Action::EDIT, Action::DELETE, 'users', 'admins', Action::INDEX ]);
+        $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, 'users', 'admins', Action::EDIT, Action::DELETE]);
+        $actions->reorder(Crud::PAGE_DETAIL, [Action::EDIT, Action::DELETE, 'users', 'admins', Action::INDEX]);
 
         return $actions;
     }
@@ -197,6 +197,7 @@ class RoleCrudController extends AbstractCrudController
             $this->addIsAdminEventListener($formBuilder);
         }
         $this->addPermissionsEventListener($formBuilder);
+
         return $formBuilder;
     }
 
@@ -207,6 +208,7 @@ class RoleCrudController extends AbstractCrudController
             $this->addIsAdminEventListener($formBuilder);
         }
         $this->addPermissionsEventListener($formBuilder);
+
         return $formBuilder;
     }
 
@@ -238,7 +240,7 @@ class RoleCrudController extends AbstractCrudController
     {
         $entity = $this->entity();
         $permissionValue = $entity && $this->rolePermissions->roleHasPermission($entity, $permission) ? true : false;
-        $permissionLabel = $this->transEntityField('permission', 'role') . ': ' . $permission;
+        $permissionLabel = $this->transEntityField('permission', 'role').': '.$permission;
         $label = "<span data-bs-toggle='tooltip' data-bs-placement='top' data-bs-title='$permissionLabel'>$label</span>";
 
         $permission = FieldGenerator::switch($permission)->setLabel($label)
@@ -246,9 +248,10 @@ class RoleCrudController extends AbstractCrudController
             ->setFormTypeOption('data', $permissionValue)
             ->setValue($permissionValue)
             ->setFormattedValue($permissionValue)
-            ->setHtmlAttribute('data-hf-parent', 'perm_' . $permission)
-            ->setHtmlAttribute('data-hf-child', $parentPermission ? 'perm_' . $parentPermission : 'isAdmin')
-            ->setFormTypeOption('row_attr.style', 'margin-left: ' . ($level * 1.5) . 'rem;');
+            ->setHtmlAttribute('data-hf-parent', 'perm_'.$permission)
+            ->setHtmlAttribute('data-hf-child', $parentPermission ? 'perm_'.$parentPermission : 'isAdmin')
+            ->setFormTypeOption('row_attr.style', 'margin-left: '.($level * 1.5).'rem;');
+
         return $permission;
     }
 }
