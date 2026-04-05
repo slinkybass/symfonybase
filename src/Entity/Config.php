@@ -45,11 +45,11 @@ class Config
     #[ORM\Column]
     private ?bool $enableRegister = false;
 
-    #[ORM\Column]
-    private ?bool $enableCookies = false;
-
     #[ORM\ManyToOne]
     private ?Role $roleDefaultRegister = null;
+
+    #[ORM\Column]
+    private ?bool $enableCookies = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $senderEmail = null;
@@ -190,18 +190,6 @@ class Config
         return $this;
     }
 
-    public function isEnableCookies(): ?bool
-    {
-        return $this->enableCookies;
-    }
-
-    public function setEnableCookies(bool $enableCookies): static
-    {
-        $this->enableCookies = $enableCookies;
-
-        return $this;
-    }
-
     public function getRoleDefaultRegister(): ?Role
     {
         return $this->roleDefaultRegister;
@@ -210,6 +198,18 @@ class Config
     public function setRoleDefaultRegister(?Role $roleDefaultRegister): static
     {
         $this->roleDefaultRegister = $roleDefaultRegister;
+
+        return $this;
+    }
+
+    public function isEnableCookies(): ?bool
+    {
+        return $this->enableCookies;
+    }
+
+    public function setEnableCookies(bool $enableCookies): static
+    {
+        $this->enableCookies = $enableCookies;
 
         return $this;
     }
