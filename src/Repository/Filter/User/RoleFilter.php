@@ -4,6 +4,7 @@ namespace App\Repository\Filter\User;
 
 use App\Entity\Role;
 use App\Repository\Filter\AbstractFilter;
+use App\Repository\Filter\ComparisonOperator;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -18,8 +19,15 @@ class RoleFilter extends AbstractFilter
     /**
      * @param string|Role|array<string|Role> $roles
      */
-    public function __construct(string|Role|array $roles)
-    {
+    public function __construct(
+        string|Role|array $roles,
+        private readonly ComparisonOperator $operator = ComparisonOperator::EQ,
+    ) {
+        $this->assertOperator($this->operator, [
+            ...$this->allowedBooleanOperators(),
+            ...$this->allowedCollectionOperators(),
+        ]);
+
         $this->roleNames = $this->resolve($roles);
     }
 
@@ -27,17 +35,13 @@ class RoleFilter extends AbstractFilter
     {
         $this->ensureJoin($qb, 'role', 'r');
 
-        if (count($this->roleNames) === 1) {
-            $qb
-                ->andWhere('r.name = :roleName')
-                ->setParameter('roleName', $this->roleNames[0]);
+        $isSingle = count($this->roleNames) === 1;
+        $operator = $isSingle
+            ? ($this->operator === ComparisonOperator::NOT_IN ? ComparisonOperator::NEQ : ComparisonOperator::EQ)
+            : ($this->operator === ComparisonOperator::NEQ ? ComparisonOperator::NOT_IN : $this->operator);
 
-            return;
-        }
-
-        $qb
-            ->andWhere('r.name IN (:roleNames)')
-            ->setParameter('roleNames', $this->roleNames);
+        $param = $isSingle ? $this->roleNames[0] : $this->roleNames;
+        $this->applyComparison($qb, 'r.name', 'roleName', $param, $operator);
     }
 
     /**

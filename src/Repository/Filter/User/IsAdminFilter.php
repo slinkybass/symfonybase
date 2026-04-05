@@ -15,7 +15,7 @@ class IsAdminFilter extends AbstractFilter
         private readonly bool $isAdmin = true,
         private readonly ComparisonOperator $operator = ComparisonOperator::EQ,
     ) {
-        $this->assertOperator($this->operator, [ComparisonOperator::EQ, ComparisonOperator::NEQ]);
+        $this->assertOperator($this->operator, $this->allowedBooleanOperators());
     }
 
     public function apply(QueryBuilder $qb): void
