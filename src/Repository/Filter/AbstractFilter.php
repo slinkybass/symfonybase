@@ -140,14 +140,69 @@ abstract class AbstractFilter implements FilterInterface
     /** @return ComparisonOperator[] */
     protected function allowedDateOperators(): array
     {
-        return [
-            ComparisonOperator::EQ,
-            ComparisonOperator::NEQ,
-            ComparisonOperator::GT,
-            ComparisonOperator::GTE,
-            ComparisonOperator::LT,
-            ComparisonOperator::LTE,
-            ComparisonOperator::BETWEEN,
+        return $this->allowedNumericOperators();
+    }
+
+    /**
+     * Parses a string or returns a DateTimeInterface instance as-is.
+     *
+     * @throws \InvalidArgumentException if the string cannot be parsed as a valid date or datetime
+     */
+    protected function parseDate(\DateTimeInterface|string $date): \DateTimeImmutable
+    {
+        if ($date instanceof \DateTimeImmutable) {
+            return $date;
+        }
+
+        if ($date instanceof \DateTime) {
+            return \DateTimeImmutable::createFromMutable($date);
+        }
+
+        $formats = [
+            // Date only
+            'Y-m-d',
+            'd/m/Y',
+            'd-m-Y',
+            // Date + hours:minutes
+            'Y-m-d H:i',
+            'd/m/Y H:i',
+            'd-m-Y H:i',
+            // Date + hours:minutes:seconds
+            'Y-m-d H:i:s',
+            'd/m/Y H:i:s',
+            'd-m-Y H:i:s',
+            // Date + T (ISO 8601)
+            'Y-m-d\TH:i',
+            'Y-m-d\TH:i:s',
         ];
+
+        foreach ($formats as $format) {
+            $parsed = \DateTimeImmutable::createFromFormat($format, $date);
+            if ($parsed !== false) {
+                return $parsed;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('Invalid date string "%s". Expected formats: %s.', $date, implode(', ', $formats)));
+    }
+
+    /**
+     * Resolves a date value to a DateTimeImmutable instance, an array of DateTimeImmutable instances, or null.
+     *
+     * @param \DateTimeInterface|string|array<\DateTimeInterface|string>|null $value
+     *
+     * @return \DateTimeImmutable|\DateTimeImmutable[]|null
+     */
+    protected function resolveDates(\DateTimeInterface|string|array|null $value): \DateTimeImmutable|array|null
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        if (is_array($value)) {
+            return array_map(fn (\DateTimeInterface|string $date) => $this->parseDate($date), $value);
+        }
+
+        return $this->parseDate($value);
     }
 }
