@@ -68,4 +68,18 @@ abstract class AbstractFilter implements FilterInterface
             ComparisonOperator::IS_NOT_NULL => $qb->andWhere($qb->expr()->isNotNull($field)),
         };
     }
+
+    /**
+     * Validates that the given operator is among the allowed ones for this filter.
+     *
+     * @param ComparisonOperator[] $allowed
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function assertOperator(ComparisonOperator $operator, array $allowed): void
+    {
+        if (!in_array($operator, $allowed, true)) {
+            throw new \InvalidArgumentException(sprintf('%s does not support the "%s" operator. Allowed: %s.', static::class, $operator->name, implode(', ', array_map(fn (ComparisonOperator $o) => $o->name, $allowed))));
+        }
+    }
 }
