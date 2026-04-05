@@ -23,8 +23,9 @@ class RoleFilter extends AbstractFilter
         private readonly ComparisonOperator $operator = ComparisonOperator::EQ,
     ) {
         $this->assertOperator($this->operator, [
-            ...$this->allowedBooleanOperators(),
             ...$this->allowedCollectionOperators(),
+            ComparisonOperator::EQ,
+            ComparisonOperator::NEQ,
         ]);
 
         $this->roleNames = $this->resolve($roles);
