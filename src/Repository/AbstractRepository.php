@@ -76,7 +76,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      */
     public function filterExists(array $filters): bool
     {
-        return $this->filterCount($filters) > 0;
+        return $this->filterFirst($filters) !== null;
     }
 
     /**
