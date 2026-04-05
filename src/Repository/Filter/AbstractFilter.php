@@ -70,6 +70,37 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
+     * Applies a comparison that automatically switches between EQ/NEQ and IN/NOT_IN
+     * depending on the number of values provided.
+     *
+     * @param array<mixed> $values
+     */
+    protected function applyMultiComparison(
+        QueryBuilder $qb,
+        string $field,
+        string $paramName,
+        array $values,
+        ComparisonOperator $operator = ComparisonOperator::EQ,
+    ): void {
+        if (in_array($operator, $this->allowedNullOperators(), true)) {
+            $this->applyComparison($qb, $field, $paramName, null, $operator);
+
+            return;
+        }
+
+        $isSingle = count($values) === 1;
+
+        $resolvedOperator = match (true) {
+            $isSingle && $operator === ComparisonOperator::NOT_IN => ComparisonOperator::NEQ,
+            $isSingle => ComparisonOperator::EQ,
+            $operator === ComparisonOperator::NEQ => ComparisonOperator::NOT_IN,
+            default => $operator,
+        };
+
+        $this->applyComparison($qb, $field, $paramName, $isSingle ? $values[0] : $values, $resolvedOperator);
+    }
+
+    /**
      * Validates that the given operator is among the allowed ones for this filter.
      *
      * @param ComparisonOperator[] $allowed
@@ -204,5 +235,24 @@ abstract class AbstractFilter implements FilterInterface
         }
 
         return $this->parseDate($value);
+    }
+
+    /**
+     * Resolves a single value or array of values to a normalized unique array.
+     *
+     * @template T
+     *
+     * @param T|array<T>         $value
+     * @param callable(T): mixed $resolver
+     *
+     * @return array<mixed>
+     */
+    protected function resolveArray(mixed $value, callable $resolver): array
+    {
+        $values = is_array($value) ? $value : [$value];
+
+        return array_values(array_unique(
+            array_map($resolver, $values),
+        ));
     }
 }

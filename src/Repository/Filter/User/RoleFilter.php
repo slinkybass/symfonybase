@@ -28,40 +28,19 @@ class RoleFilter extends AbstractFilter
             ComparisonOperator::NEQ,
         ]);
 
-        $this->roleNames = $this->resolve($roles);
+        $this->roleNames = $this->resolveArray($roles,
+            static function (string|Role $role): string {
+                $name = $role instanceof Role ? $role->getName() : $role;
+                $name = strtoupper($name);
+
+                return str_starts_with($name, 'ROLE_') ? $name : 'ROLE_'.$name;
+            },
+        );
     }
 
     public function apply(QueryBuilder $qb): void
     {
         $this->ensureJoin($qb, 'role', 'r');
-
-        $isSingle = count($this->roleNames) === 1;
-        $operator = $isSingle
-            ? ($this->operator === ComparisonOperator::NOT_IN ? ComparisonOperator::NEQ : ComparisonOperator::EQ)
-            : ($this->operator === ComparisonOperator::NEQ ? ComparisonOperator::NOT_IN : $this->operator);
-
-        $param = $isSingle ? $this->roleNames[0] : $this->roleNames;
-        $this->applyComparison($qb, 'r.name', 'roleName', $param, $operator);
-    }
-
-    /**
-     * Resolves the given roles input to a normalized array of unique role name strings.
-     *
-     * @param string|Role|array<string|Role> $roles
-     *
-     * @return string[]
-     */
-    private function resolve(string|Role|array $roles): array
-    {
-        $roles = is_array($roles) ? $roles : [$roles];
-
-        $resolved = array_map(static function (string|Role $role): string {
-            $name = $role instanceof Role ? $role->getName() : $role;
-            $name = strtoupper($name);
-
-            return str_starts_with($name, 'ROLE_') ? $name : 'ROLE_'.$name;
-        }, $roles);
-
-        return array_values(array_unique($resolved));
+        $this->applyMultiComparison($qb, 'r.name', 'roleName', $this->roleNames, $this->operator);
     }
 }
