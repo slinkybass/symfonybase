@@ -20,11 +20,11 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * Returns all results matching the given filters.
      *
-     * @param FilterInterface[] $filters
+     * @param FilterInterface|FilterInterface[] $filters
      *
      * @return array<int, object>
      */
-    public function filter(array $filters): array
+    public function filter(FilterInterface|array $filters = []): array
     {
         return $this->applyFilters($filters)
             ->getQuery()
@@ -34,9 +34,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * Returns a single result matching the given filters, or null if not found.
      *
-     * @param FilterInterface[] $filters
+     * @param FilterInterface|FilterInterface[] $filters
      */
-    public function filterOne(array $filters): ?object
+    public function filterOne(FilterInterface|array $filters = []): ?object
     {
         return $this->applyFilters($filters)
             ->getQuery()
@@ -46,9 +46,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * Returns the first result matching the given filters, or null if not found.
      *
-     * @param FilterInterface[] $filters
+     * @param FilterInterface|FilterInterface[] $filters
      */
-    public function filterFirst(array $filters): ?object
+    public function filterFirst(FilterInterface|array $filters = []): ?object
     {
         return $this->applyFilters($filters)
             ->setMaxResults(1)
@@ -59,9 +59,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * Returns the number of results matching the given filters.
      *
-     * @param FilterInterface[] $filters
+     * @param FilterInterface|FilterInterface[] $filters
      */
-    public function filterCount(array $filters): int
+    public function filterCount(FilterInterface|array $filters = []): int
     {
         return (int) $this->applyFilters($filters)
             ->select('COUNT('.static::$alias.'.id)')
@@ -72,9 +72,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * Returns whether at least one result matches the given filters.
      *
-     * @param FilterInterface[] $filters
+     * @param FilterInterface|FilterInterface[] $filters
      */
-    public function filterExists(array $filters): bool
+    public function filterExists(FilterInterface|array $filters = []): bool
     {
         return $this->filterFirst($filters) !== null;
     }
@@ -82,11 +82,11 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * Returns a paginated set of results matching the given filters.
      *
-     * @param FilterInterface[] $filters
+     * @param FilterInterface|FilterInterface[] $filters
      *
      * @return array<int, object>
      */
-    public function filterPaginated(array $filters, int $page = 1, int $limit = 10): array
+    public function filterPaginated(FilterInterface|array $filters = [], int $page = 1, int $limit = 10): array
     {
         return $this->applyFilters($filters)
             ->setFirstResult(($page - 1) * $limit)
@@ -98,12 +98,13 @@ abstract class AbstractRepository extends ServiceEntityRepository
     /**
      * Returns a QueryBuilder with the given filters applied.
      *
-     * @param FilterInterface[] $filters
+     * @param FilterInterface|FilterInterface[] $filters
      */
-    public function applyFilters(array $filters): QueryBuilder
+    public function applyFilters(FilterInterface|array $filters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder(static::$alias);
-        foreach ($filters as $filter) {
+
+        foreach ((array) $filters as $filter) {
             $filter->apply($qb);
         }
 
