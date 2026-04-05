@@ -35,4 +35,37 @@ abstract class AbstractFilter implements FilterInterface
 
         $qb->leftJoin($this->getRootAlias($qb).".$relation", $joinAlias);
     }
+
+    /**
+     * Applies a comparison expression to the QueryBuilder.
+     *
+     * @param string $field     the field expression to compare
+     * @param string $paramName the parameter name to bind
+     * @param mixed  $value     the value to compare against (for BETWEEN, expects array{0: mixed, 1: mixed})
+     */
+    protected function applyComparison(
+        QueryBuilder $qb,
+        string $field,
+        string $paramName,
+        mixed $value,
+        ComparisonOperator $operator = ComparisonOperator::LIKE,
+    ): void {
+        match ($operator) {
+            ComparisonOperator::LIKE => $qb->andWhere($qb->expr()->like($field, ":$paramName"))->setParameter($paramName, '%'.$value.'%'),
+            ComparisonOperator::NOT_LIKE => $qb->andWhere($qb->expr()->notLike($field, ":$paramName"))->setParameter($paramName, '%'.$value.'%'),
+            ComparisonOperator::STARTS_WITH => $qb->andWhere($qb->expr()->like($field, ":$paramName"))->setParameter($paramName, $value.'%'),
+            ComparisonOperator::ENDS_WITH => $qb->andWhere($qb->expr()->like($field, ":$paramName"))->setParameter($paramName, '%'.$value),
+            ComparisonOperator::EQ => $qb->andWhere($qb->expr()->eq($field, ":$paramName"))->setParameter($paramName, $value),
+            ComparisonOperator::NEQ => $qb->andWhere($qb->expr()->neq($field, ":$paramName"))->setParameter($paramName, $value),
+            ComparisonOperator::IN => $qb->andWhere($qb->expr()->in($field, ":$paramName"))->setParameter($paramName, $value),
+            ComparisonOperator::NOT_IN => $qb->andWhere($qb->expr()->notIn($field, ":$paramName"))->setParameter($paramName, $value),
+            ComparisonOperator::GT => $qb->andWhere($qb->expr()->gt($field, ":$paramName"))->setParameter($paramName, $value),
+            ComparisonOperator::GTE => $qb->andWhere($qb->expr()->gte($field, ":$paramName"))->setParameter($paramName, $value),
+            ComparisonOperator::LT => $qb->andWhere($qb->expr()->lt($field, ":$paramName"))->setParameter($paramName, $value),
+            ComparisonOperator::LTE => $qb->andWhere($qb->expr()->lte($field, ":$paramName"))->setParameter($paramName, $value),
+            ComparisonOperator::BETWEEN => $qb->andWhere($qb->expr()->between($field, ":{$paramName}From", ":{$paramName}To"))->setParameter("{$paramName}From", $value[0])->setParameter("{$paramName}To", $value[1]),
+            ComparisonOperator::IS_NULL => $qb->andWhere($qb->expr()->isNull($field)),
+            ComparisonOperator::IS_NOT_NULL => $qb->andWhere($qb->expr()->isNotNull($field)),
+        };
+    }
 }
