@@ -8,33 +8,47 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Create the media directory if it doesn't exist.
+ * Ensures the media directories required by the file manager exist before handling requests.
  */
 class MediaSubscriber implements EventSubscriberInterface
 {
-    private array $artgrisFileManager;
+    private readonly array $conf;
 
-    public function __construct(array $artgrisFileManager)
-    {
-        $this->artgrisFileManager = $artgrisFileManager['conf'];
+    public function __construct(
+        private readonly Filesystem $filesystem,
+        array $artgrisFileManager,
+    ) {
+        $this->conf = $artgrisFileManager['conf'];
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    /**
+     * Creates the configured media directory if it does not exist.
+     */
+    public function onKernelRequest(RequestEvent $event): void
     {
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
         $request = $event->getRequest();
-        if ($request->get('_route') == 'file_manager' && $request->get('conf') && array_key_exists($request->get('conf'), $this->artgrisFileManager)) {
-            $config = $this->artgrisFileManager[$request->get('conf')];
-            $filesystem = new Filesystem();
-            if (!$filesystem->exists($config['dir'])) {
-                $filesystem->mkdir($config['dir']);
-            }
+        $route = $request->get('_route');
+        $conf = $request->get('conf');
+
+        if ($route !== 'file_manager' || !$conf || !array_key_exists($conf, $this->conf)) {
+            return;
+        }
+
+        $dir = $this->conf[$conf]['dir'];
+
+        if (!$this->filesystem->exists($dir)) {
+            $this->filesystem->mkdir($dir);
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', 10],
+            KernelEvents::REQUEST => ['onKernelRequest', 30],
         ];
     }
 }

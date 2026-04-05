@@ -12,55 +12,58 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Redirects users accessing public routes based on config settings and user roles.
+ * Redirects users based on public access settings, authentication status and role.
  */
 class PublicAccessSubscriber implements EventSubscriberInterface
 {
-    private RouterInterface $router;
-    private AuthorizationCheckerInterface $authorizationChecker;
-    private Security $security;
-    private ConfigService $configService;
-
-    public function __construct(RouterInterface $router, AuthorizationCheckerInterface $authorizationChecker, Security $security, ConfigService $configService)
-    {
-        $this->router = $router;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->security = $security;
-        $this->configService = $configService;
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly Security $security,
+        private readonly ConfigService $configService,
+    ) {
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    /**
+     * Redirects the request based on controller, user authentication and public access config.
+     */
+    public function onKernelRequest(RequestEvent $event): void
     {
-        /** @var User $user */
-        $user = $this->security->getUser();
-        $request = $event->getRequest();
-        $config = $this->configService->get();
-        $availablePublicRoutes = [];
+        if (!$event->isMainRequest()) {
+            return;
+        }
 
+        $request = $event->getRequest();
         $routeName = $request->attributes->get('_route');
+
         if (!$routeName) {
             return;
         }
 
-        $routePath = $this->router->getRouteCollection()->get($routeName)->getDefault('_controller');
-        if (!$routePath) {
+        $route = $this->router->getRouteCollection()->get($routeName);
+
+        if (!$route) {
             return;
         }
 
-        $controllerName = strstr(substr(strrchr($routePath, '\\'), 1), '::', true);
+        $controller = $route->getDefault('_controller');
+        $controllerName = $this->resolveControllerName($controller);
+
         if (!$controllerName) {
             return;
         }
 
+        $user = $this->security->getUser();
+        $config = $this->configService->get();
         $redirect = null;
 
-        if ($controllerName == 'PublicController' && !in_array($routeName, $availablePublicRoutes)) {
+        if ($controllerName === 'PublicController') {
             if ($user && $this->authorizationChecker->isGranted('ROLE_ADMIN')) {
                 $redirect = $this->router->generate('admin');
             } elseif (!$config->enablePublic) {
                 $redirect = $this->router->generate('login');
             }
-        } elseif ($controllerName == 'AuthController' && $user) {
+        } elseif ($controllerName === 'AuthController' && $user) {
             $redirect = $this->router->generate('home');
         }
 
@@ -69,7 +72,23 @@ class PublicAccessSubscriber implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * Resolves the short controller class name from a fully qualified controller string.
+     *
+     * @param string|null $controller the fully qualified controller string (e.g. 'App\Controller\PublicController::index')
+     */
+    private function resolveControllerName(?string $controller): ?string
+    {
+        if (!$controller) {
+            return null;
+        }
+
+        $class = strstr($controller, '::', true) ?: $controller;
+
+        return substr(strrchr($class, '\\'), 1) ?: null;
+    }
+
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', 7],
