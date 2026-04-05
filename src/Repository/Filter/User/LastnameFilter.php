@@ -15,7 +15,10 @@ class LastnameFilter extends AbstractFilter
         private readonly string $lastname,
         private readonly ComparisonOperator $operator = ComparisonOperator::LIKE,
     ) {
-        $this->assertOperator($this->operator, $this->allowedStringOperators());
+        $this->assertOperator($this->operator, [
+            ...$this->allowedStringOperators(),
+            ...$this->allowedNullOperators(),
+        ]);
     }
 
     public function apply(QueryBuilder $qb): void
