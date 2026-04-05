@@ -127,4 +127,27 @@ abstract class AbstractFilter implements FilterInterface
             ComparisonOperator::NOT_IN,
         ];
     }
+
+    /** @return ComparisonOperator[] */
+    protected function allowedNullOperators(): array
+    {
+        return [
+            ComparisonOperator::IS_NULL,
+            ComparisonOperator::IS_NOT_NULL,
+        ];
+    }
+
+    /** @return ComparisonOperator[] */
+    protected function allowedDateOperators(): array
+    {
+        return [
+            ComparisonOperator::EQ,
+            ComparisonOperator::NEQ,
+            ComparisonOperator::GT,
+            ComparisonOperator::GTE,
+            ComparisonOperator::LT,
+            ComparisonOperator::LTE,
+            ComparisonOperator::BETWEEN,
+        ];
+    }
 }
