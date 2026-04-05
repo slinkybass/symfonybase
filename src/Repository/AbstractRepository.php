@@ -26,7 +26,73 @@ abstract class AbstractRepository extends ServiceEntityRepository
      */
     public function filter(array $filters): array
     {
-        return $this->applyFilters($filters)->getQuery()->getResult();
+        return $this->applyFilters($filters)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Returns a single result matching the given filters, or null if not found.
+     *
+     * @param FilterInterface[] $filters
+     */
+    public function filterOne(array $filters): ?object
+    {
+        return $this->applyFilters($filters)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Returns the first result matching the given filters, or null if not found.
+     *
+     * @param FilterInterface[] $filters
+     */
+    public function filterFirst(array $filters): ?object
+    {
+        return $this->applyFilters($filters)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Returns the number of results matching the given filters.
+     *
+     * @param FilterInterface[] $filters
+     */
+    public function filterCount(array $filters): int
+    {
+        return (int) $this->applyFilters($filters)
+            ->select('COUNT('.static::$alias.'.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Returns whether at least one result matches the given filters.
+     *
+     * @param FilterInterface[] $filters
+     */
+    public function filterExists(array $filters): bool
+    {
+        return $this->filterCount($filters) > 0;
+    }
+
+    /**
+     * Returns a paginated set of results matching the given filters.
+     *
+     * @param FilterInterface[] $filters
+     *
+     * @return array<int, object>
+     */
+    public function filterPaginated(array $filters, int $page = 1, int $limit = 10): array
+    {
+        return $this->applyFilters($filters)
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
 
     /**
