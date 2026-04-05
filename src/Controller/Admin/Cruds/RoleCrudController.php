@@ -6,6 +6,7 @@ use App\Controller\Admin\AbstractCrudController;
 use App\Entity\Role;
 use App\Field\BooleanField;
 use App\Field\FieldGenerator;
+use App\Repository\Filter\Role as RoleFilter;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -131,11 +132,13 @@ class RoleCrudController extends AbstractCrudController
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        $queryBuilder = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
         if (!$this->config()->enablePublic) {
-            $queryBuilder->andWhere("entity.isAdmin = true");
+            (new RoleFilter\IsAdminFilter(true))->apply($qb);
         }
-        return $queryBuilder;
+
+        return $qb;
     }
 
     public function configureActions(Actions $actions): Actions
