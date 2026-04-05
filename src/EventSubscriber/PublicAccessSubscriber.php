@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Service\ConfigService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,12 +19,14 @@ class PublicAccessSubscriber implements EventSubscriberInterface
     private RouterInterface $router;
     private AuthorizationCheckerInterface $authorizationChecker;
     private Security $security;
+    private ConfigService $configService;
 
-    public function __construct(RouterInterface $router, AuthorizationCheckerInterface $authorizationChecker, Security $security)
+    public function __construct(RouterInterface $router, AuthorizationCheckerInterface $authorizationChecker, Security $security, ConfigService $configService)
     {
         $this->router = $router;
         $this->authorizationChecker = $authorizationChecker;
         $this->security = $security;
+        $this->configService = $configService;
     }
 
     public function onKernelRequest(RequestEvent $event)
@@ -31,7 +34,7 @@ class PublicAccessSubscriber implements EventSubscriberInterface
         /** @var User $user */
         $user = $this->security->getUser();
         $request = $event->getRequest();
-        $session = $request->getSession();
+        $config = $this->configService->get();
         $availablePublicRoutes = [];
 
         $routeName = $request->attributes->get('_route');
@@ -54,7 +57,7 @@ class PublicAccessSubscriber implements EventSubscriberInterface
         if ($controllerName == 'PublicController' && !in_array($routeName, $availablePublicRoutes)) {
             if ($user && $this->authorizationChecker->isGranted('ROLE_ADMIN')) {
                 $redirect = $this->router->generate('admin');
-            } elseif (!$session->get('config')->enablePublic) {
+            } elseif (!$config->enablePublic) {
                 $redirect = $this->router->generate('login');
             }
         } elseif ($controllerName == 'AuthController' && $user) {

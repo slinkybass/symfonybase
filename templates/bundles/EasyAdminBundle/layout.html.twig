@@ -15,7 +15,7 @@
         <meta name="generator" content="EasyAdmin" />
     {% endblock head_metas %}
 
-    {% set page_title_block_output %}{% block page_title %}{{ app.session.get('config').appName }} - {{ block('content_title') }}{% endblock %}{% endset %}
+    {% set page_title_block_output %}{% block page_title %}{{ appConfig.appName }} - {{ block('content_title') }}{% endblock %}{% endset %}
     <title>{{ page_title_block_output|striptags|raw }}</title>
 
     {% block head_stylesheets %}{% endblock %}
@@ -23,7 +23,7 @@
     {% block configured_stylesheets %}
         {{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea.assets.cssAssets ?? [] }, with_context = false) }}
         {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
-        {% set hexColor = app.session.get('config').appColor %}
+        {% set hexColor = appConfig.appColor %}
         {% set rgbColor = hexColor|hex_to_rgb %}
         <style>
             :root, [data-bs-theme="light"] {

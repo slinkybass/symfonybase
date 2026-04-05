@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\ConfigService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,13 +10,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class PrivacyController extends AbstractController
 {
+    private ConfigService $configService;
+
+    public function __construct(ConfigService $configService)
+    {
+        $this->configService = $configService;
+    }
+
     #[Route('/privacy', name: 'privacy')]
     public function privacy(Request $request): Response
     {
-        $session = $this->container->get('request_stack')->getSession();
-        $configSession = $session->get('config');
+        $config = $this->configService->get();
 
-        if (empty($configSession->privacyText)) {
+        if (empty($config->privacyText)) {
             return $this->redirectToRoute('home');
         }
 
@@ -25,10 +32,9 @@ final class PrivacyController extends AbstractController
     #[Route('/cookies', name: 'cookies')]
     public function cookies(Request $request): Response
     {
-        $session = $this->container->get('request_stack')->getSession();
-        $configSession = $session->get('config');
+        $config = $this->configService->get();
 
-        if ($configSession->enableCookies === false || empty($configSession->cookiesText)) {
+        if ($config->enableCookies === false || empty($config->cookiesText)) {
             return $this->redirectToRoute('home');
         }
 

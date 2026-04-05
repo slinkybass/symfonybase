@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Config;
 use App\Entity\User;
+use App\Service\ConfigService;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
@@ -28,12 +29,14 @@ class DashboardController extends AbstractDashboardController
 {
     private EntityManagerInterface $em;
     private TranslatorInterface $translator;
+    private ConfigService $configService;
     private RolePermissions $rolePermissions;
 
-    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, RolePermissions $rolePermissions)
+    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, ConfigService $configService, RolePermissions $rolePermissions)
     {
         $this->em = $em;
         $this->translator = $translator;
+        $this->configService = $configService;
         $this->rolePermissions = $rolePermissions;
     }
 
@@ -44,13 +47,12 @@ class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        $session = $this->container->get('request_stack')->getSession();
-        $configSession = $session->get('config');
+        $config = $this->configService->get();
 
         $dashboard = Dashboard::new();
 
-        $dashboard->setTitle('<img src="'.$configSession->appLogo.'" class="mx-auto d-block">');
-        $dashboard->setFaviconPath($configSession->appFavicon);
+        $dashboard->setTitle('<img src="'.$config->appLogo.'" class="mx-auto d-block">');
+        $dashboard->setFaviconPath($config->appFavicon);
         $dashboard->setDefaultColorScheme('light');
         $dashboard->renderContentMaximized();
 
@@ -70,12 +72,11 @@ class DashboardController extends AbstractDashboardController
 
     public function configureCrud(): Crud
     {
-        $session = $this->container->get('request_stack')->getSession();
-        $configSession = $session->get('config');
+        $config = $this->configService->get();
 
         $crud = Crud::new();
 
-        $crud->setTimezone($configSession->appTimezone);
+        $crud->setTimezone($config->appTimezone);
         $crud->setDefaultRowAction(null);
 
         return $crud;
@@ -96,19 +97,18 @@ class DashboardController extends AbstractDashboardController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $config = $this->em->getRepository(Config::class)->filterFirst();
-        $session = $this->container->get('request_stack')->getSession();
-        $configSession = $session->get('config');
+        $configId = $this->em->getRepository(Config::class)->filterFirst()?->getId();
+        $config = $this->configService->get();
 
         yield MenuItem::linkToDashboard($this->translator->trans('admin.home.title'), 'home');
 
         $userItems = [];
-        if ($configSession->enablePublic && $this->rolePermissions->userHasPermissionCrud($user, 'user')) {
+        if ($config->enablePublic && $this->rolePermissions->userHasPermissionCrud($user, 'user')) {
             $userItems[] = MenuItem::linkTo(Cruds\UserCrudController::class, $this->translator->trans('entities.user.plural'), 'user');
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'admin')) {
-            $label = $configSession->enablePublic ? 'admin' : 'user';
-            $icon = $configSession->enablePublic ? 'user-shield' : 'user';
+            $label = $config->enablePublic ? 'admin' : 'user';
+            $icon = $config->enablePublic ? 'user-shield' : 'user';
             $userItems[] = MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('entities.'.$label.'.plural'), $icon);
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'role')) {
@@ -127,12 +127,12 @@ class DashboardController extends AbstractDashboardController
         $configItems = [];
         if ($this->rolePermissions->userHasPermissionCrud($user, 'settings')) {
             $settingsLink = MenuItem::linkTo(Cruds\SettingsCrudController::class, $this->translator->trans('entities.settings.singular'), 'tool');
-            $settingsLink = $config ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $settingsLink->setAction(Crud::PAGE_NEW);
+            $settingsLink = $configId ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($configId) : $settingsLink->setAction(Crud::PAGE_NEW);
             $configItems[] = $settingsLink;
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'config')) {
             $configLink = MenuItem::linkTo(Cruds\ConfigCrudController::class, $this->translator->trans('entities.config.singular'), 'settings');
-            $configLink = $config ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($config->getId()) : $configLink->setAction(Crud::PAGE_NEW);
+            $configLink = $configId ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($configId) : $configLink->setAction(Crud::PAGE_NEW);
             $configItems[] = $configLink;
         }
         if ($this->rolePermissions->userHasPermissionCrud($user, 'demoEntity') && class_exists('App\\Entity\\DemoEntity')) {

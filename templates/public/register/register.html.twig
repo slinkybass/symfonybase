@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">
                         <a href="{{ path('home') }}" class="navbar-brand navbar-brand-autodark">
-                            <img src="{{ app.session.get('config').appLogo }}" alt="{{ app.session.get('config').appName }}" style="max-height: 30px;">
+                            <img src="{{ appConfig.appLogo }}" alt="{{ appConfig.appName }}" style="max-height: 30px;">
                         </a>
                     </h2>
                     {{ form_row(registerForm.name) }}

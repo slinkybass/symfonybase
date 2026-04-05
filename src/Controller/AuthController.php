@@ -6,10 +6,10 @@ use App\Entity\User;
 use App\Form\ChangePasswordForm;
 use App\Form\RegistrationForm;
 use App\Form\ResetPasswordRequestForm;
+use App\Service\ConfigService;
 use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,14 +29,16 @@ final class AuthController extends AbstractController
     use ResetPasswordControllerTrait;
 
     private EntityManagerInterface $em;
+    private ConfigService $configService;
     private MailService $mailService;
     private TranslatorInterface $translator;
     private ResetPasswordHelperInterface $resetPasswordHelper;
     private VerifyEmailHelperInterface $verifyEmailHelper;
 
-    public function __construct(EntityManagerInterface $em, MailService $mailService, TranslatorInterface $translator, ResetPasswordHelperInterface $resetPasswordHelper, VerifyEmailHelperInterface $verifyEmailHelper)
+    public function __construct(EntityManagerInterface $em, ConfigService $configService, MailService $mailService, TranslatorInterface $translator, ResetPasswordHelperInterface $resetPasswordHelper, VerifyEmailHelperInterface $verifyEmailHelper)
     {
         $this->em = $em;
+        $this->configService = $configService;
         $this->mailService = $mailService;
         $this->translator = $translator;
         $this->resetPasswordHelper = $resetPasswordHelper;
@@ -46,20 +48,20 @@ final class AuthController extends AbstractController
     #[Route('/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        $session = $this->container->get('request_stack')->getSession();
+        $config = $this->configService->get();
 
         return $this->render('@EasyAdmin/page/login.html.twig', [
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'last_username' => $authenticationUtils->getLastUsername(),
             'translation_domain' => 'admin',
-            'favicon_path' => $session->get('config')->appFavicon,
+            'favicon_path' => $config->appFavicon,
             'page_title' => $this->translator->trans('login_page.sign_in', [], 'EasyAdminBundle'),
             'csrf_token_intention' => 'authenticate',
             'target_path' => $this->generateUrl('home'),
             'username_label' => $this->translator->trans('entities.user.fields.email'),
             'remember_me_enabled' => true,
             'remember_me_checked' => true,
-            'forgot_password_enabled' => $session->get('config')->enableResetPassword,
+            'forgot_password_enabled' => $config->enableResetPassword,
             'forgot_password_path' => $this->generateUrl('reset'),
         ]);
     }
@@ -183,18 +185,17 @@ final class AuthController extends AbstractController
     }
 
     #[Route('/register', name: 'register')]
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, Security $security): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
+        $config = $this->configService->get();
         $user = new User();
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session = $this->container->get('request_stack')->getSession();
-
             $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
             $user->setPassword($encodedPassword);
-            $user->setRole($session->get('config')->roleDefaultRegister);
+            $user->setRole($config->roleDefaultRegister);
             $user->setVerified(false);
             $this->em->persist($user);
             $this->em->flush();

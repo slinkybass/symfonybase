@@ -20,7 +20,7 @@
             {% endblock %}
         </title>
         {% block head_favicon %}
-            <link rel="shortcut icon" href="{{ asset(app.session.get('config').appFavicon) }}">
+            <link rel="shortcut icon" href="{{ asset(appConfig.appFavicon) }}">
         {% endblock %}
 
         {% block importmap %}
@@ -33,7 +33,7 @@
             <link rel="stylesheet" href="{{ asset('bundles/artgrisfilemanager/libs/jstree/dist/themes/default/style.min.css') }}">
             <link rel="stylesheet" href="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/css/jquery.fileupload.css') }}">
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-            {% set hexColor = app.session.get('config').appColor %}
+            {% set hexColor = appConfig.appColor %}
             {% set rgbColor = hexColor|hex_to_rgb %}
             <style>
                 :root, [data-bs-theme="light"] {
