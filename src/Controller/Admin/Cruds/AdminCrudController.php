@@ -161,8 +161,8 @@ class AdminCrudController extends AbstractCrudController
     {
         $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
 
-        (new UserFilter\VerifiedFilter())->apply($qb);
-        (new UserFilter\AdminFilter())->apply($qb);
+        (new UserFilter\IsVerifiedFilter())->apply($qb);
+        (new UserFilter\IsAdminFilter())->apply($qb);
 
         return $qb;
     }
