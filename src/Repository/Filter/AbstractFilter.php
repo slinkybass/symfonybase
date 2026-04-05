@@ -82,4 +82,49 @@ abstract class AbstractFilter implements FilterInterface
             throw new \InvalidArgumentException(sprintf('%s does not support the "%s" operator. Allowed: %s.', static::class, $operator->name, implode(', ', array_map(fn (ComparisonOperator $o) => $o->name, $allowed))));
         }
     }
+
+    /** @return ComparisonOperator[] */
+    protected function allowedStringOperators(): array
+    {
+        return [
+            ComparisonOperator::EQ,
+            ComparisonOperator::NEQ,
+            ComparisonOperator::LIKE,
+            ComparisonOperator::NOT_LIKE,
+            ComparisonOperator::STARTS_WITH,
+            ComparisonOperator::ENDS_WITH,
+        ];
+    }
+
+    /** @return ComparisonOperator[] */
+    protected function allowedBooleanOperators(): array
+    {
+        return [
+            ComparisonOperator::EQ,
+            ComparisonOperator::NEQ,
+        ];
+    }
+
+    /** @return ComparisonOperator[] */
+    protected function allowedNumericOperators(): array
+    {
+        return [
+            ComparisonOperator::EQ,
+            ComparisonOperator::NEQ,
+            ComparisonOperator::GT,
+            ComparisonOperator::GTE,
+            ComparisonOperator::LT,
+            ComparisonOperator::LTE,
+            ComparisonOperator::BETWEEN,
+        ];
+    }
+
+    /** @return ComparisonOperator[] */
+    protected function allowedCollectionOperators(): array
+    {
+        return [
+            ComparisonOperator::IN,
+            ComparisonOperator::NOT_IN,
+        ];
+    }
 }
