@@ -7,7 +7,7 @@ use App\Repository\Filter\ComparisonOperator;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Restricts results to users with (or without) an admin role.
+ * Restricts results to users with or without an admin role.
  */
 class IsAdminFilter extends AbstractFilter
 {
