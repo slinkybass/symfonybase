@@ -97,7 +97,7 @@ class DashboardController extends AbstractDashboardController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $config = $this->em->getRepository(Config::class)->get();
+        $config = $this->em->getRepository(Config::class)->filterFirst();
         $session = $this->container->get('request_stack')->getSession();
         $configSession = $session->get('config');
 

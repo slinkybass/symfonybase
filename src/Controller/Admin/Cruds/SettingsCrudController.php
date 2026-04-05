@@ -103,7 +103,7 @@ class SettingsCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $config = $this->em()->getRepository($this->getEntityFqcn())->get();
+        $config = $this->em()->getRepository($this->getEntityFqcn())->filterFirst();
         $hasPermission = $this->hasPermissionCrud();
 
         $denied = [Action::INDEX, Action::DELETE, Action::BATCH_DELETE];
@@ -119,7 +119,7 @@ class SettingsCrudController extends AbstractCrudController
     {
         $redirect = parent::new($context);
         if ($redirect instanceof RedirectResponse) {
-            $config = $this->em()->getRepository($this->getEntityFqcn())->get();
+            $config = $this->em()->getRepository($this->getEntityFqcn())->filterFirst();
             $url = $this->adminUrl()
                 ->setAction(Crud::PAGE_DETAIL)
                 ->setEntityId($config->getId())

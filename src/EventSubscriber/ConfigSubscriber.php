@@ -56,7 +56,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         }
 
         $config = $this->buildDefaultConfig();
-        $dbConfig = $this->configRepo->get();
+        $dbConfig = $this->configRepo->filterFirst();
 
         if ($dbConfig) {
             $config->appName = $dbConfig->getAppName() ?? $config->appName;
