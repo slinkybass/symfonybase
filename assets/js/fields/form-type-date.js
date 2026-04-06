@@ -11,6 +11,10 @@ import "flatpickr/dist/flatpickr.min.css";
 
 (function () {
 	document.addEventListener("DOMContentLoaded", () => {
+		const locale = moment.locale();
+		const flatpickrLocale = flatpickr.l10ns[locale];
+		flatpickr.localize(flatpickrLocale);
+
 		formTypeDate();
 	});
 
@@ -31,7 +35,6 @@ import "flatpickr/dist/flatpickr.min.css";
 			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") == "false" : true;
 
 			const flatPickrOtps = {
-				locale: moment.locale(),
 				inline: inline,
 				mode: mode,
 				dateFormat: dateFormat,
