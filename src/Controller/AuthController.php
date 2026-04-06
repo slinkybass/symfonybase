@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\ChangePasswordForm;
 use App\Form\RegistrationForm;
 use App\Form\ResetPasswordRequestForm;
+use App\Repository\Filter\User as UserFilter;
 use App\Service\ConfigService;
 use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,21 +29,14 @@ final class AuthController extends AbstractController
 {
     use ResetPasswordControllerTrait;
 
-    private EntityManagerInterface $em;
-    private ConfigService $configService;
-    private MailService $mailService;
-    private TranslatorInterface $translator;
-    private ResetPasswordHelperInterface $resetPasswordHelper;
-    private VerifyEmailHelperInterface $verifyEmailHelper;
-
-    public function __construct(EntityManagerInterface $em, ConfigService $configService, MailService $mailService, TranslatorInterface $translator, ResetPasswordHelperInterface $resetPasswordHelper, VerifyEmailHelperInterface $verifyEmailHelper)
-    {
-        $this->em = $em;
-        $this->configService = $configService;
-        $this->mailService = $mailService;
-        $this->translator = $translator;
-        $this->resetPasswordHelper = $resetPasswordHelper;
-        $this->verifyEmailHelper = $verifyEmailHelper;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly ConfigService $configService,
+        private readonly MailService $mailService,
+        private readonly TranslatorInterface $translator,
+        private readonly ResetPasswordHelperInterface $resetPasswordHelper,
+        private readonly VerifyEmailHelperInterface $verifyEmailHelper,
+    ) {
     }
 
     #[Route('/login', name: 'login')]
@@ -67,15 +61,15 @@ final class AuthController extends AbstractController
     }
 
     #[Route('/reset-password-request', name: 'reset')]
-    public function request(Request $request): Response
+    public function reset(Request $request): Response
     {
         $form = $this->createForm(ResetPasswordRequestForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
-            $user = $this->em->getRepository(User::class)->findOneBy([
-                'email' => $email,
+            $user = $this->em->getRepository(User::class)->filter([
+                new UserFilter\EmailFilter($email),
             ]);
 
             $error = null;
@@ -100,7 +94,7 @@ final class AuthController extends AbstractController
     }
 
     #[Route('/reset-password-request/sent', name: 'reset_sent')]
-    public function checkEmail(): Response
+    public function resetSent(): Response
     {
         $this->getTokenObjectFromSession();
         $this->addFlash('success', $this->translator->trans('app.messages.resetPasswordSended'));
@@ -109,7 +103,7 @@ final class AuthController extends AbstractController
     }
 
     #[Route('/reset-password/{token}', name: 'reset_token')]
-    public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, ?string $token = null): Response
+    public function resetToken(Request $request, UserPasswordHasherInterface $passwordHasher, ?string $token = null): Response
     {
         if ($token) {
             $this->storeTokenInSession($token);
@@ -209,7 +203,7 @@ final class AuthController extends AbstractController
     }
 
     #[Route('/verify', name: 'verify')]
-    public function verifyUserEmail(Request $request): Response
+    public function verify(Request $request): Response
     {
         $id = $request->query->get('id');
         if (!$id) {
