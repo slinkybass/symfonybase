@@ -42,6 +42,7 @@ trait FieldTrait
     public function isRequired(bool $val = true): self
     {
         $this->setFormTypeOption(self::OPTION_REQUIRED, $val);
+        $this->setHtmlAttribute(self::OPTION_REQUIRED, $val);
 
         return $this;
     }
