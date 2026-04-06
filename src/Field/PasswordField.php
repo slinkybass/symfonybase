@@ -108,6 +108,50 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    public function setFirstMaxLength(?int $length): self
+    {
+        if ($this->checkIsRepeated()) {
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.self::OPTION_MAX_LENGTH, $length);
+        } else {
+            $this->setMaxLength($length);
+        }
+
+        return $this;
+    }
+
+    public function setSecondMaxLength(?int $length): self
+    {
+        if ($this->checkIsRepeated()) {
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.attr.'.self::OPTION_MAX_LENGTH, $length);
+        } else {
+            $this->setMaxLength($length);
+        }
+
+        return $this;
+    }
+
+    public function setFirstMinLength(?int $length): self
+    {
+        if ($this->checkIsRepeated()) {
+            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.self::OPTION_MIN_LENGTH, $length);
+        } else {
+            $this->setMaxLength($length);
+        }
+
+        return $this;
+    }
+
+    public function setSecondMinLength(?int $length): self
+    {
+        if ($this->checkIsRepeated()) {
+            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.attr.'.self::OPTION_MIN_LENGTH, $length);
+        } else {
+            $this->setMaxLength($length);
+        }
+
+        return $this;
+    }
+
     public function setPlaceholder(?string $placeholder): self
     {
         if ($this->checkIsRepeated()) {
