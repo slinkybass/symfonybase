@@ -31,8 +31,8 @@ class MediaSubscriber implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        $route = $request->get('_route');
-        $conf = $request->get('conf');
+        $route = $request->attributes->get('_route');
+        $conf = $request->query->get('conf');
 
         if ($route !== 'file_manager' || !$conf || !array_key_exists($conf, $this->conf)) {
             return;
