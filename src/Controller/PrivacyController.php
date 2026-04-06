@@ -3,20 +3,19 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class PrivacyController extends AbstractController
 {
     #[Route('/privacy', name: 'privacy')]
-    public function privacy(Request $request): Response
+    public function privacy(): Response
     {
         return $this->render('public/privacy/privacy.html.twig');
     }
 
     #[Route('/cookies', name: 'cookies')]
-    public function cookies(Request $request): Response
+    public function cookies(): Response
     {
         return $this->render('public/privacy/cookies.html.twig');
     }

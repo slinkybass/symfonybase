@@ -7,6 +7,7 @@ use App\Form\ChangePasswordForm;
 use App\Form\RegistrationForm;
 use App\Form\ResetPasswordRequestForm;
 use App\Repository\Filter\User as UserFilter;
+use App\Repository\UserRepository;
 use App\Service\ConfigService;
 use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,6 +32,7 @@ final class AuthController extends AbstractController
 
     public function __construct(
         private readonly EntityManagerInterface $em,
+        private readonly UserRepository $userRepo,
         private readonly ConfigService $configService,
         private readonly MailService $mailService,
         private readonly TranslatorInterface $translator,
@@ -68,7 +70,7 @@ final class AuthController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
-            $user = $this->em->getRepository(User::class)->filter([
+            $user = $this->userRepo->filterOne([
                 new UserFilter\EmailFilter($email),
             ]);
 
@@ -96,6 +98,7 @@ final class AuthController extends AbstractController
     #[Route('/reset-password-request/sent', name: 'reset_sent')]
     public function resetSent(): Response
     {
+        // Validates that a reset token exists in session before showing the confirmation page.
         $this->getTokenObjectFromSession();
         $this->addFlash('success', $this->translator->trans('app.messages.resetPasswordSended'));
 
@@ -147,6 +150,7 @@ final class AuthController extends AbstractController
 
     private function processSendingPasswordReset(?User $user): RedirectResponse
     {
+        // Redirect even if user not found to prevent email enumeration.
         if (!$user) {
             return $this->redirectToRoute('reset_sent');
         }
@@ -205,13 +209,13 @@ final class AuthController extends AbstractController
     #[Route('/verify', name: 'verify')]
     public function verify(Request $request): Response
     {
-        $id = $request->query->get('id');
+        $id = $request->query->getInt('id');
         if (!$id) {
-            return $this->redirectToRoute('register');
+            return $this->redirectToRoute('login');
         }
-        $user = $this->em->getRepository(User::class)->find($id);
+        $user = $this->userRepo->find($id);
         if (!$user) {
-            return $this->redirectToRoute('register');
+            return $this->redirectToRoute('login');
         }
 
         try {
@@ -222,7 +226,7 @@ final class AuthController extends AbstractController
         } catch (VerifyEmailExceptionInterface $e) {
             $this->addFlash('verify_email_error', $this->translator->trans($e->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('register');
+            return $this->redirectToRoute('login');
         }
         $this->addFlash('success', $this->translator->trans('app.messages.verifyDone'));
 
@@ -245,7 +249,12 @@ final class AuthController extends AbstractController
         $postContent = [
             $this->translator->trans('email.verify.postContent1', ['%time%' => $timeToExpire]),
         ];
-        $html = $this->container->get('twig')->render('mails/template.html.twig', ['subject' => $subject, 'content' => $content, 'buttons' => $buttons, 'postContent' => $postContent]);
+        $html = $this->renderView('mails/template.html.twig', [
+            'subject' => $subject,
+            'content' => $content,
+            'buttons' => $buttons,
+            'postContent' => $postContent,
+        ]);
         $emails = [$user->getEmail()];
         $this->mailService->send($subject, $html, $emails);
 
