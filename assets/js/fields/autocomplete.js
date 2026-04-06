@@ -188,7 +188,21 @@ export default class Autocomplete {
 			}),
 		);
 
+		if (element.required && !element.value) {
+			element.setCustomValidity(this.#getValueMissingMessage());
+		}
+		tomSelect.on('change', (value) => {
+			element.setCustomValidity(element.required && !value ? this.#getValueMissingMessage() : '');
+		});
+
 		return tomSelect;
+	}
+
+	#getValueMissingMessage() {
+		const tmp = document.createElement('select');
+		tmp.required = true;
+		tmp.checkValidity();
+		return tmp.validationMessage;
 	}
 
 	#stripTags(string) {
