@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Model\AppConfig;
+use App\Service\ConfigService;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -18,16 +19,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
-    public TranslatorInterface $translator;
-    public RolePermissions $rolePermissions;
-
     public string $transEntity;
 
-    public function __construct(TranslatorInterface $translator, RolePermissions $rolePermissions)
-    {
-        $this->translator = $translator;
-        $this->rolePermissions = $rolePermissions;
-
+    public function __construct(
+        public TranslatorInterface $translator,
+        public ConfigService $configService,
+        public RolePermissions $rolePermissions,
+    ) {
         $this->transEntity = $this->transEntity ?? $this->crud();
     }
 
@@ -98,7 +96,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
     public function config(): ?AppConfig
     {
-        return $this->session()?->get('config');
+        return $this->configService->get();
     }
 
     public function user(): ?User

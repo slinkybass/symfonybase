@@ -10,6 +10,7 @@ use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;
 use App\Repository\Filter\User as UserFilter;
 use App\Repository\RoleRepository;
+use App\Service\ConfigService;
 use App\Service\RolePermissions;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -36,12 +37,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminCrudController extends AbstractCrudController
 {
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(TranslatorInterface $translator, RolePermissions $rolePermissions, UserPasswordHasherInterface $passwordHasher)
-    {
-        parent::__construct($translator, $rolePermissions);
-        $this->passwordHasher = $passwordHasher;
+    public function __construct(
+        public TranslatorInterface $translator,
+        public ConfigService $configService,
+        public RolePermissions $rolePermissions,
+        public readonly UserPasswordHasherInterface $passwordHasher
+    ) {
+        parent::__construct($translator, $configService, $rolePermissions);
     }
 
     public static function getEntityFqcn(): string

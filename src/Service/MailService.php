@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Model\AppConfig;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -23,10 +22,10 @@ use Symfony\Component\Mime\Email;
 class MailService
 {
     public function __construct(
-        private readonly RequestStack $requestStack,
         private readonly ParameterBagInterface $params,
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $logger,
+        private readonly ConfigService $configService,
     ) {
     }
 
@@ -48,14 +47,7 @@ class MailService
         array $bcc = [],
         array $attachments = [],
     ): bool {
-        /** @var AppConfig|null $config */
-        $config = $this->requestStack->getSession()->get('config');
-
-        if (!$config instanceof AppConfig) {
-            $this->logger->error('MailService: config not found in session.');
-
-            return false;
-        }
+        $config = $this->configService->get();
 
         $isProd = $this->params->get('kernel.environment') === 'prod';
 
