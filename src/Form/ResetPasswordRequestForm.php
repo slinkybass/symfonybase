@@ -9,6 +9,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ResetPasswordRequestForm extends AbstractType
 {
+    public function __construct(
+        private readonly FormGenerator $formGenerator,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $fields = [];
@@ -17,7 +22,7 @@ class ResetPasswordRequestForm extends AbstractType
             ->setPlaceholder('entities.user.fields.email')
             ->setHtmlAttribute('autofocus', true);
 
-        $builder = FormGenerator::getFormBuilder($builder, $fields);
+        $builder = $this->formGenerator->getFormBuilder($builder, $fields);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

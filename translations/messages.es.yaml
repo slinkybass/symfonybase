@@ -2,7 +2,7 @@ app:
   messages:
     userDeactivated: Tu cuenta está desactivada.
     userUnverified: Tu cuenta de correo electrónico no está confirmada. Por favor revisa tu bandeja de entrada y haz click en el enlace que te hemos enviado.
-    resetPasswordSended: Se acaba de enviar un email que contiene un enlace que puede usar para restablecer su contraseña. Si no recibe este email, revise en la carpeta de SPAM.
+    resetPasswordRequestSent: Se acaba de enviar un email que contiene un enlace que puede usar para restablecer su contraseña. Si no recibe este email, revise en la carpeta de SPAM.
     resetPasswordDone: Se ha realizado el cambio de contraseña correctamente. Puede iniciar sesión.
     verifySended: Se acaba de enviar un email que contiene un enlace que debe usar para verificar su dirección de correo electrónico. Si no recibe este email, revise en la carpeta de SPAM.
     verifyDone: Se ha realizado la confirmación de email correctamente. Puede iniciar sesión.
@@ -32,7 +32,7 @@ public:
     acceptTerms: Acepto los términos de uso y privacidad
     acceptTermsUrl: Acepto los <a href="%url%" target="_blank">términos de uso y privacidad</a>
 email:
-  reset:
+  resetPasswordRequest:
     subject: Solicitud de recuperación de contraseña.
     content1: ¡Hola!
     content2: Has recibido este email porque has solicitado la recuperación de tu contraseña.

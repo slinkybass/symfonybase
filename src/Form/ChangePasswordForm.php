@@ -9,6 +9,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChangePasswordForm extends AbstractType
 {
+    public function __construct(
+        private readonly FormGenerator $formGenerator,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $fields = [];
@@ -23,7 +28,7 @@ class ChangePasswordForm extends AbstractType
             ->setFormTypeOption('first_options.attr.autofocus', true)
             ->isMapped(false);
 
-        $builder = FormGenerator::getFormBuilder($builder, $fields);
+        $builder = $this->formGenerator->getFormBuilder($builder, $fields);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

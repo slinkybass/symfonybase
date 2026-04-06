@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Role;
 use App\Entity\User;
 use App\Form\ChangePasswordForm;
 use App\Form\RegistrationForm;
 use App\Form\ResetPasswordRequestForm;
 use App\Repository\Filter\User as UserFilter;
+use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use App\Service\ConfigService;
 use App\Service\MailService;
@@ -58,12 +60,12 @@ final class AuthController extends AbstractController
             'remember_me_enabled' => true,
             'remember_me_checked' => true,
             'forgot_password_enabled' => $config->enableResetPassword,
-            'forgot_password_path' => $this->generateUrl('reset'),
+            'forgot_password_path' => $this->generateUrl('reset_password_request'),
         ]);
     }
 
-    #[Route('/reset-password-request', name: 'reset')]
-    public function reset(Request $request): Response
+    #[Route('/reset-password-request', name: 'reset_password_request')]
+    public function resetPasswordRequest(Request $request): Response
     {
         $form = $this->createForm(ResetPasswordRequestForm::class);
         $form->handleRequest($request);
@@ -86,37 +88,37 @@ final class AuthController extends AbstractController
             if ($error) {
                 $this->addFlash('error', $error);
             } else {
-                return $this->processSendingPasswordReset($user);
+                return $this->sendResetPasswordRequestEmail($user);
             }
         }
 
-        return $this->render('public/reset/reset.html.twig', [
-            'requestForm' => $form,
+        return $this->render('auth/reset_password_request.html.twig', [
+            'form' => $form,
         ]);
     }
 
-    #[Route('/reset-password-request/sent', name: 'reset_sent')]
-    public function resetSent(): Response
+    #[Route('/reset-password-request/sent', name: 'reset_password_request_sent')]
+    public function resetPasswordRequestSent(): Response
     {
         // Validates that a reset token exists in session before showing the confirmation page.
         $this->getTokenObjectFromSession();
-        $this->addFlash('success', $this->translator->trans('app.messages.resetPasswordSended'));
+        $this->addFlash('success', $this->translator->trans('app.messages.resetPasswordRequestSent'));
 
         return $this->redirectToRoute('login');
     }
 
-    #[Route('/reset-password/{token}', name: 'reset_token')]
-    public function resetToken(Request $request, UserPasswordHasherInterface $passwordHasher, ?string $token = null): Response
+    #[Route('/reset-password/{token}', name: 'reset_password')]
+    public function resetPassword(Request $request, UserPasswordHasherInterface $passwordHasher, ?string $token = null): Response
     {
         if ($token) {
             $this->storeTokenInSession($token);
 
-            return $this->redirectToRoute('reset_token');
+            return $this->redirectToRoute('reset_password');
         }
 
         $token = $this->getTokenFromSession();
         if ($token === null) {
-            return $this->redirectToRoute('reset');
+            return $this->redirectToRoute('reset_password_request');
         }
 
         try {
@@ -125,7 +127,7 @@ final class AuthController extends AbstractController
         } catch (ResetPasswordExceptionInterface $e) {
             $this->addFlash('error', $this->translator->trans($e->getReason(), [], 'ResetPasswordBundle'));
 
-            return $this->redirectToRoute('reset');
+            return $this->redirectToRoute('reset_password_request');
         }
 
         $form = $this->createForm(ChangePasswordForm::class);
@@ -143,35 +145,35 @@ final class AuthController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        return $this->render('public/reset/token.html.twig', [
-            'resetForm' => $form,
+        return $this->render('auth/reset_password.html.twig', [
+            'form' => $form,
         ]);
     }
 
-    private function processSendingPasswordReset(?User $user): RedirectResponse
+    private function sendResetPasswordRequestEmail(?User $user): RedirectResponse
     {
         // Redirect even if user not found to prevent email enumeration.
         if (!$user) {
-            return $this->redirectToRoute('reset_sent');
+            return $this->redirectToRoute('reset_password_request_sent');
         }
 
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
-            return $this->redirectToRoute('reset_sent');
+            return $this->redirectToRoute('reset_password_request_sent');
         }
 
-        $subject = $this->translator->trans('email.reset.subject');
+        $subject = $this->translator->trans('email.resetPasswordRequest.subject');
         $content = [
-            $this->translator->trans('email.reset.content1'),
-            $this->translator->trans('email.reset.content2'),
+            $this->translator->trans('email.resetPasswordRequest.content1'),
+            $this->translator->trans('email.resetPasswordRequest.content2'),
         ];
         $buttons = [
-            $this->translator->trans('email.reset.button') => $this->generateUrl('reset_token', ['token' => $resetToken->getToken()], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->translator->trans('email.resetPasswordRequest.button') => $this->generateUrl('reset_password', ['token' => $resetToken->getToken()], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
         $timeToExpire = $this->translator->trans($resetToken->getExpirationMessageKey(), $resetToken->getExpirationMessageData(), 'ResetPasswordBundle');
         $postContent = [
-            $this->translator->trans('email.reset.postContent1', ['%time%' => $timeToExpire]),
+            $this->translator->trans('email.resetPasswordRequest.postContent1', ['%time%' => $timeToExpire]),
         ];
         $html = $this->renderView('mails/template.html.twig', ['subject' => $subject, 'content' => $content, 'buttons' => $buttons, 'postContent' => $postContent]);
         $emails = [$user->getEmail()];
@@ -179,13 +181,16 @@ final class AuthController extends AbstractController
 
         $this->setTokenObjectInSession($resetToken);
 
-        return $this->redirectToRoute('reset_sent');
+        return $this->redirectToRoute('reset_password_request_sent');
     }
 
     #[Route('/register', name: 'register')]
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
+        /** @var RoleRepository $roleRepo */
+        $roleRepo = $this->em->getRepository(Role::class);
         $config = $this->configService->get();
+
         $user = new User();
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
@@ -193,16 +198,16 @@ final class AuthController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
             $user->setPassword($encodedPassword);
-            $user->setRole($config->roleDefaultRegister);
+            $user->setRole($roleRepo->find($config->roleDefaultRegister->getId()));
             $user->setVerified(false);
             $this->em->persist($user);
             $this->em->flush();
 
-            return $this->processSendingVerifyEmail($user);
+            return $this->sendVerifyEmail($user);
         }
 
-        return $this->render('public/register/register.html.twig', [
-            'registerForm' => $form,
+        return $this->render('auth/register.html.twig', [
+            'form' => $form,
         ]);
     }
 
@@ -230,10 +235,10 @@ final class AuthController extends AbstractController
         }
         $this->addFlash('success', $this->translator->trans('app.messages.verifyDone'));
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('login');
     }
 
-    private function processSendingVerifyEmail(User $user): RedirectResponse
+    private function sendVerifyEmail(User $user): RedirectResponse
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature('verify', (string) $user->getId(), $user->getEmail(), ['id' => $user->getId()]);
 
