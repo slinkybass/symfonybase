@@ -135,7 +135,7 @@ class RoleCrudController extends AbstractCrudController
         $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
 
         if (!$this->config()->enablePublic) {
-            (new RoleFilter\IsAdminFilter(true))->apply($qb);
+            (new RoleFilter\IsAdminFilter())->apply($qb);
         }
 
         return $qb;
