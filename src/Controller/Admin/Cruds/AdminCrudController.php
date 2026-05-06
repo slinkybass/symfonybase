@@ -100,9 +100,8 @@ class AdminCrudController extends AbstractCrudController
         $gender = FieldGenerator::enum('gender')
             ->setLabel($this->transEntityField('gender'))
             ->setColumns(2);
-        $avatar = FieldGenerator::media('avatar')
+        $avatar = FieldGenerator::avatar('avatar')
             ->setLabel($this->transEntityField('avatar'))
-            ->setConf('public_user_images')
             ->setColumns(8);
         $role = FieldGenerator::association('role')
             ->setLabel($this->transEntitySingular('role'))

@@ -98,13 +98,13 @@ class RoleCrudController extends AbstractCrudController
         $iconUsers = $publicEnabled && $entityIsAdmin ? 'user-shield' : 'user';
         $usersPanel = FieldGenerator::panel($this->transEntityPlural($nameUsers))
             ->setIcon($iconUsers);
-        $users = FieldGenerator::association('users')
+        $users = FieldGenerator::user('users')
             ->setLabel($this->transEntityPlural('user'));
 
         if ($this->isIndex()) {
             yield $displayName;
             yield $isAdmin->isSwitch(false);
-            yield $users->addCssClass('w-1')->setTextAlign('center');
+            yield $users->addCssClass('w-1');
         } elseif ($this->isDetail()) {
             yield $dataPanel;
             yield $displayName;

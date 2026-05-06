@@ -1,0 +1,59 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% set isToMany = field.customOptions.get('associationType') == 'toMany' %}
+
+{% if isToMany %}
+    {% if ea.crud.currentAction == 'index' %}
+        <div class="d-flex flex-fill flex-wrap">
+            <div class="avatar-list avatar-list-stacked" data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button">
+                {% set limit = 5 %}
+                {%- for user in field.value|shuffle|slice(0, limit) -%}
+                    <twig:UserAvatar :user="user" size="sm" />
+                {%- endfor -%}
+                {%- if field.value|length > limit -%}
+                    <span class="avatar avatar-sm">+{{ field.value|length - limit }}</span>
+                {%- endif -%}
+            </div>
+        </div>
+        <div class="modal modal-blur fade text-start" id="info-{{ field.uniqueId }}" tabindex="-1" aria-labelledby="info-{{ field.uniqueId }}Label" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row row-cards">
+                            {% for user in field.value %}
+                                <div class="col-md-4">
+                                    {{ _self.render_user(user) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row row-cards">
+            {% for user in field.value %}
+                <div class="col-md-3">
+                    {{ _self.render_user(user) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% else %}
+    {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_INLINE')) }}
+{% endif %}
+
+{% macro render_user(user, variant, avatarSize) %}
+    {% set crudControllerFqcn = user.role.isAdmin ? 'App\\Controller\\Admin\\Cruds\\AdminCrudController' : 'App\\Controller\\Admin\\Cruds\\UserCrudController' %}
+    {% set controllerName = crudControllerFqcn|split('\\')|last|replace({'CrudController': ''}) %}
+    {% set hasPermission = has_permission_crud_action(controllerName, 'detail') %}
+    {% set url = hasPermission ? ea_url().setController(crudControllerFqcn).setAction('detail').setEntityId(user.id) : null %}
+    <twig:User
+        :user="user"
+        :url="url"
+        :variant="variant|default(constant('App\\Twig\\Components\\User::VARIANT_CARD'))"
+        :avatar-size="avatarSize|default('md')"
+    />
+{% endmacro %}

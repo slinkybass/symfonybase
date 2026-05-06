@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use App\Repository\Filter\User as UserFilter;
 use Symfony\Component\Form\AbstractType;
 
 class FieldGenerator extends AbstractType
@@ -181,6 +182,13 @@ class FieldGenerator extends AbstractType
         return MediaField::new($name);
     }
 
+    public static function avatar(string $name)
+    {
+        return MediaField::new($name)
+            ->setConf('public_user_images')
+            ->setTemplatePath('field/avatar.html.twig');
+    }
+
     public static function file(string $name)
     {
         return FileField::new($name);
@@ -204,5 +212,16 @@ class FieldGenerator extends AbstractType
     public static function association(string $name)
     {
         return AssociationField::new($name);
+    }
+
+    public static function user(string $name)
+    {
+        return AssociationField::new($name)
+            ->setFormTypeOption('query_builder', function ($er) {
+                $qb = $er->createQueryBuilder('u');
+                (new UserFilter\IsVerifiedFilter())->apply($qb);
+                (new UserFilter\IsActiveFilter())->apply($qb);
+            })
+            ->setTemplatePath('field/user.html.twig');
     }
 }

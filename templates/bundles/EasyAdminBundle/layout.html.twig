@@ -71,11 +71,7 @@
                     <div class="nav-item dropdown">
                         {% block header_custom_menu %}
                             <a type="button" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                                {% if null == ea.userMenu.avatarUrl %}
-                                    <span class="avatar avatar-sm">{{ ea.userMenu.name|first|upper }}</span>
-                                {% else %}
-                                    <span class="avatar avatar-sm" style="background-image: url('{{ ea.userMenu.avatarUrl }}')"></span>
-                                {% endif %}
+                                <twig:UserAvatar :user="ea.user" size="sm" />
                                 {% if ea.userMenu.isNameDisplayed %}
                                     <div class="d-none d-xl-block ps-2">
                                         {{ ea.user is null ? 'user.anonymous'|trans(domain: 'EasyAdminBundle') : ea.userMenu.name }}

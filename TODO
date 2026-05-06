@@ -1,12 +1,12 @@
-Bug al acceder a rol admin cuando solo hay acceso a user por el crudController (crear template user)
-
 Actualizar composer y assets
-
 Revisar Demo
 
 MEJORAS:
-	Repasar todo el código formateando y refatorizando
+	Components (Rol, Media...)
+	Acceder a Mi perfil desde el UserMenu
 	Mostrar como labels los filtros ocultos en los listados?
+
+	Repasar todo el código formateando y refatorizando
 
 	Revisar CSS (Eliminar innecesario) y JS (Mejoras en fields como hf y tomselect)
 

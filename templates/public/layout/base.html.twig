@@ -70,7 +70,7 @@
                                 <div class="nav-item {% if is_granted('IS_AUTHENTICATED') %}dropdown{% endif %}">
                                     {% if is_granted('IS_AUTHENTICATED') %}
                                         <a href="#" class="nav-link" data-bs-toggle="dropdown" title="{{ app.user }}">
-                                            <span class="avatar avatar-sm" {% if app.user.avatar %}style="background-image: url({{ app.user.avatar }})"{% endif %}>{% if not app.user.avatar %}{{ app.user|first|upper }}{% endif %}</span>
+                                            <twig:UserAvatar :user="app.user" size="sm" />
                                             <div class="d-none d-md-block ps-2">{{ app.user }}</div>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">

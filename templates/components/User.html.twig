@@ -1,0 +1,35 @@
+{% if this.variant == constant('App\\Twig\\Components\\User::VARIANT_INLINE') %}
+    {% if this.url %}
+        <a class="badge bg-transparent text-decoration-none" href="{{ this.url }}">
+    {% else %}
+        <span class="badge bg-transparent text-decoration-none">
+    {% endif %}
+            <twig:UserAvatar :user="user" :size="this.avatarSize" /> {{ this.label }}
+    {% if this.url %}
+        </a>
+    {% else %}
+        </span>
+    {% endif %}
+{% else %}
+    {% if this.url %}
+        <a class="card card-sm card-link" href="{{ this.url }}">
+    {% else %}
+        <div class="card card-sm">
+    {% endif %}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto">
+                        <twig:UserAvatar :user="user" :size="this.avatarSize" />
+                    </div>
+                    <div class="col">
+                        <div class="fw-medium text-truncate">{{ this.label }}</div>
+                        <div class="text-muted text-truncate">{{ this.getSublabel }}</div>
+                    </div>
+                </div>
+            </div>
+    {% if this.url %}
+        </a>
+    {% else %}
+        </div>
+    {% endif %}
+{% endif %}

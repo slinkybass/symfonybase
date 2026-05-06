@@ -147,13 +147,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureUserMenu(UserInterface $userInterface): UserMenu
     {
-        /** @var User $user */
-        $user = $userInterface;
         $userMenu = parent::configureUserMenu($userInterface);
-
-        if ($user->getAvatar()) {
-            $userMenu->setAvatarUrl($user->getAvatar());
-        }
 
         $menuItems = [];
         if ($this->isGranted('IS_IMPERSONATOR')) {
