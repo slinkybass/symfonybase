@@ -17,13 +17,15 @@
         <div class="card card-sm">
     {% endif %}
             <div class="card-body">
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col-auto">
                         <twig:UserAvatar :user="user" :size="this.avatarSize" />
                     </div>
                     <div class="col">
                         <div class="fw-medium text-truncate">{{ this.label }}</div>
-                        <div class="text-muted text-truncate">{{ this.getSublabel }}</div>
+                        {% if this.getSublabel %}
+                            <div class="text-muted text-truncate">{{ this.getSublabel }}</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

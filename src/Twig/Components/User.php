@@ -29,6 +29,6 @@ class User
 
     public function getSublabel(): string
     {
-        return $this->sublabel ?: ($this->user ? $this->user->getRole() : '');
+        return $this->sublabel !== null ? $this->sublabel : ($this->user ? $this->user->getRole() : '');
     }
 }
