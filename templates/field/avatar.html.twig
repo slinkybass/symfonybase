@@ -2,4 +2,5 @@
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
 
-<twig:UserAvatar :user="entity.instance" :zoom="true" />
+{% set allowZoom = field.customOptions.get('allow_zoom')|default(false) %}
+<twig:UserAvatar :user="entity.instance" :zoom="allowZoom" />

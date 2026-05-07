@@ -25,6 +25,8 @@ class MediaField implements FieldInterface
     public const OPTION_CROP_ALLOW_ROTATION = 'allow_rotation';
     public const OPTION_CROP_RATIO = 'ratio';
 
+    public const OPTION_ALLOW_ZOOM = 'allow_zoom';
+
     public static function new(string $propertyName, $label = null): self
     {
         $field = new self();
@@ -43,6 +45,7 @@ class MediaField implements FieldInterface
         $this->displayFileManager(true);
         $this->displayTree(false);
         $this->allowCrop(false);
+        $this->allowZoom(true);
     }
 
     public function setConf(string $conf = 'public_all'): self
@@ -108,6 +111,13 @@ class MediaField implements FieldInterface
     {
         $this->allowCrop();
         $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_RATIO, $val);
+
+        return $this;
+    }
+
+    public function allowZoom(bool $val = true): self
+    {
+        $this->setCustomOption(self::OPTION_ALLOW_ZOOM, $val);
 
         return $this;
     }
