@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
+use Symfony\Component\Validator\Constraint;
 
 class ImageField implements FieldInterface
 {
@@ -58,6 +59,9 @@ class ImageField implements FieldInterface
         return $this;
     }
 
+    /**
+     * @param string|\Closure $pattern
+     */
     public function setUploadedFileNamePattern($pattern): self
     {
         $this->innerField->setUploadedFileNamePattern($pattern);
@@ -65,6 +69,9 @@ class ImageField implements FieldInterface
         return $this;
     }
 
+    /**
+     * @param Constraint|array<Constraint> $constraints
+     */
     public function setFileConstraints($constraints): self
     {
         $this->innerField->setFileConstraints($constraints);

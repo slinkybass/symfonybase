@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\File;
 
 class FileField implements FieldInterface
@@ -17,6 +18,8 @@ class FileField implements FieldInterface
 
     public const OPTION_ACCEPT = 'accept';
     public const OPTION_FILE_CONSTRAINTS = 'fileConstraints';
+    public const DEFAULT_DIR = 'media';
+    public const DEFAULT_TEMPLATE_PATH = 'field/file.html.twig';
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -32,8 +35,8 @@ class FileField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->dto->setAssets(new AssetsDto());
         $this->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms());
-        $this->setDir('media');
-        $this->setTemplatePath('field/file.html.twig');
+        $this->setDir(self::DEFAULT_DIR);
+        $this->setTemplatePath(self::DEFAULT_TEMPLATE_PATH);
         $this->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()]);
     }
 
@@ -66,6 +69,9 @@ class FileField implements FieldInterface
         return $this;
     }
 
+    /**
+     * @param string|\Closure $pattern
+     */
     public function setUploadedFileNamePattern($pattern): self
     {
         $this->innerField->setUploadedFileNamePattern($pattern);
@@ -73,6 +79,9 @@ class FileField implements FieldInterface
         return $this;
     }
 
+    /**
+     * @param Constraint|array<Constraint> $constraints
+     */
     public function setFileConstraints($constraints): self
     {
         $this->innerField->setFileConstraints($constraints);

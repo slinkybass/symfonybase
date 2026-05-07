@@ -106,9 +106,9 @@ class DateTimeField implements FieldInterface
         return $this;
     }
 
-    public function setMinuteIncrement(int $val): self
+    public function setMinuteIncrement(int $minuteIncrement): self
     {
-        $this->setHtmlAttribute(TimeField::OPTION_DATE_MINUTE_INCREMENT, $val);
+        $this->setHtmlAttribute(TimeField::OPTION_DATE_MINUTE_INCREMENT, $minuteIncrement);
 
         return $this;
     }

@@ -20,6 +20,8 @@ trait FieldTrait
     public const OPTION_STRIP_TAGS = 'stripTags';
     public const OPTION_HIDDEN = 'NOPERMISSION_FIELD';
 
+    public const DEFAULT_COLUMNS = 12;
+
     protected function initField(object $field): void
     {
         $this->dto = $field->getAsDto();
@@ -29,83 +31,83 @@ trait FieldTrait
 
     private function applyDefaults(): void
     {
-        $this->setDefaultColumns(12);
+        $this->setDefaultColumns(self::DEFAULT_COLUMNS);
     }
 
-    public function isMapped(bool $val = true): self
+    public function isMapped(bool $mapped = true): self
     {
-        $this->setFormTypeOption(self::OPTION_MAPPED, $val);
+        $this->setFormTypeOption(self::OPTION_MAPPED, $mapped);
 
         return $this;
     }
 
-    public function isRequired(bool $val = true): self
+    public function isRequired(bool $required = true): self
     {
-        $this->setFormTypeOption(self::OPTION_REQUIRED, $val);
-        $this->setHtmlAttribute(self::OPTION_REQUIRED, $val);
+        $this->setFormTypeOption(self::OPTION_REQUIRED, $required);
+        $this->setHtmlAttribute(self::OPTION_REQUIRED, $required);
 
         return $this;
     }
 
-    public function isDisabled(bool $val = true): self
+    public function isDisabled(bool $disabled = true): self
     {
-        $this->setFormTypeOption(self::OPTION_DISABLED, $val);
+        $this->setFormTypeOption(self::OPTION_DISABLED, $disabled);
 
         return $this;
     }
 
-    public function isReadonly(bool $val = true): self
+    public function isReadonly(bool $readonly = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_READ_ONLY, $val);
+        $this->setHtmlAttribute(self::OPTION_READ_ONLY, $readonly);
 
         return $this;
     }
 
-    public function setData(mixed $val): self
+    public function setData(mixed $data): self
     {
-        $this->setFormTypeOption(self::OPTION_DATA, $val);
+        $this->setFormTypeOption(self::OPTION_DATA, $data);
 
         return $this;
     }
 
-    public function setPlaceholder(?string $val): self
+    public function setPlaceholder(?string $placeholder): self
     {
-        $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $val);
+        $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
 
         return $this;
     }
 
-    public function setMaxLength(?int $val): self
+    public function setMaxLength(?int $maxLength): self
     {
-        $this->setHtmlAttribute(self::OPTION_MAX_LENGTH, $val);
+        $this->setHtmlAttribute(self::OPTION_MAX_LENGTH, $maxLength);
 
         return $this;
     }
 
-    public function setMinLength(?int $val): self
+    public function setMinLength(?int $minLength): self
     {
-        $this->setHtmlAttribute(self::OPTION_MIN_LENGTH, $val);
+        $this->setHtmlAttribute(self::OPTION_MIN_LENGTH, $minLength);
 
         return $this;
     }
 
-    public function isHtml(bool $val = true): self
+    public function isHtml(bool $html = true): self
     {
-        $this->setCustomOption(self::OPTION_RENDER_AS_HTML, $val);
+        $this->setCustomOption(self::OPTION_RENDER_AS_HTML, $html);
 
         return $this;
     }
 
-    public function isSanitized(bool $val = true): self
+    public function isSanitized(bool $sanitized = true): self
     {
-        $this->setCustomOption(self::OPTION_STRIP_TAGS, $val);
+        $this->setCustomOption(self::OPTION_STRIP_TAGS, $sanitized);
 
         return $this;
     }
 
-    public function displayIf(bool $val): self
+    public function displayIf(bool $visible): self
     {
-        $this->setPermission($val ? '' : self::OPTION_HIDDEN);
+        $this->setPermission($visible ? '' : self::OPTION_HIDDEN);
 
         return $this;
     }

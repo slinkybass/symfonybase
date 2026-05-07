@@ -11,6 +11,8 @@ class MoneyField implements FieldInterface
         applyDefaults as applyDefaultsTrait;
     }
     private EasyField $innerField;
+    public const DEFAULT_CURRENCY = 'EUR';
+    public const DEFAULT_STORED_AS_CENTS = false;
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -24,8 +26,8 @@ class MoneyField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->setCurrency('EUR');
-        $this->storedAsCents(false);
+        $this->setCurrency(self::DEFAULT_CURRENCY);
+        $this->storedAsCents(self::DEFAULT_STORED_AS_CENTS);
     }
 
     public function setCurrency(string $currency): self

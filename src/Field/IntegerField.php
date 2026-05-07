@@ -74,16 +74,16 @@ class IntegerField implements FieldInterface
         return $this;
     }
 
-    public function setMax(int|float|null $val): self
+    public function setMax(int|float|null $max): self
     {
-        $this->setHtmlAttribute(FloatField::OPTION_MAX, $val);
+        $this->setHtmlAttribute(FloatField::OPTION_MAX, $max);
 
         return $this;
     }
 
-    public function setMin(int|float|null $val): self
+    public function setMin(int|float|null $min): self
     {
-        $this->setHtmlAttribute(FloatField::OPTION_MIN, $val);
+        $this->setHtmlAttribute(FloatField::OPTION_MIN, $min);
 
         return $this;
     }

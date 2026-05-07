@@ -71,16 +71,16 @@ class FormField implements FieldInterface
         return $this;
     }
 
-    public function isCollapsible(bool $val = true): self
+    public function isCollapsible(bool $collapsible = true): self
     {
-        $this->innerField->collapsible($val);
+        $this->innerField->collapsible($collapsible);
 
         return $this;
     }
 
-    public function isCollapsed(bool $val = true): self
+    public function isCollapsed(bool $collapsed = true): self
     {
-        $this->innerField->renderCollapsed($val);
+        $this->innerField->renderCollapsed($collapsed);
 
         return $this;
     }

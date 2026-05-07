@@ -19,6 +19,8 @@ class SignatureField implements FieldInterface
     public const OPTION_SIGNATURE_SHOW_INPUT = 'data-signature-show-input';
     public const OPTION_SIGNATURE_SHOW_UNDO = 'data-signature-show-undo';
     public const OPTION_SIGNATURE_SHOW_CLEAR = 'data-signature-show-clear';
+    public const DEFAULT_BLOCK_PREFIX = 'signature';
+    public const DEFAULT_TEMPLATE_PATH = 'field/media.html.twig';
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -33,8 +35,8 @@ class SignatureField implements FieldInterface
     {
         $this->applyDefaultsTrait();
         $this->enablePlugin();
-        $this->setFormTypeOption('block_prefix', 'signature');
-        $this->setTemplatePath('field/media.html.twig');
+        $this->setFormTypeOption('block_prefix', self::DEFAULT_BLOCK_PREFIX);
+        $this->setTemplatePath(self::DEFAULT_TEMPLATE_PATH);
     }
 
     public function enablePlugin(bool $enable = true): self

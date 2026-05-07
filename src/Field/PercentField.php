@@ -11,6 +11,7 @@ class PercentField implements FieldInterface
         applyDefaults as applyDefaultsTrait;
     }
     private EasyField $innerField;
+    public const DEFAULT_STORED_AS_FRACTIONAL = false;
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -24,7 +25,7 @@ class PercentField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->storedAsFractional(false);
+        $this->storedAsFractional(self::DEFAULT_STORED_AS_FRACTIONAL);
     }
 
     public function setDecimals(int $decimals): self

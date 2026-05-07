@@ -13,6 +13,7 @@ class BooleanField implements FieldInterface
     private EasyField $innerField;
 
     public const OPTION_CHECKED = 'checked';
+    public const DEFAULT_SWITCH = false;
 
     public static function new(string $propertyName, ?string $label = null): self
     {
@@ -26,33 +27,33 @@ class BooleanField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->isSwitch(false);
+        $this->isSwitch(self::DEFAULT_SWITCH);
     }
 
-    public function isChecked(bool $val = true): self
+    public function isChecked(bool $checked = true): self
     {
-        $this->setHtmlAttribute(self::OPTION_CHECKED, $val);
+        $this->setHtmlAttribute(self::OPTION_CHECKED, $checked);
 
         return $this;
     }
 
-    public function isSwitch(bool $val = true): self
+    public function isSwitch(bool $enabled = true): self
     {
-        $this->innerField->renderAsSwitch($val);
+        $this->innerField->renderAsSwitch($enabled);
 
         return $this;
     }
 
-    public function isHiddenOnTrue(bool $val = true): self
+    public function isHiddenOnTrue(bool $hidden = true): self
     {
-        $this->innerField->hideValueWhenTrue($val);
+        $this->innerField->hideValueWhenTrue($hidden);
 
         return $this;
     }
 
-    public function isHiddenOnFalse(bool $val = true): self
+    public function isHiddenOnFalse(bool $hidden = true): self
     {
-        $this->innerField->hideValueWhenFalse($val);
+        $this->innerField->hideValueWhenFalse($hidden);
 
         return $this;
     }

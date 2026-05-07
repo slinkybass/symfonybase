@@ -16,6 +16,7 @@ class DateTimeMultipleField implements FieldInterface
         applyDefaults as applyDefaultsTrait;
     }
     private EasyField $innerField;
+    public const DEFAULT_ENTRY_TYPE = DateTimeType::class;
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -30,7 +31,7 @@ class DateTimeMultipleField implements FieldInterface
     {
         $this->applyDefaultsTrait();
         $this->enablePlugin();
-        $this->setFormTypeOption('entry_type', DateTimeType::class);
+        $this->setFormTypeOption('entry_type', self::DEFAULT_ENTRY_TYPE);
     }
 
     public function enablePlugin(bool $enable = true): self
@@ -123,9 +124,9 @@ class DateTimeMultipleField implements FieldInterface
         return $this;
     }
 
-    public function setMinuteIncrement(int $val): self
+    public function setMinuteIncrement(int $minuteIncrement): self
     {
-        $this->setHtmlAttribute(TimeField::OPTION_DATE_MINUTE_INCREMENT, $val);
+        $this->setHtmlAttribute(TimeField::OPTION_DATE_MINUTE_INCREMENT, $minuteIncrement);
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 class ChoiceField implements FieldInterface
 {
@@ -49,6 +50,9 @@ class ChoiceField implements FieldInterface
         return $this;
     }
 
+    /**
+     * @param array<mixed>|callable $choices
+     */
     public function setChoices($choices): self
     {
         $this->innerField->setChoices($choices);
@@ -56,6 +60,9 @@ class ChoiceField implements FieldInterface
         return $this;
     }
 
+    /**
+     * @param array<string|TranslatableInterface>|callable $choices
+     */
     public function setTransChoices($choices): self
     {
         $this->innerField->setTranslatableChoices($choices);

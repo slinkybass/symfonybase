@@ -29,6 +29,9 @@ class FloatField implements FieldInterface
     /** connect types */
     public const SLIDER_CONNECT_UPPER = 'upper';
     public const SLIDER_CONNECT_LOWER = 'lower';
+    public const DEFAULT_DECIMALS = 2;
+    public const DEFAULT_STEP = 0.1;
+    public const DEFAULT_HTML5 = true;
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -42,9 +45,9 @@ class FloatField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->setDecimals(2);
-        $this->setStep(0.1);
-        $this->setFormTypeOption(self::OPTION_HTML5, true);
+        $this->setDecimals(self::DEFAULT_DECIMALS);
+        $this->setStep(self::DEFAULT_STEP);
+        $this->setFormTypeOption(self::OPTION_HTML5, self::DEFAULT_HTML5);
     }
 
     public function isSlider(bool $enable = true): self
@@ -93,16 +96,16 @@ class FloatField implements FieldInterface
         return $this;
     }
 
-    public function setMax(int|float|null $val): self
+    public function setMax(int|float|null $max): self
     {
-        $this->setHtmlAttribute(self::OPTION_MAX, $val);
+        $this->setHtmlAttribute(self::OPTION_MAX, $max);
 
         return $this;
     }
 
-    public function setMin(int|float|null $val): self
+    public function setMin(int|float|null $min): self
     {
-        $this->setHtmlAttribute(self::OPTION_MIN, $val);
+        $this->setHtmlAttribute(self::OPTION_MIN, $min);
 
         return $this;
     }

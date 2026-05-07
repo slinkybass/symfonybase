@@ -19,6 +19,7 @@ class TextareaField implements FieldInterface
     public const OPTION_TEXTAREA_MAX_HEIGHT = 'data-textarea-max-height';
 
     public const OPTION_RESIZEABLE = 'resizeable';
+    public const DEFAULT_ROWS = 5;
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -33,7 +34,7 @@ class TextareaField implements FieldInterface
     {
         $this->applyDefaultsTrait();
         $this->enablePlugin();
-        $this->setRows(5);
+        $this->setRows(self::DEFAULT_ROWS);
     }
 
     public function enablePlugin(bool $enable = true): self

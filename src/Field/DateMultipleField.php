@@ -16,6 +16,7 @@ class DateMultipleField implements FieldInterface
         applyDefaults as applyDefaultsTrait;
     }
     private EasyField $innerField;
+    public const DEFAULT_ENTRY_TYPE = DateType::class;
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -30,7 +31,7 @@ class DateMultipleField implements FieldInterface
     {
         $this->applyDefaultsTrait();
         $this->enablePlugin();
-        $this->setFormTypeOption('entry_type', DateType::class);
+        $this->setFormTypeOption('entry_type', self::DEFAULT_ENTRY_TYPE);
     }
 
     public function enablePlugin(bool $enable = true): self
