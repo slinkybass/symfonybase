@@ -1,18 +1,18 @@
 {% if this.variant == constant('App\\Twig\\Components\\User::VARIANT_INLINE') %}
     {% if this.url %}
         <a class="badge bg-transparent gap-2 text-decoration-none" href="{{ this.url }}"
-            {% if not this.showLabel %} title="{{ this.label|e('html_attr') }}" aria-label="{{ this.label|e('html_attr') }}" data-bs-toggle="tooltip" data-bs-placement="top"{% endif %}>
+            {% if not this.showInlineLabel %} title="{{ this.label|e('html_attr') }}" aria-label="{{ this.label|e('html_attr') }}" data-bs-toggle="tooltip" data-bs-placement="top"{% endif %}>
     {% else %}
         <span class="badge bg-transparent gap-2"
-            {% if not this.showLabel %} title="{{ this.label|e('html_attr') }}" aria-label="{{ this.label|e('html_attr') }}" data-bs-toggle="tooltip" data-bs-placement="top"{% endif %}>
+            {% if not this.showInlineLabel %} title="{{ this.label|e('html_attr') }}" aria-label="{{ this.label|e('html_attr') }}" data-bs-toggle="tooltip" data-bs-placement="top"{% endif %}>
     {% endif %}
-            <twig:UserAvatar :user="this.user" :size="this.avatarSize" />{% if this.showLabel %} {{ this.label }}{% endif %}
+            <twig:UserAvatar :user="this.user" :size="this.avatarSize" />{% if this.showInlineLabel %} {{ this.label }}{% endif %}
     {% if this.url %}
         </a>
     {% else %}
         </span>
     {% endif %}
-{% else %}
+{% elseif this.variant == constant('App\\Twig\\Components\\User::VARIANT_CARD') %}
     {% if this.url %}
         <a class="card card-sm card-link" href="{{ this.url }}">
     {% else %}
@@ -25,8 +25,10 @@
                     </div>
                     <div class="col">
                         <div class="fw-medium text-truncate">{{ this.label }}</div>
-                        {% if this.getSublabel %}
-                            <div class="text-muted text-truncate">{{ this.getSublabel }}</div>
+                        {% if this.sublabel %}
+                            <span class="badge badge-sm bg-muted-lt text-muted">{{ this.sublabel }}</span>
+                        {% elseif this.user and this.user.role %}
+                            <twig:Role :role="this.user.role" />
                         {% endif %}
                     </div>
                 </div>
