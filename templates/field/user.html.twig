@@ -2,19 +2,24 @@
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
 
-{% set isToMany = field.customOptions.get('associationType') == 'toMany' %}
+{% set associationType = field.customOptions.get(constant('App\\Field\\UserField::OPTION_ASSOCIATION_TYPE')) %}
+{% set isToMany = associationType == 'toMany' or field.value is iterable %}
+{% set isIndex = ea.crud.currentAction == 'index' %}
+{% set avatarSize = field.customOptions.get(constant('App\\Field\\UserField::OPTION_AVATAR_SIZE')) ?? constant('App\\Field\\UserField::DEFAULT_AVATAR_SIZE') %}
+{% set stackedAvatarSize = field.customOptions.get(constant('App\\Field\\UserField::OPTION_STACKED_AVATAR_SIZE')) ?? constant('App\\Field\\UserField::DEFAULT_STACKED_AVATAR_SIZE') %}
+{% set variantDetail = field.customOptions.get(constant('App\\Field\\UserField::OPTION_VARIANT_DETAIL')) ?? constant('App\\Field\\UserField::DEFAULT_VARIANT_DETAIL') %}
 
 {% if field.value is not null and field.value is not empty and (not isToMany or field.value|length > 0) %}
     {% if isToMany %}
-        {% if ea.crud.currentAction == 'index' %}
+        {% if isIndex %}
             <div class="d-flex flex-fill flex-wrap">
                 <div class="avatar-list avatar-list-stacked" data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button">
                     {% set limit = 5 %}
-                    {%- for user in field.value|shuffle|slice(0, limit) -%}
-                        <twig:UserAvatar :user="user" size="sm" />
+                    {%- for user in field.value|slice(0, limit) -%}
+                        <twig:UserAvatar :user="user" :size="stackedAvatarSize" />
                     {%- endfor -%}
                     {%- if field.value|length > limit -%}
-                        <span class="avatar avatar-sm">+{{ field.value|length - limit }}</span>
+                        <span class="avatar avatar-{{ stackedAvatarSize }}">+{{ field.value|length - limit }}</span>
                     {%- endif -%}
                 </div>
             </div>
@@ -25,7 +30,7 @@
                             <div class="row row-cards">
                                 {% for user in field.value %}
                                     <div class="col-md-4">
-                                        {{ _self.render_user(user) }}
+                                        {{ _self.render_user(user, constant('App\\Twig\\Components\\User::VARIANT_CARD'), avatarSize) }}
                                     </div>
                                 {% endfor %}
                             </div>
@@ -34,23 +39,31 @@
                 </div>
             </div>
         {% else %}
-            <div class="row row-cards">
-                {% for user in field.value %}
-                    <div class="col-md-3">
-                        {{ _self.render_user(user) }}
-                    </div>
-                {% endfor %}
-            </div>
+            {% if variantDetail == constant('App\\Twig\\Components\\User::VARIANT_BADGE') %}
+                <div class="d-flex flex-wrap gap-2">
+                    {% for user in field.value %}
+                        {{ _self.render_user(user, variantDetail, avatarSize) }}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="row row-cards">
+                    {% for user in field.value %}
+                        <div class="col-md-3">
+                            {{ _self.render_user(user, variantDetail, avatarSize) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% endif %}
     {% else %}
-        {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_BADGE'), 'sm') }}
+        {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_BADGE'), avatarSize) }}
     {% endif %}
 {% else %}
     {{ include(ea.templatePath('label/empty')) }}
 {% endif %}
 
-{% macro render_user(user, variant = null, avatarSize = null, showBadgeLabel = null, withLink = true) %}
-    {% if withLink %}
+{% macro render_user(user, variant = null, avatarSize = null) %}
+    {% if user is not null and user.id is defined and user.role is defined %}
         {% set crudControllerFqcn = user.role.isAdmin ? 'App\\Controller\\Admin\\Cruds\\AdminCrudController' : 'App\\Controller\\Admin\\Cruds\\UserCrudController' %}
         {% set controllerName = crudControllerFqcn|split('\\')|last|replace({'CrudController': ''}) %}
         {% set hasPermission = has_permission_crud_action(controllerName, 'detail') %}
@@ -58,14 +71,12 @@
     {% else %}
         {% set url = null %}
     {% endif %}
-    {% set variant = variant is not null ? variant : constant('App\\Twig\\Components\\User::VARIANT_CARD') %}
-    {% set avatarSize = avatarSize is not null ? avatarSize : 'md' %}
-    {% set showBadgeLabel = showBadgeLabel is not null ? showBadgeLabel : true %}
+    {% set variant = variant is not null ? variant : constant('App\\Field\\UserField::DEFAULT_VARIANT_DETAIL') %}
+    {% set avatarSize = avatarSize is not null ? avatarSize : constant('App\\Field\\UserField::DEFAULT_AVATAR_SIZE') %}
     <twig:User
         :user="user"
         :url="url"
         :variant="variant"
         :avatarSize="avatarSize"
-        :showBadgeLabel="showBadgeLabel"
     />
 {% endmacro %}

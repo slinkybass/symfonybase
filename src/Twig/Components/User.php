@@ -11,13 +11,15 @@ class User
 {
     public const VARIANT_CARD = 'card';
     public const VARIANT_BADGE = 'badge';
+    public const DEFAULT_AVATAR_SIZE = 'md';
+    public const DEFAULT_SHOW_BADGE_LABEL = true;
 
     public ?UserEntity $user = null;
     public string $variant = self::VARIANT_CARD;
-    public string $avatarSize = 'md';
+    public string $avatarSize = self::DEFAULT_AVATAR_SIZE;
     public ?string $url = null;
     public ?string $sublabel = null;
-    public bool $showBadgeLabel = true;
+    public bool $showBadgeLabel = self::DEFAULT_SHOW_BADGE_LABEL;
 
     public function __construct(
         private TranslatorInterface $translator,
