@@ -1,14 +1,7 @@
-{% if (media is defined and media is not null) or (field is defined and field.value is defined and field.value is not null) %}
-    {% set media = media ?? field.value ?? null %}
-    {% set imageExts = ["apng", "avif", "bmp", "gif", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "png", "svg", "webp"] %}
-    {% set fileExt = media|split('?')|first|split('.')|last|lower %}
-    {% set fileName = media|split('.')|first|split('/')|last %}
-    {% set isImage = fileExt in imageExts or media starts with 'data:image' %}
+{% if field.value %}
     {% set allowZoom = field.customOptions.get('allow_zoom')|default(false) %}
-    <span class="avatar {{ ea.crud.currentAction == 'detail' ? 'avatar-xl' : '' }}" {% if isImage %}style="background-image: url('{{ media }}')" title="{{ fileName }}"{% endif %}>
-        {% if not isImage %}<twig:ux:icon class="icon" name="tabler:file" />{% endif %}
-        <a href="{{ media }}" class="stretched-link" {% if isImage and allowZoom %}data-action="zoom" style="cursor: zoom-in;"{% else %}target="_blank"{% endif %}></a>
-    </span>
+    {% set size = ea.crud.currentAction == 'detail' ? 'xl' : 'md' %}
+    <twig:Media :src="field.value" :zoom="allowZoom" :size="size" />
 {% else %}
     {{ include(ea.templatePath('label/empty')) }}
 {% endif %}
