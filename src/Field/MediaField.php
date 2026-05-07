@@ -28,6 +28,12 @@ class MediaField implements FieldInterface
     public const OPTION_ALLOW_ZOOM = 'allow_zoom';
     public const OPTION_SIZE_INDEX = 'size_index';
     public const OPTION_SIZE_DETAIL = 'size_detail';
+
+    public const DEFAULT_CONF = 'public_all';
+    public const DEFAULT_DISPLAY_FILE_MANAGER = true;
+    public const DEFAULT_DISPLAY_TREE = false;
+    public const DEFAULT_ALLOW_CROP = false;
+    public const DEFAULT_RATIO = false;
     public const DEFAULT_ALLOW_ZOOM = true;
     public const DEFAULT_SIZE_INDEX = 'md';
     public const DEFAULT_SIZE_DETAIL = 'xl';
@@ -47,15 +53,15 @@ class MediaField implements FieldInterface
         $this->setFormType(UxMediaType::class);
         $this->setTemplatePath('field/media.html.twig');
         $this->setConf();
-        $this->displayFileManager(true);
-        $this->displayTree(false);
-        $this->allowCrop(false);
+        $this->displayFileManager(self::DEFAULT_DISPLAY_FILE_MANAGER);
+        $this->displayTree(self::DEFAULT_DISPLAY_TREE);
+        $this->allowCrop(self::DEFAULT_ALLOW_CROP);
         $this->allowZoom(self::DEFAULT_ALLOW_ZOOM);
         $this->setSizeIndex(self::DEFAULT_SIZE_INDEX);
         $this->setSizeDetail(self::DEFAULT_SIZE_DETAIL);
     }
 
-    public function setConf(string $conf = 'public_all'): self
+    public function setConf(string $conf = self::DEFAULT_CONF): self
     {
         $this->setFormTypeOption(self::OPTION_CONF, $conf);
 
@@ -114,7 +120,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
-    public function setRatio($val = false): self
+    public function setRatio(bool $val = self::DEFAULT_RATIO): self
     {
         $this->allowCrop();
         $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_RATIO, $val);
