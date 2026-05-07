@@ -52,7 +52,7 @@ class MediaField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->setFormType(UxMediaType::class);
         $this->setTemplatePath('field/media.html.twig');
-        $this->setConf();
+        $this->setConf(self::DEFAULT_CONF);
         $this->displayFileManager(self::DEFAULT_DISPLAY_FILE_MANAGER);
         $this->displayTree(self::DEFAULT_DISPLAY_TREE);
         $this->allowCrop(self::DEFAULT_ALLOW_CROP);
@@ -61,90 +61,90 @@ class MediaField implements FieldInterface
         $this->setSizeDetail(self::DEFAULT_SIZE_DETAIL);
     }
 
-    public function setConf(string $conf = self::DEFAULT_CONF): self
+    public function setConf(string $conf): self
     {
         $this->setFormTypeOption(self::OPTION_CONF, $conf);
 
         return $this;
     }
 
-    public function displayFileManager(bool $val = true): self
+    public function displayFileManager(bool $display = true): self
     {
-        $this->setFormTypeOption(self::OPTION_DISPLAY_FILE_MANAGER, $val);
+        $this->setFormTypeOption(self::OPTION_DISPLAY_FILE_MANAGER, $display);
 
         return $this;
     }
 
-    public function displayClearButton(bool $val = true): self
+    public function displayClearButton(bool $display = true): self
     {
-        $this->setFormTypeOption(self::OPTION_DISPLAY_CLEAR_BUTTON, $val);
+        $this->setFormTypeOption(self::OPTION_DISPLAY_CLEAR_BUTTON, $display);
 
         return $this;
     }
 
-    public function displayTree(bool $val = true): self
+    public function displayTree(bool $display = true): self
     {
-        $this->setFormTypeOption(self::OPTION_DISPLAY_TREE, $val);
+        $this->setFormTypeOption(self::OPTION_DISPLAY_TREE, $display);
 
         return $this;
     }
 
-    public function allowCrop(bool $val = true): self
+    public function allowCrop(bool $allow = true): self
     {
-        $this->setFormTypeOption(self::OPTION_ALLOW_CROP, $val);
+        $this->setFormTypeOption(self::OPTION_ALLOW_CROP, $allow);
 
         return $this;
     }
 
-    public function displayCropData(bool $val = true): self
+    public function displayCropData(bool $display = true): self
     {
         $this->allowCrop();
-        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_DISPLAY_CROP_DATA, $val);
+        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_DISPLAY_CROP_DATA, $display);
 
         return $this;
     }
 
-    public function allowFlip(bool $val = true): self
+    public function allowFlip(bool $allow = true): self
     {
         $this->allowCrop();
-        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_ALLOW_FLIP, $val);
+        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_ALLOW_FLIP, $allow);
 
         return $this;
     }
 
-    public function allowRotation(bool $val = true): self
+    public function allowRotation(bool $allow = true): self
     {
         $this->allowCrop();
-        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_ALLOW_ROTATION, $val);
+        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_ALLOW_ROTATION, $allow);
 
         return $this;
     }
 
-    public function setRatio(bool $val = self::DEFAULT_RATIO): self
+    public function setRatio(bool $ratio = self::DEFAULT_RATIO): self
     {
         $this->allowCrop();
-        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_RATIO, $val);
+        $this->setFormTypeOption(self::OPTION_CROP_OPTIONS.'.'.self::OPTION_CROP_RATIO, $ratio);
 
         return $this;
     }
 
-    public function allowZoom(bool $val = true): self
+    public function allowZoom(bool $allow = true): self
     {
-        $this->setCustomOption(self::OPTION_ALLOW_ZOOM, $val);
+        $this->setCustomOption(self::OPTION_ALLOW_ZOOM, $allow);
 
         return $this;
     }
 
-    public function setSizeIndex(string $val = self::DEFAULT_SIZE_INDEX): self
+    public function setSizeIndex(string $size = self::DEFAULT_SIZE_INDEX): self
     {
-        $this->setCustomOption(self::OPTION_SIZE_INDEX, $val);
+        $this->setCustomOption(self::OPTION_SIZE_INDEX, $size);
 
         return $this;
     }
 
-    public function setSizeDetail(string $val = self::DEFAULT_SIZE_DETAIL): self
+    public function setSizeDetail(string $size = self::DEFAULT_SIZE_DETAIL): self
     {
-        $this->setCustomOption(self::OPTION_SIZE_DETAIL, $val);
+        $this->setCustomOption(self::OPTION_SIZE_DETAIL, $size);
 
         return $this;
     }
