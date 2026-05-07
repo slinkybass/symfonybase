@@ -1,5 +1,6 @@
+{% set role_style = 'background-color: ' ~ this.backgroundColor ~ '; color: ' ~ this.foregroundColor %}
 {% if this.url %}
-    <a href="{{ this.url }}" class="{{ this.classes }} text-decoration-none" style="background-color: {{ this.color }};">{{ this.role }}</a>
+    <a href="{{ this.url }}" class="{{ this.classes }} text-decoration-none" style="{{ role_style }}">{{ this.role }}</a>
 {% else %}
-    <span class="{{ this.classes }}" style="background-color: {{ this.color }};">{{ this.role }}</span>
+    <span class="{{ this.classes }}" style="{{ role_style }}">{{ this.role }}</span>
 {% endif %}

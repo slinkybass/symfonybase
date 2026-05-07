@@ -17,14 +17,22 @@ class Role
     {
         $sizeClass = $this->size ? "badge-{$this->size}" : '';
 
-        return trim("badge text-white $sizeClass {$this->class}");
+        return trim("badge $sizeClass {$this->class}");
     }
 
-    public function getColor(): string
+    public function getBackgroundColor(): string
     {
-        $seed = $this->role->getName();
+        return sprintf('hsl(%d, 32%%, 90%%)', $this->hue());
+    }
 
-        return sprintf('hsl(%d, 65%%, 42%%)', $this->hueFromSeed($seed));
+    public function getForegroundColor(): string
+    {
+        return sprintf('hsl(%d, 40%%, 45%%)', $this->hue());
+    }
+
+    private function hue(): int
+    {
+        return $this->hueFromSeed((string) $this->role->getId() .  $this->role->getName());
     }
 
     private function hueFromSeed(string $seed): int
