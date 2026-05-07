@@ -26,6 +26,11 @@ class MediaField implements FieldInterface
     public const OPTION_CROP_RATIO = 'ratio';
 
     public const OPTION_ALLOW_ZOOM = 'allow_zoom';
+    public const OPTION_SIZE_INDEX = 'size_index';
+    public const OPTION_SIZE_DETAIL = 'size_detail';
+    public const DEFAULT_ALLOW_ZOOM = true;
+    public const DEFAULT_SIZE_INDEX = 'md';
+    public const DEFAULT_SIZE_DETAIL = 'xl';
 
     public static function new(string $propertyName, $label = null): self
     {
@@ -45,7 +50,9 @@ class MediaField implements FieldInterface
         $this->displayFileManager(true);
         $this->displayTree(false);
         $this->allowCrop(false);
-        $this->allowZoom(true);
+        $this->allowZoom(self::DEFAULT_ALLOW_ZOOM);
+        $this->setSizeIndex(self::DEFAULT_SIZE_INDEX);
+        $this->setSizeDetail(self::DEFAULT_SIZE_DETAIL);
     }
 
     public function setConf(string $conf = 'public_all'): self
@@ -118,6 +125,20 @@ class MediaField implements FieldInterface
     public function allowZoom(bool $val = true): self
     {
         $this->setCustomOption(self::OPTION_ALLOW_ZOOM, $val);
+
+        return $this;
+    }
+
+    public function setSizeIndex(string $val = self::DEFAULT_SIZE_INDEX): self
+    {
+        $this->setCustomOption(self::OPTION_SIZE_INDEX, $val);
+
+        return $this;
+    }
+
+    public function setSizeDetail(string $val = self::DEFAULT_SIZE_DETAIL): self
+    {
+        $this->setCustomOption(self::OPTION_SIZE_DETAIL, $val);
 
         return $this;
     }

@@ -7,23 +7,25 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent]
 class Media
 {
+    public const DEFAULT_SIZE = 'md';
+
     private const IMAGE_EXTENSIONS = ['apng', 'avif', 'bmp', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp'];
 
     public string $src;
-    public string $size = 'md';
+    public string $size = self::DEFAULT_SIZE;
     public string $class = '';
     public bool $zoom = false;
 
     public function getClasses(): string
     {
-        $sizeClass = $this->size ? "avatar-{$this->size}" : '';
+        $sizeClass = "avatar-".($this->size ? $this->size : self::DEFAULT_SIZE);
 
         return trim("avatar $sizeClass {$this->class}");
     }
 
     public function getFileExtension(): string
     {
-        $path = explode('?', $this->src, 2)[0];
+        $path = $this->getPathFromSrc();
         $parts = explode('.', $path);
 
         return strtolower(end($parts) ?: '');
@@ -31,11 +33,9 @@ class Media
 
     public function getDisplayName(): string
     {
-        $beforeFirstDot = explode('.', $this->src, 2)[0];
-        $normalized = str_replace('\\', '/', $beforeFirstDot);
-        $parts = explode('/', $normalized);
+        $basename = basename($this->getPathFromSrc());
 
-        return end($parts) ?: '';
+        return pathinfo($basename, PATHINFO_FILENAME) ?: '';
     }
 
     public function isImage(): bool
@@ -45,5 +45,10 @@ class Media
         }
 
         return in_array($this->getFileExtension(), self::IMAGE_EXTENSIONS, true);
+    }
+
+    private function getPathFromSrc(): string
+    {
+        return parse_url($this->src, PHP_URL_PATH) ?: $this->src;
     }
 }

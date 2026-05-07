@@ -1,4 +1,5 @@
-<span class="{{ this.classes }}" {% if this.isImage() %}style="background-image: url('{{ this.src|e('css') }}')" title="{{ this.displayName|e('html_attr') }}"{% endif %}>
-    {% if not this.isImage() %}<twig:ux:icon class="icon" name="tabler:file" />{% endif %}
-    <a href="{{ this.src|e('html_attr') }}" class="stretched-link" {% if this.isImage() and this.zoom %}data-action="zoom" style="cursor: zoom-in;"{% else %}target="_blank"{% endif %}></a>
+{% set isImage = this.isImage() %}
+<span class="{{ this.classes }}" {% if isImage %}style="background-image: url('{{ this.src|e('css') }}')" title="{{ this.displayName|e('html_attr') }}"{% endif %}>
+    {% if not isImage %}<twig:ux:icon class="icon" name="tabler:file" />{% endif %}
+    <a href="{{ this.src|e('html_attr') }}" class="stretched-link" {% if isImage and this.zoom %}data-action="zoom" style="cursor: zoom-in;"{% else %}target="_blank"{% endif %}></a>
 </span>

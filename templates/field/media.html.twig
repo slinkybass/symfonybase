@@ -1,6 +1,8 @@
 {% if field.value %}
-    {% set allowZoom = field.customOptions.get('allow_zoom')|default(false) %}
-    {% set size = ea.crud.currentAction == 'detail' ? 'xl' : 'md' %}
+    {% set allowZoom = field.customOptions.get(constant('App\\Field\\MediaField::OPTION_ALLOW_ZOOM')) ?? constant('App\\Field\\MediaField::DEFAULT_ALLOW_ZOOM') %}
+    {% set sizeIndex = field.customOptions.get(constant('App\\Field\\MediaField::OPTION_SIZE_INDEX')) ?? constant('App\\Field\\MediaField::DEFAULT_SIZE_INDEX') %}
+    {% set sizeDetail = field.customOptions.get(constant('App\\Field\\MediaField::OPTION_SIZE_DETAIL')) ?? constant('App\\Field\\MediaField::DEFAULT_SIZE_DETAIL') %}
+    {% set size = ea.crud.currentAction == 'index' ? sizeIndex : sizeDetail %}
     <twig:Media :src="field.value" :zoom="allowZoom" :size="size" />
 {% else %}
     {{ include(ea.templatePath('label/empty')) }}
