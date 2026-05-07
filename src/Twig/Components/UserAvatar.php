@@ -9,8 +9,10 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent]
 class UserAvatar
 {
+    public const DEFAULT_SIZE = 'md';
+
     public ?User $user = null;
-    public string $size = 'md';
+    public string $size = self::DEFAULT_SIZE;
     public string $class = '';
     public bool $zoom = false;
 
@@ -21,7 +23,7 @@ class UserAvatar
 
     public function getClasses(): string
     {
-        $sizeClass = $this->size ? "avatar-{$this->size}" : '';
+        $sizeClass = "avatar-".($this->size ? $this->size : self::DEFAULT_SIZE);
 
         return trim("avatar $sizeClass {$this->class}");
     }

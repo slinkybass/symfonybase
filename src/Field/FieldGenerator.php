@@ -222,6 +222,7 @@ class FieldGenerator extends AbstractType
     {
         return MediaField::new($name)
             ->setConf('public_user_images')
+            ->setSizeDetail('md')
             ->setTemplatePath('field/userAvatar.html.twig');
     }
 
