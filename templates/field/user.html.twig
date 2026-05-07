@@ -42,18 +42,22 @@
         </div>
     {% endif %}
 {% else %}
-    {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_INLINE'), 'sm') }}
+    {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_BADGE'), 'sm') }}
 {% endif %}
 
-{% macro render_user(user, variant, avatarSize) %}
+{% macro render_user(user, variant, avatarSize, showBadgeLabel) %}
     {% set crudControllerFqcn = user.role.isAdmin ? 'App\\Controller\\Admin\\Cruds\\AdminCrudController' : 'App\\Controller\\Admin\\Cruds\\UserCrudController' %}
     {% set controllerName = crudControllerFqcn|split('\\')|last|replace({'CrudController': ''}) %}
     {% set hasPermission = has_permission_crud_action(controllerName, 'detail') %}
     {% set url = hasPermission ? ea_url().setController(crudControllerFqcn).setAction('detail').setEntityId(user.id) : null %}
+    {% set variant = variant is not null ? variant : constant('App\\Twig\\Components\\User::VARIANT_CARD') %}
+    {% set avatarSize = avatarSize is not null ? avatarSize : 'md' %}
+    {% set showBadgeLabel = showBadgeLabel is not null ? showBadgeLabel : true %}
     <twig:User
         :user="user"
         :url="url"
-        :variant="variant|default(constant('App\\Twig\\Components\\User::VARIANT_CARD'))"
-        :avatarSize="avatarSize|default('md')"
+        :variant="variant"
+        :avatarSize="avatarSize"
+        :showBadgeLabel="showBadgeLabel"
     />
 {% endmacro %}

@@ -10,14 +10,14 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class User
 {
     public const VARIANT_CARD = 'card';
-    public const VARIANT_INLINE = 'inline';
+    public const VARIANT_BADGE = 'badge';
 
     public ?UserEntity $user = null;
     public string $variant = self::VARIANT_CARD;
     public string $avatarSize = 'md';
     public ?string $url = null;
     public ?string $sublabel = null;
-    public bool $showInlineLabel = true;
+    public bool $showBadgeLabel = true;
 
     public function __construct(
         private TranslatorInterface $translator,
