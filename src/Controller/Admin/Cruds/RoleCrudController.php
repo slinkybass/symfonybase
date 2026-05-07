@@ -48,6 +48,9 @@ class RoleCrudController extends AbstractCrudController
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection())
             ->setIcon('lock');
+        $roleIndexSelf = FieldGenerator::text('displayName')
+            ->setLabel($this->transEntityField('displayName'))
+            ->setTemplatePath('field/roleIndexSelf.html.twig');
         $displayName = FieldGenerator::text('displayName')
             ->setLabel($this->transEntityField('displayName'));
         $isAdmin = FieldGenerator::switch('isAdmin')
@@ -102,7 +105,7 @@ class RoleCrudController extends AbstractCrudController
             ->setLabel($this->transEntityPlural('user'));
 
         if ($this->isIndex()) {
-            yield $displayName;
+            yield $roleIndexSelf;
             yield $isAdmin->isSwitch(false);
             yield $users->addCssClass('w-1');
         } elseif ($this->isDetail()) {
