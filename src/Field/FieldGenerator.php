@@ -182,13 +182,6 @@ class FieldGenerator extends AbstractType
         return MediaField::new($name);
     }
 
-    public static function userAvatar(string $name)
-    {
-        return MediaField::new($name)
-            ->setConf('public_user_images')
-            ->setTemplatePath('field/userAvatar.html.twig');
-    }
-
     public static function file(string $name)
     {
         return FileField::new($name);
@@ -223,5 +216,12 @@ class FieldGenerator extends AbstractType
                 (new UserFilter\IsActiveFilter())->apply($qb);
             })
             ->setTemplatePath('field/user.html.twig');
+    }
+
+    public static function userAvatar(string $name)
+    {
+        return MediaField::new($name)
+            ->setConf('public_user_images')
+            ->setTemplatePath('field/userAvatar.html.twig');
     }
 }
