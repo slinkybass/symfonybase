@@ -192,7 +192,7 @@ class AdminCrudController extends AbstractCrudController
         ));
         if (count($roles) > 1) {
             $filters->add(EntityFilter::new('role', $this->transEntitySingular('role'))
-                ->setFormTypeOption('value_type_options.query_builder', static fn (RoleRepository $rep) => $rep->getAdminQB()));
+                ->setFormTypeOption('value_type_options.query_builder', static fn (RoleRepository $rep) => $rep->applyFilters([new RoleFilter\IsAdminFilter()])));
         }
 
         $filters->add(BooleanFilter::new('active', $this->transEntityField('active')));

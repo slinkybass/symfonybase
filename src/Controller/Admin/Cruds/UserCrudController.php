@@ -173,7 +173,7 @@ class UserCrudController extends AbstractCrudController
         $roles = $this->em()->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter(false)]);
         if (count($roles) > 1) {
             $filters->add(EntityFilter::new('role', $this->transEntitySingular('role'))
-                ->setFormTypeOption('value_type_options.query_builder', static fn (RoleRepository $rep) => $rep->getAdminQB(false)));
+                ->setFormTypeOption('value_type_options.query_builder', static fn (RoleRepository $rep) => $rep->applyFilters([new RoleFilter\IsAdminFilter(false)])));
         }
 
         $filters->add(BooleanFilter::new('active', $this->transEntityField('active')));
