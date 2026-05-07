@@ -4,45 +4,49 @@
 
 {% set isToMany = field.customOptions.get('associationType') == 'toMany' %}
 
-{% if isToMany %}
-    {% if ea.crud.currentAction == 'index' %}
-        <div class="d-flex flex-fill flex-wrap">
-            <div class="avatar-list avatar-list-stacked" data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button">
-                {% set limit = 5 %}
-                {%- for user in field.value|shuffle|slice(0, limit) -%}
-                    <twig:UserAvatar :user="user" size="sm" />
-                {%- endfor -%}
-                {%- if field.value|length > limit -%}
-                    <span class="avatar avatar-sm">+{{ field.value|length - limit }}</span>
-                {%- endif -%}
+{% if field.value is not null and field.value is not empty and (not isToMany or field.value|length > 0) %}
+    {% if isToMany %}
+        {% if ea.crud.currentAction == 'index' %}
+            <div class="d-flex flex-fill flex-wrap">
+                <div class="avatar-list avatar-list-stacked" data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button">
+                    {% set limit = 5 %}
+                    {%- for user in field.value|shuffle|slice(0, limit) -%}
+                        <twig:UserAvatar :user="user" size="sm" />
+                    {%- endfor -%}
+                    {%- if field.value|length > limit -%}
+                        <span class="avatar avatar-sm">+{{ field.value|length - limit }}</span>
+                    {%- endif -%}
+                </div>
             </div>
-        </div>
-        <div class="modal modal-blur fade text-start" id="info-{{ field.uniqueId }}" tabindex="-1" aria-labelledby="info-{{ field.uniqueId }}Label" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row row-cards">
-                            {% for user in field.value %}
-                                <div class="col-md-4">
-                                    {{ _self.render_user(user) }}
-                                </div>
-                            {% endfor %}
+            <div class="modal modal-blur fade text-start" id="info-{{ field.uniqueId }}" tabindex="-1" aria-labelledby="info-{{ field.uniqueId }}Label" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row row-cards">
+                                {% for user in field.value %}
+                                    <div class="col-md-4">
+                                        {{ _self.render_user(user) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <div class="row row-cards">
+                {% for user in field.value %}
+                    <div class="col-md-3">
+                        {{ _self.render_user(user) }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     {% else %}
-        <div class="row row-cards">
-            {% for user in field.value %}
-                <div class="col-md-3">
-                    {{ _self.render_user(user) }}
-                </div>
-            {% endfor %}
-        </div>
+        {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_BADGE'), 'sm') }}
     {% endif %}
 {% else %}
-    {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_BADGE'), 'sm') }}
+    {{ include(ea.templatePath('label/empty')) }}
 {% endif %}
 
 {% macro render_user(user, variant = null, avatarSize = null, showBadgeLabel = null, withLink = true) %}
