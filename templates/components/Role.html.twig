@@ -1,1 +1,5 @@
-<span class="badge badge-sm text-white" style="background-color: {{ this.color }};">{{ this.role }}</span>
+{% if this.url %}
+    <a href="{{ this.url }}" class="{{ this.classes }} text-decoration-none" style="background-color: {{ this.color }};">{{ this.role }}</a>
+{% else %}
+    <span class="{{ this.classes }}" style="background-color: {{ this.color }};">{{ this.role }}</span>
+{% endif %}

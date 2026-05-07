@@ -224,4 +224,10 @@ class FieldGenerator extends AbstractType
             ->setConf('public_user_images')
             ->setTemplatePath('field/userAvatar.html.twig');
     }
+
+    public static function role(string $name)
+    {
+        return AssociationField::new($name)
+            ->setTemplatePath('field/role.html.twig');
+    }
 }

@@ -58,7 +58,7 @@ class ConfigCrudController extends AbstractCrudController
             ->setHtmlAttribute('data-hf-parent', 'enableRegister')
             ->displayIf($isForm || $isEnablePublic)
             ->setColumns(12);
-        $roleDefaultRegister = FieldGenerator::association('roleDefaultRegister')
+        $roleDefaultRegister = FieldGenerator::role('roleDefaultRegister')
             ->setLabel($this->transEntityField('roleDefaultRegister'))
             ->setHtmlAttribute('data-hf-child', 'enableRegister')
             ->displayIf($isForm || $isEnableRegister)

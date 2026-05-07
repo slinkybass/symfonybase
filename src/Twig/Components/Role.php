@@ -9,6 +9,16 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class Role
 {
     public RoleEntity $role;
+    public string $size = 'md';
+    public string $class = '';
+    public ?string $url = null;
+
+    public function getClasses(): string
+    {
+        $sizeClass = $this->size ? "badge-{$this->size}" : '';
+
+        return trim("badge text-white $sizeClass {$this->class}");
+    }
 
     public function getColor(): string
     {

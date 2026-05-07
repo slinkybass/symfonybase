@@ -28,7 +28,7 @@
                         {% if this.sublabel %}
                             <span class="badge badge-sm bg-muted-lt text-muted">{{ this.sublabel }}</span>
                         {% elseif this.user and this.user.role %}
-                            <twig:Role :role="this.user.role" />
+                            <twig:Role :role="this.user.role" size="sm" />
                         {% endif %}
                     </div>
                 </div>

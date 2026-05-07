@@ -103,7 +103,7 @@ class AdminCrudController extends AbstractCrudController
         $avatar = FieldGenerator::userAvatar('avatar')
             ->setLabel($this->transEntityField('avatar'))
             ->setColumns(8);
-        $role = FieldGenerator::association('role')
+        $role = FieldGenerator::role('role')
             ->setLabel($this->transEntitySingular('role'))
             ->isRequired()
             ->setQueryBuilder(function ($qb) use ($roles) {
