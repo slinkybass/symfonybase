@@ -8,6 +8,7 @@
 {% set avatarSize = field.customOptions.get(constant('App\\Field\\UserField::OPTION_AVATAR_SIZE')) ?? constant('App\\Field\\UserField::DEFAULT_AVATAR_SIZE') %}
 {% set stackedAvatarSize = field.customOptions.get(constant('App\\Field\\UserField::OPTION_STACKED_AVATAR_SIZE')) ?? constant('App\\Field\\UserField::DEFAULT_STACKED_AVATAR_SIZE') %}
 {% set variantDetail = field.customOptions.get(constant('App\\Field\\UserField::OPTION_VARIANT_DETAIL')) ?? constant('App\\Field\\UserField::DEFAULT_VARIANT_DETAIL') %}
+{% set sublabel = field.customOptions.get(constant('App\\Field\\UserField::OPTION_SUBLABEL')) ?? constant('App\\Field\\UserField::DEFAULT_SUBLABEL') %}
 
 {% if field.value is not null and field.value is not empty and (not isToMany or field.value|length > 0) %}
     {% if isToMany %}
@@ -30,7 +31,7 @@
                             <div class="row row-cards">
                                 {% for user in field.value %}
                                     <div class="col-md-4">
-                                        {{ _self.render_user(user, constant('App\\Twig\\Components\\User::VARIANT_CARD'), avatarSize) }}
+                                        {{ _self.render_user(user, constant('App\\Twig\\Components\\User::VARIANT_CARD'), avatarSize, sublabel) }}
                                     </div>
                                 {% endfor %}
                             </div>
@@ -42,27 +43,27 @@
             {% if variantDetail == constant('App\\Twig\\Components\\User::VARIANT_BADGE') %}
                 <div class="d-flex flex-wrap gap-2">
                     {% for user in field.value %}
-                        {{ _self.render_user(user, variantDetail, avatarSize) }}
+                        {{ _self.render_user(user, variantDetail, avatarSize, sublabel) }}
                     {% endfor %}
                 </div>
             {% else %}
                 <div class="row row-cards">
                     {% for user in field.value %}
                         <div class="col-md-3">
-                            {{ _self.render_user(user, variantDetail, avatarSize) }}
+                            {{ _self.render_user(user, variantDetail, avatarSize, sublabel) }}
                         </div>
                     {% endfor %}
                 </div>
             {% endif %}
         {% endif %}
     {% else %}
-        {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_BADGE'), avatarSize) }}
+        {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_BADGE'), avatarSize, sublabel) }}
     {% endif %}
 {% else %}
     {{ include(ea.templatePath('label/empty')) }}
 {% endif %}
 
-{% macro render_user(user, variant = null, avatarSize = null) %}
+{% macro render_user(user, variant = null, avatarSize = null, sublabel = null) %}
     {% if user is not null and user.id is defined and user.role is defined %}
         {% set crudControllerFqcn = user.role.isAdmin ? 'App\\Controller\\Admin\\Cruds\\AdminCrudController' : 'App\\Controller\\Admin\\Cruds\\UserCrudController' %}
         {% set controllerName = crudControllerFqcn|split('\\')|last|replace({'CrudController': ''}) %}
@@ -73,10 +74,12 @@
     {% endif %}
     {% set variant = variant is not null ? variant : constant('App\\Field\\UserField::DEFAULT_VARIANT_DETAIL') %}
     {% set avatarSize = avatarSize is not null ? avatarSize : constant('App\\Field\\UserField::DEFAULT_AVATAR_SIZE') %}
+    {% set sublabel = sublabel is not null ? sublabel : constant('App\\Field\\UserField::DEFAULT_SUBLABEL') %}
     <twig:User
         :user="user"
         :url="url"
         :variant="variant"
         :avatarSize="avatarSize"
+        :sublabel="sublabel"
     />
 {% endmacro %}

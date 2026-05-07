@@ -16,6 +16,7 @@ class UserField implements FieldInterface
     public const OPTION_VARIANT_DETAIL = 'variant_detail';
     public const OPTION_AVATAR_SIZE = 'avatar_size';
     public const OPTION_STACKED_AVATAR_SIZE = 'stacked_avatar_size';
+    public const OPTION_SUBLABEL = 'sublabel';
     public const OPTION_ONLY_VERIFIED = 'only_verified';
     public const OPTION_ONLY_ACTIVE = 'only_active';
     public const OPTION_ASSOCIATION_TYPE = 'associationType';
@@ -23,6 +24,7 @@ class UserField implements FieldInterface
     public const DEFAULT_VARIANT_DETAIL = UserComponent::VARIANT_CARD;
     public const DEFAULT_AVATAR_SIZE = UserComponent::DEFAULT_AVATAR_SIZE;
     public const DEFAULT_STACKED_AVATAR_SIZE = 'sm';
+    public const DEFAULT_SUBLABEL = null;
     public const DEFAULT_ONLY_VERIFIED = true;
     public const DEFAULT_ONLY_ACTIVE = true;
 
@@ -42,6 +44,7 @@ class UserField implements FieldInterface
         $this->setVariantDetail(self::DEFAULT_VARIANT_DETAIL);
         $this->setAvatarSize(self::DEFAULT_AVATAR_SIZE);
         $this->setStackedAvatarSize(self::DEFAULT_STACKED_AVATAR_SIZE);
+        $this->setSublabel(self::DEFAULT_SUBLABEL);
         $this->onlyVerified(self::DEFAULT_ONLY_VERIFIED);
         $this->onlyActive(self::DEFAULT_ONLY_ACTIVE);
     }
@@ -70,6 +73,13 @@ class UserField implements FieldInterface
     public function setStackedAvatarSize(string $size): self
     {
         $this->setCustomOption(self::OPTION_STACKED_AVATAR_SIZE, $this->normalizeValue($size, self::DEFAULT_STACKED_AVATAR_SIZE));
+
+        return $this;
+    }
+
+    public function setSublabel(?string $sublabel): self
+    {
+        $this->setCustomOption(self::OPTION_SUBLABEL, $sublabel);
 
         return $this;
     }
