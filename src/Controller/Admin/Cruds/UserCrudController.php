@@ -89,7 +89,7 @@ class UserCrudController extends AbstractCrudController
         $gender = FieldGenerator::enum('gender')
             ->setLabel($this->transEntityField('gender'))
             ->setColumns(2);
-        $avatar = FieldGenerator::avatar('avatar')
+        $avatar = FieldGenerator::userAvatar('avatar')
             ->setLabel($this->transEntityField('avatar'))
             ->setColumns(8);
         $role = FieldGenerator::association('role')

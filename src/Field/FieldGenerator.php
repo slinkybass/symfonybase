@@ -182,11 +182,11 @@ class FieldGenerator extends AbstractType
         return MediaField::new($name);
     }
 
-    public static function avatar(string $name)
+    public static function userAvatar(string $name)
     {
         return MediaField::new($name)
             ->setConf('public_user_images')
-            ->setTemplatePath('field/avatar.html.twig');
+            ->setTemplatePath('field/userAvatar.html.twig');
     }
 
     public static function file(string $name)
