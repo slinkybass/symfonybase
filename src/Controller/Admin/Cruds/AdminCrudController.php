@@ -80,8 +80,9 @@ class AdminCrudController extends AbstractCrudController
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection('data'))
             ->setIcon('user'.($this->config()->enablePublic ? '-shield' : ''));
-        $fullname = FieldGenerator::text('fullname')
-            ->setLabel($this->transEntityField('name'));
+        $userIndexSelf = FieldGenerator::text('name')
+            ->setLabel($this->transEntityField('name'))
+            ->setTemplatePath('field/userIndexSelf.html.twig');
         $name = FieldGenerator::text('name')
             ->setLabel($this->transEntityField('name'))
             ->setColumns(2);
@@ -130,8 +131,7 @@ class AdminCrudController extends AbstractCrudController
             ->setSecondLabel($this->transEntityField('repeatPassword'));
 
         if ($this->isIndex()) {
-            yield $avatar->addCssClass('w-1');
-            yield $fullname;
+            yield $userIndexSelf;
             yield $email;
             yield $role->displayIf(count($roles) > 1 && !$filterHiddenRole);
             yield $active->isSwitch(false)->addCssClass('w-1');
