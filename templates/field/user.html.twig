@@ -42,7 +42,7 @@
         </div>
     {% endif %}
 {% else %}
-    {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_INLINE')) }}
+    {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_INLINE'), 'sm') }}
 {% endif %}
 
 {% macro render_user(user, variant, avatarSize) %}

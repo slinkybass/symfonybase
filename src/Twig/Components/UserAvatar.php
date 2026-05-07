@@ -12,7 +12,6 @@ class UserAvatar
     public ?User $user = null;
     public string $size = 'md';
     public string $class = '';
-    public bool $showLabel = false;
     public bool $zoom = false;
 
     public function __construct(
@@ -37,10 +36,10 @@ class UserAvatar
         return mb_strtoupper(mb_substr($this->getLabel(), 0, 1));
     }
 
-    public function hasAvatar(): bool
+    public function getAvatar(): ?string
     {
         $avatar = $this->user?->getAvatar();
 
-        return null !== $avatar && '' !== $avatar;
+        return $avatar !== null && $avatar !== '' ? $avatar : null;
     }
 }

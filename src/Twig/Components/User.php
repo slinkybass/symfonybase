@@ -16,6 +16,7 @@ class User
     public string $avatarSize = 'md';
     public ?string $url = null;
     public ?string $sublabel = null;
+    public bool $showLabel = true;
 
     public function __construct(
         private TranslatorInterface $translator,
@@ -27,8 +28,14 @@ class User
         return $this->user ? $this->user->getFullName() : $this->translator->trans('user.anonymous', [], 'EasyAdminBundle');
     }
 
-    public function getSublabel(): string
+    public function getSublabel(): ?string
     {
-        return $this->sublabel !== null ? $this->sublabel : ($this->user ? $this->user->getRole() : '');
+        if ($this->sublabel !== null) {
+            return $this->sublabel;
+        }
+
+        $role = $this->user?->getRole();
+        
+        return $role ? $role->getDisplayName() : null;
     }
 }

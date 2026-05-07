@@ -1,10 +1,12 @@
 {% if this.variant == constant('App\\Twig\\Components\\User::VARIANT_INLINE') %}
     {% if this.url %}
-        <a class="badge bg-transparent text-decoration-none" href="{{ this.url }}">
+        <a class="badge bg-transparent gap-2 text-decoration-none" href="{{ this.url }}"
+            {% if not this.showLabel %} title="{{ this.label|e('html_attr') }}" aria-label="{{ this.label|e('html_attr') }}" data-bs-toggle="tooltip" data-bs-placement="top"{% endif %}>
     {% else %}
-        <span class="badge bg-transparent text-decoration-none">
+        <span class="badge bg-transparent gap-2"
+            {% if not this.showLabel %} title="{{ this.label|e('html_attr') }}" aria-label="{{ this.label|e('html_attr') }}" data-bs-toggle="tooltip" data-bs-placement="top"{% endif %}>
     {% endif %}
-            <twig:UserAvatar :user="user" :size="this.avatarSize" /> {{ this.label }}
+            <twig:UserAvatar :user="this.user" :size="this.avatarSize" />{% if this.showLabel %} {{ this.label }}{% endif %}
     {% if this.url %}
         </a>
     {% else %}
@@ -19,7 +21,7 @@
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-auto">
-                        <twig:UserAvatar :user="user" :size="this.avatarSize" />
+                        <twig:UserAvatar :user="this.user" :size="this.avatarSize" />
                     </div>
                     <div class="col">
                         <div class="fw-medium text-truncate">{{ this.label }}</div>

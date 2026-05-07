@@ -1,9 +1,6 @@
-<span class="{{ this.classes }}"
-    {% if this.showLabel %} data-bs-toggle="tooltip" data-bs-title="{{ this.label }}" data-bs-placement="top" {% endif %}
-    {% if this.hasAvatar %} style="background-image: url('{{ this.user.avatar|e('html_attr') }}')" {% endif %}
->
-    {% if not this.hasAvatar %}{{ this.initial }}{% endif %}
-    {% if this.zoom and this.hasAvatar %}
-        <a href="{{ this.user.avatar|e('html_attr') }}" class="stretched-link" data-action="zoom" style="cursor: zoom-in;"></a>
+<span class="{{ this.classes }}" {% if this.avatar %}style="background-image: url('{{ this.avatar|e('css') }}')"{% endif %}>
+    {% if not this.avatar %}{{ this.initial }}{% endif %}
+    {% if this.zoom and this.avatar %}
+        <a href="{{ this.avatar|e('html_attr') }}" class="stretched-link" data-action="zoom" style="cursor: zoom-in;"></a>
     {% endif %}
 </span>
