@@ -31,6 +31,10 @@ input[type="number"].no-spinners {
 	vertical-align: -0.25rem;
 }
 
+.markdown > table, .table {
+	--tblr-table-hover-bg: rgba(var(--tblr-emphasis-color-rgb), 0.04);
+}
+
 .markdown > table thead th,
 .table thead th {
 	font-size: .625rem;
