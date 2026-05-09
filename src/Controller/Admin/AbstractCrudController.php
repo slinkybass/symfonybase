@@ -18,8 +18,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Base EasyAdmin CRUD controller: role-based action visibility, filter/query helpers,
+ * translation keys for entities, and shortcuts to common services.
+ */
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
+    /** Translation domain key for this CRUD. */
     public string $transEntity;
 
     public function __construct(
@@ -127,32 +132,32 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $this->getContext()?->getCrud()?->getCurrentAction();
     }
 
-    public function isIndex(): ?string
+    public function isIndex(): bool
     {
         return $this->action() === Action::INDEX;
     }
 
-    public function isDetail(): ?string
+    public function isDetail(): bool
     {
         return $this->action() === Action::DETAIL;
     }
 
-    public function isNew(): ?string
+    public function isNew(): bool
     {
         return $this->action() === Action::NEW;
     }
 
-    public function isEdit(): ?string
+    public function isEdit(): bool
     {
         return $this->action() === Action::EDIT;
     }
 
-    public function isForm(): ?string
+    public function isForm(): bool
     {
         return $this->isNew() || $this->isEdit();
     }
 
-    public function filters($withHiddenFilters = false): array
+    public function filters(bool $withHiddenFilters = false): array
     {
         $filters = filter_input(INPUT_GET, EA::FILTERS, FILTER_SANITIZE_URL, FILTER_REQUIRE_ARRAY) ?? [];
         if (!$withHiddenFilters) {
@@ -182,71 +187,71 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters;
     }
 
-    public function filter($name): array|string|null
+    public function filter(string $name): array|string|null
     {
         $filters = $this->filters();
 
         return $filters[$name] ?? null;
     }
 
-    public function filterShown($name): array|string|null
+    public function filterShown(string $name): array|string|null
     {
         $filters = $this->filtersShown();
 
         return $filters[$name] ?? null;
     }
 
-    public function filterHidden($name): array|string|null
+    public function filterHidden(string $name): array|string|null
     {
         $filters = $this->filtersHidden();
 
         return $filters[$name] ?? null;
     }
 
-    public function hasPermission($permission): bool
+    public function hasPermission(string $permission): bool
     {
         return $this->rolePermissions->userHasPermission($this->user(), $permission);
     }
 
-    public function hasPermissionCrud($crud = null): bool
+    public function hasPermissionCrud(?string $crud = null): bool
     {
         return $this->rolePermissions->userHasPermissionCrud($this->user(), $crud ?? $this->crud());
     }
 
-    public function hasPermissionCrudAction($action, $crud = null): bool
+    public function hasPermissionCrudAction(string $action, ?string $crud = null): bool
     {
         return $this->rolePermissions->userHasPermissionCrudAction($this->user(), $crud ?? $this->crud(), $action);
     }
 
-    public function transEntitySingular($entity = null): string
+    public function transEntitySingular(?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
 
         return $this->translator->trans('entities.'.$entity.'.singular');
     }
 
-    public function transEntityPlural($entity = null): string
+    public function transEntityPlural(?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
 
         return $this->translator->trans('entities.'.$entity.'.plural');
     }
 
-    public function transEntitySection($section = 'data', $entity = null): string
+    public function transEntitySection(string $section = 'data', ?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
 
         return $this->translator->trans('entities.'.$entity.'.sections.'.$section);
     }
 
-    public function transEntityAction($action, $entity = null): string
+    public function transEntityAction(string $action, ?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
 
         return $this->translator->trans('entities.'.$entity.'.actions.'.$action);
     }
 
-    public function transEntityField($field, $entity = null): string
+    public function transEntityField(string $field, ?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
 
