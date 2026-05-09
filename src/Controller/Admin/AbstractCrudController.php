@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Model\AppConfig;
+use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,7 +62,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
             ]),
         };
 
-        $actions->setPermissions(array_fill_keys($denied, 'NOPERMISSION_ACTION'));
+        $actions->setPermissions(array_fill_keys($denied, VirtualPermission::DENY));
 
         return $actions;
     }

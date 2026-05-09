@@ -7,6 +7,7 @@ use App\Entity\Role;
 use App\Field\BooleanField;
 use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;
+use App\Security\VirtualPermission;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -161,8 +162,8 @@ class RoleCrudController extends AbstractCrudController
             $action->displayIf(fn (Role $r) => $user->getRole() !== $r && $this->rolePermissions->isUp($user->getRole(), $r))
         );
         if ($entity && ($user->getRole() === $entity || !$this->rolePermissions->isUp($user->getRole(), $entity))) {
-            $actions->setPermission(Action::EDIT, 'NOPERMISSION_ACTION');
-            $actions->setPermission(Action::DELETE, 'NOPERMISSION_ACTION');
+            $actions->setPermission(Action::EDIT, VirtualPermission::DENY);
+            $actions->setPermission(Action::DELETE, VirtualPermission::DENY);
         }
 
         $admins = Action::new('admins', $this->transEntityPlural('admin'))->setIcon('user-shield')

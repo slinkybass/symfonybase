@@ -10,6 +10,7 @@ use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;
 use App\Repository\Filter\User as UserFilter;
 use App\Repository\RoleRepository;
+use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
 use Doctrine\ORM\QueryBuilder;
@@ -242,7 +243,7 @@ class AdminCrudController extends AbstractCrudController
                 $denied[] = Action::DELETE;
             }
         }
-        $actions->setPermissions(array_fill_keys(array_unique($denied), 'NOPERMISSION_ACTION'));
+        $actions->setPermissions(array_fill_keys(array_unique($denied), VirtualPermission::DENY));
 
         $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
         $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
@@ -251,7 +252,7 @@ class AdminCrudController extends AbstractCrudController
             ->asPrimaryAction()->addCssClass('btn-outline');
         $actions->add(Crud::PAGE_INDEX, $impersonate);
         $actions->add(Crud::PAGE_DETAIL, $impersonate);
-        $actions->setPermission('impersonate', !$hasPermissionImpersonate ? 'NOPERMISSION_ACTION' : '');
+        $actions->setPermission('impersonate', VirtualPermission::allowed($hasPermissionImpersonate));
 
         $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE]);
         $actions->reorder(Crud::PAGE_DETAIL, [Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX]);

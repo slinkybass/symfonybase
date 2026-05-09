@@ -10,6 +10,7 @@ use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;
 use App\Repository\Filter\User as UserFilter;
 use App\Repository\RoleRepository;
+use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
 use Doctrine\ORM\QueryBuilder;
@@ -192,7 +193,7 @@ class UserCrudController extends AbstractCrudController
             ->asPrimaryAction()->addCssClass('btn-outline');
         $actions->add(Crud::PAGE_INDEX, $impersonate);
         $actions->add(Crud::PAGE_DETAIL, $impersonate);
-        $actions->setPermission('impersonate', !$hasPermissionImpersonate ? 'NOPERMISSION_ACTION' : '');
+        $actions->setPermission('impersonate', VirtualPermission::allowed($hasPermissionImpersonate));
 
         $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE]);
         $actions->reorder(Crud::PAGE_DETAIL, [Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX]);

@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Cruds;
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\Config;
 use App\Field\FieldGenerator;
+use App\Security\VirtualPermission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -110,7 +111,7 @@ class SettingsCrudController extends AbstractCrudController
         $denied = array_merge($denied, ($config || !$hasPermission) ? [Action::NEW] : []);
         $denied = array_merge($denied, !$hasPermission ? [Action::DETAIL, Action::EDIT] : []);
 
-        $actions->setPermissions(array_fill_keys($denied, 'NOPERMISSION_ACTION'));
+        $actions->setPermissions(array_fill_keys($denied, VirtualPermission::DENY));
 
         return $actions;
     }

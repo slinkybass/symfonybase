@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use App\Security\VirtualPermission;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait as EasyTrait;
 
 trait FieldTrait
@@ -18,7 +19,6 @@ trait FieldTrait
     public const OPTION_MIN_LENGTH = 'minlength';
     public const OPTION_RENDER_AS_HTML = 'renderAsHtml';
     public const OPTION_STRIP_TAGS = 'stripTags';
-    public const OPTION_HIDDEN = 'NOPERMISSION_FIELD';
 
     public const DEFAULT_COLUMNS = 12;
 
@@ -107,7 +107,7 @@ trait FieldTrait
 
     public function displayIf(bool $visible): self
     {
-        $this->setPermission($visible ? '' : self::OPTION_HIDDEN);
+        $this->setPermission(VirtualPermission::allowed($visible));
 
         return $this;
     }
