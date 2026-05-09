@@ -31,16 +31,8 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        $crud->setEntityLabelInSingular($this->transEntitySingular());
+        $crud->setEntityLabelInSingular(fn ($entity) => $entity ? $this->transEntitySingular() . ': ' . (string) $entity : $this->transEntitySingular());
         $crud->setEntityLabelInPlural($this->transEntityPlural());
-
-        $entity = $this->entity();
-        if ($entity) {
-            $pageTitle = $this->transEntitySingular().': '.$entity;
-            $editTitle = $this->translator->trans('page_title.edit', ['%entity_label_singular%' => $pageTitle], 'EasyAdminBundle');
-            $crud->setPageTitle(Crud::PAGE_DETAIL, $pageTitle);
-            $crud->setPageTitle(Crud::PAGE_EDIT, $editTitle);
-        }
 
         $crud->setDefaultSort(['id' => 'DESC']);
 
