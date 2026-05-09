@@ -284,7 +284,7 @@ const App = (() => {
 		});
 	};
 
-	const reloateTableModals = () => {
+	const relocateTableModals = () => {
 		document.querySelectorAll('tr .modal').forEach((modal) => {
 			document.body.appendChild(modal);
 		});
@@ -299,7 +299,7 @@ const App = (() => {
 		createLightboxes,
 		setTabAsActive,
 		preventMultipleFormSubmission,
-		reloateTableModals,
+		relocateTableModals,
 	};
 })();
 
