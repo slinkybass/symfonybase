@@ -9,6 +9,8 @@ app:
 admin:
   home:
     title: Inicio
+  profile:
+    title: Mi perfil
 public:
   home:
     title: Inicio

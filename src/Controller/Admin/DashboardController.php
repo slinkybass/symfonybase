@@ -145,9 +145,14 @@ class DashboardController extends AbstractDashboardController
 
     public function configureUserMenu(UserInterface $userInterface): UserMenu
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $userMenu = parent::configureUserMenu($userInterface);
 
         $userMenu->setMenuItems([
+            MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('admin.profile.title'), 'user')
+                ->setAction(Crud::PAGE_DETAIL)->setEntityId($user->getId()),
+            MenuItem::section(),
             MenuItem::linkToExitImpersonation($this->translator->trans('user.exit_impersonation', [], 'EasyAdminBundle'), 'user-x')
                 ->setPermission(VirtualPermission::allowed($this->isGranted('IS_IMPERSONATOR'))),
             MenuItem::linkToLogout($this->translator->trans('user.sign_out', [], 'EasyAdminBundle'), 'logout')
