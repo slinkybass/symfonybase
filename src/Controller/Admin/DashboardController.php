@@ -146,13 +146,12 @@ class DashboardController extends AbstractDashboardController
     {
         $userMenu = parent::configureUserMenu($userInterface);
 
-        $menuItems = [];
-        if ($this->isGranted('IS_IMPERSONATOR')) {
-            $menuItems[] = MenuItem::linkToExitImpersonation($this->translator->trans('user.exit_impersonation', [], 'EasyAdminBundle'), 'user-x');
-        } else {
-            $menuItems[] = MenuItem::linkToLogout($this->translator->trans('user.sign_out', [], 'EasyAdminBundle'), 'logout');
-        }
-        $userMenu->setMenuItems($menuItems);
+        $userMenu->setMenuItems([
+            MenuItem::linkToExitImpersonation($this->translator->trans('user.exit_impersonation', [], 'EasyAdminBundle'), 'user-x')
+                ->setPermission(!$this->isGranted('IS_IMPERSONATOR') ? 'NOPERMISSION_USERMENU' : ''),
+            MenuItem::linkToLogout($this->translator->trans('user.sign_out', [], 'EasyAdminBundle'), 'logout')
+                ->setPermission($this->isGranted('IS_IMPERSONATOR') ? 'NOPERMISSION_USERMENU' : ''),
+        ]);
 
         return $userMenu;
     }
