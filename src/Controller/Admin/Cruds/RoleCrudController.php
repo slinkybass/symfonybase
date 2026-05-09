@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Cruds;
 
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\Role;
+use App\Entity\User;
 use App\Field\BooleanField;
 use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;
@@ -155,12 +156,8 @@ class RoleCrudController extends AbstractCrudController
 
         $actions->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE);
 
-        $actions->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) =>
-            $action->displayIf(fn (Role $r) => $user->getRole() !== $r && $this->rolePermissions->isUp($user->getRole(), $r))
-        );
-        $actions->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) =>
-            $action->displayIf(fn (Role $r) => $user->getRole() !== $r && $this->rolePermissions->isUp($user->getRole(), $r))
-        );
+        $actions->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->displayIf(fn (Role $r) => $user->getRole() !== $r && $this->rolePermissions->isUp($user->getRole(), $r)));
+        $actions->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->displayIf(fn (Role $r) => $user->getRole() !== $r && $this->rolePermissions->isUp($user->getRole(), $r)));
         if ($entity && ($user->getRole() === $entity || !$this->rolePermissions->isUp($user->getRole(), $entity))) {
             $actions->setPermission(Action::EDIT, VirtualPermission::DENY);
             $actions->setPermission(Action::DELETE, VirtualPermission::DENY);

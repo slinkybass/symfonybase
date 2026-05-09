@@ -32,7 +32,7 @@ class Role
 
     private function hue(): int
     {
-        return $this->hueFromSeed((string) $this->role->getId() .  $this->role->getName());
+        return $this->hueFromSeed((string) $this->role->getId().$this->role->getName());
     }
 
     private function hueFromSeed(string $seed): int

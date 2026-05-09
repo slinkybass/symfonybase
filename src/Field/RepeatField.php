@@ -31,9 +31,6 @@ class RepeatField implements FieldInterface
         $this->setFormType(RepeatedType::class);
     }
 
-    /**
-     * @param mixed $type
-     */
     public function setType($type): self
     {
         $this->setFormTypeOption('type', $type);

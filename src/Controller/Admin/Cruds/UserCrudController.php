@@ -41,7 +41,7 @@ class UserCrudController extends AbstractCrudController
         public TranslatorInterface $translator,
         public ConfigService $configService,
         public RolePermissions $rolePermissions,
-        public readonly UserPasswordHasherInterface $passwordHasher
+        public readonly UserPasswordHasherInterface $passwordHasher,
     ) {
         parent::__construct($translator, $configService, $rolePermissions);
     }

@@ -37,7 +37,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        $crud->setEntityLabelInSingular(fn ($entity) => $entity ? $this->transEntitySingular() . ': ' . (string) $entity : $this->transEntitySingular());
+        $crud->setEntityLabelInSingular(fn ($entity) => $entity ? $this->transEntitySingular().': '.(string) $entity : $this->transEntitySingular());
         $crud->setEntityLabelInPlural($this->transEntityPlural());
 
         $crud->setDefaultSort(['id' => 'DESC']);

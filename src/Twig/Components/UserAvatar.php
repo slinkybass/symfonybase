@@ -23,7 +23,7 @@ class UserAvatar
 
     public function getClasses(): string
     {
-        $sizeClass = "avatar-".($this->size ? $this->size : self::DEFAULT_SIZE);
+        $sizeClass = 'avatar-'.($this->size ? $this->size : self::DEFAULT_SIZE);
 
         return trim("avatar $sizeClass {$this->class}");
     }

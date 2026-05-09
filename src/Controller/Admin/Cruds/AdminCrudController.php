@@ -42,7 +42,7 @@ class AdminCrudController extends AbstractCrudController
         public TranslatorInterface $translator,
         public ConfigService $configService,
         public RolePermissions $rolePermissions,
-        public readonly UserPasswordHasherInterface $passwordHasher
+        public readonly UserPasswordHasherInterface $passwordHasher,
     ) {
         parent::__construct($translator, $configService, $rolePermissions);
     }
@@ -218,15 +218,9 @@ class AdminCrudController extends AbstractCrudController
 
         $actions->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE);
 
-        $actions->update(Crud::PAGE_INDEX, Action::DETAIL, fn (Action $action) =>
-            $action->displayIf(fn (User $u) => $user === $u || $hasPermissionDetail)
-        );
-        $actions->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) =>
-            $action->displayIf(fn (User $u) => $user === $u || ($hasPermissionEdit && $this->rolePermissions->isUp($user->getRole(), $u->getRole())))
-        );
-        $actions->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) =>
-            $action->displayIf(fn (User $u) => $user !== $u && ($hasPermissionDelete && $this->rolePermissions->isUp($user->getRole(), $u->getRole())))
-        );
+        $actions->update(Crud::PAGE_INDEX, Action::DETAIL, fn (Action $action) => $action->displayIf(fn (User $u) => $user === $u || $hasPermissionDetail));
+        $actions->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->displayIf(fn (User $u) => $user === $u || ($hasPermissionEdit && $this->rolePermissions->isUp($user->getRole(), $u->getRole()))));
+        $actions->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->displayIf(fn (User $u) => $user !== $u && ($hasPermissionDelete && $this->rolePermissions->isUp($user->getRole(), $u->getRole()))));
 
         $denied = !$hasPermission ? [Action::INDEX] : [];
         if (!$hasPermissionNew) {
