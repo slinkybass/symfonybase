@@ -86,9 +86,6 @@
                                         <input class="form-check-input m-0 ms-auto" type="checkbox" data-color-scheme {% if darkMode %}checked{% endif %}>
                                     </label>
                                 {% endif %}
-                                {% if ea.dashboardHasDarkModeEnabled and ea.dashboardLocales|length %}
-                                    <div class="dropdown-divider"></div>
-                                {% endif %}
                                 {% if ea.dashboardLocales|length %}
                                     <div class="dropdown dropstart">
                                         <a class="dropdown-item dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -111,21 +108,26 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                {% if ea.dashboardHasDarkModeEnabled or ea.dashboardLocales|length %}
-                                    <div class="dropdown-divider"></div>
-                                {% endif %}
                                 {% for item in ea.userMenu.items %}
                                     {% if item.isMenuSection %}
                                         {% if not loop.first %}
                                             <div class="dropdown-divider"></div>
                                         {% endif %}
-                                        <span class="dropdown-header {{ item.cssClass }}">
-                                            <twig:ea:Icon name="{{ item.icon }}" class="dropdown-item-icon" />
-                                            <span class="action-label">{{ item.label|trans }}</span>
-                                        </span>
+                                        {% if item.icon or item.label %}
+                                            <span class="dropdown-header {{ item.cssClass }}">
+                                                {% if item.icon %}
+                                                    <twig:ea:Icon name="{{ item.icon }}" class="dropdown-item-icon" />
+                                                {% endif %}
+                                                {% if item.label %}
+                                                    <span class="action-label">{{ item.label|trans }}</span>
+                                                {% endif %}
+                                            </span>
+                                        {% endif %}
                                     {% else %}
                                         <a class="dropdown-item {{ item.cssClass }}" href="{{ item.linkUrl }}" target="{{ item.linkTarget }}" rel="{{ item.linkRel }}">
-                                            <twig:ea:Icon name="{{ item.icon }}" class="dropdown-item-icon" />
+                                            {% if item.icon %}
+                                                <twig:ea:Icon name="{{ item.icon }}" class="dropdown-item-icon" />
+                                            {% endif %}
                                             <span class="action-label">{{ item.label|trans }}</span>
                                         </a>
                                     {% endif %}
