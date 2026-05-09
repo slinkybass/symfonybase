@@ -284,6 +284,12 @@ const App = (() => {
 		});
 	};
 
+	const reloateTableModals = () => {
+		document.querySelectorAll('tr .modal').forEach((modal) => {
+			document.body.appendChild(modal);
+		});
+	};
+
 	return {
 		setMomentLocale,
 		createAutoCompleteFields,
@@ -293,6 +299,7 @@ const App = (() => {
 		createLightboxes,
 		setTabAsActive,
 		preventMultipleFormSubmission,
+		reloateTableModals,
 	};
 })();
 

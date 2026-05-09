@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	App.createLightboxes();
 	App.setTabAsActive();
 	App.preventMultipleFormSubmission();
+	App.reloateTableModals();
 });
 
 document.addEventListener("ea.collection.item-added", () => {
