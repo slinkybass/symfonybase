@@ -99,48 +99,45 @@ class DashboardController extends AbstractDashboardController
         $user = $this->getUser();
         $configId = $this->em->getRepository(Config::class)->filterFirst()?->getId();
         $config = $this->configService->get();
+        $labelAdmin = $config->enablePublic ? 'admin' : 'user';
+        $iconAdmin = $config->enablePublic ? 'user-shield' : 'user';
 
         yield MenuItem::linkToDashboard($this->translator->trans('admin.home.title'), 'home');
 
         $userItems = [];
-        if ($config->enablePublic && $this->rolePermissions->userHasPermissionCrud($user, 'user')) {
-            $userItems[] = MenuItem::linkTo(Cruds\UserCrudController::class, $this->translator->trans('entities.user.plural'), 'user');
+        if ($config->enablePublic) {
+            $userItems[] = MenuItem::linkTo(Cruds\UserCrudController::class, $this->translator->trans('entities.user.plural'), 'user')
+                ->setPermission(!$this->rolePermissions->userHasPermissionCrud($user, 'user') ? 'NOPERMISSION_MENU' : '');
         }
-        if ($this->rolePermissions->userHasPermissionCrud($user, 'admin')) {
-            $label = $config->enablePublic ? 'admin' : 'user';
-            $icon = $config->enablePublic ? 'user-shield' : 'user';
-            $userItems[] = MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('entities.'.$label.'.plural'), $icon);
-        }
-        if ($this->rolePermissions->userHasPermissionCrud($user, 'role')) {
-            $userItems[] = MenuItem::linkTo(Cruds\RoleCrudController::class, $this->translator->trans('entities.role.plural'), 'lock');
-        }
-        if (count($userItems) == 1) {
-            yield $userItems[0];
-        } elseif (count($userItems) > 1) {
+        $userItems[] = MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('entities.'.$labelAdmin.'.plural'), $iconAdmin)
+            ->setPermission(!$this->rolePermissions->userHasPermissionCrud($user, 'admin') ? 'NOPERMISSION_MENU' : '');
+        $userItems[] = MenuItem::linkTo(Cruds\RoleCrudController::class, $this->translator->trans('entities.role.plural'), 'lock')
+            ->setPermission(!$this->rolePermissions->userHasPermissionCrud($user, 'role') ? 'NOPERMISSION_MENU' : '');
+        $userItemsAvailable = array_filter($userItems, fn ($item) => $item->getAsDto()->getPermission() !== 'NOPERMISSION_MENU');
+        if (count($userItemsAvailable) <= 1) {
+            yield from $userItems;
+        } else {
             yield MenuItem::subMenu($this->translator->trans('entities.user.plural'), 'users')->setSubItems($userItems);
         }
 
-        if ($this->rolePermissions->userHasPermission($user, 'media')) {
-            yield MenuItem::linkToRoute($this->translator->trans('entities.media.plural'), 'file', 'admin_media');
-        }
+        yield MenuItem::linkToRoute($this->translator->trans('entities.media.plural'), 'file', 'admin_media')
+            ->setPermission(!$this->rolePermissions->userHasPermission($user, 'media') ? 'NOPERMISSION_MENU' : '');
 
         $configItems = [];
-        if ($this->rolePermissions->userHasPermissionCrud($user, 'settings')) {
-            $settingsLink = MenuItem::linkTo(Cruds\SettingsCrudController::class, $this->translator->trans('entities.settings.singular'), 'tool');
-            $settingsLink = $configId ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($configId) : $settingsLink->setAction(Crud::PAGE_NEW);
-            $configItems[] = $settingsLink;
+        $settingsLink = MenuItem::linkTo(Cruds\SettingsCrudController::class, $this->translator->trans('entities.settings.singular'), 'tool')
+            ->setPermission(!$this->rolePermissions->userHasPermissionCrud($user, 'settings') ? 'NOPERMISSION_MENU' : '');
+        $configItems[] = $configId ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($configId) : $settingsLink->setAction(Crud::PAGE_NEW);
+        $configLink = MenuItem::linkTo(Cruds\ConfigCrudController::class, $this->translator->trans('entities.config.singular'), 'settings')
+            ->setPermission(!$this->rolePermissions->userHasPermissionCrud($user, 'config') ? 'NOPERMISSION_MENU' : '');
+        $configItems[] = $configId ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($configId) : $configLink->setAction(Crud::PAGE_NEW);
+        if (class_exists('App\\Entity\\DemoEntity')) {
+            $configItems[] = MenuItem::linkTo('App\\Controller\\Admin\\Cruds\\DemoEntityCrudController', $this->translator->trans('entities.demoEntity.singular'), 'flask')
+                ->setPermission(!$this->rolePermissions->userHasPermissionCrud($user, 'demoEntity') ? 'NOPERMISSION_MENU' : '');
         }
-        if ($this->rolePermissions->userHasPermissionCrud($user, 'config')) {
-            $configLink = MenuItem::linkTo(Cruds\ConfigCrudController::class, $this->translator->trans('entities.config.singular'), 'settings');
-            $configLink = $configId ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($configId) : $configLink->setAction(Crud::PAGE_NEW);
-            $configItems[] = $configLink;
-        }
-        if ($this->rolePermissions->userHasPermissionCrud($user, 'demoEntity') && class_exists('App\\Entity\\DemoEntity')) {
-            $configItems[] = MenuItem::linkTo('App\\Controller\\Admin\\Cruds\\DemoEntityCrudController', $this->translator->trans('entities.demoEntity.singular'), 'flask');
-        }
-        if (count($configItems) == 1) {
-            yield $configItems[0];
-        } elseif (count($configItems) > 1) {
+        $configItemsAvailable = array_filter($configItems, fn ($item) => $item->getAsDto()->getPermission() !== 'NOPERMISSION_MENU');
+        if (count($configItemsAvailable) <= 1) {
+            yield from $configItems;
+        } else {
             yield MenuItem::subMenu($this->translator->trans('entities.config.singular'), 'settings')->setSubItems($configItems);
         }
     }
