@@ -5,6 +5,13 @@ alwaysApply: true
 
 # Symfony Base App — Project Rules
 
+## Working Mode
+
+- Before any refactor that implies extracting classes, creating new files, extracting new methods, or any structural change beyond style/conventions: stop, explain the reason and wait for approval.
+- Apply style and convention fixes (property promotion, readonly, return types, PHPDoc, guards) without prior consultation.
+
+---
+
 ## Stack
 
 **PHP:** `composer.json` exige **^8.4** (alineado con `doctrine/doctrine-bundle` 3.2.x y `doctrine/doctrine-migrations-bundle` 4.x del lock).
