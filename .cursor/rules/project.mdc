@@ -1,0 +1,151 @@
+---
+description: Reglas globales del proyecto — aplican en todo momento
+alwaysApply: true
+---
+
+# Symfony Base App — Project Rules
+
+## Stack
+
+**PHP:** `composer.json` exige **^8.4** (alineado con `doctrine/doctrine-bundle` 3.2.x y `doctrine/doctrine-migrations-bundle` 4.x del lock).
+
+**Backend (versiones exactas en `composer.lock`):**
+
+| Paquete | Versión |
+| --- | --- |
+| `symfony/framework-bundle` | v7.4.3 |
+| `symfony/asset-mapper` | v7.4.3 |
+| `symfony/stimulus-bundle` | v2.32.0 |
+| `symfony/ux-turbo` | v2.32.0 |
+| `symfony/ux-icons` | v2.32.0 |
+| `symfony/ux-translator` | v2.32.0 |
+| `symfony/runtime` | v7.4.1 (resto del ecosistema Symfony suele ir en 7.4.3) |
+| `easycorp/easyadmin-bundle` | v4.29.3 |
+| `doctrine/orm` | 3.6.1 |
+| `doctrine/dbal` | 4.4.1 |
+| `doctrine/doctrine-bundle` | 3.2.2 |
+| `doctrine/migrations` | 3.9.5 |
+| `doctrine/doctrine-migrations-bundle` | 4.0.0 |
+| `twig/twig` | v3.22.2 |
+| `twig/extra-bundle` | v3.22.2 |
+| `twig/intl-extra` | v3.22.1 |
+| `arkounay/ux-media` | 4.2.1 |
+| `arkounay/ux-collection` | 4.0.3 |
+| `artgris/filemanager-bundle` | 2.10.6 |
+| `knplabs/knp-time-bundle` | 2.5.0 |
+| `symfony/monolog-bundle` | v4.0.1 |
+| `symfonycasts/reset-password-bundle` | v1.24.0 |
+| `symfonycasts/verify-email-bundle` | v1.18.0 |
+
+**Dev:** `friendsofphp/php-cs-fixer` v3.94.2 · `phpunit/phpunit` 12.5.4
+
+**Frontend:** Los assets van por **Asset Mapper** + `importmap.php`. Versiones fijadas en importmap (entre otras): `@tabler/core` **1.4.0**, `bootstrap` **5.3.8**, `tom-select` **2.4.3**, `tinymce` **8.3.1**, `flatpickr` **4.6.13**, `sweetalert2` **11.26.17**. JS propio bajo `assets/js/` (entrypoints `app`, `admin`, `public`, etc.).
+
+**Datos:** Doctrine ORM con URL `DATABASE_URL` (`config/packages/doctrine.yaml`); estrategia `underscore_number_aware`. **i18n:** `default_locale: es`, fallbacks `es` (`config/packages/translation.yaml`). Traducciones en `translations/*.es.yaml` (+ `validators.es.yaml`).
+
+**Caché de aplicación:** `ConfigService` + clave `app_config`; invalidación en `App\EventListener\ConfigCacheListener` ante `postPersist`/`postUpdate` de `App\Entity\Config`. Detalle en **Rules → Configuration**.
+
+---
+
+## Architecture
+
+Árbol real de `src/` y propósito observado:
+
+```
+src/
+├── Kernel.php
+├── Command/                    # Consola: demo, usuarios, permisos (UpdatePermissionsCommand, CreateUsersCommand, DemoCommand)
+├── Controller/
+│   ├── AdminController.php     # Punto de entrada admin (no CRUD de entidad)
+│   ├── AuthController.php      # Login, registro, verify-email, reset-password (SymfonyCasts traits + repos/filtros)
+│   ├── PublicController.php    # Ruta home pública
+│   ├── PrivacyController.php   # Páginas legales/cookies condicionadas por Config
+│   └── Admin/
+│       ├── DashboardController.php
+│       ├── AbstractCrudController.php   # EasyAdmin base: $em + translator + ConfigService + RolePermissions por constructor; adminUrl()/request() vía container
+│       └── Cruds/              # Un *CrudController por entidad expuesta en EA (User, Role, Config, Settings, Admin…)
+├── Entity/                     # Modelo persistido: User, Role, Config, ResetPasswordRequest; Enum/UserGender
+├── Repository/
+│   ├── AbstractRepository.php  # API común: filter, filterOne, filterFirst, filterCount, filterExists, filterPaginated, applyFilters
+│   ├── *Repository.php         # UserRepository (+ PasswordUpgraderInterface), RoleRepository, ConfigRepository, ResetPasswordRequestRepository
+│   └── Filter/                 # Filtros composables por entidad (User/, Role/), OrderFilter, enums ComparisonOperator / OrderDirection
+├── Service/
+│   ├── ConfigService.php       # Ensambla AppConfig (defaults + fila Config + rutas AssetMapper para logo/favicon) y cachea
+│   ├── MailService.php         # Envío de correo
+│   └── RolePermissions.php     # Árbol y comprobación de permisos; escanea `src/Controller/Admin/Cruds/*CrudController.php` con Finder
+├── Model/
+│   └── AppConfig.php           # DTO mutable de configuración resuelta (no es entidad Doctrine); ids, no proxies, en lo cacheado
+├── Form/                       # FormGenerator (formularios fuera de EA), tipos de auth/registro/password, RegistrationForm…
+├── Field/                      # Campos tipo EasyAdmin custom (subclases de Field, traits, FieldGenerator) usados desde CrudControllers
+├── Security/
+│   └── VirtualPermission.php   # Constante DENY usada como “permiso” imposible en acciones EasyAdmin denegadas
+├── EventSubscriber/            # Locale (40), Media/Artgris dirs (30), Access por listas de rutas + constantes privacy/cookies (7), InactiveUser (5), UserLogin (security.interactive_login)
+├── EventListener/              # Doctrine entity listener: invalidación cache config (ConfigCacheListener)
+├── Twig/
+│   ├── Extension/              # AppConfig global, enums, JSON, HEX/RGB, permisos en Twig…
+│   └── Components/             # Clases PHP de Twig Components (User, Role, Media, UserAvatar)
+└── Util/                       # Utilidades p.ej. PasswordGenerator
+```
+
+---
+
+## Entities & Relations
+
+| Entidad | Tabla / notas | Relaciones |
+| --- | --- | --- |
+| `User` | `user` | **ManyToOne** `Role` (`role`, obligatorio en BD; `getRoles()` defiende `null` en memoria). InversedBy `Role.users`. Ciclo de vida: `PrePersist` → `createdAt`. **Enum** Doctrine `UserGender` en campo `gender`. |
+| `Role` | `role` | **OneToMany** `User` (`users`, mappedBy `role`). Campo JSON `permissions`. `displayName` + generación de `name` tipo `ROLE_*` en `setDisplayName` si aún sin `id`. |
+| `Config` | `config` | En **BD / Doctrine** sigue existiendo **ManyToOne** opcional a `Role` en el campo persistido **`roleDefaultRegister`** (formularios EasyAdmin y entidad `Config`). El DTO cacheado `AppConfig` usa **`roleDefaultRegisterId`** (véase Rules → Configuration). Singleton lógico vía `ConfigRepository::filterFirst()` + `ConfigService`. |
+| `ResetPasswordRequest` | `resetPasswordRequest` | **ManyToOne** `User` obligatorio. Implementa `ResetPasswordRequestInterface` + trait SymfonyCasts. |
+
+**`AppConfig` (no es entidad):** vista materializada en runtime/caché; para el rol por defecto de registro expone **`roleDefaultRegisterId` (`?int`)**, derivado del id de `Config::getRoleDefaultRegister()`, para no serializar entidades Doctrine dentro de `CacheInterface`.
+
+No hay más entidades en `src/Entity/`. `ResetPasswordRequest` es la única entidad “de integración” con SymfonyCasts además del núcleo User/Role/Config.
+
+---
+
+## Rules
+
+Normas y patrones del código, por ámbito (una sola lectura; evita repetir lo mismo en otras secciones).
+
+### Queries & repositories
+
+- Los repositorios de negocio extienden `AbstractRepository` y exponen listados / uno / paginación vía **`FilterInterface`** (p. ej. `UserRepository::filterOne` + `App\Repository\Filter\User\EmailFilter` en auth).
+- **`AbstractFilter`:** `ensureJoin`, comparaciones con enum **`ComparisonOperator`**, parsing de fechas, `assertOperator`. **`OrderFilter`** usa enum **`OrderDirection`** para el `ORDER BY`.
+- No abrir queries ad hoc en controladores cuando ya hay filtro + repositorio para el mismo caso.
+
+### Configuration
+
+- Toggles y textos de aplicación: lectura vía **`ConfigService::get()` → `AppConfig`**. La sesión no sustituye eso (salvo usos puntuos como `_locale` en `LocaleSubscriber`).
+- **`Config`** (entidad): persiste **`roleDefaultRegister`** como relación Doctrine **ManyToOne → `Role`** (igual que en base de datos).
+- **`AppConfig`** (DTO en caché): **`roleDefaultRegisterId`**; `ConfigService` rellena el id desde la entidad. No guardar entidades/proxies Doctrine dentro del objeto cacheado.
+- **Registro:** `AuthController::register` comprueba id y existencia del `Role` en BD antes de persistir; si falta configuración, flash `app.messages.registerMissingDefaultRole` y redirección a `register`.
+- Invalidación: `ConfigCacheListener` en `postPersist` / `postUpdate` de `Config`.
+
+### Permissions & EasyAdmin
+
+- CRUDs bajo `Controller/Admin/Cruds/*`; base **`AbstractCrudController`:** primer argumento del constructor **`EntityManagerInterface $em`** (propiedad pública; los CRUD hijos con constructor propio llaman `parent::__construct($em, …)`). **`RolePermissions`** + **`VirtualPermission::DENY`**, themes UxCollection/UxMedia, `setDefaultSort(['id' => 'DESC'])`.
+- **`adminUrl()`** y **`request()`** siguen obteniendo servicios con **`$this->container->get(…)`** (patrón residual del bundle); **`entity()`** usa `request_stack` del contenedor y **`$this->em`** para resolver la entidad por id de request cuando hace falta.
+- **`RolePermissions`:** claves `crud_<entidad>` y `crud_<entidad>_<acción>` desde `*CrudController.php` y `Action::NEW|DETAIL|EDIT|DELETE`, más listas `DISABLED_CRUD_PERMISSIONS`, `EXTRA_CRUD_ACTION_PERMISSIONS`, `EXTRA_PERMISSIONS`.
+- No acortar visibilidad de acciones CRUD sin pasar por ese modelo (rompe el árbol `crud_*`).
+
+### HTTP subscribers & access
+
+- Subscribers que reaccionan al request de **`HttpKernel`:** guard **`$event->isMainRequest()`** si mutan request/response (convención en `LocaleSubscriber`, `MediaSubscriber`, `AccessSubscriber`, `InactiveUserSubscriber`).
+- **`AccessSubscriber`** (prioridad **7**): listas de nombres de ruta (`PUBLIC_ROUTES`, `LOGIN_ROUTES`, …) más constantes **`PRIVACY_ROUTE`** / **`COOKIES_ROUTE`**; flags en `AppConfig`. Al añadir rutas bajo la misma política, actualizar esas constantes.
+- **`MediaSubscriber`** (prioridad **30**): directorios Artgris según `file_manager` + query `conf`.
+- **`User::__serialize()`:** hash de contraseña sustituido por `crc32c` en sesión (comentario Symfony 7.3+).
+
+### Forms & fields
+
+- Formularios reutilizables fuera de EasyAdmin: **`App\Form\FormGenerator`** (inyecta `EntityManagerInterface`, `getFormBuilder` desde definiciones tipo EA). Ubicación: namespace **`App\Form`**, no bajo `Service/`.
+- Campos EA custom: `src/Field/` + `FieldGenerator`; plantillas en `templates/field/` y bundles según corresponda.
+
+### General code style
+
+- **PHP CS Fixer:** `.php-cs-fixer.dist.php` → ruleset **`@Symfony`**, `yoda_style` false. PHPDoc mezclado (`@param` / `@return` en algunas clases); resúmenes de clase/método en **inglés** donde se documenta nuevo código (`AbstractRepository`, `ConfigService`, …).
+- **`declare(strict_types=1)`:** no es uniforme en todo el repo; nuevos ficheros: alinear con el fichero más cercano o acuerdo de equipo.
+- **Controladores:** `#[Route]`; `final` donde ya se usa (`AuthController`, `PublicController`); nombres de acción alineados con nombres de ruta cuando aplique.
+- **DI:** property promotion y `readonly` en servicios/subscribers alineados con el estilo reciente.
+- **Twig:** overrides en `templates/bundles/{EasyAdminBundle,ArtgrisFileManagerBundle,ArkounayUxMediaBundle}/`; componentes PHP en `src/Twig/Components/` + vistas en `templates/components/`.
+- **Traducciones:** español por defecto (`messages.es.yaml`, `EasyAdminBundle.es.yaml`, …) coherente con `default_locale: es`.
