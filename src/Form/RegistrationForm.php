@@ -25,50 +25,50 @@ class RegistrationForm extends AbstractType
     {
         $config = $this->configService->get();
 
-        $fields = [];
-        $fields[] = FieldGenerator::text('name')
-            ->setLabel('entities.user.fields.name')
-            ->setPlaceholder('entities.user.fields.name')
-            ->setHtmlAttribute('autofocus', true)
-            ->setColumns(2);
-        $fields[] = FieldGenerator::text('lastname')
-            ->setLabel('entities.user.fields.lastname')
-            ->setPlaceholder('entities.user.fields.lastname')
-            ->setColumns(3);
-        $fields[] = FieldGenerator::email('email')
-            ->setLabel('entities.user.fields.email')
-            ->setPlaceholder('entities.user.fields.email')
-            ->setColumns(4);
-        $fields[] = FieldGenerator::phone('phone')
-            ->setLabel('entities.user.fields.phone')
-            ->setPlaceholder('entities.user.fields.phone')
-            ->setColumns(3);
-        $fields[] = FieldGenerator::date('birthdate')
-            ->setLabel('entities.user.fields.birthdate')
-            ->setPlaceholder('entities.user.fields.birthdate')
-            ->setColumns(2);
-        $fields[] = FieldGenerator::enum('gender')
-            ->setLabel('entities.user.fields.gender')
-            ->setPlaceholder('entities.user.fields.gender')
-            ->setColumns(2);
-        $fields[] = FieldGenerator::password('plainPassword')
-            ->isRepeated()
-            ->renderSwitch()
-            ->renderGenerator()
-            ->setFirstLabel('entities.user.fields.password')
-            ->setFirstPlaceholder('entities.user.fields.password')
-            ->setSecondLabel('entities.user.fields.repeatPassword')
-            ->setSecondPlaceholder('entities.user.fields.repeatPassword')
-            ->setMinLength(8)
-            ->isMapped(false);
-        $termsLabel = $config->privacyText ? 'public.register.acceptTermsUrl' : 'public.register.acceptTerms';
-        $termsLabel = $this->translator->trans($termsLabel, ['%url%' => $this->router->generate('privacy')]);
-        $fields[] = FieldGenerator::switch('acceptTerms')
-            ->setLabel($termsLabel)
-            ->setFormTypeOption('label_html', true)
-            ->isMapped(false);
+        $termsLabelKey = $config->privacyText ? 'public.register.acceptTermsUrl' : 'public.register.acceptTerms';
+        $termsLabel = $this->translator->trans($termsLabelKey, ['%url%' => $this->router->generate('privacy')]);
 
-        $builder = $this->formGenerator->getFormBuilder($builder, $fields, User::class);
+        $this->formGenerator->getFormBuilder($builder, [
+            FieldGenerator::text('name')
+                ->setLabel('entities.user.fields.name')
+                ->setPlaceholder('entities.user.fields.name')
+                ->setHtmlAttribute('autofocus', true)
+                ->setColumns(2),
+            FieldGenerator::text('lastname')
+                ->setLabel('entities.user.fields.lastname')
+                ->setPlaceholder('entities.user.fields.lastname')
+                ->setColumns(3),
+            FieldGenerator::email('email')
+                ->setLabel('entities.user.fields.email')
+                ->setPlaceholder('entities.user.fields.email')
+                ->setColumns(4),
+            FieldGenerator::phone('phone')
+                ->setLabel('entities.user.fields.phone')
+                ->setPlaceholder('entities.user.fields.phone')
+                ->setColumns(3),
+            FieldGenerator::date('birthdate')
+                ->setLabel('entities.user.fields.birthdate')
+                ->setPlaceholder('entities.user.fields.birthdate')
+                ->setColumns(2),
+            FieldGenerator::enum('gender')
+                ->setLabel('entities.user.fields.gender')
+                ->setPlaceholder('entities.user.fields.gender')
+                ->setColumns(2),
+            FieldGenerator::password('plainPassword')
+                ->isRepeated()
+                ->renderSwitch()
+                ->renderGenerator()
+                ->setFirstLabel('entities.user.fields.password')
+                ->setFirstPlaceholder('entities.user.fields.password')
+                ->setSecondLabel('entities.user.fields.repeatPassword')
+                ->setSecondPlaceholder('entities.user.fields.repeatPassword')
+                ->setMinLength(8)
+                ->isMapped(false),
+            FieldGenerator::switch('acceptTerms')
+                ->setLabel($termsLabel)
+                ->setFormTypeOption('label_html', true)
+                ->isMapped(false),
+        ], User::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

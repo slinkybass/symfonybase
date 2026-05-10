@@ -18,7 +18,7 @@ class DateMultipleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new class implements DataTransformerInterface {
-            public function transform($value): string
+            public function transform(mixed $value): string
             {
                 if (!is_array($value)) {
                     return '';
@@ -27,12 +27,12 @@ class DateMultipleType extends AbstractType
                 return implode(', ', $value);
             }
 
-            public function reverseTransform($value): ?array
+            public function reverseTransform(mixed $value): ?array
             {
                 if (!is_string($value)) {
                     return null;
                 }
-                $dates = array_values(array_filter(array_map('trim', explode(',', $value)), fn ($item) => $item !== ''));
+                $dates = array_values(array_filter(array_map('trim', explode(',', $value)), static fn (string $item): bool => $item !== ''));
 
                 return empty($dates) ? null : $dates;
             }
