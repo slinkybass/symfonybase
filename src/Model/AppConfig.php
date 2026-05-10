@@ -2,8 +2,6 @@
 
 namespace App\Model;
 
-use App\Entity\Role;
-
 /**
  * Represents the application configuration resolved from the database and defaults.
  */
@@ -19,7 +17,7 @@ final class AppConfig
     public bool $enablePublic = false;
     public bool $enableResetPassword = false;
     public bool $enableRegister = false;
-    public ?Role $roleDefaultRegister = null;
+    public ?int $roleDefaultRegisterId = null;
     public bool $enableCookies = false;
     public string $senderEmail = 'israel@garaballu.com';
     public ?string $privacyText = null;

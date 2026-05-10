@@ -13,7 +13,7 @@ use Symfony\Component\Mime\Email;
 /**
  * Handles outgoing email delivery for the application.
  *
- * Reads the sender address and application name from the session AppConfig object,
+ * Reads the sender address and application name from ConfigService (resolved AppConfig),
  * and delegates transport to Symfony Mailer.
  *
  * In non-production environments all recipients are replaced by the configured

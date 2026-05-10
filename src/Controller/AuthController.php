@@ -198,7 +198,7 @@ final class AuthController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
             $user->setPassword($encodedPassword);
-            $user->setRole($roleRepo->find($config->roleDefaultRegister->getId()));
+            $user->setRole($roleRepo->find($config->roleDefaultRegisterId));
             $user->setVerified(false);
             $this->em->persist($user);
             $this->em->flush();

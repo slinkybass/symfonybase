@@ -43,7 +43,7 @@ class ConfigService
                 $config->enablePublic = $dbConfig->isEnablePublic() ?? $config->enablePublic;
                 $config->enableResetPassword = $dbConfig->isEnableResetPassword() ?? $config->enableResetPassword;
                 $config->enableRegister = $dbConfig->isEnableRegister() ?? $config->enableRegister;
-                $config->roleDefaultRegister = $dbConfig->getRoleDefaultRegister() ?? $config->roleDefaultRegister;
+                $config->roleDefaultRegisterId = $dbConfig->getRoleDefaultRegister()?->getId() ?? $config->roleDefaultRegisterId;
                 $config->enableCookies = $dbConfig->isEnableCookies() ?? $config->enableCookies;
                 $config->senderEmail = $dbConfig->getSenderEmail() ?? $config->senderEmail;
                 $config->privacyText = $dbConfig->getPrivacyText() ?? $config->privacyText;
