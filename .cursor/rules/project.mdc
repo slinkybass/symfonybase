@@ -53,38 +53,38 @@ alwaysApply: true
 
 ```
 src/
-├── Kernel.php
 ├── Command/                    # Consola: demo, usuarios, permisos (UpdatePermissionsCommand, CreateUsersCommand, DemoCommand)
 ├── Controller/
+│   ├── Admin/
+│   │   ├── Cruds/              # Un *CrudController por entidad expuesta en EA (U
+│   │   ├── AbstractCrudController.php   # EasyAdmin base: $em + translator + ConfigService + RolePermissions por constructor; adminUrl()/request() vía containere, Config, Settings, Admin…)
+│   │   └── DashboardController.php
 │   ├── AdminController.php     # Punto de entrada admin (no CRUD de entidad)
 │   ├── AuthController.php      # Login, registro, verify-email, reset-password (SymfonyCasts traits + repos/filtros)
-│   ├── PublicController.php    # Ruta home pública
 │   ├── PrivacyController.php   # Páginas legales/cookies condicionadas por Config
-│   └── Admin/
-│       ├── DashboardController.php
-│       ├── AbstractCrudController.php   # EasyAdmin base: $em + translator + ConfigService + RolePermissions por constructor; adminUrl()/request() vía container
-│       └── Cruds/              # Un *CrudController por entidad expuesta en EA (User, Role, Config, Settings, Admin…)
+│   └── PublicController.php    # Ruta home pública
 ├── Entity/                     # Modelo persistido: User, Role, Config, ResetPasswordRequest; Enum/UserGender
+├── EventListener/              # Doctrine entity listener: invalidación cache config (ConfigCacheListener)
+├── EventSubscriber/            # Locale (40), Media/Artgris dirs (30), Access por listas de rutas + constantes privacy/cookies (7), InactiveUser (5), UserLogin (security.interactive_login)
+├── Field/                      # Campos tipo EasyAdmin custom (subclases de Field, traits, FieldGenerator) usados desde CrudControllers
+├── Form/                       # FormGenerator (formularios fuera de EA), tipos de auth/registro/password, RegistrationForm…
+├── Model/
+│   └── AppConfig.php           # DTO mutable de configuración resuelta (no es entidad Doctrine); ids, no proxies, en lo cacheado
 ├── Repository/
+│   ├── Filter/                 # Filtros composables por entidad (User/, Role/), OrderFilter, enums ComparisonOperator / OrderDirection
 │   ├── AbstractRepository.php  # API común: filter, filterOne, filterFirst, filterCount, filterExists, filterPaginated, applyFilters
-│   ├── *Repository.php         # UserRepository (+ PasswordUpgraderInterface), RoleRepository, ConfigRepository, ResetPasswordRequestRepository
-│   └── Filter/                 # Filtros composables por entidad (User/, Role/), OrderFilter, enums ComparisonOperator / OrderDirection
+│   └── *Repository.php         # UserRepository (+ PasswordUpgraderInterface), RoleRepository, ConfigRepository, ResetPasswordRequestRepository
+├── Security/
+│   └── VirtualPermission.php   # Constante DENY usada como “permiso” imposible en acciones EasyAdmin denegadas
 ├── Service/
 │   ├── ConfigService.php       # Ensambla AppConfig (defaults + fila Config + rutas AssetMapper para logo/favicon) y cachea
 │   ├── MailService.php         # Envío de correo
 │   └── RolePermissions.php     # Árbol y comprobación de permisos; escanea `src/Controller/Admin/Cruds/*CrudController.php` con Finder
-├── Model/
-│   └── AppConfig.php           # DTO mutable de configuración resuelta (no es entidad Doctrine); ids, no proxies, en lo cacheado
-├── Form/                       # FormGenerator (formularios fuera de EA), tipos de auth/registro/password, RegistrationForm…
-├── Field/                      # Campos tipo EasyAdmin custom (subclases de Field, traits, FieldGenerator) usados desde CrudControllers
-├── Security/
-│   └── VirtualPermission.php   # Constante DENY usada como “permiso” imposible en acciones EasyAdmin denegadas
-├── EventSubscriber/            # Locale (40), Media/Artgris dirs (30), Access por listas de rutas + constantes privacy/cookies (7), InactiveUser (5), UserLogin (security.interactive_login)
-├── EventListener/              # Doctrine entity listener: invalidación cache config (ConfigCacheListener)
 ├── Twig/
-│   ├── Extension/              # AppConfig global, enums, JSON, HEX/RGB, permisos en Twig…
-│   └── Components/             # Clases PHP de Twig Components (User, Role, Media, UserAvatar)
-└── Util/                       # Utilidades p.ej. PasswordGenerator
+│   ├── Components/             # Clases PHP de Twig Components (User, Role, Media, UserAvatar)
+│   └── *Extension.php          # AppConfig global, enums, JSON, HEX/RGB, permisos en Twig…
+├── Util/                       # Utilidades p.ej. PasswordGenerator
+└── Kernel.php
 ```
 
 ---
