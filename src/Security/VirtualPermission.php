@@ -10,6 +10,10 @@ final class VirtualPermission
 {
     public const DENY = 'NOPERMISSION';
 
+    private function __construct()
+    {
+    }
+
     public static function allowed(bool $isAllowed): string
     {
         return $isAllowed ? '' : self::DENY;

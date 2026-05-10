@@ -11,6 +11,7 @@ final class PasswordGenerator
     private const LOWERCASE = 'abcdefghijkmnpqrstuvwxyz';
     private const NUMBERS = '23456789';
     private const SPECIALS = '!@#$%&_';
+    private const ALPHABET = self::UPPERCASE.self::LOWERCASE.self::NUMBERS.self::SPECIALS;
 
     /**
      * Generates a random password guaranteed to contain at least one uppercase letter,
@@ -22,21 +23,16 @@ final class PasswordGenerator
      */
     public static function generate(int $length = 8): string
     {
-        $all = self::UPPERCASE.self::LOWERCASE.self::NUMBERS.self::SPECIALS;
-
         $password = self::pick(self::SPECIALS);
         $password .= self::pick(self::LOWERCASE);
         $password .= self::pick(self::UPPERCASE);
         $password .= self::pick(self::NUMBERS);
 
         if ($length > 4) {
-            $password .= self::pick($all, $length - 4);
+            $password .= self::pick(self::ALPHABET, $length - 4);
         }
 
-        $chars = str_split($password);
-        shuffle($chars);
-
-        return implode('', $chars);
+        return self::shuffleString($password);
     }
 
     private static function pick(string $str, int $count = 1): string
@@ -48,5 +44,18 @@ final class PasswordGenerator
         }
 
         return $result;
+    }
+
+    private static function shuffleString(string $value): string
+    {
+        $chars = str_split($value);
+        for ($i = count($chars) - 1; $i > 0; --$i) {
+            $j = random_int(0, $i);
+            if ($i !== $j) {
+                [$chars[$i], $chars[$j]] = [$chars[$j], $chars[$i]];
+            }
+        }
+
+        return implode('', $chars);
     }
 }
