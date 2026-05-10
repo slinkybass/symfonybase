@@ -28,6 +28,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     public string $transEntity;
 
     public function __construct(
+        public EntityManagerInterface $em,
         public TranslatorInterface $translator,
         public ConfigService $configService,
         public RolePermissions $rolePermissions,
@@ -72,11 +73,6 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $actions;
     }
 
-    public function em(): EntityManagerInterface
-    {
-        return $this->container->get('doctrine')->getManager();
-    }
-
     public function adminUrl(): AdminUrlGenerator
     {
         return $this->container->get(AdminUrlGenerator::class);
@@ -111,7 +107,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $entityId = $request->get(EA::ENTITY_ID);
         if ($entityId) {
-            return $this->em()->getRepository($this->getEntityFqcn())->find($entityId);
+            return $this->em->getRepository($this->getEntityFqcn())->find($entityId);
         }
 
         return null;

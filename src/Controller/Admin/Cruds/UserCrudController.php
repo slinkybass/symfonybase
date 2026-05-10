@@ -13,6 +13,7 @@ use App\Repository\RoleRepository;
 use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -38,12 +39,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(
+        public EntityManagerInterface $em,
         public TranslatorInterface $translator,
         public ConfigService $configService,
         public RolePermissions $rolePermissions,
         public readonly UserPasswordHasherInterface $passwordHasher,
     ) {
-        parent::__construct($translator, $configService, $rolePermissions);
+        parent::__construct($em, $translator, $configService, $rolePermissions);
     }
 
     public static function getEntityFqcn(): string
@@ -62,9 +64,9 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $filterHiddenRole = $this->filterHidden('role');
-        $roles = $this->em()->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter(false)]);
+        $roles = $this->em->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter(false)]);
         $roleDefaultValue = count($roles) == 1 ? $roles[0] : (
-            $filterHiddenRole ? $this->em()->getRepository(Role::class)->find($filterHiddenRole['value']) : null
+            $filterHiddenRole ? $this->em->getRepository(Role::class)->find($filterHiddenRole['value']) : null
         );
 
         /*** Data ***/
@@ -171,7 +173,7 @@ class UserCrudController extends AbstractCrudController
             ->setFormTypeOption('translation_domain', 'messages')
         );
 
-        $roles = $this->em()->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter(false)]);
+        $roles = $this->em->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter(false)]);
         if (count($roles) > 1) {
             $filters->add(EntityFilter::new('role', $this->transEntitySingular('role'))
                 ->setFormTypeOption('value_type_options.query_builder', static fn (RoleRepository $rep) => $rep->applyFilters([new RoleFilter\IsAdminFilter(false)])));

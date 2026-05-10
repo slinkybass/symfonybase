@@ -13,6 +13,7 @@ use App\Repository\RoleRepository;
 use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -39,12 +40,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AdminCrudController extends AbstractCrudController
 {
     public function __construct(
+        public EntityManagerInterface $em,
         public TranslatorInterface $translator,
         public ConfigService $configService,
         public RolePermissions $rolePermissions,
         public readonly UserPasswordHasherInterface $passwordHasher,
     ) {
-        parent::__construct($translator, $configService, $rolePermissions);
+        parent::__construct($em, $translator, $configService, $rolePermissions);
     }
 
     public static function getEntityFqcn(): string
@@ -71,11 +73,11 @@ class AdminCrudController extends AbstractCrudController
         $entity = $this->entity();
         $filterHiddenRole = $this->filterHidden('role');
         $roles = array_values(array_filter(
-            $this->em()->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter()]),
+            $this->em->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter()]),
             fn (Role $adminRole) => $this->rolePermissions->isUp($user->getRole(), $adminRole),
         ));
         $roleDefaultValue = count($roles) == 1 ? $roles[0] : (
-            $filterHiddenRole ? $this->em()->getRepository(Role::class)->find($filterHiddenRole['value']) : null
+            $filterHiddenRole ? $this->em->getRepository(Role::class)->find($filterHiddenRole['value']) : null
         );
 
         /*** Data ***/
@@ -188,7 +190,7 @@ class AdminCrudController extends AbstractCrudController
         );
 
         $roles = array_values(array_filter(
-            $this->em()->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter()]),
+            $this->em->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter()]),
             fn (Role $adminRole) => $this->rolePermissions->isUp($user->getRole(), $adminRole),
         ));
         if (count($roles) > 1) {
