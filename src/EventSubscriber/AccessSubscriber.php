@@ -16,9 +16,23 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class AccessSubscriber implements EventSubscriberInterface
 {
-    private const LOGIN_ROUTES = ['login'];
-    private const REGISTER_ROUTES = ['register', 'verify'];
-    private const RESET_ROUTES = ['reset', 'reset_sent', 'reset_token'];
+    private const PUBLIC_ROUTES = [
+        'home',
+    ];
+    private const LOGIN_ROUTES = [
+        'login',
+    ];
+    private const REGISTER_ROUTES = [
+        'register',
+        'verify',
+    ];
+    private const RESET_ROUTES = [
+        'reset_password_request',
+        'reset_password_request_sent',
+        'reset_password',
+    ];
+    private const PRIVACY_ROUTE = 'privacy';
+    private const COOKIES_ROUTE = 'cookies';
 
     public function __construct(
         private readonly RouterInterface $router,
@@ -28,7 +42,7 @@ class AccessSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Redirects the request based on controller, authentication status and config.
+     * Redirects the request based on route name, authentication status and config.
      */
     public function onKernelRequest(RequestEvent $event): void
     {
@@ -39,19 +53,7 @@ class AccessSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $routeName = $request->attributes->get('_route');
 
-        if (!$routeName) {
-            return;
-        }
-
-        $route = $this->router->getRouteCollection()->get($routeName);
-
-        if (!$route) {
-            return;
-        }
-
-        $controllerName = $this->resolveControllerName($route->getDefault('_controller'));
-
-        if (!$controllerName) {
+        if (!$routeName || !$this->router->getRouteCollection()->get($routeName)) {
             return;
         }
 
@@ -60,59 +62,41 @@ class AccessSubscriber implements EventSubscriberInterface
         $isAdmin = $this->authorizationChecker->isGranted('ROLE_ADMIN');
         $redirect = null;
 
-        switch ($controllerName) {
-            case 'PublicController':
-                if ($isAdmin) {
-                    $redirect = $this->router->generate('admin');
-                } elseif (!$isLogged && !$config->enablePublic) {
-                    $redirect = $this->router->generate('login');
-                }
-                break;
-            case 'AuthController':
-                if (in_array($routeName, self::LOGIN_ROUTES, true) && $isLogged) {
-                    $redirect = $this->router->generate('home');
-                } elseif (in_array($routeName, self::REGISTER_ROUTES, true)) {
-                    if ($isLogged) {
-                        $redirect = $this->router->generate('home');
-                    } elseif (!$config->enableRegister) {
-                        $redirect = $this->router->generate('login');
-                    }
-                } elseif (in_array($routeName, self::RESET_ROUTES, true)) {
-                    if ($isLogged) {
-                        $redirect = $this->router->generate('home');
-                    } elseif (!$config->enableResetPassword) {
-                        $redirect = $this->router->generate('login');
-                    }
-                }
-                break;
-            case 'PrivacyController':
-                if ($routeName === 'privacy' && empty($config->privacyText)) {
-                    $redirect = $this->router->generate('home');
-                } elseif ($routeName === 'cookies' && (!$config->enableCookies || empty($config->cookiesText))) {
-                    $redirect = $this->router->generate('home');
-                }
-                break;
+        if (in_array($routeName, self::PUBLIC_ROUTES, true)) {
+            if ($isAdmin) {
+                $redirect = $this->router->generate('admin');
+            } elseif (!$isLogged && !$config->enablePublic) {
+                $redirect = $this->router->generate('login');
+            }
+        } elseif (in_array($routeName, self::LOGIN_ROUTES, true)) {
+            if ($isLogged) {
+                $redirect = $this->router->generate('home');
+            }
+        } elseif (in_array($routeName, self::REGISTER_ROUTES, true)) {
+            if ($isLogged) {
+                $redirect = $this->router->generate('home');
+            } elseif (!$config->enableRegister) {
+                $redirect = $this->router->generate('login');
+            }
+        } elseif (in_array($routeName, self::RESET_ROUTES, true)) {
+            if ($isLogged) {
+                $redirect = $this->router->generate('home');
+            } elseif (!$config->enableResetPassword) {
+                $redirect = $this->router->generate('login');
+            }
+        } elseif ($routeName === self::PRIVACY_ROUTE) {
+            if ($config->privacyText === null || $config->privacyText === '') {
+                $redirect = $this->router->generate('home');
+            }
+        } elseif ($routeName === self::COOKIES_ROUTE) {
+            if (!$config->enableCookies || $config->cookiesText === null || $config->cookiesText === '') {
+                $redirect = $this->router->generate('home');
+            }
         }
 
-        if ($redirect) {
+        if ($redirect !== null) {
             $event->setResponse(new RedirectResponse($redirect));
         }
-    }
-
-    /**
-     * Resolves the short controller class name from a fully qualified controller string.
-     *
-     * @param string|null $controller the fully qualified controller string (e.g. 'App\Controller\PublicController::index')
-     */
-    private function resolveControllerName(?string $controller): ?string
-    {
-        if (!$controller) {
-            return null;
-        }
-
-        $class = strstr($controller, '::', true) ?: $controller;
-
-        return substr(strrchr($class, '\\'), 1) ?: null;
     }
 
     public static function getSubscribedEvents(): array
