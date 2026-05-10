@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * Controls access to public, auth and privacy routes based on authentication status,
  * user role and application configuration.
  */
-class AccessSubscriber implements EventSubscriberInterface
+final class AccessSubscriber implements EventSubscriberInterface
 {
     private const PUBLIC_ROUTES = [
         'home',
@@ -85,11 +85,11 @@ class AccessSubscriber implements EventSubscriberInterface
                 $redirect = $this->router->generate('login');
             }
         } elseif ($routeName === self::PRIVACY_ROUTE) {
-            if ($config->privacyText === null || $config->privacyText === '') {
+            if (($config->privacyText ?? '') === '') {
                 $redirect = $this->router->generate('home');
             }
         } elseif ($routeName === self::COOKIES_ROUTE) {
-            if (!$config->enableCookies || $config->cookiesText === null || $config->cookiesText === '') {
+            if (!$config->enableCookies || ($config->cookiesText ?? '') === '') {
                 $redirect = $this->router->generate('home');
             }
         }

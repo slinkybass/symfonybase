@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * Ensures the media directories required by the file manager exist before handling requests.
  */
-class MediaSubscriber implements EventSubscriberInterface
+final class MediaSubscriber implements EventSubscriberInterface
 {
     private readonly array $conf;
 

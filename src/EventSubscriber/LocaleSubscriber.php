@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * Sets the application locale on each request based on session or request parameters.
  */
-class LocaleSubscriber implements EventSubscriberInterface
+final class LocaleSubscriber implements EventSubscriberInterface
 {
     /** @var string[] */
     private readonly array $locales;

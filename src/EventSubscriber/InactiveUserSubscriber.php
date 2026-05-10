@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * Automatically logs out users that have been marked as inactive.
  */
-class InactiveUserSubscriber implements EventSubscriberInterface
+final class InactiveUserSubscriber implements EventSubscriberInterface
 {
     private const LOGOUT_ROUTE = 'logout';
 
