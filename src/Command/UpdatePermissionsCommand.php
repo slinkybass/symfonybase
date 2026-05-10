@@ -15,14 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:update-permissions')]
 class UpdatePermissionsCommand extends Command
 {
-    private EntityManagerInterface $em;
-    private RolePermissions $rolePermissions;
-
-    public function __construct(EntityManagerInterface $em, RolePermissions $rolePermissions)
-    {
-        $this->em = $em;
-        $this->rolePermissions = $rolePermissions;
-
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly RolePermissions $rolePermissions,
+    ) {
         parent::__construct();
     }
 

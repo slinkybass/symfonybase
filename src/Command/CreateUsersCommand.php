@@ -24,14 +24,10 @@ class CreateUsersCommand extends Command
     public const ROLE_USER = 'ROLE_USER';
 
     public function __construct(
-        private EntityManagerInterface $em,
-        private UserPasswordHasherInterface $passwordHasher,
-        private RolePermissions $rolePermissions)
-    {
-        $this->em = $em;
-        $this->passwordHasher = $passwordHasher;
-        $this->rolePermissions = $rolePermissions;
-
+        private readonly EntityManagerInterface $em,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly RolePermissions $rolePermissions,
+    ) {
         parent::__construct();
     }
 
