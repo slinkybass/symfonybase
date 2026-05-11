@@ -21,7 +21,7 @@ class MaskField implements FieldInterface
     public const OPTION_MASK_OVERWRITE = 'data-mask-overwrite';
     public const OPTION_MASK_PLACEHOLDER = 'data-mask-placeholder';
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

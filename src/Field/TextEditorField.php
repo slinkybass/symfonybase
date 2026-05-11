@@ -20,7 +20,7 @@ class TextEditorField implements FieldInterface
     public const OPTION_TEXTEDITOR_SPELLCHECK = 'data-texteditor-spellcheck';
     public const OPTION_TEXTEDITOR_TOOLBAR = 'data-texteditor-toolbar';
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

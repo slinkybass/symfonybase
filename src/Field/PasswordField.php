@@ -18,7 +18,7 @@ class PasswordField implements FieldInterface
     public const OPTION_RENDER_SWITCH = 'renderSwitch';
     public const OPTION_RENDER_GENERATOR = 'renderGenerator';
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

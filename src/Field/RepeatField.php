@@ -16,7 +16,7 @@ class RepeatField implements FieldInterface
     public const OPTION_FIRST_OPTIONS = 'first_options';
     public const OPTION_SECOND_OPTIONS = 'second_options';
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

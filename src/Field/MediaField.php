@@ -38,7 +38,7 @@ class MediaField implements FieldInterface
     public const DEFAULT_SIZE_INDEX = 'md';
     public const DEFAULT_SIZE_DETAIL = 'xl';
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

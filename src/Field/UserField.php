@@ -28,7 +28,7 @@ class UserField implements FieldInterface
     public const DEFAULT_ONLY_VERIFIED = true;
     public const DEFAULT_ONLY_ACTIVE = true;
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = AssociationField::new($propertyName, $label);

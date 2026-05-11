@@ -12,7 +12,7 @@ class Field implements FieldInterface
     }
     private EasyField $innerField;
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

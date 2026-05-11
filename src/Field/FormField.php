@@ -13,7 +13,7 @@ class FormField implements FieldInterface
     }
     private EasyField $innerField;
 
-    public static function new(string $propertyName, $label = null): never
+    public static function new(string $propertyName, ?string $label = null): never
     {
         EasyField::new($propertyName, $label);
     }

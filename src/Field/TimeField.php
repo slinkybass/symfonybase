@@ -19,7 +19,7 @@ class TimeField implements FieldInterface
     public const OPTION_DATE_ENABLE_SECONDS = 'data-date-enable-seconds';
     public const OPTION_DATE_MINUTE_INCREMENT = 'data-date-minute-increment';
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

@@ -13,7 +13,7 @@ class PercentField implements FieldInterface
     private EasyField $innerField;
     public const DEFAULT_STORED_AS_FRACTIONAL = false;
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);
