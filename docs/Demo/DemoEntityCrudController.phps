@@ -52,7 +52,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Default')
             ->setColumns(3);
         $textCustom = FieldGenerator::text('text2')
-            ->setLabel('Required, min and max lenght, placeholder...')
+            ->setLabel('Required, min and max length, placeholder...')
             ->setMinLength(3)
             ->setMaxLength(10)
             ->setPlaceholder('This is a placeholder')
@@ -263,12 +263,12 @@ class DemoEntityCrudController extends AbstractCrudController
         $choiceRow = FieldGenerator::row();
         $choice4 = FieldGenerator::choice('choice4')
             ->setLabel('Multiple choice')
-			->setChoices(UserGender::choices())
+            ->setChoices(UserGender::choices())
             ->isMultiple()
             ->setColumns(4);
         $choice5 = FieldGenerator::choice('choice5')
             ->setLabel('Multiple choice expanded')
-			->setChoices(UserGender::choices())
+            ->setChoices(UserGender::choices())
             ->isExpanded()
             ->isMultiple()
             ->setColumns(4);
@@ -333,7 +333,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setDisabledDates([new \DateTime('tomorrow'), new \DateTime('yesterday')])
             ->setColumns(4);
 
-        // Multiple dates should be setted in a FormBuilder EventListener (preferably into another entity or an array property)
+        // Multiple dates should be set in a FormBuilder EventListener (preferably into another entity or an array property)
         $dateMultiplePanel = FieldGenerator::panel('MULTIPLE')->setIcon('input-search');
         $dateMultiple = FieldGenerator::dateMultiple('dateMultiple')
             ->setLabel('Multiple dates')
@@ -352,7 +352,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setMax('1992-03-15 10:00')
             ->setColumns(4);
 
-        // Range dates should be setted in a FormBuilder EventListener (preferably into dateStart and dateEnd properties)
+        // Range dates should be set in a FormBuilder EventListener (preferably into dateStart and dateEnd properties)
         $dateRangePanel = FieldGenerator::panel('RANGE')->setIcon('input-search');
         $dateRange = FieldGenerator::dateMultiple('dateRange')
             ->setLabel('Range dates')
@@ -380,7 +380,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->isInline()
             ->setColumns(4);
         $timeInline = FieldGenerator::time('timeInline')
-            ->setLabel('Inline datetime')
+            ->setLabel('Inline time')
             ->isInline()
             ->setColumns(4);
 

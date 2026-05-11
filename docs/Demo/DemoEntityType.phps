@@ -3,31 +3,31 @@
 namespace App\Form\Type;
 
 use App\Field\FieldGenerator;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DemoEntityType extends AbstractType
 {
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
-		$fields = array();
-		$fields[] = FieldGenerator::text('text1')->setLabel('text1')->isRequired()->setColumns(3);
-		$fields[] = FieldGenerator::text('text2')->setLabel('text2')->isRequired()->setColumns(3);
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $fields = [
+            FieldGenerator::text('text1')->setLabel('text1')->isRequired()->setColumns(3),
+            FieldGenerator::text('text2')->setLabel('text2')->isRequired()->setColumns(3),
+        ];
 
-		foreach ($fields as $field) {
-			$field = $field->getAsDto();
+        foreach ($fields as $field) {
+            $field = $field->getAsDto();
 
-			$options = $field->getFormTypeOptions();
-			$options['label'] = $field->getLabel();
+            $formOptions = $field->getFormTypeOptions();
+            $formOptions['label'] = $field->getLabel();
 
-			$builder->add($field->getProperty(), $field->getFormType(), $options);
-		}
-	}
+            $builder->add($field->getProperty(), $field->getFormType(), $formOptions);
+        }
+    }
 
-	public function configureOptions(OptionsResolver $resolver): void
-	{
-		$resolver->setDefaults([]);
-	}
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([]);
+    }
 }
