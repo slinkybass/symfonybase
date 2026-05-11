@@ -12,8 +12,8 @@ use Doctrine\ORM\QueryBuilder;
  */
 class RoleFilter extends AbstractFilter
 {
-    /** @var string[] */
-    private array $roleNames;
+    /** @var list<string> */
+    private readonly array $roleNames;
 
     /**
      * @param string|Role|array<string|Role> $roles
@@ -28,10 +28,10 @@ class RoleFilter extends AbstractFilter
             ComparisonOperator::NEQ,
         ]);
 
-        $this->roleNames = $this->resolveArray($roles,
+        $this->roleNames = $this->resolveArray(
+            $roles,
             static function (string|Role $role): string {
-                $name = $role instanceof Role ? $role->getName() : $role;
-                $name = strtoupper($name);
+                $name = strtoupper($role instanceof Role ? $role->getName() : $role);
 
                 return str_starts_with($name, 'ROLE_') ? $name : 'ROLE_'.$name;
             },

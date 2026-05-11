@@ -82,7 +82,7 @@ abstract class AbstractFilter implements FilterInterface
         array $values,
         ComparisonOperator $operator = ComparisonOperator::EQ,
     ): void {
-        if (in_array($operator, $this->allowedNullOperators(), true)) {
+        if (\in_array($operator, $this->allowedNullOperators(), true)) {
             $this->applyComparison($qb, $field, $paramName, null, $operator);
 
             return;
@@ -109,8 +109,10 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function assertOperator(ComparisonOperator $operator, array $allowed): void
     {
-        if (!in_array($operator, $allowed, true)) {
-            throw new \InvalidArgumentException(sprintf('%s does not support the "%s" operator. Allowed: %s.', static::class, $operator->name, implode(', ', array_map(fn (ComparisonOperator $o) => $o->name, $allowed))));
+        if (!\in_array($operator, $allowed, true)) {
+            $allowedNames = implode(', ', array_map(static fn (ComparisonOperator $o) => $o->name, $allowed));
+
+            throw new \InvalidArgumentException(sprintf('%s does not support the "%s" operator. Allowed: %s.', static::class, $operator->name, $allowedNames));
         }
     }
 

@@ -12,8 +12,8 @@ use Doctrine\ORM\QueryBuilder;
  */
 class GenderFilter extends AbstractFilter
 {
-    /** @var int[] */
-    private array $values;
+    /** @var list<int> */
+    private readonly array $values;
 
     /**
      * @param UserGender|int|array<UserGender|int>|null $gender

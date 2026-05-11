@@ -11,7 +11,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 class BirthdateFilter extends AbstractFilter
 {
-    private \DateTimeImmutable|array|null $resolved;
+    private readonly \DateTimeImmutable|array|null $resolved;
 
     /**
      * @param \DateTimeInterface|string|array<\DateTimeInterface|string>|null $value a single date or string, a [from, to] array for BETWEEN, or null for IS_NULL/IS_NOT_NULL
