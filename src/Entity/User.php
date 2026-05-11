@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enum\UserGender;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,8 +43,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $birthdate = null;
 
-    #[ORM\Column(enumType: Enum\UserGender::class, nullable: true)]
-    private ?Enum\UserGender $gender = null;
+    #[ORM\Column(enumType: UserGender::class, nullable: true)]
+    private ?UserGender $gender = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
@@ -189,7 +190,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->name.($this->lastname ? ' '.$this->lastname : '');
     }
@@ -206,12 +207,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGender(): ?Enum\UserGender
+    public function getGender(): ?UserGender
     {
         return $this->gender;
     }
 
-    public function setGender(?Enum\UserGender $gender): static
+    public function setGender(?UserGender $gender): static
     {
         $this->gender = $gender;
 

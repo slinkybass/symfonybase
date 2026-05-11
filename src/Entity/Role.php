@@ -68,7 +68,7 @@ class Role
     public function setDisplayName(string $displayName): static
     {
         $this->displayName = $displayName;
-        if (!$this->id) {
+        if (null === $this->id) {
             $roleName = $displayName;
             $roleName = preg_replace('~[^\pL\d]+~u', '', $roleName);
             $roleName = iconv('utf-8', 'us-ascii//TRANSLIT', $roleName);
