@@ -6,17 +6,18 @@
 
 {% block page_class %}page-center{% endblock %}
 
-{% block header %}{% endblock %}
+{% block header %}
+{% endblock %}
 
 {% block page_body %}
     <main class="container container-narrow py-4">
         {% block main %}
-            {{ form_start(form, { 'attr': { 'class': 'card card-md' } }) }}
+            {{ form_start(form, { attr: { class: 'card card-md' } }) }}
                 <div class="card-status-top bg-primary"></div>
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">
                         <a href="{{ path('home') }}" class="navbar-brand navbar-brand-autodark">
-                            <img src="{{ appConfig.appLogo }}" alt="{{ appConfig.appName }}" style="max-height: 30px;">
+                            <img src="{{ appConfig.appLogo }}" alt="{{ appConfig.appName }}" style="max-height: 30px">
                         </a>
                     </h2>
                     <div class="row">
@@ -63,7 +64,8 @@
     </main>
 {% endblock %}
 
-{% block footer %}{% endblock %}
+{% block footer %}
+{% endblock %}
 
 {% block js %}
     {{ parent() }}
