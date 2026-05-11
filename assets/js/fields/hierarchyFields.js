@@ -52,11 +52,18 @@
 	function initHierarchyFields() {
 		document.querySelectorAll("[data-hf-parent]").forEach((parent) => {
 			const groupName = parent.dataset.hfParent;
-			const childs = document.querySelectorAll(`[data-hf-child="${groupName}"]`);
-			if (!childs.length) return;
+			const getChildren = () => document.querySelectorAll(`[data-hf-child="${groupName}"]`);
+			const handleHierarchyFields = () => {
+				const children = getChildren();
+				if (children.length) {
+					handleHierarchy(parent, children);
+				}
+			};
 
-			const handleHierarchyFields = () => handleHierarchy(parent, childs);
-			parent.addEventListener("input", handleHierarchyFields);
+			if (parent.dataset.hfInitialized === undefined) {
+				parent.dataset.hfInitialized = "";
+				parent.addEventListener("input", handleHierarchyFields);
+			}
 			handleHierarchyFields();
 		});
 	}
@@ -100,7 +107,9 @@
 	 */
 	function processChild(parentValue, parentIsCheckboxOrRadio, child) {
 		const container = child.dataset.hfContainer ? child.closest(child.dataset.hfContainer) : child.closest(".form-group")?.parentElement;
-		if (!container) return;
+		if (!container) {
+			return;
+		}
 
 		const childType = child.type;
 		const isCheckboxOrRadio = childType === "checkbox" || childType === "radio";
@@ -110,14 +119,14 @@
 		const defaultValue = parseFieldValue(child.dataset.hfDefaultValue);
 		const hfParentValue = parseFieldValue(child.dataset.hfParentValue);
 		const hfParentValues = hfParentValue !== null ? hfParentValue.toString().split("|").map((v) => parseFieldValue(v)) : [];
-		const valuesToShow = hfParentValues.length ? hfParentValues : parentIsCheckboxOrRadio ? [ true ] : [];
+		const valuesToShow = hfParentValues.length ? hfParentValues : parentIsCheckboxOrRadio ? [true] : [];
 		const keepValue = parseFieldValue(child.dataset.hfKeepValue);
 		const saveValue = parseFieldValue(child.dataset.hfSaveValue);
 		const savedValue = parseFieldValue(child.dataset.hfSavedValue);
 		const forceShow = parseFieldValue(child.dataset.hfShow);
 
 		const shouldShow = (
-			valuesToShow.length && (Array.isArray(parentValue) ? valuesToShow.every(v => parentValue.some(p => p == v)) : valuesToShow.some(v => v == parentValue))
+			valuesToShow.length && (Array.isArray(parentValue) ? valuesToShow.every((v) => parentValue.some((p) => p == v)) : valuesToShow.some((v) => v == parentValue))
 		) || (!valuesToShow.length && parentValue !== null);
 
 		if (shouldShow) {
@@ -178,7 +187,9 @@
 	 * @param {boolean} save - Whether to restore a saved value.
 	 */
 	function restoreValue(child, saved, defVal, isCheckbox, isTomSelect, isFlatpickr, keep, save) {
-		if (child.disabled || keep) return;
+		if (child.disabled || keep) {
+			return;
+		}
 
 		if (isCheckbox) {
 			if (save && saved !== null) {
@@ -220,7 +231,9 @@
 	 * @param {boolean} save - Whether to store the current value before clearing.
 	 */
 	function saveAndClearValue(child, isCheckbox, isTomSelect, isFlatpickr, keep, save) {
-		if (child.disabled || keep) return;
+		if (child.disabled || keep) {
+			return;
+		}
 
 		if (isCheckbox) {
 			if (save && child.checked) {
@@ -255,7 +268,9 @@
 	 * @param {boolean} isFlatpickr - Whether the field is a Flatpickr instance.
 	 */
 	function restoreRequired(child, container, isFlatpickr) {
-		if (!child.hasAttribute("data-hf-required")) return;
+		if (!child.hasAttribute("data-hf-required")) {
+			return;
+		}
 		container.querySelectorAll("label.hf-required").forEach((label) => {
 			label.classList.remove("hf-required");
 			label.classList.add("required");
@@ -278,7 +293,9 @@
 	 * @param {boolean} isFlatpickr - Whether the field is a Flatpickr instance.
 	 */
 	function storeRequired(child, container, isFlatpickr) {
-		if (!child.hasAttribute("required")) return;
+		if (!child.hasAttribute("required")) {
+			return;
+		}
 		container.querySelectorAll("label.required").forEach((label) => {
 			label.classList.remove("required");
 			label.classList.add("hf-required");
@@ -300,14 +317,16 @@
 	 */
 	function updateCardVisibility(child) {
 		const card = child.closest(".card");
-		if (!card) return;
+		if (!card) {
+			return;
+		}
 		const childs = card.querySelectorAll("[data-hf-child]");
 		const visible = Array.from(childs).some(function (ch) {
 			const container = ch.dataset.hfContainer ? ch.closest(ch.dataset.hfContainer) : ch.closest(".form-group")?.parentElement;
 			return !container?.classList.contains("d-none");
 		});
 		const otherFields = Array.from(card.querySelectorAll("input, select, textarea")).filter(
-			el => el.type !== 'hidden' && !el.dataset.hfChild
+			(el) => el.type !== "hidden" && !el.dataset.hfChild,
 		);
 		card.classList.toggle("d-none", !visible && otherFields.length === 0);
 	}
@@ -319,7 +338,9 @@
 	 * @returns {*} - Parsed value (string, boolean, array, object, etc.).
 	 */
 	function parseFieldValue(val) {
-		if (val === undefined || val === "") return null;
+		if (val === undefined || val === "") {
+			return null;
+		}
 		try {
 			return JSON.parse(val);
 		} catch {

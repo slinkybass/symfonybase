@@ -11,6 +11,11 @@ import slugify from "slugify";
 
 	window.formTypeSlug = function formTypeSlug(selector = '[data-slug-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.slugInitialized !== undefined) {
+				return;
+			}
+
+			e.dataset.slugInitialized = "";
 			new Slugger(e);
 		});
 	};
@@ -87,7 +92,7 @@ import slugify from "slugify";
 				const target = document.getElementById(name);
 
 				if (null === target) {
-					throw `Wrong target specified for slug widget ("${name}").`;
+					throw new Error(`Wrong target specified for slug widget ("${name}").`);
 				}
 
 				this.targets.push(target);
@@ -101,7 +106,7 @@ import slugify from "slugify";
 			this.lockButton = this.field.parentNode.querySelector("button");
 			this.lockButton.addEventListener("click", () => {
 				if (this.locked) {
-					let confirmMessage = this.field.dataset.confirmText || null;
+					const confirmMessage = this.field.dataset.confirmText || null;
 					if (null === confirmMessage) {
 						this.unlock();
 					} else {

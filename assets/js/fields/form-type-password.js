@@ -53,29 +53,45 @@
 	 */
 	function formTypePassword() {
 		document.querySelectorAll(".btn-pass").forEach((btn) => {
+			if (btn.dataset.passwordToggleInitialized !== undefined) {
+				return;
+			}
+
+			btn.dataset.passwordToggleInitialized = "";
 			btn.addEventListener("click", () => {
 				const inputSelector = btn.dataset.input;
 				const inputSelector2 = btn.dataset.input2;
 				const input = inputSelector ? document.getElementById(inputSelector) : null;
 				const input2 = inputSelector2 ? document.getElementById(inputSelector2) : null;
 
-				if (!input) return;
+				if (!input) {
+					return;
+				}
 
 				const isPassword = input.type === "password";
 
 				switchVisibility(input, isPassword);
-				if (input2) switchVisibility(input2, isPassword);
+				if (input2) {
+					switchVisibility(input2, isPassword);
+				}
 			});
 		});
 
 		document.querySelectorAll(".btn-pass-generator").forEach((btn) => {
+			if (btn.dataset.passwordGeneratorInitialized !== undefined) {
+				return;
+			}
+
+			btn.dataset.passwordGeneratorInitialized = "";
 			btn.addEventListener("click", () => {
 				const inputSelector = btn.dataset.input;
 				const inputSelector2 = btn.dataset.input2;
 				const input = inputSelector ? document.getElementById(inputSelector) : null;
 				const input2 = inputSelector2 ? document.getElementById(inputSelector2) : null;
 
-				if (!input) return;
+				if (!input) {
+					return;
+				}
 
 				const minLength1 = input.getAttribute("minlength");
 				const minLength2 = input2?.getAttribute("minlength");
@@ -108,7 +124,9 @@
 		input.type = show ? "text" : "password";
 
 		const toggleButton = document.querySelector(`[data-input='${input.id}'], [data-input2='${input.id}']`);
-		if (!toggleButton) return;
+		if (!toggleButton) {
+			return;
+		}
 
 		const btnShow = toggleButton.querySelector(".btn-pass-show");
 		const btnHide = toggleButton.querySelector(".btn-pass-hide");

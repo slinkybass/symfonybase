@@ -24,6 +24,12 @@ import "flatpickr/dist/flatpickr.min.css";
 
 	window.formTypeDate = function formTypeDate(selector = '[data-date-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.dateInitialized !== undefined) {
+				return;
+			}
+
+			e.dataset.dateInitialized = "";
+
 			const max = e.hasAttribute("max") ? e.getAttribute("max") : null;
 			const min = e.hasAttribute("min") ? e.getAttribute("min") : null;
 			const inline = e.hasAttribute("data-date-inline") ? e.getAttribute("data-date-inline") !== "false" : false;
@@ -32,19 +38,19 @@ import "flatpickr/dist/flatpickr.min.css";
 			const altFormat = e.hasAttribute("data-date-alt-format") ? e.getAttribute("data-date-alt-format") : moment.localeData().longDateFormat("L");
 			const enabledDates = e.hasAttribute("data-date-enabled") ? e.getAttribute("data-date-enabled") : null;
 			const disabledDates = e.hasAttribute("data-date-disabled") ? e.getAttribute("data-date-disabled") : null;
-			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") == "false" : true;
+			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") === "false" : true;
 
 			const flatPickrOtps = {
-				inline: inline,
-				mode: mode,
-				dateFormat: dateFormat,
+				inline,
+				mode,
+				dateFormat,
 				altInput: true,
 				altInputClass: inline ? "d-none" : "",
-				altFormat: altFormat,
-				allowInput: allowInput,
+				altFormat,
+				allowInput,
 				disableMobile: true,
 				locale: {
-					rangeSeparator: ', '
+					rangeSeparator: ", ",
 				},
 				parseDate: (datestr, format) => {
 					return moment(datestr, format, true).toDate();

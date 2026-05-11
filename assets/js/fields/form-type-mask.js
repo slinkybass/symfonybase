@@ -18,6 +18,10 @@ import IMask from "imask";
 
 	window.formTypeMask = function formTypeMask(selector = '[data-mask-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.maskInitialized !== undefined) {
+				return;
+			}
+
 			const isRegex = e.hasAttribute("data-mask-regex") ? e.getAttribute("data-mask-regex") !== "false" : false;
 			const maskPattern = e.hasAttribute("data-mask-pattern") ? e.getAttribute("data-mask-pattern") : null;
 			const mask = isRegex && maskPattern ? new RegExp(maskPattern) : maskPattern;
@@ -25,11 +29,12 @@ import IMask from "imask";
 			const placeholderChar = e.hasAttribute("data-mask-placeholder") ? e.getAttribute("data-mask-placeholder") : null;
 
 			if (mask) {
+				e.dataset.maskInitialized = "";
 				IMask(e, {
-					mask: mask,
-					overwrite: overwrite,
-					lazy: placeholderChar ? false : true,
-					placeholderChar: placeholderChar,
+					mask,
+					overwrite,
+					lazy: !placeholderChar,
+					placeholderChar,
 				});
 			}
 		});

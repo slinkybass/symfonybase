@@ -24,25 +24,31 @@ import "flatpickr/dist/flatpickr.min.css";
 
 	window.formTypeTime = function formTypeTime(selector = '[data-time-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.timeInitialized !== undefined) {
+				return;
+			}
+
+			e.dataset.timeInitialized = "";
+
 			const max = e.hasAttribute("max") ? e.getAttribute("max") : null;
 			const min = e.hasAttribute("min") ? e.getAttribute("min") : null;
 			const inline = e.hasAttribute("data-date-inline") ? e.getAttribute("data-date-inline") !== "false" : false;
 			const enableSeconds = e.hasAttribute("data-enable-seconds") ? e.getAttribute("data-enable-seconds") !== "false" : false;
 			const minuteIncrement = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : 1;
-			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") == "false" : true;
+			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") === "false" : true;
 
 			const flatPickrOtps = {
-				inline: inline,
+				inline,
 				altInputClass: inline ? "d-none" : "",
 				altInput: inline,
-				allowInput: allowInput,
+				allowInput,
 				disableMobile: true,
 				enableTime: true,
 				time_24hr: true,
-				enableSeconds: enableSeconds,
-				minuteIncrement: minuteIncrement,
+				enableSeconds,
+				minuteIncrement,
 				noCalendar: true,
-				onOpen: function (selectedDates, dateStr, instance) {
+				onOpen: (selectedDates, dateStr, instance) => {
 					if (!instance.element.value) {
 						const h = instance.config.defaultHour;
 						const m = instance.config.defaultMinute;

@@ -24,6 +24,12 @@ import "flatpickr/dist/flatpickr.min.css";
 
 	window.formTypeDatetime = function formTypeDatetime(selector = '[data-datetime-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.datetimeInitialized !== undefined) {
+				return;
+			}
+
+			e.dataset.datetimeInitialized = "";
+
 			const max = e.hasAttribute("max") ? e.getAttribute("max") : null;
 			const min = e.hasAttribute("min") ? e.getAttribute("min") : null;
 			const inline = e.hasAttribute("data-date-inline") ? e.getAttribute("data-date-inline") !== "false" : false;
@@ -34,23 +40,23 @@ import "flatpickr/dist/flatpickr.min.css";
 			const minuteIncrement = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : 1;
 			const enabledDates = e.hasAttribute("data-date-enabled") ? e.getAttribute("data-date-enabled") : null;
 			const disabledDates = e.hasAttribute("data-date-disabled") ? e.getAttribute("data-date-disabled") : null;
-			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") == "false" : true;
+			const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") === "false" : true;
 
 			const flatPickrOtps = {
-				inline: inline,
-				mode: mode,
-				dateFormat: dateFormat,
+				inline,
+				mode,
+				dateFormat,
 				altInput: true,
 				altInputClass: inline ? "d-none" : "",
-				altFormat: altFormat,
-				allowInput: allowInput,
+				altFormat,
+				allowInput,
 				disableMobile: true,
 				enableTime: true,
 				time_24hr: true,
-				enableSeconds: enableSeconds,
-				minuteIncrement: minuteIncrement,
+				enableSeconds,
+				minuteIncrement,
 				locale: {
-					rangeSeparator: ', '
+					rangeSeparator: ", ",
 				},
 				parseDate: (datestr, format) => {
 					return moment(datestr, format, true).toDate();
@@ -79,7 +85,7 @@ import "flatpickr/dist/flatpickr.min.css";
 					},
 				];
 				flatPickrOtps.onOpen = function (selectedDates, dateStr, instance) {
-					const enabledDates = enabledDates
+					const dates = enabledDates
 						.split(",")
 						.map(function (dt) {
 							const dateDt = new Date(dt);

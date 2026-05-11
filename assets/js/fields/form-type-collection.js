@@ -1,4 +1,4 @@
-const eaCollectionHandler = function (event) {
+const eaCollectionHandler = () => {
 	document.querySelectorAll("button.field-collection-add-button").forEach((addButton) => {
 		const collection = addButton.closest("[data-ea-collection-field]");
 
@@ -11,9 +11,18 @@ const eaCollectionHandler = function (event) {
 	});
 
 	document.querySelectorAll("button.field-collection-delete-button").forEach((deleteButton) => {
+		if (deleteButton.dataset.collectionDeleteInitialized !== undefined) {
+			return;
+		}
+
+		deleteButton.dataset.collectionDeleteInitialized = "";
 		deleteButton.addEventListener("click", () => {
 			const collection = deleteButton.closest("[data-ea-collection-field]");
 			const item = deleteButton.closest(".field-collection-item");
+
+			if (!item) {
+				return;
+			}
 
 			item.remove();
 			document.dispatchEvent(new Event("ea.collection.item-removed"));
@@ -45,7 +54,7 @@ const EaCollectionProperty = {
 			const hfParentRegexp = new RegExp('data-hf-parent="([^"]*)"', "g");
 			const hfChildRegexp = new RegExp('data-hf-child="([^"]*)"', "g");
 
-			let newItemHtml = collection.dataset.prototype
+			const newItemHtml = collection.dataset.prototype
 				.replace(labelRegexp, numItems)
 				.replace(nameRegexp, numItems)
 				.replace(hfParentRegexp, (match, p1) => `data-hf-parent="${p1}_${numItems}"`)

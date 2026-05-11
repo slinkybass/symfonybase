@@ -53,6 +53,12 @@ import "tinymce/plugins/wordcount";
 
 	window.formTypeTextEditor = function formTypeTextEditor(selector = '[data-texteditor-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.texteditorInitialized !== undefined) {
+				return;
+			}
+
+			e.dataset.texteditorInitialized = "";
+
 			const resize = e.hasAttribute("data-texteditor-resize") ? e.getAttribute("data-texteditor-resize") !== "false" : false;
 			const spellcheck = e.hasAttribute("data-texteditor-spellcheck") ? e.getAttribute("data-texteditor-spellcheck") !== "false" : true;
 			const defaultToolbar =
@@ -92,9 +98,9 @@ import "tinymce/plugins/wordcount";
 				],
 				target: e,
 				language: moment.locale(),
-				resize: resize,
+				resize,
 				browser_spellcheck: spellcheck,
-				toolbar: toolbar,
+				toolbar,
 				menubar: false,
 				contextmenu: false,
 				quickbars_selection_toolbar: false,
@@ -104,7 +110,7 @@ import "tinymce/plugins/wordcount";
 				content_css: false,
 				branding: false,
 				convert_urls: false,
-				license_key: 'gpl',
+				license_key: "gpl",
 			});
 		});
 	};

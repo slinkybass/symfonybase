@@ -23,6 +23,12 @@ ace.config.set("workerPath", CDN);
 
 	window.formTypeCodeEditor = function formTypeCodeEditor(selector = '[data-codeeditor-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.codeeditorInitialized !== undefined) {
+				return;
+			}
+
+			e.dataset.codeeditorInitialized = "";
+
 			const theme = e.hasAttribute("data-codeeditor-theme") ? e.getAttribute("data-codeeditor-theme") : "chrome";
 			const language = e.hasAttribute("data-codeeditor-language") ? e.getAttribute("data-codeeditor-language") : "javascript";
 			const tabSize = e.hasAttribute("data-codeeditor-tab-size") ? e.getAttribute("data-codeeditor-tab-size") : 4;
@@ -37,35 +43,34 @@ ace.config.set("workerPath", CDN);
 			e.parentNode.insertBefore(clonedE, e);
 
 			const editor = ace.edit(e, {
-				theme: "ace/theme/" + theme,
-				mode: "ace/mode/" + language,
-				tabSize: tabSize,
+				theme: `ace/theme/${theme}`,
+				mode: `ace/mode/${language}`,
+				tabSize,
 				useSoftTabs: !indentWithTabs,
-				showLineNumbers: showLineNumbers,
+				showLineNumbers,
 				showGutter: showLineNumbers,
-				minLines: minLines,
-				maxLines: maxLines,
+				minLines,
+				maxLines,
 				autoScrollEditorIntoView: true,
 				showPrintMargin: false,
 			});
 
 			// Set value in and from the cloned field
 			editor.getSession().setValue(clonedE.value);
-			editor.getSession().on("change", function () {
+			editor.getSession().on("change", () => {
 				clonedE.value = editor.getSession().getValue();
 			});
 
 			// Set autosize
-			let h = editor.getSession().getScreenLength() * (editor.renderer.lineHeight + editor.renderer.scrollBar.getWidth());
-			h = Math.min(Math.max(h, 120), 200);
-			editor.container.style.height = `${h}px`;
-			editor.resize();
-			editor.on("change", (arg, editor) => {
+			const resizeEditor = (editor) => {
 				let h = editor.getSession().getScreenLength() * (editor.renderer.lineHeight + editor.renderer.scrollBar.getWidth());
 				h = Math.min(Math.max(h, 120), 200);
 				editor.container.style.height = `${h}px`;
 				editor.resize();
-			});
+			};
+
+			resizeEditor(editor);
+			editor.on("change", (arg, editor) => resizeEditor(editor));
 		});
 	};
 })();

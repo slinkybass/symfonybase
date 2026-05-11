@@ -16,15 +16,25 @@
 
 	window.formTypeFile = function formTypeFile(selector = '[data-file-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.fileInitialized !== undefined) {
+				return;
+			}
+
+			e.dataset.fileInitialized = "";
+
 			const input = e.querySelector('input[type="file"]');
 			const deleteCheckbox = e.querySelector('input[type="checkbox"][id$="_delete"]');
-			const deleteBtn = e.querySelector('.file-delete-btn');
-			const previewFiles = e.querySelector('.img-preview');
+			const deleteBtn = e.querySelector(".file-delete-btn");
+			const previewFiles = e.querySelector(".img-preview");
 
-			deleteBtn?.addEventListener('click', () => {
+			deleteBtn?.addEventListener("click", () => {
+				if (!deleteCheckbox || !input) {
+					return;
+				}
+
 				deleteCheckbox.checked = true;
-				input.title = '';
-				previewFiles.remove();
+				input.title = "";
+				previewFiles?.remove();
 				deleteBtn.remove();
 			});
 		});

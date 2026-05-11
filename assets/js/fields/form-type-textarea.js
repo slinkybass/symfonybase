@@ -15,9 +15,13 @@
 
 	window.formTypeTextarea = function formTypeTextarea(selector = '[data-textarea-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
-			e.addEventListener("input", function () {
-				autogrow(this);
-			});
+			if (e.dataset.textareaInitialized !== undefined) {
+				autogrow(e);
+				return;
+			}
+
+			e.dataset.textareaInitialized = "";
+			e.addEventListener("input", () => autogrow(e));
 			autogrow(e);
 		});
 
@@ -33,7 +37,7 @@
 			// this check is needed because the <textarea> element can be inside a
 			// minimizable panel, causing its scrollHeight value to be 0
 			if (field.scrollHeight > 0) {
-				field.style.height = field.scrollHeight + "px";
+				field.style.height = `${field.scrollHeight}px`;
 			}
 
 			if (parseInt(field.style.height.replace("px", "")) > parseInt(maxHeight.replace("px", ""))) {

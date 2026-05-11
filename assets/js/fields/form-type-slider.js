@@ -18,6 +18,12 @@ import noUiSlider from "nouislider";
 
 	window.formTypeSlider = function formTypeSlider(selector = '[data-slider-field="true"]') {
 		document.querySelectorAll(selector).forEach((e) => {
+			if (e.dataset.sliderInitialized !== undefined) {
+				return;
+			}
+
+			e.dataset.sliderInitialized = "";
+
 			const max = e.hasAttribute("max") ? parseFloat(e.getAttribute("max")) : 100;
 			const min = e.hasAttribute("min") ? parseFloat(e.getAttribute("min")) : 0;
 			const start = e.value ? parseFloat(e.value.replace(",", ".")) : min;
@@ -36,33 +42,33 @@ import noUiSlider from "nouislider";
 			e.parentNode.insertBefore(slider, e.nextSibling);
 
 			const noUiSliderOtps = {
-				tooltips: tooltips,
-				connect: connect,
-				step: step,
-				start: start,
+				tooltips,
+				connect,
+				step,
+				start,
 				format: {
-					to: function (value) {
+					to: (value) => {
 						return parseFloat(parseFloat(value).toFixed(2));
 					},
-					from: function (value) {
+					from: (value) => {
 						return parseFloat(parseFloat(value).toFixed(2));
 					},
 				},
 				range: {
-					max: max,
-					min: min,
+					max,
+					min,
 				},
 			};
 
 			if (pips) {
 				noUiSliderOtps.pips = {
-					mode: 'steps',
+					mode: "steps",
 					desity: 100,
 					format: {
-						to: function (value) {
+						to: (value) => {
 							return parseFloat(parseFloat(value).toFixed(2));
 						},
-						from: function (value) {
+						from: (value) => {
 							return parseFloat(parseFloat(value).toFixed(2));
 						},
 					},
@@ -71,16 +77,13 @@ import noUiSlider from "nouislider";
 
 			noUiSlider.create(slider, noUiSliderOtps);
 
-			slider.noUiSlider.on("update", function (value) {
+			slider.noUiSlider.on("update", (value) => {
 				e.value = value;
 			});
 
-			e.addEventListener("change", function () {
-				slider.noUiSlider.set(this.value.replace(",", "."));
-			});
-			e.addEventListener("input", function () {
-				slider.noUiSlider.set(this.value.replace(",", "."));
-			});
+			const updateSlider = () => slider.noUiSlider.set(e.value.replace(",", "."));
+			e.addEventListener("change", updateSlider);
+			e.addEventListener("input", updateSlider);
 		});
 	};
 })();
