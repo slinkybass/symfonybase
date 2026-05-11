@@ -91,8 +91,8 @@ class ConfigCrudController extends AbstractCrudController
         $hasPermission = $this->hasPermissionCrud();
 
         $denied = [Action::INDEX, Action::DELETE, Action::BATCH_DELETE];
-        array_merge($denied, $config || !$hasPermission ? [Action::NEW] : []);
-        array_merge($denied, !$hasPermission ? [Action::DETAIL, Action::EDIT] : []);
+        $denied = array_merge($denied, ($config || !$hasPermission) ? [Action::NEW] : []);
+        $denied = array_merge($denied, !$hasPermission ? [Action::DETAIL, Action::EDIT] : []);
 
         $actions->setPermissions(array_fill_keys($denied, VirtualPermission::DENY));
 

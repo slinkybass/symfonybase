@@ -26,19 +26,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AdminDashboard(routePath: '/admin/{_locale}', routeName: 'admin')]
-class DashboardController extends AbstractDashboardController
+final class DashboardController extends AbstractDashboardController
 {
-    private EntityManagerInterface $em;
-    private TranslatorInterface $translator;
-    private ConfigService $configService;
-    private RolePermissions $rolePermissions;
-
-    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, ConfigService $configService, RolePermissions $rolePermissions)
-    {
-        $this->em = $em;
-        $this->translator = $translator;
-        $this->configService = $configService;
-        $this->rolePermissions = $rolePermissions;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly TranslatorInterface $translator,
+        private readonly ConfigService $configService,
+        private readonly RolePermissions $rolePermissions,
+    ) {
     }
 
     public function index(): Response

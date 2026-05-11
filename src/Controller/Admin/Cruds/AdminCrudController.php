@@ -76,7 +76,7 @@ class AdminCrudController extends AbstractCrudController
             $this->em->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter()]),
             fn (Role $adminRole) => $this->rolePermissions->isUp($user->getRole(), $adminRole),
         ));
-        $roleDefaultValue = count($roles) == 1 ? $roles[0] : (
+        $roleDefaultValue = 1 === count($roles) ? $roles[0] : (
             $filterHiddenRole ? $this->em->getRepository(Role::class)->find($filterHiddenRole['value']) : null
         );
 
@@ -272,7 +272,7 @@ class AdminCrudController extends AbstractCrudController
         return $formBuilder;
     }
 
-    public function addEncodePasswordEventListener(FormBuilderInterface $formBuilder)
+    public function addEncodePasswordEventListener(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $user = $event->getData();

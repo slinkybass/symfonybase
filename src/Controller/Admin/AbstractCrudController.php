@@ -104,7 +104,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         if (is_object($entity)) {
             return $entity;
         }
-        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $request = $this->request()->getCurrentRequest();
         $entityId = $request->get(EA::ENTITY_ID);
         if ($entityId) {
             return $this->em->getRepository($this->getEntityFqcn())->find($entityId);
