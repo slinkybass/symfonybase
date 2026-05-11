@@ -30,6 +30,15 @@ class Role
         return sprintf('hsl(%d, 40%%, 45%%)', $this->hue());
     }
 
+    public function getInlineStyle(): string
+    {
+        return sprintf(
+            'background-color: %s; color: %s',
+            $this->getBackgroundColor(),
+            $this->getForegroundColor()
+        );
+    }
+
     private function hue(): int
     {
         return $this->hueFromSeed((string) $this->role->getId().$this->role->getName());

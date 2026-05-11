@@ -1,6 +1,18 @@
-<span class="{{ this.classes }}" {% if this.avatar %}style="background-image: url('{{ this.avatar|e('css') }}')"{% endif %}>
-    {% if not this.avatar %}{{ this.initial }}{% endif %}
+<span
+    class="{{ this.classes }}"
+    {% if this.avatar %}
+        style="background-image: url('{{ this.avatar|e('css') }}')"
+    {% endif %}
+>
+    {% if not this.avatar %}
+        {{ this.initial }}
+    {% endif %}
     {% if this.zoom and this.avatar %}
-        <a href="{{ this.avatar|e('html_attr') }}" class="stretched-link" data-action="zoom" style="cursor: zoom-in;"></a>
+        <a
+            href="{{ this.avatar|e('html_attr') }}"
+            class="stretched-link"
+            data-action="zoom"
+            style="cursor: zoom-in;"
+        ></a>
     {% endif %}
 </span>

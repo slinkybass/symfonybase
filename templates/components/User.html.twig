@@ -1,10 +1,25 @@
-{% if this.variant == constant('App\\Twig\\Components\\User::VARIANT_BADGE') %}
+{% if this.isBadge() %}
     {% if this.url %}
-        <a class="badge bg-transparent gap-2 text-decoration-none" href="{{ this.url }}"
-            {% if not this.showBadgeLabel %} title="{{ this.label|e('html_attr') }}" aria-label="{{ this.label|e('html_attr') }}" data-bs-toggle="tooltip" data-bs-placement="top"{% endif %}>
+        <a
+            class="badge bg-transparent gap-2 text-decoration-none"
+            href="{{ this.url }}"
+            {% if not this.showBadgeLabel %}
+                title="{{ this.label|e('html_attr') }}"
+                aria-label="{{ this.label|e('html_attr') }}"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+            {% endif %}
+        >
     {% else %}
-        <span class="badge bg-transparent gap-2"
-            {% if not this.showBadgeLabel %} title="{{ this.label|e('html_attr') }}" aria-label="{{ this.label|e('html_attr') }}" data-bs-toggle="tooltip" data-bs-placement="top"{% endif %}>
+        <span
+            class="badge bg-transparent gap-2"
+            {% if not this.showBadgeLabel %}
+                title="{{ this.label|e('html_attr') }}"
+                aria-label="{{ this.label|e('html_attr') }}"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+            {% endif %}
+        >
     {% endif %}
             <twig:UserAvatar :user="this.user" :size="this.avatarSize" />{% if this.showBadgeLabel %} {{ this.label }}{% endif %}
     {% if this.url %}
@@ -12,7 +27,7 @@
     {% else %}
         </span>
     {% endif %}
-{% elseif this.variant == constant('App\\Twig\\Components\\User::VARIANT_CARD') %}
+{% elseif this.isCard() %}
     {% if this.url %}
         <a class="card card-sm card-link" href="{{ this.url }}">
     {% else %}

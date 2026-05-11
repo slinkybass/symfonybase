@@ -30,4 +30,14 @@ class User
     {
         return $this->user ? $this->user->getFullName() : $this->translator->trans('user.anonymous', [], 'EasyAdminBundle');
     }
+
+    public function isBadge(): bool
+    {
+        return self::VARIANT_BADGE === $this->variant;
+    }
+
+    public function isCard(): bool
+    {
+        return self::VARIANT_CARD === $this->variant;
+    }
 }
