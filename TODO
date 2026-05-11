@@ -2,11 +2,9 @@ Actualizar composer y assets
 Revisar Demo
 
 MEJORAS:
+	Repasar todo el código formateando y refatorizando (templates y assets)
+
 	Mostrar como labels los filtros ocultos en los listados?
-
-	Repasar todo el código formateando y refatorizando
-
-	Revisar CSS (Eliminar innecesario) y JS (Mejoras en fields como hf y tomselect)
 
 	Formularios públicos (profile, edit, delete)
 	Maquetar un Perfil de usuario en admin
