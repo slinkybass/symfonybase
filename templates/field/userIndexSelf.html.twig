@@ -2,4 +2,7 @@
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
 
-<twig:User :user="entity.instance" :variant="constant('App\\Twig\\Components\\User::VARIANT_BADGE')" />
+<twig:User
+    :user="entity.instance"
+    :variant="constant('App\\Twig\\Components\\User::VARIANT_BADGE')"
+/>

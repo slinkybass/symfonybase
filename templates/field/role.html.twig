@@ -7,7 +7,10 @@
     {% set controllerName = roleCrudFqcn|split('\\')|last|replace({'CrudController': ''}) %}
     {% set hasPermission = has_permission_crud_action(controllerName, 'detail') %}
     {% set url = hasPermission ? ea_url().setController(roleCrudFqcn).setAction('detail').setEntityId(field.value.id) : null %}
-    <twig:Role :role="field.value" :url="url" />
+    <twig:Role
+        :role="field.value"
+        :url="url"
+    />
 {% else %}
     {{ include(ea.templatePath('label/empty')) }}
 {% endif %}
