@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * part, and rejoining with underscores. This preserves internal camelCase so that
  * multi-word entity names remain unambiguous (e.g. 'DemoEntity' -> 'demoEntity').
  */
-class RolePermissions
+final readonly class RolePermissions
 {
     public const CRUD_PREFIX = 'crud';
 
@@ -86,7 +86,7 @@ class RolePermissions
         Action::DELETE,
     ];
 
-    public function __construct(private readonly KernelInterface $kernel)
+    public function __construct(private KernelInterface $kernel)
     {
     }
 

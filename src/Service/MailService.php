@@ -19,13 +19,13 @@ use Symfony\Component\Mime\Email;
  * In non-production environments all recipients are replaced by the configured
  * sender address, so test emails never reach real users.
  */
-class MailService
+final readonly class MailService
 {
     public function __construct(
-        private readonly ParameterBagInterface $params,
-        private readonly MailerInterface $mailer,
-        private readonly LoggerInterface $logger,
-        private readonly ConfigService $configService,
+        private ParameterBagInterface $params,
+        private MailerInterface $mailer,
+        private LoggerInterface $logger,
+        private ConfigService $configService,
     ) {
     }
 

@@ -10,12 +10,12 @@ use Symfony\Contracts\Cache\CacheInterface;
 /**
  * Provides the resolved application configuration, with database overrides and caching.
  */
-class ConfigService
+final readonly class ConfigService
 {
     public function __construct(
-        private readonly CacheInterface $cache,
-        private readonly ConfigRepository $configRepo,
-        private readonly AssetMapperInterface $assetMapper,
+        private CacheInterface $cache,
+        private ConfigRepository $configRepo,
+        private AssetMapperInterface $assetMapper,
     ) {
     }
 
