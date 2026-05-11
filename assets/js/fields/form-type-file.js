@@ -6,37 +6,37 @@
  */
 
 (function () {
-	document.addEventListener("DOMContentLoaded", () => {
-		formTypeFile();
-	});
+    document.addEventListener("DOMContentLoaded", () => {
+        formTypeFile();
+    });
 
-	document.addEventListener("ea.collection.item-added", () => {
-		formTypeFile();
-	});
+    document.addEventListener("ea.collection.item-added", () => {
+        formTypeFile();
+    });
 
-	window.formTypeFile = function formTypeFile(selector = '[data-file-field="true"]') {
-		document.querySelectorAll(selector).forEach((e) => {
-			if (e.dataset.fileInitialized !== undefined) {
-				return;
-			}
+    window.formTypeFile = function formTypeFile(selector = '[data-file-field="true"]') {
+        document.querySelectorAll(selector).forEach((e) => {
+            if (e.dataset.fileInitialized !== undefined) {
+                return;
+            }
 
-			e.dataset.fileInitialized = "";
+            e.dataset.fileInitialized = "";
 
-			const input = e.querySelector('input[type="file"]');
-			const deleteCheckbox = e.querySelector('input[type="checkbox"][id$="_delete"]');
-			const deleteBtn = e.querySelector(".file-delete-btn");
-			const previewFiles = e.querySelector(".img-preview");
+            const input = e.querySelector('input[type="file"]');
+            const deleteCheckbox = e.querySelector('input[type="checkbox"][id$="_delete"]');
+            const deleteBtn = e.querySelector(".file-delete-btn");
+            const previewFiles = e.querySelector(".img-preview");
 
-			deleteBtn?.addEventListener("click", () => {
-				if (!deleteCheckbox || !input) {
-					return;
-				}
+            deleteBtn?.addEventListener("click", () => {
+                if (!deleteCheckbox || !input) {
+                    return;
+                }
 
-				deleteCheckbox.checked = true;
-				input.title = "";
-				previewFiles?.remove();
-				deleteBtn.remove();
-			});
-		});
-	};
+                deleteCheckbox.checked = true;
+                input.title = "";
+                previewFiles?.remove();
+                deleteBtn.remove();
+            });
+        });
+    };
 })();

@@ -44,74 +44,74 @@ import "tinymce/plugins/visualchars";
 import "tinymce/plugins/wordcount";
 
 (function () {
-	document.addEventListener("DOMContentLoaded", () => {
-		formTypeTextEditor();
-	});
-	document.addEventListener("ea.collection.item-added", () => {
-		formTypeTextEditor();
-	});
+    document.addEventListener("DOMContentLoaded", () => {
+        formTypeTextEditor();
+    });
+    document.addEventListener("ea.collection.item-added", () => {
+        formTypeTextEditor();
+    });
 
-	window.formTypeTextEditor = function formTypeTextEditor(selector = '[data-texteditor-field="true"]') {
-		document.querySelectorAll(selector).forEach((e) => {
-			if (e.dataset.texteditorInitialized !== undefined) {
-				return;
-			}
+    window.formTypeTextEditor = function formTypeTextEditor(selector = '[data-texteditor-field="true"]') {
+        document.querySelectorAll(selector).forEach((e) => {
+            if (e.dataset.texteditorInitialized !== undefined) {
+                return;
+            }
 
-			e.dataset.texteditorInitialized = "";
+            e.dataset.texteditorInitialized = "";
 
-			const resize = e.hasAttribute("data-texteditor-resize") ? e.getAttribute("data-texteditor-resize") !== "false" : false;
-			const spellcheck = e.hasAttribute("data-texteditor-spellcheck") ? e.getAttribute("data-texteditor-spellcheck") !== "false" : true;
-			const defaultToolbar =
-				"undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table insertfile | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen | print";
-			const toolbar = e.hasAttribute("data-texteditor-toolbar") ? e.getAttribute("data-texteditor-toolbar") : defaultToolbar;
+            const resize = e.hasAttribute("data-texteditor-resize") ? e.getAttribute("data-texteditor-resize") !== "false" : false;
+            const spellcheck = e.hasAttribute("data-texteditor-spellcheck") ? e.getAttribute("data-texteditor-spellcheck") !== "false" : true;
+            const defaultToolbar =
+                "undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table insertfile | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen | print";
+            const toolbar = e.hasAttribute("data-texteditor-toolbar") ? e.getAttribute("data-texteditor-toolbar") : defaultToolbar;
 
-			tinymce.init({
-				plugins: [
-					"accordion",
-					"advlist",
-					"anchor",
-					"autolink",
-					"autoresize",
-					"autosave",
-					"charmap",
-					"code",
-					"codesample",
-					"directionality",
-					"emoticons",
-					"fullscreen",
-					"image",
-					"importcss",
-					"insertdatetime",
-					"link",
-					"lists",
-					"media",
-					"nonbreaking",
-					"pagebreak",
-					"preview",
-					"quickbars",
-					"save",
-					"searchreplace",
-					"table",
-					"visualblocks",
-					"visualchars",
-					"wordcount",
-				],
-				target: e,
-				language: moment.locale(),
-				resize,
-				browser_spellcheck: spellcheck,
-				toolbar,
-				menubar: false,
-				contextmenu: false,
-				quickbars_selection_toolbar: false,
-				quickbars_insert_toolbar: false,
-				autoresize_bottom_margin: 0,
-				skin: false,
-				content_css: false,
-				branding: false,
-				convert_urls: false,
-				license_key: "gpl",
-			});
-		});
-	};
+            tinymce.init({
+                plugins: [
+                    "accordion",
+                    "advlist",
+                    "anchor",
+                    "autolink",
+                    "autoresize",
+                    "autosave",
+                    "charmap",
+                    "code",
+                    "codesample",
+                    "directionality",
+                    "emoticons",
+                    "fullscreen",
+                    "image",
+                    "importcss",
+                    "insertdatetime",
+                    "link",
+                    "lists",
+                    "media",
+                    "nonbreaking",
+                    "pagebreak",
+                    "preview",
+                    "quickbars",
+                    "save",
+                    "searchreplace",
+                    "table",
+                    "visualblocks",
+                    "visualchars",
+                    "wordcount",
+                ],
+                target: e,
+                language: moment.locale(),
+                resize,
+                browser_spellcheck: spellcheck,
+                toolbar,
+                menubar: false,
+                contextmenu: false,
+                quickbars_selection_toolbar: false,
+                quickbars_insert_toolbar: false,
+                autoresize_bottom_margin: 0,
+                skin: false,
+                content_css: false,
+                branding: false,
+                convert_urls: false,
+                license_key: "gpl",
+            });
+        });
+    };
 })();

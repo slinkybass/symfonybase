@@ -6,13 +6,13 @@ import Admin from "./controllers/admin.js";
 window.Admin = Admin;
 
 document.addEventListener("DOMContentLoaded", () => {
-	Admin.removeHashFromUrl();
-	Admin.createSearchHighlight();
-	Admin.createFilters();
-	Admin.createBatchActions();
-	Admin.createActionConfirmationModals();
-	Admin.createDefaultRowAction();
-	Admin.createActionHandlers();
+    Admin.removeHashFromUrl();
+    Admin.createSearchHighlight();
+    Admin.createFilters();
+    Admin.createBatchActions();
+    Admin.createActionConfirmationModals();
+    Admin.createDefaultRowAction();
+    Admin.createActionHandlers();
 });
 
 // CSS

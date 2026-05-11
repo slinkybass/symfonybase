@@ -14,24 +14,24 @@ window.DirtyForm = DirtyForm;
 // SweetAlert2
 import _swal from "sweetalert2";
 const Swal = _swal.mixin({
-	customClass: {
-		confirmButton: "btn btn-primary",
-		denyButton: "btn btn-danger",
-		cancelButton: "btn btn-secondary",
-	},
-	buttonsStyling: false,
+    customClass: {
+        confirmButton: "btn btn-primary",
+        denyButton: "btn btn-danger",
+        cancelButton: "btn btn-secondary",
+    },
+    buttonsStyling: false,
 });
 window.Swal = Swal;
 const Toast = Swal.mixin({
-	toast: true,
-	position: "bottom-end",
-	showConfirmButton: false,
-	timer: 3000,
-	timerProgressBar: true,
-	didOpen: (toast) => {
-		toast.onmouseenter = Swal.stopTimer;
-		toast.onmouseleave = Swal.resumeTimer;
-	},
+    toast: true,
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    },
 });
 window.Toast = Toast;
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -70,19 +70,19 @@ import App from "./controllers/app.js";
 window.App = App;
 
 document.addEventListener("DOMContentLoaded", () => {
-	App.setMomentLocale();
-	App.createAutoCompleteFields();
-	App.persistSelectedTab();
-	App.createUnsavedFormChangesWarning();
-	App.createFieldsWithErrors();
-	App.createLightboxes();
-	App.setTabAsActive();
-	App.preventMultipleFormSubmission();
-	App.relocateTableModals();
+    App.setMomentLocale();
+    App.createAutoCompleteFields();
+    App.persistSelectedTab();
+    App.createUnsavedFormChangesWarning();
+    App.createFieldsWithErrors();
+    App.createLightboxes();
+    App.setTabAsActive();
+    App.preventMultipleFormSubmission();
+    App.relocateTableModals();
 });
 
 document.addEventListener("ea.collection.item-added", () => {
-	App.createAutoCompleteFields();
+    App.createAutoCompleteFields();
 });
 
 // CSS
