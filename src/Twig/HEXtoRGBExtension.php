@@ -13,7 +13,7 @@ class HEXtoRGBExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('hex_to_rgb', [$this, 'HEXtoRGB']),
+            new TwigFilter('hex_to_rgb', [$this, 'hexToRgb']),
         ];
     }
 
@@ -24,7 +24,7 @@ class HEXtoRGBExtension extends AbstractExtension
      *
      * @return array<int, int>|null
      */
-    public function HEXtoRGB(string $hex): ?array
+    public function hexToRgb(string $hex): ?array
     {
         return sscanf($hex, '#%02x%02x%02x');
     }

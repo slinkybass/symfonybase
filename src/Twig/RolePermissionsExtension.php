@@ -14,8 +14,8 @@ use Twig\TwigFunction;
 class RolePermissionsExtension extends AbstractExtension
 {
     public function __construct(
-        private RolePermissions $rolePermissions,
-        private Security $security,
+        private readonly RolePermissions $rolePermissions,
+        private readonly Security $security,
     ) {
     }
 

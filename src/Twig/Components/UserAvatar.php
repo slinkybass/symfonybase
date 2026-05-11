@@ -17,7 +17,7 @@ class UserAvatar
     public bool $zoom = false;
 
     public function __construct(
-        private TranslatorInterface $translator,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 

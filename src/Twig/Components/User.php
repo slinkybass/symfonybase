@@ -22,7 +22,7 @@ class User
     public bool $showBadgeLabel = self::DEFAULT_SHOW_BADGE_LABEL;
 
     public function __construct(
-        private TranslatorInterface $translator,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
