@@ -69,7 +69,7 @@ import "./app/page-color-scheme.js";
 import App from "./controllers/app.js";
 window.App = App;
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 	App.setMomentLocale();
 	App.createAutoCompleteFields();
 	App.persistSelectedTab();

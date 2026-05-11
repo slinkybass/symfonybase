@@ -5,8 +5,8 @@ window.Mark = Mark;
 import Admin from "./controllers/admin.js";
 window.Admin = Admin;
 
-document.addEventListener("DOMContentLoaded", function () {
-	Admin.removeHashFormUrl();
+document.addEventListener("DOMContentLoaded", () => {
+	Admin.removeHashFromUrl();
 	Admin.createSearchHighlight();
 	Admin.createFilters();
 	Admin.createBatchActions();

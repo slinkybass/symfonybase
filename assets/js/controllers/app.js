@@ -1,4 +1,14 @@
 const App = (() => {
+	let isNavigatingHistory = false;
+
+	const getSubmitButtonsForForm = (form) => {
+		const inner = [...form.querySelectorAll('[type="submit"]')];
+		if (!form.id) {
+			return inner;
+		}
+		return [...inner, ...document.querySelectorAll(`[type="submit"][form="${CSS.escape(form.id)}"]`)];
+	};
+
 	const setMomentLocale = () => {
 		moment.locale(document.querySelector("html")?.getAttribute("lang") ?? "en");
 	};
@@ -17,37 +27,36 @@ const App = (() => {
 		if (urlHash) {
 			const selectedTabPaneId = urlHash.substring(1); // remove the leading '#' from the hash
 			const selectedTabId = `tablist-${selectedTabPaneId}`;
-			App.setTabAsActive(selectedTabId);
+			setTabAsActive(selectedTabId);
 		}
 
 		// update the page anchor when the selected tab changes
 		document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((tabElement) => {
 			tabElement.addEventListener("shown.bs.tab", (event) => {
 				// don't push state when navigating through browser history (back/forward)
-				if (App.isNavigatingHistory) {
+				if (isNavigatingHistory) {
 					return;
 				}
-				const urlHash = `#${event.target.getAttribute("href").substring(1)}`;
-				history.pushState({}, "", urlHash);
+				const newHash = `#${event.target.getAttribute("href").substring(1)}`;
+				history.pushState({}, "", newHash);
 			});
 		});
 
 		// handle browser back/forward navigation to restore the correct tab
 		window.addEventListener("popstate", () => {
-			App.isNavigatingHistory = true;
-			const urlHash = window.location.hash;
-			if (urlHash) {
-				const selectedTabPaneId = urlHash.substring(1);
+			isNavigatingHistory = true;
+			const hash = window.location.hash;
+			if (hash) {
+				const selectedTabPaneId = hash.substring(1);
 				const selectedTabId = `tablist-${selectedTabPaneId}`;
-				App.setTabAsActive(selectedTabId);
+				setTabAsActive(selectedTabId);
 			} else {
-				// no hash means show the first tab
 				const firstTab = document.querySelector('a[data-bs-toggle="tab"]');
 				if (firstTab) {
-					App.setTabAsActive(firstTab.id);
+					setTabAsActive(firstTab.id);
 				}
 			}
-			App.isNavigatingHistory = false;
+			isNavigatingHistory = false;
 		});
 	};
 
@@ -58,21 +67,13 @@ const App = (() => {
 
 			const dirtyForm = new DirtyForm(form, {
 				onDirty: () => {
-					let submitButtons = form.querySelectorAll('[type="submit"]');
-					if (!submitButtons.length && form.id) {
-						submitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
-					}
-					submitButtons.forEach(startShake);
+					getSubmitButtonsForForm(form).forEach(startShake);
 				},
 			});
 
 			form.addEventListener("submit", () => {
 				dirtyForm.disconnect();
-				let submitButtons = form.querySelectorAll('[type="submit"]');
-				if (!submitButtons.length && form.id) {
-					submitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
-				}
-				submitButtons.forEach(stopShake);
+				getSubmitButtonsForForm(form).forEach(stopShake);
 			});
 		});
 
@@ -98,11 +99,7 @@ const App = (() => {
 
 	const createFieldsWithErrors = () => {
 		document.querySelectorAll("form").forEach((form) => {
-			let submitButtons = form.querySelectorAll('[type="submit"]');
-			if (!submitButtons.length && form.id) {
-				submitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
-			}
-			submitButtons.forEach((button) => {
+			getSubmitButtonsForForm(form).forEach((button) => {
 				button.addEventListener("click", function onSubmitButtonsClick(clickEvent) {
 					let formHasErrors = false;
 					if (null !== form.getAttribute("novalidate")) {
@@ -258,7 +255,6 @@ const App = (() => {
 
 		const Tab = bootstrap.Tab;
 		const bootstrapTab = new Tab(tabElement);
-		// when showing a tab, Bootstrap hides all the other tabs automatically
 		bootstrapTab.show();
 	};
 
@@ -269,12 +265,7 @@ const App = (() => {
 				() => {
 					// this timeout is needed to include the disabled button into the submitted form
 					setTimeout(() => {
-						let submitButtons = form.querySelectorAll('[type="submit"]');
-						if (form.id) {
-							let outerSubmitButtons = document.querySelectorAll('[type="submit"][form="' + form.id + '"]');
-							submitButtons = [...submitButtons, ...outerSubmitButtons];
-						}
-						submitButtons.forEach((button) => {
+						getSubmitButtonsForForm(form).forEach((button) => {
 							button.classList.add("btn-loading");
 						});
 					}, 1);

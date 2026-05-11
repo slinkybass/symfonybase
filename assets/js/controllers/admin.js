@@ -1,5 +1,5 @@
 const Admin = (() => {
-	const removeHashFormUrl = () => {
+	const removeHashFromUrl = () => {
 		if (!window.location.href.includes("#")) {
 			return;
 		}
@@ -72,7 +72,7 @@ const Admin = (() => {
 				.then((text) => {
 					filterModalBody.innerHTML = text;
 					App.createAutoCompleteFields();
-					Admin.createFilterToggles();
+					createFilterToggles();
 				})
 				.catch((error) => {
 					console.error(error);
@@ -170,16 +170,16 @@ const Admin = (() => {
 				const batchActions = content.querySelector(".batch-actions");
 
 				if (null !== contentTitle) {
-					Admin.toggleVisibilityClasses(contentTitle, rowsAreSelected);
+					toggleVisibilityClasses(contentTitle, rowsAreSelected);
 				}
 				if (null !== filters) {
-					Admin.toggleVisibilityClasses(filters, rowsAreSelected);
+					toggleVisibilityClasses(filters, rowsAreSelected);
 				}
 				if (null !== globalActions) {
-					Admin.toggleVisibilityClasses(globalActions, rowsAreSelected);
+					toggleVisibilityClasses(globalActions, rowsAreSelected);
 				}
 				if (null !== batchActions) {
-					Admin.toggleVisibilityClasses(batchActions, !rowsAreSelected);
+					toggleVisibilityClasses(batchActions, !rowsAreSelected);
 				}
 			});
 		});
@@ -393,7 +393,7 @@ const Admin = (() => {
 			document.body.removeChild(link);
 		};
 
-		const handleRowActivation = (row, event) => {
+		const handleRowActivation = (row) => {
 			// don't navigate if rows are selected (batch mode)
 			if (row.classList.contains('selected-row')) {
 				return;
@@ -412,7 +412,7 @@ const Admin = (() => {
 					return;
 				}
 
-				handleRowActivation(row, event);
+				handleRowActivation(row);
 			});
 
 			// handle keyboard navigation (Enter and Space)
@@ -427,36 +427,35 @@ const Admin = (() => {
 				}
 
 				event.preventDefault();
-				handleRowActivation(row, event);
+				handleRowActivation(row);
 			});
 		});
 	}
 
 	const createActionHandlers = () => {
-        // handle form submissions via data attribute (replaces inline onclick handlers)
-        // skip elements with confirmation modals (handled by #createActionConfirmationModals)
-        document.querySelectorAll("[data-ea-action-form-id]").forEach((element) => {
-            element.addEventListener("click", (event) => {
-                if (element.hasAttribute("data-action-confirmation")) {
-                    return;
-                }
-                event.preventDefault();
-                const formId = element.getAttribute("data-ea-action-form-id");
-                document.getElementById(formId).submit();
-            });
-        });
+		// handle form submissions via data attribute (replaces inline onclick handlers)
+		// skip elements with confirmation modals (handled by createActionConfirmationModals)
+		document.querySelectorAll("[data-ea-action-form-id]").forEach((element) => {
+			element.addEventListener("click", (event) => {
+				if (element.hasAttribute("data-action-confirmation")) {
+					return;
+				}
+				event.preventDefault();
+				const formId = element.getAttribute("data-ea-action-form-id");
+				document.getElementById(formId).submit();
+			});
+		});
 
-        // handle navigation via data attribute (replaces inline onclick handlers)
-        // skip elements with confirmation modals (handled by #createActionConfirmationModals)
-        document.querySelectorAll("[data-ea-action-url]").forEach((element) => {
-            element.addEventListener("click", (event) => {
-                if (element.hasAttribute("data-action-confirmation")) {
-                    return;
-                }
-                event.preventDefault();
-                window.location = element.getAttribute("data-ea-action-url");
-            });
-        });
+		// handle navigation via data attribute (replaces inline onclick handlers)
+		document.querySelectorAll("[data-ea-action-url]").forEach((element) => {
+			element.addEventListener("click", (event) => {
+				if (element.hasAttribute("data-action-confirmation")) {
+					return;
+				}
+				event.preventDefault();
+				window.location = element.getAttribute("data-ea-action-url");
+			});
+		});
 	};
 
 	const createFilterToggles = () => {
@@ -496,7 +495,7 @@ const Admin = (() => {
 				if (secondValue === null) {
 					return;
 				}
-				Admin.toggleVisibilityClasses(secondValue, comparisonWidget.value !== "between");
+				toggleVisibilityClasses(secondValue, comparisonWidget.value !== "between");
 			});
 		});
 	};
@@ -512,7 +511,7 @@ const Admin = (() => {
 	};
 
 	return {
-		removeHashFormUrl,
+		removeHashFromUrl,
 		createSearchHighlight,
 		createFilters,
 		createBatchActions,

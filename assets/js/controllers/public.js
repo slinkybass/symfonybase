@@ -1,5 +1,3 @@
-const Public = (() => {
-	return {};
-})();
+const Public = {};
 
 export default Public;
