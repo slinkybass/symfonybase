@@ -1,8 +1,8 @@
-{% extends "public/layout/base.html.twig" %}
+{% extends 'public/layout/base.html.twig' %}
 
 {% block page_title %}
     {{ 'public.privacy.title'|trans }}
-{% endblock %}
+{% endblock page_title %}
 
 {% block main %}
     <div class="card card-md">
@@ -10,4 +10,4 @@
             {{ appConfig.privacyText|raw }}
         </div>
     </div>
-{% endblock %}
+{% endblock main %}
