@@ -1,7 +1,7 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var paginator \EasyCorp\Bundle\EasyAdminBundle\Orm\EntityPaginator #}
 {% set ea = ea() %}
-{% trans_default_domain 'EasyAdminBundle' %}
+{% trans_default_domain ea.i18n.translationDomain %}
 
 <div class="text-muted">
     {% if render_detailed_pagination is defined ? render_detailed_pagination : true %}
@@ -12,7 +12,7 @@
     <ul class="pagination m-0 ms-auto">
         <li class="page-item {{ not paginator.hasPreviousPage ? 'disabled' }}">
             <a class="page-link" href="{{ not paginator.hasPreviousPage ? '#' : paginator.generateUrlForPage(paginator.previousPage) }}">
-                {% if 'rtl' == ea.i18n.textDirection %}
+                {% if ea.i18n.textDirection == 'rtl' %}
                     <twig:ea:Icon name="chevron-right" />
                 {% else %}
                     <twig:ea:Icon name="chevron-left" />
@@ -38,7 +38,7 @@
 
         <li class="page-item {{ not paginator.hasNextPage ? 'disabled' }}">
             <a class="page-link" href="{{ not paginator.hasNextPage ? '#' : paginator.generateUrlForPage(paginator.nextPage) }}">
-                {% if 'rtl' == ea.i18n.textDirection %}
+                {% if ea.i18n.textDirection == 'rtl' %}
                     <twig:ea:Icon name="chevron-left" />
                 {% else %}
                     <twig:ea:Icon name="chevron-right" />

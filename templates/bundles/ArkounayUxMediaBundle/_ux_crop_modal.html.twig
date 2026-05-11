@@ -15,7 +15,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ 'action.crop'|trans({}, 'ArkounayUxMediaBundle') }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'action.close'|trans({}, 'EasyAdminBundle') }}">
                 </button>
             </div>
             <div class="modal-body">
@@ -53,12 +53,12 @@
                     </div>
                     {% if crop_options.display_crop_data %}
                         <div class="col-md-6">
-                            <div class="float-end image-data py-2 ">
+                            <div class="float-end image-data py-2">
                                 {% for el in ['x', 'y', 'width', 'height'] %}
-                                    <span class="label"> {{ ('size.' ~ el)|trans({}, 'ArkounayUxMediaBundle') ~ ':' }} <span data-arkounay--ux-media--crop-target="{{ el }}"> 0</span></span>
+                                    <span class="label"> {{ ('size.' ~ el)|trans({}, 'ArkounayUxMediaBundle') ~ ':' }} <span data-arkounay--ux-media--crop-target="{{ el }}">0</span></span>
                                 {% endfor %}
                                 {% if crop_options.ratio|default %}
-                                    <span class="label label-primary"> {{ 'size.ratio'|trans({}, 'ArkounayUxMediaBundle') ~ ':' ~ crop_options.ratio|round(2) }}  </span>
+                                    <span class="label label-primary">{{ 'size.ratio'|trans({}, 'ArkounayUxMediaBundle') ~ ':' ~ crop_options.ratio|round(2) }}</span>
                                 {% endif %}
                             </div>
                         </div>

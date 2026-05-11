@@ -28,7 +28,7 @@
         <style>
             :root, [data-bs-theme="light"] {
                 --tblr-primary: {{ hexColor }} !important;
-                --tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }} !important;
+                --tblr-primary-rgb: {{ rgbColor[0] }}, {{ rgbColor[1] }}, {{ rgbColor[2] }} !important;
             }
         </style>
     {% endblock %}
@@ -82,7 +82,7 @@
                                 {% if ea.dashboardHasDarkModeEnabled %}
                                     <label class="dropdown-item form-switch cursor-pointer">
                                         <twig:ea:Icon name="moon" class="dropdown-item-icon" />
-                                        <span class="me-2">{{ 'settings.appearance.label'|trans(domain: 'EasyAdminBundle') }} {{ ('settings.appearance.dark')|trans(domain: 'EasyAdminBundle') }}</span>
+                                        <span class="me-2">{{ 'settings.appearance.label'|trans(domain: 'EasyAdminBundle') }} {{ 'settings.appearance.dark'|trans(domain: 'EasyAdminBundle') }}</span>
                                         <input class="form-check-input m-0 ms-auto" type="checkbox" data-color-scheme {% if darkMode %}checked{% endif %}>
                                     </label>
                                 {% endif %}

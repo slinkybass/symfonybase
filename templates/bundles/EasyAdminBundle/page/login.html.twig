@@ -41,9 +41,9 @@
                             <label class="form-label required" for="password">
                                 {{ _password_label }}
                                 {% if forgot_password_enabled|default(false) %}
-                                <span class="form-label-description">
-                                    <a href="{{ forgot_password_path|default('#') }}" tabindex="-1">{{ _forgot_password_label }}</a>
-                                </span>
+                                    <span class="form-label-description">
+                                        <a href="{{ forgot_password_path|default('#') }}" tabindex="-1">{{ _forgot_password_label }}</a>
+                                    </span>
                                 {% endif %}
                             </label>
                             <div class="input-group">
@@ -56,12 +56,12 @@
                         </div>
                     {% endblock login_form_credentials_wrapper %}
                     {% if remember_me_enabled|default(false) %}
-                    <div class="mb-2">
-                        <label class="form-check">
-                            <input type="checkbox" id="remember_me" class="form-check-input" name="{{ remember_me_parameter|default('_remember_me') }}" {{ remember_me_checked|default(false) ? 'checked' }}>
-                            <span class="form-check-label" for="remember_me">{{ _remember_me_label }}</span>
-                        </label>
-                    </div>
+                        <div class="mb-2">
+                            <label class="form-check">
+                                <input type="checkbox" id="remember_me" class="form-check-input" name="{{ remember_me_parameter|default('_remember_me') }}" {{ remember_me_checked|default(false) ? 'checked' }}>
+                                <span class="form-check-label" for="remember_me">{{ _remember_me_label }}</span>
+                            </label>
+                        </div>
                     {% endif %}
                     <div class="form-footer">
                         <twig:ea:Button type="submit" variant="primary" isBlock>{{ _sign_in_label }}</twig:ea:Button>

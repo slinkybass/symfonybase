@@ -45,7 +45,7 @@
     </head>
     <body>
         {% block body %}
-            <div class="container-fluid ">
+            <div class="container-fluid">
                 {% block progress_bar %}
                     <div class="row mb-3">
                         <div class="progress bg-transparent">
@@ -58,7 +58,7 @@
                         <div class="col">
                             <div class="btn-list">
                                 {% if showTree %}
-                                    <a title="{{ 'button.tree'|trans }}" href="{{ path('file_manager', fileManager.queryParameters|merge({'tree': fileManager.tree == true ? 0 : 1 })) }}" class="btn btn-icon btn{{ not fileManager.tree ? '-ghost' }}-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                    <a title="{{ 'button.tree'|trans }}" href="{{ path('file_manager', fileManager.queryParameters|merge({'tree': fileManager.tree == true ? 0 : 1})) }}" class="btn btn-icon btn{{ not fileManager.tree ? '-ghost' }}-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                         <twig:ux:icon class="icon" name="tabler:menu-2" />
                                     </a>
                                 {% endif %}
@@ -83,7 +83,7 @@
                                         {{ 'button.add.folder'|trans }}
                                     </button>
                                     {% if not isRoot %}
-                                        <button type="button" class="btn btn-danger js-delete-modal" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-delete" data-bs-placement="left" data-bs-html="true" data-href='{{ path('file_manager_delete', fileManager.queryParameters) }}'>
+                                        <button type="button" class="btn btn-danger js-delete-modal" data-trigger="click" data-container="body" data-bs-toggle="modal" data-bs-target="#js-confirm-delete" data-bs-placement="left" data-bs-html="true" data-href="{{ path('file_manager_delete', fileManager.queryParameters) }}">
                                             <twig:ux:icon class="icon" name="tabler:trash" />
                                             {{ 'button.delete.current'|trans }}
                                         </button>
@@ -111,16 +111,16 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="btn-list">
-                                        <a href="{{ path('file_manager', fileManager.queryParameters|merge({'view':"list"})) }}" class="btn btn-icon btn{{ fileManager.view != 'list' ? '-ghost' }}-secondary">
+                                        <a href="{{ path('file_manager', fileManager.queryParameters|merge({'view': 'list'})) }}" class="btn btn-icon btn{{ fileManager.view != 'list' ? '-ghost' }}-secondary">
                                             <twig:ux:icon class="icon" name="tabler:layout-list" />
                                         </a>
-                                        <a href="{{ path('file_manager', fileManager.queryParameters|merge({'view':'thumbnail'})) }}" class="btn btn-icon btn{{ fileManager.view != 'thumbnail' ? '-ghost' }}-secondary">
+                                        <a href="{{ path('file_manager', fileManager.queryParameters|merge({'view': 'thumbnail'})) }}" class="btn btn-icon btn{{ fileManager.view != 'thumbnail' ? '-ghost' }}-secondary">
                                             <twig:ux:icon class="icon" name="tabler:layout-grid" />
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            {% if fileManager.view != "list" %}
+                            {% if fileManager.view != 'list' %}
                                 <div class="row mt-3">
                                     <div class="col">
                                         <div class="btn-list justify-content-end">
@@ -150,53 +150,52 @@
                             {% endif %}
                             {% block content %}
                                 <form id="form-multiple-delete">
-                                    {% include '@ArtgrisFileManager/views/_manager_view.html.twig' with {'fileManager' :fileManager,  'fileArray' : fileArray, 'formDelete' : formDelete} only %}
+                                    {% include '@ArtgrisFileManager/views/_manager_view.html.twig' with {'fileManager': fileManager, 'fileArray': fileArray, 'formDelete': formDelete} only %}
                                 </form>
                             {% endblock %}
                         </div>
                     </div>
                     {% include '@ArtgrisFileManager/views/_modals.html.twig' %}
                 </div>
-            {% endblock %}
-            {% block javascripts %}
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/jquery/dist/jquery.min.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/jstree/dist/jstree.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.fileupload-process.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/sticky-kit/jquery.sticky-kit.min.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js') }}"></script>
-                <script src="{{ asset('bundles/artgrisfilemanager/libs/jQuery-contextMenu/dist/jquery.contextMenu.min.js') }}"></script>
-                <script type="text/javascript" src="{{ asset('bundles/artgrisfilemanager/libs/jquery-lazy/jquery.lazy.min.js') }}"></script>
+        {% endblock %}
+        {% block javascripts %}
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/jquery/dist/jquery.min.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/jstree/dist/jstree.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/js/jquery.fileupload-process.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/sticky-kit/jquery.sticky-kit.min.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js') }}"></script>
+            <script src="{{ asset('bundles/artgrisfilemanager/libs/jQuery-contextMenu/dist/jquery.contextMenu.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/artgrisfilemanager/libs/jquery-lazy/jquery.lazy.min.js') }}"></script>
 
-                <script>
-                    var treedata = {{ treeData|raw }};
-                    var tree = {{ fileManager.tree and showTree ? 'true' : 'false' }}
-                    var moduleName = '{{ fileManager.module ? fileManager.module : 0 }}';
-                    var successMessage = '{{ 'file.add.success'|trans }}';
-                    var url = "{{ path('file_manager', fileManager.queryParameters|merge({'json':true}))|e('js') }}"
-                    var urldelete = "{{ path('file_manager_delete', fileManager.queryParameters )|e('js') }}"
-                    var deleteMessage = "{{ 'title.delete'|trans }}"
-                    var renameMessage = "{{ 'title.rename.file'|trans }}"
-                    var downloadMessage = "{{ 'title.download'|trans }}"
-                    var previewMessage = "{{ 'title.preview.file'|trans }}"
+            <script>
+                var treedata = {{ treeData|raw }};
+                var tree = {{ fileManager.tree and showTree ? 'true' : 'false' }};
+                var moduleName = '{{ fileManager.module ? fileManager.module : 0 }}';
+                var successMessage = '{{ 'file.add.success'|trans }}';
+                var url = "{{ path('file_manager', fileManager.queryParameters|merge({'json': true}))|e('js') }}";
+                var urldelete = "{{ path('file_manager_delete', fileManager.queryParameters)|e('js') }}";
+                var deleteMessage = "{{ 'title.delete'|trans }}";
+                var renameMessage = "{{ 'title.rename.file'|trans }}";
+                var downloadMessage = "{{ 'title.download'|trans }}";
+                var previewMessage = "{{ 'title.preview.file'|trans }}";
 
-                    function displayAlert(type, msg) {
-                        Swal.fire({html: msg, icon: type, showConfirmButton: false});
-                    }
-                </script>
+                function displayAlert(type, msg) {
+                    Swal.fire({ html: msg, icon: type, showConfirmButton: false });
+                }
+            </script>
 
-                <script type="module">
-                    // display session flash messages
-                    {% for type, messages in app.session.flashbag.all %}
-                        {% for message in messages %}
-                            displayAlert('{{ type }}', '{{ message|trans|e('js') }}')
-                        {% endfor %}
+            <script type="module">
+                {# display session flash messages #}
+                {% for type, messages in app.session.flashbag.all %}
+                    {% for message in messages %}
+                        displayAlert('{{ type }}', '{{ message|trans|e('js') }}');
                     {% endfor %}
-                </script>
-            {% endblock %}
-        </body>
+                {% endfor %}
+            </script>
+        {% endblock %}
     </body>
 </html>
