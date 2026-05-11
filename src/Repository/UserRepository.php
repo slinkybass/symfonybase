@@ -30,7 +30,9 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         }
 
         $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
+
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        $em->flush();
     }
 }

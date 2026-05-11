@@ -22,7 +22,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      *
      * @param FilterInterface|FilterInterface[] $filters
      *
-     * @return array<int, object>
+     * @return list<T>
      */
     public function filter(FilterInterface|array $filters = []): array
     {
@@ -35,6 +35,8 @@ abstract class AbstractRepository extends ServiceEntityRepository
      * Returns a single result matching the given filters, or null if not found.
      *
      * @param FilterInterface|FilterInterface[] $filters
+     *
+     * @return T|null
      */
     public function filterOne(FilterInterface|array $filters = []): ?object
     {
@@ -47,6 +49,8 @@ abstract class AbstractRepository extends ServiceEntityRepository
      * Returns the first result matching the given filters, or null if not found.
      *
      * @param FilterInterface|FilterInterface[] $filters
+     *
+     * @return T|null
      */
     public function filterFirst(FilterInterface|array $filters = []): ?object
     {
@@ -84,7 +88,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      *
      * @param FilterInterface|FilterInterface[] $filters
      *
-     * @return array<int, object>
+     * @return list<T>
      */
     public function filterPaginated(FilterInterface|array $filters = [], int $page = 1, int $limit = 10): array
     {
