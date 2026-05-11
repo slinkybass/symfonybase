@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Role;
 use App\Entity\User;
 use App\Form\ChangePasswordForm;
 use App\Form\RegistrationForm;
@@ -35,6 +34,7 @@ final class AuthController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly UserRepository $userRepo,
+        private readonly RoleRepository $roleRepository,
         private readonly ConfigService $configService,
         private readonly MailService $mailService,
         private readonly TranslatorInterface $translator,
@@ -159,7 +159,7 @@ final class AuthController extends AbstractController
 
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
-        } catch (ResetPasswordExceptionInterface $e) {
+        } catch (ResetPasswordExceptionInterface) {
             return $this->redirectToRoute('reset_password_request_sent');
         }
 
@@ -187,8 +187,6 @@ final class AuthController extends AbstractController
     #[Route('/register', name: 'register')]
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
-        /** @var RoleRepository $roleRepo */
-        $roleRepo = $this->em->getRepository(Role::class);
         $config = $this->configService->get();
 
         $user = new User();
@@ -198,7 +196,7 @@ final class AuthController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
             $user->setPassword($encodedPassword);
-            $user->setRole($roleRepo->find($config->roleDefaultRegisterId));
+            $user->setRole($this->roleRepository->find($config->roleDefaultRegisterId));
             $user->setVerified(false);
             $this->em->persist($user);
             $this->em->flush();
@@ -215,10 +213,7 @@ final class AuthController extends AbstractController
     public function verify(Request $request): Response
     {
         $id = $request->query->getInt('id');
-        if (!$id) {
-            return $this->redirectToRoute('login');
-        }
-        $user = $this->userRepo->find($id);
+        $user = $id ? $this->userRepo->find($id) : null;
         if (!$user) {
             return $this->redirectToRoute('login');
         }
