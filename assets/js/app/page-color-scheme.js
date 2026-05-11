@@ -11,7 +11,7 @@ class ColorSchemeHandler {
 	}
 
 	createColorSchemeSelector() {
-		if (null === document.querySelector('input[type="checkbox"][data-color-scheme]')) {
+		if (document.querySelector('input[type="checkbox"][data-color-scheme]') === null) {
 			return;
 		}
 
@@ -33,22 +33,25 @@ class ColorSchemeHandler {
 	}
 
 	#setCookie(name, value, days = 365) {
-		var expires = "";
+		let expires = "";
 		if (days) {
-			var date = new Date();
+			const date = new Date();
 			date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-			expires = "; expires=" + date.toUTCString();
+			expires = `; expires=${date.toUTCString()}`;
 		}
-		document.cookie = name + "=" + (value || "") + expires + "; path=/";
+		document.cookie = `${name}=${value || ""}${expires}; path=/`;
 	}
 
 	#getCookie(name) {
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(";");
-		for (var i = 0; i < ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0) == " ") c = c.substring(1, c.length);
-			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		const nameEQ = `${name}=`;
+		for (const raw of document.cookie.split(";")) {
+			let c = raw;
+			while (c.startsWith(" ")) {
+				c = c.slice(1);
+			}
+			if (c.startsWith(nameEQ)) {
+				return c.slice(nameEQ.length);
+			}
 		}
 		return null;
 	}
@@ -56,7 +59,7 @@ class ColorSchemeHandler {
 
 const colorSchemeHandler = new ColorSchemeHandler();
 
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (e) {
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
 	colorSchemeHandler.updateColorScheme();
 });
 
