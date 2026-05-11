@@ -281,16 +281,16 @@ export default class Autocomplete {
 
             const optionData = withHtmlSupport
                 ? {
-                      value: opt.value,
-                      label_text: this.#stripTags(opt.text),
-                      label_raw: opt.text,
-                      optgroup: foundSeparator ? "regular" : "preferred",
-                  }
+                    value: opt.value,
+                    label_text: this.#stripTags(opt.text),
+                    label_raw: opt.text,
+                    optgroup: foundSeparator ? "regular" : "preferred",
+                }
                 : {
-                      value: opt.value,
-                      text: opt.text,
-                      optgroup: foundSeparator ? "regular" : "preferred",
-                  };
+                    value: opt.value,
+                    text: opt.text,
+                    optgroup: foundSeparator ? "regular" : "preferred",
+                };
 
             options.push(optionData);
 
