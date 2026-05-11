@@ -1,8 +1,5 @@
 {# https://github.com/leemunroe/responsive-html-email-template #}
 
-{% set config = appConfig %}
-{% set color = config.appColor %}
-
 <!doctype html>
 <html>
     <head>
@@ -10,7 +7,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>{% block subject %}{% endblock %}</title>
         <style>
-            @media only screen and(max-width: 620px) {
+            @media only screen and (max-width: 620px) {
                 table.body h1 {
                     font-size: 28px !important;
                     margin-bottom: 10px !important;
@@ -90,7 +87,7 @@
             <tr>
                 <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
                 <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; max-width: 580px; padding: 10px; width: 580px; margin: 0 auto;" width="580" valign="top">
-                    <img src="{{ absolute_url(path('home'))|trim('/') ~ config.appLogo }}" alt="{{ config.appName }}" border="0" style="max-width: 200px; border:0; outline:none; text-decoration:none; display:block; margin: 15px auto;">
+                    <img src="{{ absolute_url(path('home'))|trim('/') ~ appConfig.appLogo }}" alt="{{ appConfig.appName }}" border="0" style="max-width: 200px; border:0; outline:none; text-decoration:none; display:block; margin: 15px auto;">
                     <div class="content" style="box-sizing: border-box; display: block; margin: 0 auto; max-width: 580px; padding: 10px;">
                         <table role="presentation" class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #ffffff; border-radius: 3px; width: 100%;" width="100%">
                             <tr>
@@ -111,7 +108,7 @@
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
                                 <tr>
                                     <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; color: #999999; font-size: 12px; text-align: center;" valign="top" align="center">
-                                        <a href="{{ absolute_url(path('home')) }}" style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">{{ config.appName }}</a>
+                                        <a href="{{ absolute_url(path('home')) }}" style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">{{ appConfig.appName }}</a>
                                     </td>
                                 </tr>
                             </table>
