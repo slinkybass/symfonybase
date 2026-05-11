@@ -1,7 +1,7 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var paginator \EasyCorp\Bundle\EasyAdminBundle\Orm\EntityPaginator #}
 {% set ea = ea() %}
-{% trans_default_domain ea.i18n.translationDomain %}
+{% trans_default_domain 'EasyAdminBundle' %}
 
 <div class="text-muted">
     {% if render_detailed_pagination is defined ? render_detailed_pagination : true %}
