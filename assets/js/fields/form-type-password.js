@@ -2,7 +2,7 @@
  * Password Visibility & Generator Plugin
  *
  * Autor: slinkybass
- * Version: 3.0
+ * Version: 3.1
  *
  * Description:
  * Manages password field visibility and provides secure password generation.

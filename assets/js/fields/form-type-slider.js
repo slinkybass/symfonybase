@@ -2,7 +2,7 @@
  * noUiSlider field
  *
  * Autor: slinkybass
- * Version: 3.0
+ * Version: 3.1
  */
 
 import noUiSlider from "nouislider";

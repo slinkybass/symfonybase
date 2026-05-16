@@ -2,7 +2,7 @@
  * Signature pad field
  *
  * Autor: slinkybass
- * Version: 3.0
+ * Version: 3.1
  */
 
 import SignaturePad from "signature_pad";
