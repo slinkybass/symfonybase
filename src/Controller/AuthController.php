@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Role;
 use App\Entity\User;
 use App\Form\ChangePasswordForm;
 use App\Form\RegistrationForm;
@@ -199,9 +200,17 @@ final class AuthController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $roleId = $config->roleDefaultRegisterId;
+            $role = $roleId !== null ? $this->roleRepository->find($roleId) : null;
+            if (!$role instanceof Role) {
+                $this->addFlash('error', $this->translator->trans('app.messages.registerMissingDefaultRole'));
+
+                return $this->redirectToRoute('register');
+            }
+
             $encodedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
             $user->setPassword($encodedPassword);
-            $user->setRole($this->roleRepository->find($config->roleDefaultRegisterId));
+            $user->setRole($role);
             $user->setVerified(false);
             $this->em->persist($user);
             $this->em->flush();

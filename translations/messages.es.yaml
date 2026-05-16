@@ -6,6 +6,7 @@ app:
     resetPasswordDone: Se ha realizado el cambio de contraseña correctamente. Puede iniciar sesión.
     verifySended: Se acaba de enviar un email que contiene un enlace que debe usar para verificar su dirección de correo electrónico. Si no recibe este email, revise en la carpeta de SPAM.
     verifyDone: Se ha realizado la confirmación de email correctamente. Puede iniciar sesión.
+    registerMissingDefaultRole: El registro no está disponible en este momento. Contacte con el administrador.
 admin:
   home:
     title: Inicio
