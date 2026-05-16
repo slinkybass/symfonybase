@@ -1,24 +1,5 @@
 $(function () {
     var $renameModal = $("#js-confirm-rename");
-    var $deleteModal = $("#js-confirm-delete");
-    var callback = function (key, opt) {
-        switch (key) {
-            case "edit":
-                var $renameModalButton = opt.$trigger.find(".js-rename-modal");
-                renameFile($renameModalButton);
-                $renameModal.modal("show");
-                break;
-            case "delete":
-                var $deleteModalButton = opt.$trigger.find(".js-delete-modal");
-                deleteFile($deleteModalButton);
-                $deleteModal.modal("show");
-                break;
-            case "download":
-                var $downloadButton = opt.$trigger.find(".js-download");
-                downloadFile($downloadButton);
-                break;
-        }
-    };
 
     function renameFile($renameModalButton) {
         $("#rename_f_name").val($renameModalButton.data("name"));
@@ -28,10 +9,6 @@ $(function () {
 
     function deleteFile($deleteModalButton) {
         $("#js-confirm-delete").find("form").attr("action", $deleteModalButton.data("href"));
-    }
-
-    function downloadFile($downloadButton) {
-        $downloadButton[0].click();
     }
 
     function initTree(treedata) {
@@ -47,10 +24,9 @@ $(function () {
                     document.location = data.node.a_attr.href;
                 }
             })
-            .bind("loaded.jstree", function (e, data) {
-                // Replace label CSS class with badge
-                console.log($("#tree").find(".label"));
-                $("#tree").find(".label")
+            .bind("loaded.jstree", function () {
+                $("#tree")
+                    .find(".label")
                     .removeClass("label label-default")
                     .addClass("badge badge-sm badge-outline rounded-pill text-primary")
                     .css("top", "-3px")
@@ -64,19 +40,15 @@ $(function () {
     }
 
     $(document)
-        // checkbox select all
         .on("click", "#select-all", function () {
             $("#form-multiple-delete").find(":checkbox").prop("checked", $(this).is(":checked"));
         })
-        // delete modal buttons
         .on("click", ".js-delete-modal", function () {
             deleteFile($(this));
         })
-        // rename modal buttons
         .on("click", ".js-rename-modal", function () {
             renameFile($(this));
         })
-        // multiple delete modal button
         .on("click", "#js-delete-multiple-modal", function () {
             var $multipleDelete = $("#form-multiple-delete").serialize();
             if ($multipleDelete) {
@@ -84,7 +56,6 @@ $(function () {
                 $("#js-confirm-delete").find("form").attr("action", href);
             }
         })
-        // checkbox
         .on("click", "#form-multiple-delete :checkbox", function () {
             var $jsDeleteMultipleModal = $("#js-delete-multiple-modal");
             if ($(".checkbox").is(":checked")) {
@@ -94,81 +65,74 @@ $(function () {
             }
         });
 
-    // preselected
     $renameModal.on("shown.bs.modal", function () {
         $("#rename_f_name")
             .select()
-            .mouseup(function () {
-                $("#rename_f_name").unbind("mouseup");
-                return false;
+            .one("mouseup", function (e) {
+                e.preventDefault();
             });
     });
     $("#addFolder").on("shown.bs.modal", function () {
         $("#rename_name")
             .select()
-            .mouseup(function () {
-                $("#rename_name").unbind("mouseup");
-                return false;
+            .one("mouseup", function (e) {
+                e.preventDefault();
             });
     });
 
-    // Module Tiny
     if (moduleName === "tiny") {
         $("#form-multiple-delete").on("click", ".select", function () {
-            var windowManager = top != undefined && top.tinymceWindowManager != undefined ? top.tinymceWindowManager : "";
+            var windowManager =
+                top !== undefined && top.tinymceWindowManager !== undefined ? top.tinymceWindowManager : "";
 
-            // tinymce 5
-            if (windowManager != "") {
-                if (top.tinymceCallBackURL != undefined) top.tinymceCallBackURL = $(this).attr("data-path");
+            if (windowManager !== "") {
+                if (top.tinymceCallBackURL !== undefined) {
+                    top.tinymceCallBackURL = $(this).attr("data-path");
+                }
                 windowManager.close();
             } else {
-                // tinymce 4
                 var args = top.tinymce.activeEditor.windowManager.getParams();
                 var input = args.input;
-                var document = args.window.document;
-                var divInputSplit = document.getElementById(input).parentNode.id.split("_");
+                var editorDocument = args.window.document;
+                var divInputSplit = editorDocument.getElementById(input).parentNode.id.split("_");
 
-                // set url
-                document.getElementById(input).value = $(this).attr("data-path");
+                editorDocument.getElementById(input).value = $(this).attr("data-path");
 
-                // set width and height
                 var baseId = divInputSplit[0] + "_";
                 var baseInt = parseInt(divInputSplit[1], 10);
+                var divWidth = baseId + (baseInt + 3);
+                var divHeight = baseId + (baseInt + 5);
 
-                divWidth = baseId + (baseInt + 3);
-                divHeight = baseId + (baseInt + 5);
-
-                document.getElementById(divWidth).value = $(this).attr("data-width");
-                document.getElementById(divHeight).value = $(this).attr("data-height");
+                editorDocument.getElementById(divWidth).value = $(this).attr("data-width");
+                editorDocument.getElementById(divHeight).value = $(this).attr("data-height");
 
                 top.tinymce.activeEditor.windowManager.close();
             }
         });
     }
 
-    // Module CKEditor
     if (moduleName === "ckeditor") {
         $("#form-multiple-delete").on("click", ".select", function () {
             var regex = new RegExp("[\\?&]CKEditorFuncNum=([^&#]*)");
-            var funcNum = regex.exec(location.search)[1];
+            var match = regex.exec(location.search);
+            if (!match) {
+                return;
+            }
+            var funcNum = match[1];
             var fileUrl = $(this).attr("data-path");
             window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
             window.close();
         });
     }
 
-    // Global functions
-    // display error alert
     function displayError(msg) {
         displayAlert("error", msg);
     }
 
-    // display success alert
     function displaySuccess(msg) {
         displayAlert("success", msg);
     }
 
-    // file upload
     $("#fileupload")
         .fileupload({
             dataType: "json",
@@ -180,14 +144,12 @@ $(function () {
                 const fileName = $("<strong>").text(file.name).html();
                 if (file.url) {
                     displaySuccess(fileName + " " + successMessage);
-                    // Ajax update view
                     $.ajax({
                         dataType: "json",
                         url: url,
                         type: "GET",
                     })
                         .done(function (data) {
-                            // update file list
                             $("#form-multiple-delete").html(data.data);
 
                             lazy();
@@ -209,7 +171,7 @@ $(function () {
             });
         })
         .on("fileuploadfail", function (e, data) {
-            $.each(data.files, function (index, file) {
+            $.each(data.files, function () {
                 displayError("File upload failed.");
             });
         })
@@ -231,7 +193,7 @@ $(function () {
             $(".progress-bar")
                 .addClass("notransition")
                 .attr("aria-valuenow", 0)
-                .css("width", 0 + "%");
+                .css("width", "0%");
         });
 
     function lazy() {

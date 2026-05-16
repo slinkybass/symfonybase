@@ -1,35 +1,45 @@
 class ColorSchemeHandler {
-    #colorSchemeCookieKey;
+    #cookieKey;
 
     constructor() {
-        this.#colorSchemeCookieKey = "colorScheme";
+        this.#cookieKey = "colorScheme";
     }
 
-    updateColorScheme() {
-        const selectedColorScheme = this.#getCookie(this.#colorSchemeCookieKey) || "light";
-        this.#setColorScheme(selectedColorScheme);
+    /** Applies theme from cookie (or default light) to `data-bs-theme`. */
+    applyStoredTheme() {
+        const scheme = this.#getCookie(this.#cookieKey) || "light";
+        this.#applyTheme(scheme);
     }
 
-    createColorSchemeSelector() {
-        if (document.querySelector('input[type="checkbox"][data-color-scheme]') === null) {
+    initToggleControls() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"][data-color-scheme]');
+        if (checkboxes.length === 0) {
             return;
         }
 
-        const switchSchemeCheckboxes = document.querySelectorAll('input[type="checkbox"][data-color-scheme]');
-        switchSchemeCheckboxes.forEach((switchSchemeCheckbox) => {
-            switchSchemeCheckbox.addEventListener("change", () => {
-                const selectedColorScheme = switchSchemeCheckbox.checked ? "dark" : "light";
-                this.#setColorScheme(selectedColorScheme);
-                switchSchemeCheckboxes.forEach((otherSwitchSchemeCheckbox) => {
-                    otherSwitchSchemeCheckbox.checked = switchSchemeCheckbox.checked;
+        const syncCheckboxes = () => {
+            const isDark = document.documentElement.getAttribute("data-bs-theme") === "dark";
+            checkboxes.forEach((el) => {
+                el.checked = isDark;
+            });
+        };
+
+        syncCheckboxes();
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", () => {
+                const scheme = checkbox.checked ? "dark" : "light";
+                this.#applyTheme(scheme);
+                checkboxes.forEach((other) => {
+                    other.checked = checkbox.checked;
                 });
             });
         });
     }
 
-    #setColorScheme(colorScheme) {
-        document.documentElement.setAttribute("data-bs-theme", colorScheme);
-        this.#setCookie(this.#colorSchemeCookieKey, colorScheme);
+    #applyTheme(scheme) {
+        document.documentElement.setAttribute("data-bs-theme", scheme);
+        this.#setCookie(this.#cookieKey, scheme);
     }
 
     #setCookie(name, value, days = 365) {
@@ -43,14 +53,11 @@ class ColorSchemeHandler {
     }
 
     #getCookie(name) {
-        const nameEQ = `${name}=`;
+        const prefix = `${name}=`;
         for (const raw of document.cookie.split(";")) {
-            let c = raw;
-            while (c.startsWith(" ")) {
-                c = c.slice(1);
-            }
-            if (c.startsWith(nameEQ)) {
-                return c.slice(nameEQ.length);
+            let part = raw.trimStart();
+            if (part.startsWith(prefix)) {
+                return part.slice(prefix.length);
             }
         }
         return null;
@@ -60,9 +67,10 @@ class ColorSchemeHandler {
 const colorSchemeHandler = new ColorSchemeHandler();
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    colorSchemeHandler.updateColorScheme();
+    colorSchemeHandler.applyStoredTheme();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    colorSchemeHandler.createColorSchemeSelector();
+    colorSchemeHandler.applyStoredTheme();
+    colorSchemeHandler.initToggleControls();
 });
