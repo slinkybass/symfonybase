@@ -1,9 +1,13 @@
+/* -----------------------------------------------------------------------------
+   EasyAdmin
+   ----------------------------------------------------------------------------- */
+
 /* Sidebar */
 aside .navbar-brand img {
     max-height: 32px;
 }
 
-/* Clickable rows for default row action */
+/* Tables — clickable row: default row action */
 .table tr.ea-clickable-row {
     cursor: pointer;
 }
