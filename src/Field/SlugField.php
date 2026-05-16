@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField as EasyField;
 
+/** EasyAdmin `SlugField` wrapper with `FieldTrait`. */
 class SlugField implements FieldInterface
 {
     use FieldTrait {

@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 
+/** EasyAdmin `TextField` wrapper with `FieldTrait`. */
 class TextField implements FieldInterface
 {
     use FieldTrait {

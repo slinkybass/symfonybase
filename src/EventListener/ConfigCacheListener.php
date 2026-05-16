@@ -8,7 +8,9 @@ use Doctrine\ORM\Events;
 use Symfony\Contracts\Cache\CacheInterface;
 
 /**
- * Invalidates the global cached config so it is rebuilt on next request.
+ * Doctrine entity listener on `Config`: clears the `app_config` cache item after persist/update.
+ *
+ * Must stay in sync with the `ConfigService` cache key so `AppConfig` is rebuilt on the following read.
  */
 #[AsEntityListener(event: Events::postUpdate, entity: Config::class, method: 'invalidate')]
 #[AsEntityListener(event: Events::postPersist, entity: Config::class, method: 'invalidate')]
@@ -20,7 +22,7 @@ final class ConfigCacheListener
     }
 
     /**
-     * Deletes the cached config entry so it is rebuilt on the next request.
+     * @param Config $config entity instance (unused; required by the Doctrine listener callback signature)
      */
     public function invalidate(Config $config): void
     {

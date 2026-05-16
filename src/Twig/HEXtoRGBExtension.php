@@ -6,7 +6,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
- * Twig extension to convert HEX color codes to RGB values.
+ * `#RRGGBB` to RGB channel triplets for templates (e.g. inline styles).
  */
 class HEXtoRGBExtension extends AbstractExtension
 {
@@ -18,11 +18,9 @@ class HEXtoRGBExtension extends AbstractExtension
     }
 
     /**
-     * Converts a HEX color code to an array of RGB values.
+     * Parses `#RRGGBB` into `[R, G, B]` with integers in `0..255`.
      *
-     * @param string $hex the HEX color code (e.g. '#ff0000')
-     *
-     * @return array<int, int>|null
+     * @return array{0: int, 1: int, 2: int}|null when the string does not match that shape
      */
     public function hexToRgb(string $hex): ?array
     {

@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField as EasyField;
 
+/** EasyAdmin `EmailField` wrapper with `FieldTrait`. */
 class EmailField implements FieldInterface
 {
     use FieldTrait {

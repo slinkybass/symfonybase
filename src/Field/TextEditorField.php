@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField as EasyField;
 
+/** EasyAdmin `TextEditorField` wrapper with `FieldTrait`. */
 class TextEditorField implements FieldInterface
 {
     use FieldTrait {

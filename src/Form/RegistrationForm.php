@@ -11,6 +11,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Public registration: profile fields plus repeated `plainPassword` and unmapped terms acceptance.
+ *
+ * Terms label links to the privacy route when `AppConfig` provides custom privacy HTML.
+ */
 class RegistrationForm extends AbstractType
 {
     public function __construct(

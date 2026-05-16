@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField as EasyField;
 
+/** EasyAdmin `CollectionField` wrapper with `FieldTrait`. */
 class CollectionField implements FieldInterface
 {
     use FieldTrait {

@@ -11,8 +11,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Controls access to public, auth and privacy routes based on authentication status,
- * user role and application configuration.
+ * Request-time access rules: public/auth/register/reset/privacy/cookies routes vs `AppConfig` and authentication.
+ *
+ * Runs only on the main request (priority 7). Extend the route name constants when adding routes under the same policy.
  */
 final class AccessSubscriber implements EventSubscriberInterface
 {
@@ -42,7 +43,7 @@ final class AccessSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Redirects the request based on route name, authentication status and config.
+     * Short-circuits the request with a redirect when the route and auth/config combination is not allowed.
      */
     public function onKernelRequest(RequestEvent $event): void
     {

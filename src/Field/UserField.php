@@ -6,6 +6,9 @@ use App\Repository\Filter\User as UserFilter;
 use App\Twig\Components\User as UserComponent;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 
+/**
+ * User association picker built on `AssociationField`: filters (active/verified), card/badge display, and avatar sizing for Twig templates.
+ */
 class UserField implements FieldInterface
 {
     use FieldTrait {

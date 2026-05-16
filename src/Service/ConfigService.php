@@ -8,7 +8,11 @@ use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 /**
- * Provides the resolved application configuration, with database overrides and caching.
+ * Resolves `AppConfig` from defaults, optional `Config` row overrides, and AssetMapper paths.
+ *
+ * The result is cached under a fixed key; `App\Entity\Config` updates clear that entry via
+ * `App\EventListener\ConfigCacheListener`. Only scalar DTO fields are stored (e.g. default register role id),
+ * never Doctrine entities.
  */
 final readonly class ConfigService
 {
@@ -22,7 +26,8 @@ final readonly class ConfigService
     }
 
     /**
-     * Returns the resolved application configuration, loading from cache or rebuilding from database.
+     * Returns the cached DTO, building it on a miss. Drops the cache once if a legacy entry still
+     * carried a removed `roleDefaultRegister` object property, then rebuilds.
      */
     public function get(): AppConfig
     {

@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField as EasyField;
 
+/** EasyAdmin `DateTimeField` wrapper with `FieldTrait`. */
 class DateTimeField implements FieldInterface
 {
     use FieldTrait {

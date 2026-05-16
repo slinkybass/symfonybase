@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField as EasyField;
 
+/** EasyAdmin `IdField` wrapper with `FieldTrait`. */
 class IdField implements FieldInterface
 {
     use FieldTrait {

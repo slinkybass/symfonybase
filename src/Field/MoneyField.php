@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField as EasyField;
 
+/** EasyAdmin `MoneyField` wrapper with `FieldTrait`. */
 class MoneyField implements FieldInterface
 {
     use FieldTrait {

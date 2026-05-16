@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
+/** PHP enums on top of EasyAdmin `ChoiceField` using `EnumType` with `FieldTrait`. */
 class EnumField implements FieldInterface
 {
     use FieldTrait {

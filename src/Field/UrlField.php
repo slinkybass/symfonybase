@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField as EasyField;
 
+/** EasyAdmin `UrlField` wrapper with `FieldTrait`. */
 class UrlField implements FieldInterface
 {
     use FieldTrait {

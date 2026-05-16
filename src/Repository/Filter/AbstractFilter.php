@@ -5,7 +5,7 @@ namespace App\Repository\Filter;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Base class for QueryBuilder filters with join deduplication support.
+ * Shared helpers for repository filters: idempotent joins, comparison operators, date parsing, and operator guards.
  */
 abstract class AbstractFilter implements FilterInterface
 {

@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField as EasyField;
 
+/** EasyAdmin `PercentField` wrapper with `FieldTrait`. */
 class PercentField implements FieldInterface
 {
     use FieldTrait {

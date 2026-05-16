@@ -6,6 +6,9 @@ use App\Field\FieldGenerator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Account password change using repeated unmapped `plainPassword` (hashed elsewhere).
+ */
 class ChangePasswordForm extends AbstractType
 {
     public function __construct(

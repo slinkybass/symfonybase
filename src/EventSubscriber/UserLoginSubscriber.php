@@ -11,7 +11,9 @@ use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Prevents login if the user is inactive or not verified.
+ * After interactive login, rejects `User` accounts that are inactive or not email-verified.
+ *
+ * Flashes a translated error when a session exists, then throws `DisabledException` so Symfony treats the login as failed.
  */
 final class UserLoginSubscriber implements EventSubscriberInterface
 {
@@ -20,6 +22,9 @@ final class UserLoginSubscriber implements EventSubscriberInterface
     ) {
     }
 
+    /**
+     * @throws DisabledException when the authenticated principal is inactive or unverified
+     */
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         /** @var User $user */

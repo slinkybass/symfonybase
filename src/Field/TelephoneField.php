@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField as EasyField;
 
+/** EasyAdmin `TelephoneField` wrapper with `FieldTrait`. */
 class TelephoneField implements FieldInterface
 {
     use FieldTrait {

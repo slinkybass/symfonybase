@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
+/** Symfony `RepeatedType` exposed as an EasyAdmin field with paired first/second option helpers. */
 class RepeatField implements FieldInterface
 {
     use FieldTrait {

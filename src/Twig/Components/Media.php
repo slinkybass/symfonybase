@@ -4,6 +4,11 @@ namespace App\Twig\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
+/**
+ * Renders a media URL as a sized avatar-style image with optional zoom.
+ *
+ * Image detection uses the path extension or a `data:image` prefix; query strings are ignored for extension checks.
+ */
 #[AsTwigComponent]
 class Media
 {

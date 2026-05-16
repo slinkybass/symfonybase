@@ -7,7 +7,7 @@ use App\Repository\Filter\ComparisonOperator;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Restricts results to users with the given name.
+ * Filters `User.name` (given name field on the entity).
  */
 class NameFilter extends AbstractFilter
 {

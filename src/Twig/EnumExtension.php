@@ -9,7 +9,7 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
- * Twig extension to display, resolve and introspect PHP enums in Twig templates.
+ * Filters and helpers for enum cases in Twig (labels, choices, equality against name or value).
  */
 class EnumExtension extends AbstractExtension
 {
@@ -70,12 +70,12 @@ class EnumExtension extends AbstractExtension
     }
 
     /**
-     * Returns all cases of an enum class as a label-value array, suitable for form choices.
+     * Label-to-value map for form choices. Values are backing values; the enum must be backed.
      *
-     * @param class-string $enumClass the fully qualified enum class name
-     * @param string|null  $locale    the locale code (defaults to the current locale)
+     * @param class-string<\BackedEnum> $enumClass
+     * @param string|null               $locale    explicit locale or current request locale
      *
-     * @return array<string, mixed>
+     * @return array<string, int|string>
      */
     public function enumChoices(string $enumClass, ?string $locale = null): array
     {
@@ -90,10 +90,7 @@ class EnumExtension extends AbstractExtension
     }
 
     /**
-     * Returns the enum case matching the given value, or null if not found.
-     *
-     * @param mixed        $value     the value to match against enum cases
-     * @param class-string $enumClass the fully qualified enum class name
+     * @param class-string<\BackedEnum> $enumClass
      */
     public function enumFromValue(mixed $value, string $enumClass): ?\UnitEnum
     {
@@ -101,10 +98,7 @@ class EnumExtension extends AbstractExtension
     }
 
     /**
-     * Returns the enum case matching the given name, or null if not found.
-     *
-     * @param string       $name      the name to match against enum cases
-     * @param class-string $enumClass the fully qualified enum class name
+     * @param class-string<\UnitEnum> $enumClass
      */
     public function enumFromName(string $name, string $enumClass): ?\UnitEnum
     {
@@ -136,11 +130,9 @@ class EnumExtension extends AbstractExtension
     }
 
     /**
-     * Returns all cases of an enum class as an array of enum instances.
+     * @param class-string<\UnitEnum> $enumClass
      *
-     * @param class-string $enumClass the fully qualified enum class name
-     *
-     * @return \UnitEnum[]
+     * @return list<\UnitEnum>
      */
     public function enumCases(string $enumClass): array
     {
@@ -148,9 +140,7 @@ class EnumExtension extends AbstractExtension
     }
 
     /**
-     * Returns the number of cases in an enum class.
-     *
-     * @param class-string $enumClass the fully qualified enum class name
+     * @param class-string<\UnitEnum> $enumClass
      */
     public function enumCount(string $enumClass): int
     {

@@ -8,6 +8,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
+/**
+ * Password entry built on EasyAdmin `TextField`: toggles `PasswordType` vs `RepeatedType` and exposes UI flags for switch/generator rendering.
+ */
 class PasswordField implements FieldInterface
 {
     use FieldTrait {

@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField as EasyField;
 
+/** EasyAdmin `TextareaField` wrapper with `FieldTrait`. */
 class TextareaField implements FieldInterface
 {
     use FieldTrait {

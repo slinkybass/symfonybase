@@ -3,7 +3,7 @@
 namespace App\Repository\Filter;
 
 /**
- * Defines the sort directions available for query filters.
+ * Sort direction passed to `OrderFilter` (bound as the SQL keyword string).
  */
 enum OrderDirection: string
 {

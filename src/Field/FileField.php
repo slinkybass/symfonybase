@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\File;
 
+/** File uploads on top of EasyAdmin `ImageField` with `FieldTrait` and `File` constraint defaults. */
 class FileField implements FieldInterface
 {
     use FieldTrait {

@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 
+/** Input masks on top of EasyAdmin `TextField` (IMask assets) with `FieldTrait`. */
 class MaskField implements FieldInterface
 {
     use FieldTrait {

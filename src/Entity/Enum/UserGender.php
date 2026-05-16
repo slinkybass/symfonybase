@@ -5,6 +5,9 @@ namespace App\Entity\Enum;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Backed enum persisted on `User::gender` (integer column). Labels use `entities.user.fields.genders.*` translation keys.
+ */
 enum UserGender: int implements TranslatableInterface
 {
     case male = 1;
@@ -14,7 +17,7 @@ enum UserGender: int implements TranslatableInterface
     private const BASE_KEY = 'entities.user.fields.genders';
 
     /**
-     * Returns the translation key for this enum case.
+     * Key under `entities.user.fields.genders.<caseName>` for translators and `choices()`.
      */
     public function translationKey(): string
     {
@@ -32,9 +35,7 @@ enum UserGender: int implements TranslatableInterface
     }
 
     /**
-     * Returns all cases as a translation-key indexed array of values, suitable for form choices.
-     *
-     * @return array<string, int>
+     * @return array<string, int> map of `translationKey()` to backing value (for choice lists / APIs)
      */
     public static function choices(): array
     {

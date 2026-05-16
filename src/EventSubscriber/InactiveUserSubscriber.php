@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Automatically logs out users that have been marked as inactive.
+ * Forces logout for inactive `User` accounts on every main request except the `logout` route.
  */
 final class InactiveUserSubscriber implements EventSubscriberInterface
 {
@@ -21,7 +21,7 @@ final class InactiveUserSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Logs out the current user if they are marked as inactive.
+     * Replaces the kernel response with the Security logout response so inactive users cannot browse authenticated routes.
      */
     public function onKernelRequest(RequestEvent $event): void
     {

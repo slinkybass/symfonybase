@@ -7,7 +7,7 @@ use App\Repository\Filter\ComparisonOperator;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Restricts results to users with the given fullname.
+ * Matches `CONCAT(user.name, ' ', user.lastname)` (display name), not a separate persisted column.
  */
 class FullnameFilter extends AbstractFilter
 {

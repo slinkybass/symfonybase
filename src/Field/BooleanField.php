@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField as EasyField;
 
+/** EasyAdmin `BooleanField` wrapper with `FieldTrait` (checkbox or switch styling). */
 class BooleanField implements FieldInterface
 {
     use FieldTrait {

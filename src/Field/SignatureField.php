@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 
+/** Signature capture using EasyAdmin `TextField` plus `FieldTrait` and custom assets. */
 class SignatureField implements FieldInterface
 {
     use FieldTrait {

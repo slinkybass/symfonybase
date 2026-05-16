@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField as EasyField;
 
+/** EasyAdmin `IntegerField` wrapper with `FieldTrait`. */
 class IntegerField implements FieldInterface
 {
     use FieldTrait {

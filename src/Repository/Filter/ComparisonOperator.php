@@ -3,7 +3,9 @@
 namespace App\Repository\Filter;
 
 /**
- * Defines the comparison operators available for query filters.
+ * Comparison operators for `AbstractFilter::applyComparison()` / `applyMultiComparison()`.
+ *
+ * `BETWEEN` expects `$value` as a two-element array; `IN`/`NOT_IN` expect an array of scalars.
  */
 enum ComparisonOperator
 {

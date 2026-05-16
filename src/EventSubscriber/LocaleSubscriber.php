@@ -7,7 +7,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Sets the application locale on each request based on session or request parameters.
+ * Resolves `Request::setLocale()` from session `_locale`, optionally primed by `_locale` in route attributes or query.
+ *
+ * `$locales` is a pipe-separated allow-list from configuration (priority 40, main request only).
  */
 final class LocaleSubscriber implements EventSubscriberInterface
 {
@@ -22,7 +24,7 @@ final class LocaleSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Resolves and applies the locale for the current request.
+     * Requires an active session; invalid stored locales fall back to the configured default.
      */
     public function onKernelRequest(RequestEvent $event): void
     {

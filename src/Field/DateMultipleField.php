@@ -10,6 +10,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
+/**
+ * Multiple calendar dates: plugin mode uses `DateMultipleType` + Flatpickr; plain mode uses a `CollectionType` of `DateType` rows.
+ */
 class DateMultipleField implements FieldInterface
 {
     use FieldTrait {

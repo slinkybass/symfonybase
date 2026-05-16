@@ -3,7 +3,11 @@
 namespace App\Util;
 
 /**
- * Generates cryptographically secure random passwords.
+ * Builds human-readable passwords with cryptographically secure randomness per character.
+ *
+ * The character sets omit ambiguous glyphs (e.g. O/0, I/l/1). The first four slots always use
+ * one symbol, one lowercase, one uppercase, and one digit; additional length draws from the full
+ * pool. Requested lengths below four still yield four characters from those mandatory pools.
  */
 final class PasswordGenerator
 {
@@ -14,12 +18,7 @@ final class PasswordGenerator
     private const ALPHABET = self::UPPERCASE.self::LOWERCASE.self::NUMBERS.self::SPECIALS;
 
     /**
-     * Generates a random password guaranteed to contain at least one uppercase letter,
-     * one lowercase letter, one number and one special character.
-     *
-     * @param int $length the total length of the generated password (minimum 4)
-     *
-     * @throws \InvalidArgumentException if length is less than 4
+     * @param int $length Desired total length; result length is max(4, $length)
      */
     public static function generate(int $length = 8): string
     {
@@ -35,6 +34,9 @@ final class PasswordGenerator
         return self::shuffleString($password);
     }
 
+    /**
+     * @param non-empty-string $str
+     */
     private static function pick(string $str, int $count = 1): string
     {
         $result = '';
@@ -46,6 +48,7 @@ final class PasswordGenerator
         return $result;
     }
 
+    /** Fisher-Yates shuffle of single-byte characters in $value. */
     private static function shuffleString(string $value): string
     {
         $chars = str_split($value);

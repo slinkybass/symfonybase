@@ -12,6 +12,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Recomputes the superadmin role permission map from `RolePermissions` (CRUD scan + extras) and persists it to `ROLE_SUPERADMIN`.
+ */
 #[AsCommand(name: 'app:update-permissions')]
 class UpdatePermissionsCommand extends Command
 {

@@ -6,6 +6,9 @@ use App\Entity\User as UserEntity;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
+/**
+ * Displays a user summary as a card or compact badge (name, optional link, role sublabel).
+ */
 #[AsTwigComponent]
 class User
 {

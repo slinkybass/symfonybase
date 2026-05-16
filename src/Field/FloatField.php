@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField as EasyField;
 
+/** EasyAdmin `NumberField` wrapper (float/decimal) with `FieldTrait`. */
 class FloatField implements FieldInterface
 {
     use FieldTrait {

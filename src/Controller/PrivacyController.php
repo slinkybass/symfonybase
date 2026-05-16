@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+/** Legal and cookie policy pages; visibility and content are also gated in `AccessSubscriber` via `AppConfig`. */
 final class PrivacyController extends AbstractController
 {
     #[Route('/privacy', name: 'privacy')]

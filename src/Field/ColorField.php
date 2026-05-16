@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField as EasyField;
 
+/** EasyAdmin `ColorField` wrapper with `FieldTrait`. */
 class ColorField implements FieldInterface
 {
     use FieldTrait {

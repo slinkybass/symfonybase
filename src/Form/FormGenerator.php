@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Builds Symfony Form instances from EasyAdmin-compatible field definitions.
+ * Maps `FieldGenerator` / EasyAdmin-style field objects onto a `FormBuilderInterface` (Doctrine metadata + TomSelect widget hints).
  */
 class FormGenerator
 {
@@ -18,12 +18,9 @@ class FormGenerator
     }
 
     /**
-     * Builds a Symfony Form from an array of EasyAdmin-compatible field definitions.
-     *
-     * @param FormBuilderInterface $builder     the form builder instance
-     * @param array                $fields      array of field definitions
-     * @param bool                 $submitField whether to append a submit button
-     * @param string|null          $entityClass the entity class to resolve Doctrine metadata from
+     * @param array<int, object> $fields      instances exposing `getAsDto()` (see `FieldGenerator`)
+     * @param class-string|null  $entityClass when set, `required` and backed enum `class` are inferred from Doctrine metadata
+     * @param bool               $submitField append a `save` submit button
      */
     public function getFormBuilder(
         FormBuilderInterface $builder,
@@ -53,11 +50,7 @@ class FormGenerator
     }
 
     /**
-     * Resolves required and enum class from Doctrine metadata.
-     *
-     * @param array  $options     current form type options
-     * @param string $property    the field property name
-     * @param string $entityClass the entity class
+     * @param class-string $entityClass
      *
      * @return array<string, mixed>
      */

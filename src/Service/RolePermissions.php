@@ -144,14 +144,12 @@ final readonly class RolePermissions
     }
 
     /**
-     * Checks whether a user has access to the CRUD of a given entity.
+     * Equivalent to `userHasPermission($user, 'crud_'.$crud)` with normalised `$crud` (controller basename segment).
      *
-     * Equivalent to userHasPermission($user, 'crud_<entity>').
+     * @param User   $user
+     * @param string $crud entity key derived from `*CrudController.php` (e.g. `user` from `UserCrudController.php`)
      *
-     * @param User   $user the user to check
-     * @param string $crud the entity name
-     *
-     * @return bool true if the CRUD permission exists and is enabled on the user's role
+     * @return bool whether `crud_<entity>` exists and is enabled on the user's role
      */
     public function userHasPermissionCrud(User $user, string $crud): bool
     {
@@ -159,15 +157,13 @@ final readonly class RolePermissions
     }
 
     /**
-     * Checks whether a user has access to a specific action within a CRUD.
+     * Same as `userHasPermission($user, 'crud_'.$crud.'_'.$action)` with normalised segments (see `userHasPermissionCrud`).
      *
-     * Equivalent to userHasPermission($user, 'crud_<entity>_<action>').
+     * @param User   $user
+     * @param string $crud   entity segment as for `userHasPermissionCrud`
+     * @param string $action EasyAdmin action name (e.g. `new`, `edit`, values from `Action::*` constants)
      *
-     * @param User   $user   the user to check
-     * @param string $crud   the entity name
-     * @param string $action the CRUD action
-     *
-     * @return bool true if the CRUD action permission exists and is enabled on the user's role
+     * @return bool whether the composed permission exists and is enabled on the user's role
      */
     public function userHasPermissionCrudAction(User $user, string $crud, string $action): bool
     {

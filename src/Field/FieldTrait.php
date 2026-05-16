@@ -5,6 +5,9 @@ namespace App\Field;
 use App\Security\VirtualPermission;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait as EasyTrait;
 
+/**
+ * Shared API for custom EasyAdmin fields: syncs the DTO from the wrapped field, applies column defaults, and maps `displayIf()` to `VirtualPermission` for EasyAdmin `setPermission()`.
+ */
 trait FieldTrait
 {
     use EasyTrait;
@@ -22,6 +25,9 @@ trait FieldTrait
 
     public const DEFAULT_COLUMNS = 12;
 
+    /**
+     * Copies the wrapped field DTO, stamps its FQCN on the DTO, and runs `applyDefaults()` on this object.
+     */
     protected function initField(object $field): void
     {
         $this->dto = $field->getAsDto();

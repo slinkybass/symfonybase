@@ -30,14 +30,14 @@ final readonly class MailService
     }
 
     /**
-     * Sends an email.
+     * Sends via Symfony Mailer using `AppConfig` for From name/address. Transport errors are logged and swallowed.
      *
-     * @param string[] $to          primary recipients
-     * @param string[] $cc          CC recipients
-     * @param string[] $bcc         BCC recipients
-     * @param string[] $attachments absolute file paths to attach
+     * @param list<string>          $to
+     * @param list<string>          $cc
+     * @param list<string>          $bcc
+     * @param list<string>          $attachments absolute filesystem paths
      *
-     * @return bool true if the email was accepted by the transport, false otherwise
+     * @return bool whether the transport accepted the message (always false when prod has no `to`)
      */
     public function send(
         string $subject,

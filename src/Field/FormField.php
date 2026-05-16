@@ -6,6 +6,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
+/**
+ * Layout primitives (fieldset/panel, row, column, tab) delegating to EasyAdmin `FormField`; use the named static factories — `::new()` is intentionally unusable.
+ */
 class FormField implements FieldInterface
 {
     use FieldTrait {
@@ -13,6 +16,9 @@ class FormField implements FieldInterface
     }
     private EasyField $innerField;
 
+    /**
+     * @return never use `fieldset`, `row`, `col`, or `tab` instead
+     */
     public static function new(string $propertyName, ?string $label = null): never
     {
         EasyField::new($propertyName, $label);

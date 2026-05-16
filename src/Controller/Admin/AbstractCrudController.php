@@ -19,14 +19,24 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Base EasyAdmin CRUD controller: role-based action visibility, filter/query helpers,
- * translation keys for entities, and shortcuts to common services.
+ * Base EasyAdmin CRUD controller for this app: wires shared services, applies
+ * RolePermissions to CRUD actions, and exposes helpers for request/session,
+ * cached AppConfig, current entity, and translation keys under `entities.*`.
  */
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
-    /** Translation domain key for this CRUD. */
+    /**
+     * Translation entity segment (e.g. `user` → `entities.user.*`).
+     * Subclasses may set explicitly; otherwise the constructor falls back to `crud()`.
+     */
     public string $transEntity;
 
+    /**
+     * @param EntityManagerInterface $em            Persisted entities for `entity()` fallback by id
+     * @param TranslatorInterface    $translator    `entities.{transEntity}.*` keys
+     * @param ConfigService          $configService Cached application config
+     * @param RolePermissions        $rolePermissions CRUD/action permission checks
+     */
     public function __construct(
         public EntityManagerInterface $em,
         public TranslatorInterface $translator,
@@ -36,6 +46,9 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $this->transEntity = $this->transEntity ?? $this->crud();
     }
 
+    /**
+     * Default labels, sort, and form themes shared by admin CRUDs.
+     */
     public function configureCrud(Crud $crud): Crud
     {
         $crud->setEntityLabelInSingular(fn ($entity) => $entity ? $this->transEntitySingular().': '.(string) $entity : $this->transEntitySingular());
@@ -49,6 +62,9 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $crud;
     }
 
+    /**
+     * Maps denied CRUD actions to an impossible Symfony permission so EasyAdmin hides them.
+     */
     public function configureActions(Actions $actions): Actions
     {
         $hasPermission = $this->hasPermissionCrud();
@@ -73,31 +89,49 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $actions;
     }
 
+    /**
+     * Admin URL generator from the container (EasyAdmin legacy access pattern).
+     */
     public function adminUrl(): AdminUrlGenerator
     {
         return $this->container->get(AdminUrlGenerator::class);
     }
 
+    /**
+     * Request stack from the container (EasyAdmin legacy access pattern).
+     */
     public function request(): RequestStack
     {
         return $this->container->get('request_stack');
     }
 
+    /**
+     * Current session if the request stack exposes one.
+     */
     public function session(): ?Session
     {
         return $this->request()?->getSession();
     }
 
+    /**
+     * Resolved application configuration (may be null if not yet available).
+     */
     public function config(): ?AppConfig
     {
         return $this->configService->get();
     }
 
+    /**
+     * Authenticated user for permission checks and display helpers.
+     */
     public function user(): ?User
     {
         return $this->getUser();
     }
 
+    /**
+     * Active entity instance from EasyAdmin context, or loaded by `EA::ENTITY_ID` on the current request.
+     */
     public function entity(): ?object
     {
         $entity = $this->getContext()?->getEntity()?->getInstance();
@@ -113,6 +147,9 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return null;
     }
 
+    /**
+     * Short entity key derived from the concrete controller class name (`FooCrudController` → `foo`).
+     */
     public function crud(): string
     {
         $className = get_class($this);
@@ -123,36 +160,49 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return lcfirst($crud);
     }
 
+    /**
+     * Current EasyAdmin CRUD action name, if any.
+     */
     public function action(): ?string
     {
         return $this->getContext()?->getCrud()?->getCurrentAction();
     }
 
+    /** True when the current action is the list (index). */
     public function isIndex(): bool
     {
         return $this->action() === Action::INDEX;
     }
 
+    /** True when the current action is detail view. */
     public function isDetail(): bool
     {
         return $this->action() === Action::DETAIL;
     }
 
+    /** True when the current action is create (new entity form). */
     public function isNew(): bool
     {
         return $this->action() === Action::NEW;
     }
 
+    /** True when the current action is edit. */
     public function isEdit(): bool
     {
         return $this->action() === Action::EDIT;
     }
 
+    /** True on new or edit (any screen that shows the entity form). */
     public function isForm(): bool
     {
         return $this->isNew() || $this->isEdit();
     }
 
+    /**
+     * EasyAdmin filter payload from the query string (`EA::FILTERS`).
+     *
+     * @param bool $withHiddenFilters When true, keeps the `hidden_filters` meta entry used by EA
+     */
     public function filters(bool $withHiddenFilters = false): array
     {
         $filters = filter_input(INPUT_GET, EA::FILTERS, FILTER_SANITIZE_URL, FILTER_REQUIRE_ARRAY) ?? [];
@@ -163,6 +213,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters;
     }
 
+    /** Filter values visible in the UI (excludes keys listed under `hidden_filters`). */
     public function filtersShown(): array
     {
         $filters = $this->filters(true);
@@ -173,6 +224,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters;
     }
 
+    /** Filter values that are applied but hidden from the filter bar. */
     public function filtersHidden(): array
     {
         $filters = $this->filters(true);
@@ -183,6 +235,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters;
     }
 
+    /** Single filter value from the non-hidden filter set. */
     public function filter(string $name): array|string|null
     {
         $filters = $this->filters();
@@ -190,6 +243,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters[$name] ?? null;
     }
 
+    /** Single filter value from the visible subset only. */
     public function filterShown(string $name): array|string|null
     {
         $filters = $this->filtersShown();
@@ -197,6 +251,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters[$name] ?? null;
     }
 
+    /** Single filter value from the hidden subset only. */
     public function filterHidden(string $name): array|string|null
     {
         $filters = $this->filtersHidden();
@@ -204,21 +259,29 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters[$name] ?? null;
     }
 
+    /** Whether the current user holds an arbitrary application permission. */
     public function hasPermission(string $permission): bool
     {
         return $this->rolePermissions->userHasPermission($this->user(), $permission);
     }
 
+    /**
+     * Whether the user may access this CRUD (or the given `$crud` key) at all.
+     */
     public function hasPermissionCrud(?string $crud = null): bool
     {
         return $this->rolePermissions->userHasPermissionCrud($this->user(), $crud ?? $this->crud());
     }
 
+    /**
+     * Whether the user may run a specific CRUD action (`Action::*` constant or equivalent string).
+     */
     public function hasPermissionCrudAction(string $action, ?string $crud = null): bool
     {
         return $this->rolePermissions->userHasPermissionCrudAction($this->user(), $crud ?? $this->crud(), $action);
     }
 
+    /** Singular entity label (`entities.{entity}.singular`). */
     public function transEntitySingular(?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
@@ -226,6 +289,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $this->translator->trans('entities.'.$entity.'.singular');
     }
 
+    /** Plural entity label (`entities.{entity}.plural`). */
     public function transEntityPlural(?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
@@ -233,6 +297,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $this->translator->trans('entities.'.$entity.'.plural');
     }
 
+    /** Section heading (`entities.{entity}.sections.{section}`). */
     public function transEntitySection(string $section = 'data', ?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
@@ -240,6 +305,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $this->translator->trans('entities.'.$entity.'.sections.'.$section);
     }
 
+    /** Custom action label (`entities.{entity}.actions.{action}`). */
     public function transEntityAction(string $action, ?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;
@@ -247,6 +313,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $this->translator->trans('entities.'.$entity.'.actions.'.$action);
     }
 
+    /** Field label (`entities.{entity}.fields.{field}`). */
     public function transEntityField(string $field, ?string $entity = null): string
     {
         $entity = $entity ?? $this->transEntity;

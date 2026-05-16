@@ -12,6 +12,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
+/**
+ * Enables or disables the optional demo entity/CRUD/form by swapping tracked files with `docs/Demo/*.phps` backups, then runs `doctrine:schema:update --force` and `app:update-permissions`.
+ */
 #[AsCommand(name: 'app:demo')]
 class DemoCommand extends Command
 {

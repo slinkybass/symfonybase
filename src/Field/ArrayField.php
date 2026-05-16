@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
 
+/** EasyAdmin `ArrayField` wrapper with `FieldTrait`. */
 class ArrayField implements FieldInterface
 {
     use FieldTrait {

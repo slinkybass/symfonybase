@@ -10,6 +10,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
+/**
+ * Multiple date-times: same plugin/collection split as `DateMultipleField`, with `DateTimeType` entries by default.
+ */
 class DateTimeMultipleField implements FieldInterface
 {
     use FieldTrait {

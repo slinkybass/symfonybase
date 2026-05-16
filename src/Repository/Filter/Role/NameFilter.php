@@ -7,7 +7,7 @@ use App\Repository\Filter\ComparisonOperator;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Restricts results to roles with the given name.
+ * Matches the persisted `Role.name` value (e.g. `ROLE_ADMIN`), with string operators from `ComparisonOperator`.
  */
 class NameFilter extends AbstractFilter
 {

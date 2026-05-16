@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Ensures the media directories required by the file manager exist before handling requests.
+ * For Artgris `file_manager` requests, ensures the upload directory for the selected `conf` query key exists on disk.
  */
 final class MediaSubscriber implements EventSubscriberInterface
 {
@@ -22,7 +22,7 @@ final class MediaSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Creates the configured media directory if it does not exist.
+     * No-op unless `_route` is `file_manager`, `conf` is present, and it matches a key in the injected Artgris config map.
      */
     public function onKernelRequest(RequestEvent $event): void
     {

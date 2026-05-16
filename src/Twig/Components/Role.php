@@ -5,6 +5,9 @@ namespace App\Twig\Components;
 use App\Entity\Role as RoleEntity;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
+/**
+ * Role badge with deterministic pastel colors derived from the role id and name.
+ */
 #[AsTwigComponent]
 class Role
 {

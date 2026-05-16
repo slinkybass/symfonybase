@@ -8,6 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Single-line text field whose model data is a list of date strings; the view value is comma-separated.
+ *
+ * Useful where multiple ISO-like date tokens are edited as one string and transformed to `string[]`.
+ */
 class DateMultipleType extends AbstractType
 {
     public function getParent(): string

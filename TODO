@@ -2,7 +2,7 @@ Actualizar composer y assets
 Revisar Demo
 
 MEJORAS:
-	Repasar todo el código formateando y refatorizando (templates y assets)
+	Documentar (PhpDoc, JS y README.md)
 
 	Mostrar como labels los filtros ocultos en los listados?
 

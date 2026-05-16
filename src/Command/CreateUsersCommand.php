@@ -16,11 +16,19 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * Idempotently seeds default `Role` rows (superadmin with full permission tree, admin, user) and initial superadmin/admin `User` accounts when none exist for those roles.
+ *
+ * Intended for local/bootstrap setups; change default passwords immediately outside trusted environments.
+ */
 #[AsCommand(name: 'app:create-users')]
 class CreateUsersCommand extends Command
 {
+    /** Role that receives the full scanned permission tree in this command. */
     public const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
+    /** Admin role name persisted on `Role.name`. */
     public const ROLE_ADMIN = 'ROLE_ADMIN';
+    /** Default non-admin role name persisted on `Role.name`. */
     public const ROLE_USER = 'ROLE_USER';
 
     public function __construct(

@@ -4,6 +4,9 @@ namespace App\Field;
 
 use Symfony\Component\Form\AbstractType;
 
+/**
+ * Static factories for EasyAdmin-style field objects used from CRUD controllers and `App\Form\FormGenerator`.
+ */
 class FieldGenerator extends AbstractType
 {
     public static function tab(string $name): FormField

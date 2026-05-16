@@ -6,6 +6,9 @@ use App\Entity\User;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
+/**
+ * Avatar or initials for a user; anonymous users get the translated `user.anonymous` label.
+ */
 #[AsTwigComponent]
 class UserAvatar
 {

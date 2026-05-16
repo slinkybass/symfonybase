@@ -3,7 +3,9 @@
 namespace App\Model;
 
 /**
- * Represents the application configuration resolved from the database and defaults.
+ * Mutable configuration DTO built by `ConfigService` (defaults + optional `Config` row + AssetMapper paths).
+ *
+ * Cached as a whole: use scalar fields only (e.g. `roleDefaultRegisterId`), never Doctrine entities or proxies.
  */
 final class AppConfig
 {

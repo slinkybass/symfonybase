@@ -6,7 +6,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
- * Twig extension to decode JSON strings.
+ * Decodes JSON strings in Twig via the `json_decode` filter (default `json_decode()` semantics).
  */
 class JsonDecodeExtension extends AbstractExtension
 {
@@ -18,7 +18,7 @@ class JsonDecodeExtension extends AbstractExtension
     }
 
     /**
-     * Decodes a JSON string.
+     * @return mixed|null `null` on invalid JSON or JSON `null`
      */
     public function jsonDecode(string $string): mixed
     {

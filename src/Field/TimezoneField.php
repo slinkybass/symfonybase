@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField as EasyField;
 
+/** EasyAdmin `TimezoneField` wrapper with `FieldTrait`. */
 class TimezoneField implements FieldInterface
 {
     use FieldTrait {

@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraint;
 
+/** EasyAdmin `ImageField` wrapper with `FieldTrait` and upload constraints helpers. */
 class ImageField implements FieldInterface
 {
     use FieldTrait {

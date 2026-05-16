@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField as EasyField;
 
+/** EasyAdmin `CodeEditorField` wrapper with `FieldTrait`. */
 class CodeEditorField implements FieldInterface
 {
     use FieldTrait {

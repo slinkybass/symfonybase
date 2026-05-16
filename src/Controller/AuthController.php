@@ -27,6 +27,11 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
+/**
+ * Public authentication flows: EasyAdmin-styled login, registration (default role from config), email verification, and SymfonyCasts reset password.
+ *
+ * Uses `ResetPasswordControllerTrait`; reset requests avoid email enumeration and skip inactive/unverified users.
+ */
 final class AuthController extends AbstractController
 {
     use ResetPasswordControllerTrait;

@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField as EasyField;
 
+/** EasyAdmin `HiddenField` wrapper with `FieldTrait`. */
 class HiddenField implements FieldInterface
 {
     use FieldTrait {

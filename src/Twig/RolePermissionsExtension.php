@@ -9,7 +9,9 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Twig extension to check user permissions in Twig templates.
+ * Twig helpers that delegate to `RolePermissions` for the current (or given) `User`.
+ *
+ * Non-`User` security tokens are treated as having no permissions.
  */
 class RolePermissionsExtension extends AbstractExtension
 {

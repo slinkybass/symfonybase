@@ -5,6 +5,9 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field as EasyField;
 
+/**
+ * Generic EasyAdmin field delegating to the bundle base `Field` type when no specialised wrapper exists.
+ */
 class Field implements FieldInterface
 {
     use FieldTrait {

@@ -8,7 +8,7 @@ use App\Repository\Filter\ComparisonOperator;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Restricts results to users with a role matching the given criteria.
+ * Normalises role identifiers to `ROLE_*` and matches against the joined `Role.name` column.
  */
 class RoleFilter extends AbstractFilter
 {

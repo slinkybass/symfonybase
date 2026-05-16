@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField as EasyField;
 
+/** EasyAdmin `AssociationField` wrapper with `FieldTrait` and TomSelect-friendly defaults. */
 class AssociationField implements FieldInterface
 {
     use FieldTrait {

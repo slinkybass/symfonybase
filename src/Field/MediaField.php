@@ -6,6 +6,9 @@ use Arkounay\Bundle\UxMediaBundle\Form\UxMediaType;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 
+/**
+ * Arkounay `UxMediaType` on an EasyAdmin `TextField` shell: Artgris `conf` keys, crop/zoom options, and `field/media.html.twig`.
+ */
 class MediaField implements FieldInterface
 {
     use FieldTrait {

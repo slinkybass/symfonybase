@@ -6,6 +6,9 @@ use App\Field\FieldGenerator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * First step of reset password: collect email for SymfonyCasts lookup.
+ */
 class ResetPasswordRequestForm extends AbstractType
 {
     public function __construct(

@@ -7,7 +7,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 
 /**
- * Twig extension to access app config in Twig templates.
+ * Exposes the resolved application configuration DTO to every Twig template as `appConfig`.
  */
 class AppConfigExtension extends AbstractExtension implements GlobalsInterface
 {
@@ -15,6 +15,9 @@ class AppConfigExtension extends AbstractExtension implements GlobalsInterface
     {
     }
 
+    /**
+     * @return array{appConfig: \App\Model\AppConfig}
+     */
     public function getGlobals(): array
     {
         return [

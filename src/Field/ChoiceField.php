@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
+/** EasyAdmin `ChoiceField` wrapper with `FieldTrait` and autocomplete-oriented defaults. */
 class ChoiceField implements FieldInterface
 {
     use FieldTrait {

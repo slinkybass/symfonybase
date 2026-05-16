@@ -7,7 +7,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Base repository providing filter-based querying for all entities.
+ * Base `ServiceEntityRepository` that composes `FilterInterface` instances as additional `AND` conditions.
+ *
+ * Subclasses set `static::$alias` for DQL; filters receive the same `QueryBuilder` from `createQueryBuilder()`.
  *
  * @template T of object
  *
@@ -32,11 +34,13 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns a single result matching the given filters, or null if not found.
+     * Exactly one entity or null; not constrained to unique filters — multiple rows throw.
      *
      * @param FilterInterface|FilterInterface[] $filters
      *
      * @return T|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException when more than one row matches
      */
     public function filterOne(FilterInterface|array $filters = []): ?object
     {
@@ -61,8 +65,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns the number of results matching the given filters.
-     *
      * @param FilterInterface|FilterInterface[] $filters
      */
     public function filterCount(FilterInterface|array $filters = []): int
@@ -74,7 +76,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns whether at least one result matches the given filters.
+     * Whether any row matches; implemented as `filterFirst()` with `LIMIT 1` (not `COUNT()`).
      *
      * @param FilterInterface|FilterInterface[] $filters
      */
@@ -84,9 +86,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns a paginated set of results matching the given filters.
-     *
      * @param FilterInterface|FilterInterface[] $filters
+     * @param int                                 $page  1-based page number
+     * @param int                                 $limit max rows per page
      *
      * @return list<T>
      */
