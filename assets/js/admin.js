@@ -1,8 +1,4 @@
-// Mark.js
-import Mark from "mark.js";
-window.Mark = Mark;
-
-import Admin from "./controllers/admin.js";
+import Admin from "./page/admin.js";
 window.Admin = Admin;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,5 +11,4 @@ document.addEventListener("DOMContentLoaded", () => {
     Admin.createActionHandlers();
 });
 
-// CSS
 import "../css/admin.css";

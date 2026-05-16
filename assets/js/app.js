@@ -60,13 +60,13 @@ import "nouislider/dist/nouislider.min.css";
 import "@tabler/core/dist/css/tabler-vendors.min.css";
 
 // UX Translator
-import { trans } from '../translator.js';
+import { trans } from "../translator.js";
 window.trans = trans;
 
 // Page color scheme
 import "./app/page-color-scheme.js";
 
-import App from "./controllers/app.js";
+import App from "./page/app.js";
 window.App = App;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -85,5 +85,4 @@ document.addEventListener("ea.collection.item-added", () => {
     App.createAutoCompleteFields();
 });
 
-// CSS
 import "../css/app.css";

@@ -1,5 +1,4 @@
-import Public from "./controllers/public.js";
+import Public from "./page/public.js";
 window.Public = Public;
 
-// CSS
 import "../css/public.css";

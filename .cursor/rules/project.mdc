@@ -53,6 +53,12 @@ alwaysApply: true
 - Avoid inline scripts in Twig
 - Keep frontend logic minimal and maintainable
 
+**JavaScript layout (Asset Mapper):**
+- **`assets/js/app.js`**, **`admin.js`**, **`public.js`:** entrypoints delgados (CSS/libs globales + arranque en `DOMContentLoaded`); registrados en `importmap.php`.
+- **`assets/js/page/`:** lógica de shell / EasyAdmin / formularios (objetos `App`, `Admin`, `Public`).
+- **`assets/controllers/`:** solo controladores **Stimulus** (`controllers.json` + `stimulus_bootstrap.js`).
+- Entre módulos propios: preferir **`import` ES**; reservar **`window.*`** para lo que exijan plantillas o terceros (`Swal`, `moment`, etc.). EasyAdmin carga `app` y `admin` vía `DashboardController::configureAssets()`.
+
 **Datos:** Doctrine ORM con URL `DATABASE_URL` (`config/packages/doctrine.yaml`); estrategia `underscore_number_aware`. **i18n:** `default_locale: es`, fallbacks `es` (`config/packages/translation.yaml`). Traducciones en `translations/*.es.yaml` (+ `validators.es.yaml`).
 
 **Caché de aplicación:** `ConfigService` + clave `app_config`; invalidación en `App\EventListener\ConfigCacheListener` ante `postPersist`/`postUpdate` de `App\Entity\Config`. Detalle en **Rules → Configuration**.
