@@ -2,7 +2,7 @@
  * Hierarchical Field Visibility Handler
  *
  * Author: slinkybass
- * Version: 3.3
+ * Version: 3.4
  *
  * Description:
  * This plugin dynamically manages form field visibility and behavior based on hierarchical parent-child relationships.
@@ -51,8 +51,8 @@
      */
     function initHierarchyFields() {
         document.querySelectorAll("[data-hf-parent]").forEach((parent) => {
-            const groupName = parent.dataset.hfParent;
-            const getChildren = () => document.querySelectorAll(`[data-hf-child="${groupName}"]`);
+            const groupName = parent.dataset.hfParent ?? "";
+            const getChildren = () => document.querySelectorAll(`[data-hf-child="${CSS.escape(String(groupName))}"]`);
             const handleHierarchyFields = () => {
                 const children = getChildren();
                 if (children.length) {
@@ -85,7 +85,7 @@
                 parentValue = parent.checked;
                 break;
             case "radio":
-                parentValue = document.querySelector(`[name="${parent.name}"]:checked`)?.value;
+                parentValue = document.querySelector(`[name="${CSS.escape(parent.name)}"]:checked`)?.value;
                 break;
             case "select-multiple":
                 parentValue = Array.from(parent.selectedOptions).map((option) => option.value);
@@ -279,8 +279,10 @@
         child.removeAttribute("data-hf-required");
         if (isFlatpickr) {
             const input = child._flatpickr._input;
-            input.setAttribute("required", input.dataset.hfRequired);
-            input.removeAttribute("data-hf-required");
+            if (input) {
+                input.setAttribute("required", input.dataset.hfRequired);
+                input.removeAttribute("data-hf-required");
+            }
         }
     }
 
@@ -304,8 +306,10 @@
         child.removeAttribute("required");
         if (isFlatpickr) {
             const input = child._flatpickr._input;
-            input.dataset.hfRequired = input.getAttribute("required");
-            input.removeAttribute("required");
+            if (input) {
+                input.dataset.hfRequired = input.getAttribute("required");
+                input.removeAttribute("required");
+            }
         }
     }
 
@@ -322,7 +326,17 @@
         }
         const childs = card.querySelectorAll("[data-hf-child]");
         const visible = Array.from(childs).some(function (ch) {
-            const container = ch.dataset.hfContainer ? ch.closest(ch.dataset.hfContainer) : ch.closest(".form-group")?.parentElement;
+            let container = null;
+            if (ch.dataset.hfContainer) {
+                try {
+                    container = ch.closest(ch.dataset.hfContainer);
+                } catch {
+                    container = null;
+                }
+            }
+            if (!container) {
+                container = ch.closest(".form-group")?.parentElement ?? null;
+            }
             return !container?.classList.contains("d-none");
         });
         const otherFields = Array.from(card.querySelectorAll("input, select, textarea")).filter(
