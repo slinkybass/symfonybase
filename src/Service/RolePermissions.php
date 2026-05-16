@@ -136,11 +136,16 @@ final readonly class RolePermissions
      * @param User   $user       the user to check
      * @param string $permission the permission identifier
      *
-     * @return bool true if the permission exists and is enabled on the user's role
+     * @return bool true if the permission exists and is enabled on the user's role; false when the user has no role
      */
     public function userHasPermission(User $user, string $permission): bool
     {
-        return $this->roleHasPermission($user->getRole(), $permission);
+        $role = $user->getRole();
+        if ($role === null) {
+            return false;
+        }
+
+        return $this->roleHasPermission($role, $permission);
     }
 
     /**

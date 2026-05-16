@@ -54,7 +54,7 @@ final class AccessSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $routeName = $request->attributes->get('_route');
 
-        if (!$routeName || !$this->router->getRouteCollection()->get($routeName)) {
+        if (!\is_string($routeName) || $routeName === '') {
             return;
         }
 
