@@ -151,8 +151,7 @@ class RoleCrudController extends AbstractCrudController
     {
         $actions = parent::configureActions($actions);
 
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->user();
         $entity = $this->entity();
 
         $actions->remove(Crud::PAGE_INDEX, Action::BATCH_DELETE);

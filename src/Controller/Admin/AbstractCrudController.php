@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\User;
 use App\Model\AppConfig;
+use App\Security\AdminUserTrait;
 use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
@@ -22,9 +22,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * Base EasyAdmin CRUD controller for this app: wires shared services, applies
  * RolePermissions to CRUD actions, and exposes helpers for request/session,
  * cached AppConfig, current entity, and translation keys under `entities.*`.
+ *
+ * Uses {@see \App\Security\AdminUserTrait}: under `/admin` the security principal is {@see \App\Entity\User}.
  */
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
+    use AdminUserTrait;
+
     /**
      * Translation entity segment (e.g. `user` → `entities.user.*`).
      * Subclasses may set explicitly; otherwise the constructor falls back to `crud()`.
@@ -119,14 +123,6 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     public function config(): ?AppConfig
     {
         return $this->configService->get();
-    }
-
-    /**
-     * Authenticated user for permission checks and display helpers.
-     */
-    public function user(): ?User
-    {
-        return $this->getUser();
     }
 
     /**

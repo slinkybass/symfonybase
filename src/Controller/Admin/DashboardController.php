@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Config;
-use App\Entity\User;
+use App\Security\AdminUserTrait;
 use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
@@ -28,6 +28,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AdminDashboard(routePath: '/admin/{_locale}', routeName: 'admin')]
 final class DashboardController extends AbstractDashboardController
 {
+    use AdminUserTrait;
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly TranslatorInterface $translator,
@@ -91,8 +93,7 @@ final class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->user();
         $configId = $this->em->getRepository(Config::class)->filterFirst()?->getId();
         $config = $this->configService->get();
         $labelAdmin = $config->enablePublic ? 'admin' : 'user';
@@ -140,8 +141,7 @@ final class DashboardController extends AbstractDashboardController
 
     public function configureUserMenu(UserInterface $userInterface): UserMenu
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->user();
         $userMenu = parent::configureUserMenu($userInterface);
 
         $userMenu->setMenuItems([

@@ -68,8 +68,7 @@ class AdminCrudController extends AbstractCrudController
     {
         $this->transEntity = 'user';
 
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->user();
         $entity = $this->entity();
         $filterHiddenRole = $this->filterHidden('role');
         $roles = array_values(array_filter(
@@ -180,8 +179,7 @@ class AdminCrudController extends AbstractCrudController
     {
         $this->transEntity = 'user';
 
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->user();
 
         $filters->add(DateTimeFilter::new('birthdate', $this->transEntityField('birthdate')));
         $filters->add(ChoiceFilter::new('gender', $this->transEntityField('gender'))
@@ -207,8 +205,7 @@ class AdminCrudController extends AbstractCrudController
     {
         $this->transEntity = 'user';
 
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->user();
         $entity = $this->entity();
         $isOwnUser = $user === $entity;
         $isUp = $entity && $this->rolePermissions->isUp($user->getRole(), $entity->getRole());
