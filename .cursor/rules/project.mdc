@@ -46,7 +46,12 @@ alwaysApply: true
 
 **Dev:** `friendsofphp/php-cs-fixer` v3.94.2 · `phpunit/phpunit` 12.5.4
 
-**Frontend:** Los assets van por **Asset Mapper** + `importmap.php`. Versiones fijadas en importmap (entre otras): `@tabler/core` **1.4.0**, `bootstrap` **5.3.8**, `tom-select` **2.4.3**, `tinymce` **8.3.1**, `flatpickr` **4.6.13**, `sweetalert2` **11.26.17**. JS propio bajo `assets/js/` (entrypoints `app`, `admin`, `public`, etc.).
+**Frontend (versiones exactas en `importmap.php`):**
+- JavaScript managed via importmap.php
+- Custom JS in assets/js/ (entrypoints: app, admin, public)
+- Prefer modular, isolated JS per feature
+- Avoid inline scripts in Twig
+- Keep frontend logic minimal and maintainable
 
 **Datos:** Doctrine ORM con URL `DATABASE_URL` (`config/packages/doctrine.yaml`); estrategia `underscore_number_aware`. **i18n:** `default_locale: es`, fallbacks `es` (`config/packages/translation.yaml`). Traducciones en `translations/*.es.yaml` (+ `validators.es.yaml`).
 
