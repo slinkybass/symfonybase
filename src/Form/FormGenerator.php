@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Mapping\MappingException;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyChoiceField;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -58,19 +59,20 @@ class FormGenerator
     {
         try {
             $metadata = $this->em->getClassMetadata($entityClass);
+        } catch (MappingException) {
+            return $options;
+        }
 
-            if ($metadata->hasField($property)) {
-                $mapping = $metadata->getFieldMapping($property);
+        if ($metadata->hasField($property)) {
+            $mapping = $metadata->getFieldMapping($property);
 
-                if (!isset($options['required'])) {
-                    $options['required'] = !($mapping['nullable'] ?? false);
-                }
-
-                if (!isset($options['class']) && isset($mapping['enumType'])) {
-                    $options['class'] = $mapping['enumType'];
-                }
+            if (!isset($options['required'])) {
+                $options['required'] = !($mapping['nullable'] ?? false);
             }
-        } catch (\Exception) {
+
+            if (!isset($options['class']) && isset($mapping['enumType'])) {
+                $options['class'] = $mapping['enumType'];
+            }
         }
 
         return $options;
