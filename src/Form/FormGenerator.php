@@ -91,6 +91,7 @@ class FormGenerator
         $fieldDto = $field->getAsDto();
 
         if (EasyChoiceField::WIDGET_AUTOCOMPLETE === $fieldDto->getCustomOption(EasyChoiceField::OPTION_WIDGET)) {
+            $options['attr'] ??= [];
             $options['attr']['data-ea-widget'] = 'ea-autocomplete';
         }
 
