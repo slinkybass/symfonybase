@@ -97,7 +97,7 @@ import "tinymce/plugins/wordcount";
                     "wordcount",
                 ],
                 target: e,
-                language: moment.locale(),
+                language: typeof moment !== "undefined" && typeof moment.locale === "function" ? moment.locale() : "es",
                 resize,
                 browser_spellcheck: spellcheck,
                 toolbar,

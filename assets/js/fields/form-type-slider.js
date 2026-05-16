@@ -22,12 +22,39 @@ import noUiSlider from "nouislider";
                 return;
             }
 
+            const parent = e.parentNode;
+            if (!parent) {
+                return;
+            }
+
             e.dataset.sliderInitialized = "";
 
-            const max = e.hasAttribute("max") ? parseFloat(e.getAttribute("max")) : 100;
-            const min = e.hasAttribute("min") ? parseFloat(e.getAttribute("min")) : 0;
-            const start = e.value ? parseFloat(e.value.replace(",", ".")) : min;
-            const step = e.hasAttribute("step") ? parseFloat(e.getAttribute("step").replace(",", ".")) || 1 : 1;
+            let max = e.hasAttribute("max") ? Number.parseFloat(String(e.getAttribute("max"))) : 100;
+            let min = e.hasAttribute("min") ? Number.parseFloat(String(e.getAttribute("min"))) : 0;
+            if (!Number.isFinite(min)) {
+                min = 0;
+            }
+            if (!Number.isFinite(max)) {
+                max = 100;
+            }
+            if (max < min) {
+                const t = min;
+                min = max;
+                max = t;
+            }
+            let start = e.value ? Number.parseFloat(String(e.value).replace(",", ".")) : min;
+            if (!Number.isFinite(start)) {
+                start = min;
+            }
+            if (start < min) {
+                start = min;
+            }
+            if (start > max) {
+                start = max;
+            }
+            const stepAttr = e.hasAttribute("step") ? e.getAttribute("step") : null;
+            const stepParsed = stepAttr ? Number.parseFloat(String(stepAttr).replace(",", ".")) : 1;
+            const step = Number.isFinite(stepParsed) && stepParsed > 0 ? stepParsed : 1;
             const showInput = e.hasAttribute("data-slider-show-input") ? e.getAttribute("data-slider-show-input") !== "false" : false;
             const tooltips = e.hasAttribute("data-slider-tooltips") ? e.getAttribute("data-slider-tooltips") !== "false" : true;
             const connect = e.hasAttribute("data-slider-connect") ? e.getAttribute("data-slider-connect") : "lower";
@@ -39,7 +66,7 @@ import noUiSlider from "nouislider";
 
             const slider = document.createElement("div");
             slider.classList.add("slider");
-            e.parentNode.insertBefore(slider, e.nextSibling);
+            parent.insertBefore(slider, e.nextSibling);
 
             const noUiSliderOtps = {
                 tooltips,
@@ -81,7 +108,16 @@ import noUiSlider from "nouislider";
                 e.value = value;
             });
 
-            const updateSlider = () => slider.noUiSlider.set(e.value.replace(",", "."));
+            const updateSlider = () => {
+                if (!slider.noUiSlider) {
+                    return;
+                }
+                const raw = String(e.value ?? "").replace(",", ".");
+                const n = Number.parseFloat(raw);
+                if (Number.isFinite(n)) {
+                    slider.noUiSlider.set(n);
+                }
+            };
             e.addEventListener("change", updateSlider);
             e.addEventListener("input", updateSlider);
         });

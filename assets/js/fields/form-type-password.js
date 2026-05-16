@@ -98,9 +98,16 @@
                 const maxLength1 = input.getAttribute("maxlength");
                 const maxLength2 = input2?.getAttribute("maxlength");
 
-                const minLength = Math.max(parseInt(minLength1) || 0, parseInt(minLength2) || 0) || undefined;
-                const maxLength = Math.max(parseInt(maxLength1) || 0, parseInt(maxLength2) || 0) || undefined;
-                const length = minLength && maxLength ? Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength : minLength || maxLength || undefined;
+                const minLen = Math.max(Number.parseInt(String(minLength1 ?? ""), 10) || 0, Number.parseInt(String(minLength2 ?? ""), 10) || 0);
+                const maxLen = Math.max(Number.parseInt(String(maxLength1 ?? ""), 10) || 0, Number.parseInt(String(maxLength2 ?? ""), 10) || 0);
+                const minLength = minLen > 0 ? minLen : undefined;
+                const maxLength = maxLen > 0 ? maxLen : undefined;
+                let length;
+                if (minLength !== undefined && maxLength !== undefined && maxLength >= minLength) {
+                    length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+                } else {
+                    length = minLength ?? maxLength ?? undefined;
+                }
                 const newPassword = generatePassword(length);
 
                 input.value = newPassword;
@@ -123,7 +130,11 @@
     function switchVisibility(input, show = true) {
         input.type = show ? "text" : "password";
 
-        const toggleButton = document.querySelector(`[data-input='${input.id}'], [data-input2='${input.id}']`);
+        if (!input.id) {
+            return;
+        }
+
+        const toggleButton = document.querySelector(`[data-input='${CSS.escape(input.id)}'], [data-input2='${CSS.escape(input.id)}']`);
         if (!toggleButton) {
             return;
         }
@@ -144,6 +155,14 @@
      * @returns {string} Generated password.
      */
     function generatePassword(length = 8) {
+        let targetLen = typeof length === "number" ? length : Number.parseInt(String(length), 10);
+        if (!Number.isFinite(targetLen) || targetLen < 1) {
+            targetLen = 8;
+        }
+        if (targetLen < 4) {
+            targetLen = 4;
+        }
+
         const uppercase = "ABCDEFGHJKLMNPQRSTUVWXYZ";
         const lowercase = "abcdefghijkmnpqrstuvwxyz";
         const numbers = "23456789";
@@ -155,8 +174,8 @@
         password += pickStr(lowercase, 1);
         password += pickStr(uppercase, 1);
         password += pickStr(numbers, 1);
-        if (length > password.length) {
-            password += pickStr(all, length - password.length);
+        if (targetLen > password.length) {
+            password += pickStr(all, targetLen - password.length);
         }
         return shuffleStr(password);
     }
@@ -189,4 +208,6 @@
         }
         return array.join("");
     }
+
+    window.formTypePassword = formTypePassword;
 })();

@@ -21,14 +21,15 @@ import SignaturePad from "signature_pad";
                 return;
             }
 
-            const canvas = e.parentNode.querySelector(".signature-pad-wrapper canvas");
+            const wrapper = e.parentNode;
+            const canvas = wrapper?.querySelector(".signature-pad-wrapper canvas");
             if (!canvas) {
                 return;
             }
 
             e.dataset.signatureInitialized = "";
             const currentSignValue = e.value;
-            const canvasActions = e.parentNode.querySelector(".signature-pad-actions");
+            const canvasActions = wrapper?.querySelector(".signature-pad-actions");
 
             const signaturePad = new SignaturePad(canvas);
             const showInput = e.hasAttribute("data-signature-show-input") ? e.getAttribute("data-signature-show-input") !== "false" : false;
@@ -95,6 +96,10 @@ import SignaturePad from "signature_pad";
             const ratio = Math.max(window.devicePixelRatio || 1, 1);
             const canvas = signaturePad.canvas;
 
+            if (!canvas || canvas.offsetWidth <= 0 || canvas.offsetHeight <= 0) {
+                return;
+            }
+
             canvas.width = canvas.offsetWidth * ratio;
             canvas.height = canvas.offsetHeight * ratio;
             canvas.getContext("2d").scale(ratio, ratio);
@@ -103,6 +108,9 @@ import SignaturePad from "signature_pad";
         }
 
         function setSignature(e, signaturePad) {
+            if (!e.value) {
+                return;
+            }
             const currentSignImg = new Image();
             currentSignImg.onload = () => {
                 const currentSignImgW = currentSignImg.width;

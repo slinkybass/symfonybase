@@ -20,15 +20,19 @@
                 return;
             }
 
+            const input = e.querySelector('input[type="file"]');
+            if (!input) {
+                return;
+            }
+
             e.dataset.fileInitialized = "";
 
-            const input = e.querySelector('input[type="file"]');
             const deleteCheckbox = e.querySelector('input[type="checkbox"][id$="_delete"]');
             const deleteBtn = e.querySelector(".file-delete-btn");
             const previewFiles = e.querySelector(".img-preview");
 
             deleteBtn?.addEventListener("click", () => {
-                if (!deleteCheckbox || !input) {
+                if (!deleteCheckbox) {
                     return;
                 }
 

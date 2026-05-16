@@ -40,7 +40,9 @@
                 field.style.height = `${field.scrollHeight}px`;
             }
 
-            if (parseInt(field.style.height.replace("px", "")) > parseInt(maxHeight.replace("px", ""))) {
+            const currentPx = Number.parseInt(String(field.style.height.replace("px", "")), 10);
+            const maxPx = Number.parseInt(String(maxHeight.replace("px", "")), 10);
+            if (Number.isFinite(currentPx) && Number.isFinite(maxPx) && currentPx > maxPx) {
                 field.style.overflow = "auto";
             }
         }

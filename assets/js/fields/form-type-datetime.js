@@ -11,9 +11,11 @@ import "flatpickr/dist/flatpickr.min.css";
 
 (function () {
     document.addEventListener("DOMContentLoaded", () => {
-        const locale = moment.locale();
-        const flatpickrLocale = flatpickr.l10ns[locale];
-        flatpickr.localize(flatpickrLocale);
+        const loc = moment.locale();
+        const flatpickrLocale = flatpickr.l10ns[loc];
+        if (flatpickrLocale) {
+            flatpickr.localize(flatpickrLocale);
+        }
 
         formTypeDatetime();
     });
@@ -37,7 +39,9 @@ import "flatpickr/dist/flatpickr.min.css";
             const enableSeconds = e.hasAttribute("data-enable-seconds") ? e.getAttribute("data-enable-seconds") !== "false" : false;
             const dateFormat = e.hasAttribute("data-date-format") ? e.getAttribute("data-date-format") : "YYYY-MM-DDTHH:mm" + (enableSeconds ? ":ss" : "");
             const altFormat = e.hasAttribute("data-date-alt-format") ? e.getAttribute("data-date-alt-format") : moment.localeData().longDateFormat("L") + " " + moment.localeData().longDateFormat("LT" + (enableSeconds ? "S" : ""));
-            const minuteIncrement = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : 1;
+            const minuteIncrementRaw = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : "1";
+            const minuteIncrementNum = Number.parseInt(String(minuteIncrementRaw), 10);
+            const minuteIncrement = Number.isFinite(minuteIncrementNum) && minuteIncrementNum > 0 ? minuteIncrementNum : 1;
             const enabledDates = e.hasAttribute("data-date-enabled") ? e.getAttribute("data-date-enabled") : null;
             const disabledDates = e.hasAttribute("data-date-disabled") ? e.getAttribute("data-date-disabled") : null;
             const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") === "false" : true;
@@ -91,9 +95,14 @@ import "flatpickr/dist/flatpickr.min.css";
                             const dateDt = new Date(dt);
                             return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000);
                         })
+                        .filter((d) => !Number.isNaN(d.getTime()))
                         .sort((a, b) => a - b);
-                    instance.currentMonth = dates[0].getMonth();
-                    instance.currentYear = dates[0].getFullYear();
+                    const first = dates[0];
+                    if (!first) {
+                        return;
+                    }
+                    instance.currentMonth = first.getMonth();
+                    instance.currentYear = first.getFullYear();
                     instance.redraw();
                 };
             } else if (disabledDates) {

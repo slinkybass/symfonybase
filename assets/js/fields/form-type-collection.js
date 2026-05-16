@@ -32,7 +32,7 @@ const eaCollectionHandler = () => {
     });
 };
 
-window.addEventListener("DOMContentLoaded", eaCollectionHandler);
+document.addEventListener("DOMContentLoaded", eaCollectionHandler);
 document.addEventListener("ea.collection.item-added", eaCollectionHandler);
 
 const EaCollectionProperty = {
@@ -45,19 +45,25 @@ const EaCollectionProperty = {
                 numItems = 0;
             }
 
+            const prototypeHtml = collection.dataset.prototype;
+            const formTypeNamePlaceholder = collection.dataset.formTypeNamePlaceholder;
+            if (typeof prototypeHtml !== "string" || prototypeHtml === "" || typeof formTypeNamePlaceholder !== "string") {
+                return;
+            }
+
             // Remove the 'Empty Collection' badge, if present
-            const emptyCollectionBadge = this.parentElement.querySelector(".collection-empty");
+            const parentEl = this.parentElement;
+            const emptyCollectionBadge = parentEl?.querySelector(".collection-empty") ?? null;
             if (null !== emptyCollectionBadge) {
                 emptyCollectionBadge.outerHTML = isArrayCollection ? "" : '<div class="accordion"><div class="form-widget-compound"><div data-empty-collection></div></div></div>';
             }
 
-            const formTypeNamePlaceholder = collection.dataset.formTypeNamePlaceholder;
             const labelRegexp = new RegExp(formTypeNamePlaceholder + "label__", "g");
             const nameRegexp = new RegExp(formTypeNamePlaceholder, "g");
             const hfParentRegexp = new RegExp('data-hf-parent="([^"]*)"', "g");
             const hfChildRegexp = new RegExp('data-hf-child="([^"]*)"', "g");
 
-            const newItemHtml = collection.dataset.prototype
+            const newItemHtml = prototypeHtml
                 .replace(labelRegexp, numItems)
                 .replace(nameRegexp, numItems)
                 .replace(hfParentRegexp, (match, p1) => `data-hf-parent="${p1}_${numItems}"`)

@@ -27,30 +27,41 @@ ace.config.set("workerPath", CDN);
                 return;
             }
 
+            const parent = e.parentNode;
+            if (!parent) {
+                return;
+            }
+
             e.dataset.codeeditorInitialized = "";
 
             const theme = e.hasAttribute("data-codeeditor-theme") ? e.getAttribute("data-codeeditor-theme") : "chrome";
             const language = e.hasAttribute("data-codeeditor-language") ? e.getAttribute("data-codeeditor-language") : "javascript";
-            const tabSize = e.hasAttribute("data-codeeditor-tab-size") ? e.getAttribute("data-codeeditor-tab-size") : 4;
+            const tabSizeRaw = e.hasAttribute("data-codeeditor-tab-size") ? e.getAttribute("data-codeeditor-tab-size") : "4";
+            const tabSize = Number.parseInt(String(tabSizeRaw), 10);
+            const tabSizeSafe = Number.isFinite(tabSize) && tabSize > 0 ? tabSize : 4;
             const indentWithTabs = e.hasAttribute("data-codeeditor-indent-with-tabs") ? e.getAttribute("data-codeeditor-indent-with-tabs") !== "false" : true;
             const showLineNumbers = e.hasAttribute("data-codeeditor-show-line-numbers") ? e.getAttribute("data-codeeditor-show-line-numbers") !== "false" : true;
-            const minLines = e.hasAttribute("data-codeeditor-min-lines") ? e.getAttribute("data-codeeditor-min-lines") : 5;
-            const maxLines = e.hasAttribute("data-codeeditor-max-lines") ? e.getAttribute("data-codeeditor-max-lines") : 20;
+            const minLinesRaw = e.hasAttribute("data-codeeditor-min-lines") ? e.getAttribute("data-codeeditor-min-lines") : "5";
+            const maxLinesRaw = e.hasAttribute("data-codeeditor-max-lines") ? e.getAttribute("data-codeeditor-max-lines") : "20";
+            const minLines = Number.parseInt(String(minLinesRaw), 10);
+            const maxLines = Number.parseInt(String(maxLinesRaw), 10);
+            const minLinesSafe = Number.isFinite(minLines) && minLines > 0 ? minLines : 5;
+            const maxLinesSafe = Number.isFinite(maxLines) && maxLines > 0 ? maxLines : 20;
 
             // Clone and hide the original field
             const clonedE = e.cloneNode(true);
             clonedE.classList.add("d-none");
-            e.parentNode.insertBefore(clonedE, e);
+            parent.insertBefore(clonedE, e);
 
             const editor = ace.edit(e, {
                 theme: `ace/theme/${theme}`,
                 mode: `ace/mode/${language}`,
-                tabSize,
+                tabSize: tabSizeSafe,
                 useSoftTabs: !indentWithTabs,
                 showLineNumbers,
                 showGutter: showLineNumbers,
-                minLines,
-                maxLines,
+                minLines: minLinesSafe,
+                maxLines: maxLinesSafe,
                 autoScrollEditorIntoView: true,
                 showPrintMargin: false,
             });
@@ -62,15 +73,15 @@ ace.config.set("workerPath", CDN);
             });
 
             // Set autosize
-            const resizeEditor = (editor) => {
-                let h = editor.getSession().getScreenLength() * (editor.renderer.lineHeight + editor.renderer.scrollBar.getWidth());
+            const resizeEditor = (ed) => {
+                let h = ed.getSession().getScreenLength() * (ed.renderer.lineHeight + ed.renderer.scrollBar.getWidth());
                 h = Math.min(Math.max(h, 120), 200);
-                editor.container.style.height = `${h}px`;
-                editor.resize();
+                ed.container.style.height = `${h}px`;
+                ed.resize();
             };
 
             resizeEditor(editor);
-            editor.on("change", (arg, editor) => resizeEditor(editor));
+            editor.on("change", () => resizeEditor(editor));
         });
     };
 })();

@@ -85,11 +85,20 @@ import slugify from "slugify";
         }
 
         setTargetElement() {
-            const fieldNames = JSON.parse(this.field.dataset.target);
+            let fieldNames;
+            try {
+                fieldNames = JSON.parse(this.field.dataset.target ?? "null");
+            } catch {
+                throw new Error("Invalid JSON in slug field data-target attribute.");
+            }
+            if (!Array.isArray(fieldNames)) {
+                throw new Error("Slug field data-target must be a JSON array of element ids.");
+            }
+
             this.targets = [];
 
             for (const name of fieldNames) {
-                const target = document.getElementById(name);
+                const target = document.getElementById(String(name));
 
                 if (null === target) {
                     throw new Error(`Wrong target specified for slug widget ("${name}").`);
@@ -134,6 +143,9 @@ import slugify from "slugify";
          * Unlock the widget input (manual mode)
          */
         unlock() {
+            if (!this.lockButton) {
+                return;
+            }
             this.locked = false;
             this.lockButton.innerHTML = this.lockButton.getAttribute("data-icon-unlocked");
             this.field.removeAttribute("readonly");
@@ -143,6 +155,9 @@ import slugify from "slugify";
          * Lock the widget input (auto mode)
          */
         lock() {
+            if (!this.lockButton) {
+                return;
+            }
             this.locked = true;
             this.lockButton.innerHTML = this.lockButton.getAttribute("data-icon-locked");
 

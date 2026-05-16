@@ -23,8 +23,6 @@ import "spectrum-vanilla/dist/spectrum.min.css";
                 return;
             }
 
-            e.dataset.colorInitialized = "";
-
             const type = e.hasAttribute("data-color-type") ? e.getAttribute("data-color-type") : "component";
             const preferredFormat = e.hasAttribute("data-color-preferred-format") ? e.getAttribute("data-color-preferred-format") : "hex";
             const showPalette = e.hasAttribute("data-color-show-palette") ? e.getAttribute("data-color-show-palette") !== "false" : false;
@@ -43,6 +41,7 @@ import "spectrum-vanilla/dist/spectrum.min.css";
                 hideAfterPaletteSelect,
                 showButtons: false,
             });
+            e.dataset.colorInitialized = "";
         });
     };
 })();

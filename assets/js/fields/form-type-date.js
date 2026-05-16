@@ -11,9 +11,11 @@ import "flatpickr/dist/flatpickr.min.css";
 
 (function () {
     document.addEventListener("DOMContentLoaded", () => {
-        const locale = moment.locale();
-        const flatpickrLocale = flatpickr.l10ns[locale];
-        flatpickr.localize(flatpickrLocale);
+        const loc = moment.locale();
+        const flatpickrLocale = flatpickr.l10ns[loc];
+        if (flatpickrLocale) {
+            flatpickr.localize(flatpickrLocale);
+        }
 
         formTypeDate();
     });
@@ -89,9 +91,14 @@ import "flatpickr/dist/flatpickr.min.css";
                             const dateDt = new Date(dt);
                             return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000);
                         })
+                        .filter((d) => !Number.isNaN(d.getTime()))
                         .sort((a, b) => a - b);
-                    instance.currentMonth = dates[0].getMonth();
-                    instance.currentYear = dates[0].getFullYear();
+                    const first = dates[0];
+                    if (!first) {
+                        return;
+                    }
+                    instance.currentMonth = first.getMonth();
+                    instance.currentYear = first.getFullYear();
                     instance.redraw();
                 };
             } else if (disabledDates) {
