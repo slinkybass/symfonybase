@@ -103,7 +103,10 @@ import slugify from "slugify";
          * Append a "lock" button to control slug behaviour (auto or manual)
          */
         appendLockButton() {
-            this.lockButton = this.field.parentNode.querySelector("button");
+            this.lockButton = this.field.parentNode?.querySelector("button");
+            if (!this.lockButton) {
+                return;
+            }
             this.lockButton.addEventListener("click", () => {
                 if (this.locked) {
                     const confirmMessage = this.field.dataset.confirmText || null;

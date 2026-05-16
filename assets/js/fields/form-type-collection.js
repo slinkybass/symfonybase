@@ -40,7 +40,10 @@ const EaCollectionProperty = {
         addButton.addEventListener("click", function () {
             const isArrayCollection = collection.classList.contains("field-array");
             // Use a counter to avoid having the same index more than once
-            let numItems = parseInt(collection.dataset.numItems);
+            let numItems = Number.parseInt(String(collection.dataset.numItems ?? "0"), 10);
+            if (!Number.isFinite(numItems) || numItems < 0) {
+                numItems = 0;
+            }
 
             // Remove the 'Empty Collection' badge, if present
             const emptyCollectionBadge = this.parentElement.querySelector(".collection-empty");
@@ -60,27 +63,39 @@ const EaCollectionProperty = {
                 .replace(hfParentRegexp, (match, p1) => `data-hf-parent="${p1}_${numItems}"`)
                 .replace(hfChildRegexp, (match, p1) => `data-hf-child="${p1}_${numItems}"`);
 
-            collection.dataset.numItems = ++numItems;
             const newItemInsertionSelector = isArrayCollection ? ".ea-form-collection-items" : ".ea-form-collection-items .accordion > .form-widget-compound [data-empty-collection]";
             const collectionItemsWrapper = collection.querySelector(newItemInsertionSelector);
 
+            if (!collectionItemsWrapper) {
+                return;
+            }
+
             collectionItemsWrapper.insertAdjacentHTML("beforeend", newItemHtml);
+            collection.dataset.numItems = String(numItems + 1);
 
             // Execute JS scripts embedded in prototype
             const collectionItems = collectionItemsWrapper.querySelectorAll(".field-collection-item");
             const lastElement = collectionItems[collectionItems.length - 1];
-            lastElement.querySelectorAll("script").forEach((script) => eval(script.innerHTML));
-
-            // for complex collections of items, show the newly added item as not collapsed
-            if (!isArrayCollection) {
-                EaCollectionProperty.updateCollectionItemCssClasses(collection);
-                const lastElementCollapseButton = lastElement.querySelector(".accordion-button");
-                lastElementCollapseButton.classList.remove("collapsed");
-                const lastElementBody = lastElement.querySelector(".accordion-collapse");
-                lastElementBody.classList.add("show");
+            if (lastElement) {
+                lastElement.querySelectorAll("script").forEach((script) => eval(script.innerHTML));
             }
 
-            document.dispatchEvent(new CustomEvent("ea.collection.item-added", { detail: { newElement: lastElement } }));
+            // for complex collections of items, show the newly added item as not collapsed
+            if (!isArrayCollection && lastElement) {
+                EaCollectionProperty.updateCollectionItemCssClasses(collection);
+                const lastElementCollapseButton = lastElement.querySelector(".accordion-button");
+                const lastElementBody = lastElement.querySelector(".accordion-collapse");
+                if (lastElementCollapseButton) {
+                    lastElementCollapseButton.classList.remove("collapsed");
+                }
+                if (lastElementBody) {
+                    lastElementBody.classList.add("show");
+                }
+            }
+
+            document.dispatchEvent(
+                new CustomEvent("ea.collection.item-added", { detail: { newElement: lastElement ?? null } })
+            );
         });
 
         collection.classList.add("processed");
