@@ -4,7 +4,6 @@ namespace App\Controller\Admin\Cruds;
 
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\Role;
-use App\Entity\User;
 use App\Field\BooleanField;
 use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;

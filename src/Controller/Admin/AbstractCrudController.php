@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * RolePermissions to CRUD actions, and exposes helpers for request/session,
  * cached AppConfig, current entity, and translation keys under `entities.*`.
  *
- * Uses {@see \App\Security\AdminUserTrait}: under `/admin` the security principal is {@see \App\Entity\User}.
+ * Uses {@see AdminUserTrait}: under `/admin` the security principal is {@see \App\Entity\User}.
  */
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
@@ -36,9 +36,9 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     public string $transEntity;
 
     /**
-     * @param EntityManagerInterface $em            Persisted entities for `entity()` fallback by id
-     * @param TranslatorInterface    $translator    `entities.{transEntity}.*` keys
-     * @param ConfigService          $configService Cached application config
+     * @param EntityManagerInterface $em              Persisted entities for `entity()` fallback by id
+     * @param TranslatorInterface    $translator      `entities.{transEntity}.*` keys
+     * @param ConfigService          $configService   Cached application config
      * @param RolePermissions        $rolePermissions CRUD/action permission checks
      */
     public function __construct(

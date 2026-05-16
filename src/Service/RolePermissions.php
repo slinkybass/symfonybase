@@ -151,7 +151,6 @@ final readonly class RolePermissions
     /**
      * Equivalent to `userHasPermission($user, 'crud_'.$crud)` with normalised `$crud` (controller basename segment).
      *
-     * @param User   $user
      * @param string $crud entity key derived from `*CrudController.php` (e.g. `user` from `UserCrudController.php`)
      *
      * @return bool whether `crud_<entity>` exists and is enabled on the user's role
@@ -164,7 +163,6 @@ final readonly class RolePermissions
     /**
      * Same as `userHasPermission($user, 'crud_'.$crud.'_'.$action)` with normalised segments (see `userHasPermissionCrud`).
      *
-     * @param User   $user
      * @param string $crud   entity segment as for `userHasPermissionCrud`
      * @param string $action EasyAdmin action name (e.g. `new`, `edit`, values from `Action::*` constants)
      *

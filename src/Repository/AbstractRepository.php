@@ -87,8 +87,8 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * @param FilterInterface|FilterInterface[] $filters
-     * @param int                                 $page  1-based page number
-     * @param int                                 $limit max rows per page
+     * @param int                               $page    1-based page number
+     * @param int                               $limit   max rows per page
      *
      * @return list<T>
      */
