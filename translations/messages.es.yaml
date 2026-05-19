@@ -10,6 +10,7 @@ app:
 admin:
   home:
     title: Inicio
+    hello: ¡Bienvenido
   profile:
     title: Mi perfil
 public:
