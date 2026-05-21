@@ -2,8 +2,6 @@ Actualizar composer y assets
 Revisar Demo
 
 MEJORAS:
-	Documentar (PhpDoc, JS y README.md)
-
 	Mostrar como labels los filtros ocultos en los listados?
 
 	Formularios públicos (profile, edit, delete)
