@@ -275,6 +275,7 @@ class AdminCrudController extends AbstractCrudController
             $user = $event->getData();
             if ($user->getPlainPassword()) {
                 $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPlainPassword()));
+                $user->setPlainPassword(null);
             }
         });
     }
