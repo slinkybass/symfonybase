@@ -8,17 +8,17 @@ aside .navbar-brand img {
 }
 
 /* Tables — clickable row: default row action */
-.table tr.ea-clickable-row {
+.table tr[data-default-action-url] {
     cursor: pointer;
 }
 
-.table tr.ea-clickable-row td.actions,
-.table tr.ea-clickable-row td.batch-actions-selector {
+.table tr[data-default-action-url] td.actions,
+.table tr[data-default-action-url] td.batch-actions-selector {
     cursor: default;
 }
 
-.table tr.ea-clickable-row td.actions a,
-.table tr.ea-clickable-row td.actions button,
-.table tr.ea-clickable-row td.batch-actions-selector .form-check {
+.table tr[data-default-action-url] td.actions a,
+.table tr[data-default-action-url] td.actions button,
+.table tr[data-default-action-url] td.batch-actions-selector .form-check {
     cursor: pointer;
 }
