@@ -445,7 +445,7 @@ function createActionConfirmationModals() {
 }
 
 function createDefaultRowAction() {
-    const clickableRows = document.querySelectorAll('tr.ea-clickable-row[data-default-action-url]');
+    const clickableRows = document.querySelectorAll('tr[data-default-action-url]');
     if (0 === clickableRows.length) {
         return;
     }
@@ -463,6 +463,7 @@ function createDefaultRowAction() {
         ".actions",
         "[data-bs-toggle]",
         ".btn",
+        ".modal",
     ];
 
     const isInteractiveElement = (element) => {
@@ -477,6 +478,19 @@ function createDefaultRowAction() {
         }
 
         return false;
+    };
+
+    const userIsSelectingTextInRow = (row) => {
+        if ('double' === clickTrigger) {
+            return false;
+        }
+
+        const selection = window.getSelection();
+        if (null === selection || 0 === selection.toString().length || 0 === selection.rangeCount) {
+            return false;
+        }
+
+        return row.contains(selection.getRangeAt(0).commonAncestorContainer);
     };
 
     const navigateToUrl = (url) => {
@@ -505,6 +519,10 @@ function createDefaultRowAction() {
         // handle mouse clicks
         row.addEventListener(clickTrigger === "double" ? "dblclick" : "click", (event) => {
             if (isInteractiveElement(event.target)) {
+                return;
+            }
+
+            if (userIsSelectingTextInRow(row)) {
                 return;
             }
 

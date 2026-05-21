@@ -51,7 +51,7 @@
                 {{ item.label|trans|raw }}
             </span>
             {% if item.badge %}
-                <span class="badge badge-sm ms-auto {{ item.badge.cssClass }}" {{ _self.render_html_attributes(item.badge) }} style="{{ item.badge.htmlStyle }}">{{ item.badge.content }}</span>
+                <span class="badge badge-sm ms-auto {{ item.badge.cssClass }}" {{ _self.render_html_attributes(item.badge) }} {{ item.badge.htmlStyle ? 'style="' ~ item.badge.htmlStyle ~ '"' : '' }}>{{ item.badge.content }}</span>
             {% endif %}
         </span>
     {% else %}
@@ -68,7 +68,7 @@
                 {{ item.label|trans|raw }}
             </span>
             {% if item.hasVisibleBadge %}
-                <span class="badge badge-sm ms-auto {{ item.badge.cssClass }}" {{ _self.render_html_attributes(item.badge) }} style="{{ item.badge.htmlStyle }}">{{ item.badge.content }}</span>
+                <span class="badge badge-sm ms-auto {{ item.badge.cssClass }}" {{ _self.render_html_attributes(item.badge) }} {{ item.badge.htmlStyle ? 'style="' ~ item.badge.htmlStyle ~ '"' : '' }}>{{ item.badge.content }}</span>
             {% endif %}
         </a>
     {% endif %}

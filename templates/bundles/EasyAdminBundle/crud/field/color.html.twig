@@ -2,7 +2,7 @@
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
 {% if field.customOptions.get('showSample') %}
-    <span class="badge text-light" style="background: {{ field.value }};">
+    <span class="badge text-light" style="background: {{ field.value|e('html_attr') }};">
         {% if field.customOptions.get('showValue') %}
             {{ field.formattedValue }}
         {% else %}
