@@ -14,7 +14,7 @@ framework:
         missing_import_mode: strict # warn in prod
 ```
 
-`importmap.php` (project root) declares every JS/CSS dependency and the entry points consumed by Twig. The full list of vendor packages — Bootstrap 5, Tabler, TomSelect, Flatpickr, TinyMCE, Ace, SignaturePad, Cropper.js, noUiSlider, IMask, SweetAlert2, Mark.js, Moment with locales, DirtyForm, basicLightbox, Slugify, Sortable, Spectrum Vanilla, etc. — is the source of truth; consult it before adding a dependency.
+`importmap.php` (project root) declares every JS/CSS dependency and entry point consumed by Twig — consult it before adding a dependency.
 
 ## Folder layout
 

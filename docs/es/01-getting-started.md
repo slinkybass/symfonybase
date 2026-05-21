@@ -2,13 +2,9 @@
 
 ## Stack
 
-- PHP **^8.4** (`composer.json`).
-- Symfony **7.4.\*** (Framework, Security, Mailer, Asset Mapper, Form, Translator, UX Stimulus / Turbo / Icons / Translator).
-- Doctrine ORM **3.6** + DBAL **4.4** + Migrations **3.9**.
-- EasyAdmin **4.27+**, Arkounay UX Media / UX Collection, Artgris File Manager, SymfonyCasts Reset Password / Verify Email.
-- Frontend mediante **Asset Mapper** + **importmap.php** (Stimulus, Tabler, Bootstrap 5, TomSelect, Flatpickr, TinyMCE, Ace, SignaturePad, Cropper, noUiSlider, IMask, SweetAlert2, etc.).
+Paquetes de backend y versiones resueltas: consulta `composer.lock` (restricciones en `composer.json`).
 
-Las versiones exactas están fijadas en `composer.json` / `composer.lock` e `importmap.php`.
+Librerías de frontend y puntos de entrada: consulta `importmap.php`.
 
 ## Bundles habilitados
 

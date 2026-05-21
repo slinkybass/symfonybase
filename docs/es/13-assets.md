@@ -14,7 +14,7 @@ framework:
         missing_import_mode: strict # warn in prod
 ```
 
-`importmap.php` (en la raíz del proyecto) declara todas las dependencias JS/CSS y los puntos de entrada consumidos por Twig. La lista completa de paquetes de terceros —Bootstrap 5, Tabler, TomSelect, Flatpickr, TinyMCE, Ace, SignaturePad, Cropper.js, noUiSlider, IMask, SweetAlert2, Mark.js, Moment con locales, DirtyForm, basicLightbox, Slugify, Sortable, Spectrum Vanilla, etc.— es la fuente de verdad; consúltala antes de añadir una dependencia.
+`importmap.php` (en la raíz del proyecto) declara todas las dependencias JS/CSS y los puntos de entrada consumidos por Twig — consúltalo antes de añadir una dependencia.
 
 ## Estructura de carpetas
 

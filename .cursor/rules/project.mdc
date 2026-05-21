@@ -14,37 +14,11 @@ alwaysApply: true
 
 ## Stack
 
-**PHP:** `composer.json` exige **^8.4** (alineado con `doctrine/doctrine-bundle` 3.2.x y `doctrine/doctrine-migrations-bundle` 4.x del lock).
+**PHP:** `composer.json` exige **^8.4**
 
-**Backend (versiones exactas en `composer.lock`):**
+**Backend:** versiones exactas en `composer.lock`
 
-| Paquete | Versión |
-| --- | --- |
-| `symfony/framework-bundle` | v7.4.3 |
-| `symfony/asset-mapper` | v7.4.3 |
-| `symfony/stimulus-bundle` | v2.32.0 |
-| `symfony/ux-turbo` | v2.32.0 |
-| `symfony/ux-icons` | v2.32.0 |
-| `symfony/ux-translator` | v2.32.0 |
-| `symfony/runtime` | v7.4.1 (resto del ecosistema Symfony suele ir en 7.4.3) |
-| `easycorp/easyadmin-bundle` | v4.29.3 |
-| `doctrine/orm` | 3.6.1 |
-| `doctrine/dbal` | 4.4.1 |
-| `doctrine/doctrine-bundle` | 3.2.2 |
-| `doctrine/migrations` | 3.9.5 |
-| `doctrine/doctrine-migrations-bundle` | 4.0.0 |
-| `twig/twig` | v3.22.2 |
-| `twig/extra-bundle` | v3.22.2 |
-| `twig/intl-extra` | v3.22.1 |
-| `arkounay/ux-media` | 4.2.1 |
-| `arkounay/ux-collection` | 4.0.3 |
-| `artgris/filemanager-bundle` | 2.10.6 |
-| `knplabs/knp-time-bundle` | 2.5.0 |
-| `symfony/monolog-bundle` | v4.0.1 |
-| `symfonycasts/reset-password-bundle` | v1.24.0 |
-| `symfonycasts/verify-email-bundle` | v1.18.0 |
-
-**Dev:** `friendsofphp/php-cs-fixer` v3.94.2 · `phpunit/phpunit` 12.5.4
+**Dev:** `friendsofphp/php-cs-fixer` · `phpunit/phpunit`
 
 **Frontend (versiones exactas en `importmap.php`):**
 - JavaScript managed via importmap.php
@@ -167,3 +141,18 @@ Normas y patrones del código, por ámbito (una sola lectura; evita repetir lo m
 - **DI:** property promotion y `readonly` en servicios/subscribers alineados con el estilo reciente.
 - **Twig:** overrides en `templates/bundles/{EasyAdminBundle,ArtgrisFileManagerBundle,ArkounayUxMediaBundle}/`; componentes PHP en `src/Twig/Components/` + vistas en `templates/components/`.
 - **Traducciones:** español por defecto (`messages.es.yaml`, `EasyAdminBundle.es.yaml`, …) coherente con `default_locale: es`.
+
+## Documentación
+
+docs/ contiene decisiones de diseño y porqués. Puede tener descripciones de implementación desactualizadas — es normal y aceptable.
+
+Cuando revises código contra docs/:
+- Solo señala discrepancias si una DECISIÓN DE DISEÑO está rota en el código.
+- Ignora diferencias de implementación: rutas, nombres de clase, métodos, flujos concretos.
+
+Cuando hagas un cambio en el código:
+- Solo actualiza docs/ si cambia una decisión de diseño o restricción arquitectónica.
+- Si el cambio es técnico (refactor, fix, mejora) → no toques docs/.
+- Si añades algo con una razón no obvia → añade una línea explicando el porqué, sin describir el cómo.
+
+Nunca reescribas, reformules ni reorganices docs/ salvo que yo te lo pida explícitamente para un archivo concreto.
