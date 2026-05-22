@@ -9,3 +9,12 @@
 
 controllers:
     resource: routing.controllers
+
+artgris_bundle_file_manager:
+    resource: "@ArtgrisFileManagerBundle/Controller"
+    type: attribute
+    prefix: /media
+ux_media:
+    resource: "@ArkounayUxMediaBundle/Controller"
+    type: attribute
+    prefix: /ux-media
