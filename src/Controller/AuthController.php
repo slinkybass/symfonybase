@@ -13,6 +13,7 @@ use App\Repository\UserRepository;
 use App\Service\ConfigService;
 use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +51,12 @@ final class AuthController extends AbstractController
     }
 
     #[Route('/login', name: 'login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    #[Template('@EasyAdmin/page/login.html.twig')]
+    public function login(AuthenticationUtils $authenticationUtils): array
     {
         $config = $this->configService->get();
 
-        return $this->render('@EasyAdmin/page/login.html.twig', [
+        return [
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'last_username' => $authenticationUtils->getLastUsername(),
             'translation_domain' => 'admin',
@@ -67,7 +69,7 @@ final class AuthController extends AbstractController
             'remember_me_checked' => true,
             'forgot_password_enabled' => $config->enableResetPassword,
             'forgot_password_path' => $this->generateUrl('reset_password_request'),
-        ]);
+        ];
     }
 
     #[Route('/reset-password-request', name: 'reset_password_request')]

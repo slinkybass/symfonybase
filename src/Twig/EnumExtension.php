@@ -4,43 +4,22 @@ namespace App\Twig;
 
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFilter;
+use Twig\Attribute\AsTwigFunction;
 
 /**
  * Filters and helpers for enum cases in Twig (labels, choices, equality against name or value).
  */
-class EnumExtension extends AbstractExtension
+class EnumExtension
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('enum_name', [$this, 'enumName']),
-            new TwigFilter('enum_value', [$this, 'enumValue']),
-            new TwigFilter('enum_label', [$this, 'enumLabel']),
-            new TwigFilter('enum_choices', [$this, 'enumChoices']),
-            new TwigFilter('enum_from_value', [$this, 'enumFromValue']),
-            new TwigFilter('enum_from_name', [$this, 'enumFromName']),
-            new TwigFilter('enum_is', [$this, 'enumIs']),
-        ];
-    }
-
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('enum_cases', [$this, 'enumCases']),
-            new TwigFunction('enum_count', [$this, 'enumCount']),
-        ];
-    }
-
     /**
      * Returns the name of an enum case.
      */
+    #[AsTwigFilter('enum_name')]
     public function enumName(\UnitEnum $enum): string
     {
         return $enum->name;
@@ -49,6 +28,7 @@ class EnumExtension extends AbstractExtension
     /**
      * Returns the backing value of a backed enum case, or null for pure enums.
      */
+    #[AsTwigFilter('enum_value')]
     public function enumValue(\UnitEnum $enum): int|string|null
     {
         return $enum instanceof \BackedEnum ? $enum->value : null;
@@ -60,6 +40,7 @@ class EnumExtension extends AbstractExtension
      * @param \UnitEnum   $enum   the enum case to display
      * @param string|null $locale the locale code (defaults to the current locale)
      */
+    #[AsTwigFilter('enum_label')]
     public function enumLabel(\UnitEnum $enum, ?string $locale = null): string
     {
         if ($enum instanceof TranslatableInterface) {
@@ -77,6 +58,7 @@ class EnumExtension extends AbstractExtension
      *
      * @return array<string, int|string>
      */
+     #[AsTwigFilter('enum_choices')]
     public function enumChoices(string $enumClass, ?string $locale = null): array
     {
         $choices = [];
@@ -92,6 +74,7 @@ class EnumExtension extends AbstractExtension
     /**
      * @param class-string<\BackedEnum> $enumClass
      */
+    #[AsTwigFilter('enum_from_value')]
     public function enumFromValue(mixed $value, string $enumClass): ?\UnitEnum
     {
         return $enumClass::tryFrom($value);
@@ -100,6 +83,7 @@ class EnumExtension extends AbstractExtension
     /**
      * @param class-string<\UnitEnum> $enumClass
      */
+    #[AsTwigFilter('enum_from_name')]
     public function enumFromName(string $name, string $enumClass): ?\UnitEnum
     {
         $cases = array_combine(
@@ -116,6 +100,7 @@ class EnumExtension extends AbstractExtension
      * @param \UnitEnum                 $enum  the enum case to compare
      * @param \UnitEnum|int|string|null $other the case, name or value to compare against
      */
+    #[AsTwigFilter('enum_is')]
     public function enumIs(\UnitEnum $enum, \UnitEnum|int|string|null $other): bool
     {
         if ($other instanceof \UnitEnum) {
@@ -134,6 +119,7 @@ class EnumExtension extends AbstractExtension
      *
      * @return list<\UnitEnum>
      */
+    #[AsTwigFunction('enum_cases')]
     public function enumCases(string $enumClass): array
     {
         return $enumClass::cases();
@@ -142,6 +128,7 @@ class EnumExtension extends AbstractExtension
     /**
      * @param class-string<\UnitEnum> $enumClass
      */
+    #[AsTwigFunction('enum_count')]
     public function enumCount(string $enumClass): int
     {
         return count($enumClass::cases());

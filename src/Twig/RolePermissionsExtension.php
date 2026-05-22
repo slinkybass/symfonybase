@@ -5,29 +5,19 @@ namespace App\Twig;
 use App\Entity\User;
 use App\Service\RolePermissions;
 use Symfony\Bundle\SecurityBundle\Security;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
 /**
  * Twig helpers that delegate to `RolePermissions` for the current (or given) `User`.
  *
  * Non-`User` security tokens are treated as having no permissions.
  */
-class RolePermissionsExtension extends AbstractExtension
+class RolePermissionsExtension 
 {
     public function __construct(
         private readonly RolePermissions $rolePermissions,
         private readonly Security $security,
     ) {
-    }
-
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('has_permission', [$this, 'hasPermission']),
-            new TwigFunction('has_permission_crud', [$this, 'hasPermissionCrud']),
-            new TwigFunction('has_permission_crud_action', [$this, 'hasPermissionCrudAction']),
-        ];
     }
 
     /**
@@ -36,6 +26,7 @@ class RolePermissionsExtension extends AbstractExtension
      * @param string    $perm the permission identifier to check
      * @param User|null $user the user to check (defaults to the current user)
      */
+    #[AsTwigFunction('has_permission')]
     public function hasPermission(string $perm, ?User $user = null): bool
     {
         $user = $user ?? $this->security->getUser();
@@ -52,6 +43,7 @@ class RolePermissionsExtension extends AbstractExtension
      * @param string    $crud the CRUD name to check
      * @param User|null $user the user to check (defaults to the current user)
      */
+    #[AsTwigFunction('has_permission_crud')]
     public function hasPermissionCrud(string $crud, ?User $user = null): bool
     {
         $user = $user ?? $this->security->getUser();
@@ -69,6 +61,7 @@ class RolePermissionsExtension extends AbstractExtension
      * @param string    $action the action to check (e.g. 'index', 'new', 'edit', 'delete')
      * @param User|null $user   the user to check (defaults to the current user)
      */
+    #[AsTwigFunction('has_permission_crud_action')]
     public function hasPermissionCrudAction(string $crud, string $action, ?User $user = null): bool
     {
         $user = $user ?? $this->security->getUser();
