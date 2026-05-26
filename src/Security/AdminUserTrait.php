@@ -5,12 +5,12 @@ namespace App\Security;
 use App\Entity\User;
 
 /**
- * Admin area (`access_control` on `^/admin`) assumes the authenticated principal is {@see User}.
+ * Admin area (`access_control` on `^/admin`) assumes the authenticated principal is User.
  */
 trait AdminUserTrait
 {
     /**
-     * @throws \LogicException when the token is missing or not {@see User}
+     * @throws \LogicException when the token is missing or not User
      */
     public function user(): User
     {
