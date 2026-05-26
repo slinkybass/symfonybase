@@ -22,7 +22,7 @@ return [
         'version' => '7.3.0',
     ],
     'sortablejs' => [
-        'version' => '1.15.6',
+        'version' => '1.15.7',
     ],
     'cropperjs' => [
         'version' => '1.6.2',
@@ -42,19 +42,19 @@ return [
         'type' => 'css',
     ],
     'intl-messageformat' => [
-        'version' => '10.7.18',
+        'version' => '11.2.7',
     ],
     'tslib' => [
         'version' => '2.8.1',
     ],
     '@formatjs/fast-memoize' => [
-        'version' => '2.2.7',
+        'version' => '3.1.5',
     ],
     '@formatjs/icu-messageformat-parser' => [
-        'version' => '2.11.4',
+        'version' => '3.5.10',
     ],
     '@formatjs/icu-skeleton-parser' => [
-        'version' => '1.8.16',
+        'version' => '2.1.9',
     ],
     '@symfony/ux-translator' => [
         'path' => './vendor/symfony/ux-translator/assets/dist/translator_controller.js',
@@ -78,30 +78,30 @@ return [
         'version' => '8.11.1',
     ],
     'dirty-form' => [
-        'version' => '1.0.0',
+        'version' => '2.0.0',
     ],
     'sweetalert2' => [
-        'version' => '11.26.17',
+        'version' => '11.26.24',
     ],
     'sweetalert2/dist/sweetalert2.min.css' => [
-        'version' => '11.26.17',
+        'version' => '11.26.24',
         'type' => 'css',
     ],
     'moment/min/moment-with-locales.min.js' => [
         'version' => '2.30.1',
     ],
     'tom-select' => [
-        'version' => '2.4.3',
+        'version' => '2.6.1',
+    ],
+    'tom-select/dist/css/tom-select.bootstrap5.css' => [
+        'version' => '2.6.1',
+        'type' => 'css',
     ],
     '@orchidjs/sifter' => [
         'version' => '1.1.0',
     ],
     '@orchidjs/unicode-variants' => [
         'version' => '1.1.2',
-    ],
-    'tom-select/dist/css/tom-select.bootstrap5.css' => [
-        'version' => '2.4.3',
-        'type' => 'css',
     ],
     'flatpickr' => [
         'version' => '4.6.13',
@@ -114,122 +114,122 @@ return [
         'version' => '4.6.13',
     ],
     'slugify' => [
-        'version' => '1.6.6',
+        'version' => '1.6.9',
     ],
     'tinymce' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/models/dom/model' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/themes/silver' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/icons/default' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/skins/ui/oxide/skin.min.css' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
         'type' => 'css',
     ],
     'tinymce/plugins/accordion' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/advlist' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/anchor' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/autolink' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/autoresize' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/autosave' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/charmap' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/code' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/codesample' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/directionality' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/emoticons' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/emoticons/js/emojis' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/fullscreen' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/image' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/importcss' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/insertdatetime' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/link' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/lists' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/media' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/nonbreaking' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/pagebreak' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/preview' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/quickbars' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/save' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/searchreplace' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/table' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/visualblocks' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/visualchars' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce/plugins/wordcount' => [
-        'version' => '8.3.1',
+        'version' => '8.5.1',
     ],
     'tinymce-i18n/langs/es.js' => [
         'version' => '25.11.17',
     ],
     'ace-builds/src-min-noconflict/ace' => [
-        'version' => '1.43.5',
+        'version' => '1.44.0',
     ],
     'spectrum-vanilla' => [
-        'version' => '1.1.1',
+        'version' => '1.1.2',
     ],
     'spectrum-vanilla/dist/spectrum.min.css' => [
-        'version' => '1.1.1',
+        'version' => '1.1.2',
         'type' => 'css',
     ],
     'signature_pad' => [
