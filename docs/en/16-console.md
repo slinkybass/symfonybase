@@ -31,7 +31,7 @@ php bin/console app:create-users
 
 `src/Command/UpdatePermissionsCommand.php`. Recomputes the permission map for `ROLE_SUPERADMIN` from the live [`RolePermissions`](05-permissions.md) tree (CRUD scan + extras) and persists it.
 
-Run this every time you add / remove a CRUD or change the `EXTRA_*` constants in `RolePermissions`:
+Run this every time you add / remove a CRUD or change the `EXTRA_*` / `DISABLED_CRUD_ACTIONS` constants in `Permission.php`:
 
 ```bash
 php bin/console app:update-permissions

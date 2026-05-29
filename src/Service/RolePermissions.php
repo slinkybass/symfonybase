@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Role;
 use App\Entity\User;
+use App\Security\Permission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -15,65 +16,19 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * Dynamically detects available permissions by scanning controller files,
  * compares role hierarchies, and groups permissions into a tree structure.
  *
- * Permission naming convention:
- *   - Entity CRUD access:   crud_<entity>            (e.g. crud_user, crud_demoEntity)
- *   - Entity CRUD action:   crud_<entity>_<action>   (e.g. crud_user_new, crud_demoEntity_new)
- *   - Extra CRUD actions:   crud_<entity>_<action>   (e.g. crud_user_impersonate)
- *   - Non-CRUD permissions: <name>                   (e.g. media)
+ * Permission naming convention and registry: {@see Permission}.
  *
- * Identifiers are normalised by splitting on underscores, applying lcfirst to each
- * part, and rejoining with underscores. This preserves internal camelCase so that
- * multi-word entity names remain unambiguous (e.g. 'DemoEntity' -> 'demoEntity').
+ * This class scans CrudControllers, builds the permission tree, and checks role maps.
+ * Do not add permission names here; extend {@see Permission::EXTRA_PERMISSIONS},
+ * {@see Permission::EXTRA_CRUD_ACTIONS}, or {@see Permission::DISABLED_CRUD_ACTIONS}.
  */
 final readonly class RolePermissions
 {
-    public const CRUD_PREFIX = 'crud';
-
     /**
      * Paths relative to the project root where CrudControllers are scanned.
      */
     private const CRUD_PATHS = [
         '/src/Controller/Admin/Cruds',
-    ];
-
-    /**
-     * CRUD permissions that must be excluded from the permission system.
-     * Useful for entities that do not expose all four standard actions,
-     * or whose actions should not be controlled individually.
-     *
-     * Format: '<entity>' or '<entity>_<action>'.
-     */
-    private const DISABLED_CRUD_PERMISSIONS = [
-        'config_new',
-        'config_edit',
-        'config_detail',
-        'config_delete',
-        'settings_new',
-        'settings_edit',
-        'settings_detail',
-        'settings_delete',
-    ];
-
-    /**
-     * Additional CRUD actions not derived from any controller file.
-     * Appended with the CRUD prefix and included exactly once.
-     *
-     * Format: '<entity>_<action>'.
-     */
-    private const EXTRA_CRUD_ACTION_PERMISSIONS = [
-        'admin_impersonate',
-        'user_impersonate',
-    ];
-
-    /**
-     * Additional permissions unrelated to EasyAdmin CRUDs.
-     */
-    private const EXTRA_PERMISSIONS = [
-        'media',
-        'media_tree',
-        'media_upload',
-        'media_edit',
-        'media_folders',
     ];
 
     /**
@@ -86,8 +41,9 @@ final readonly class RolePermissions
         Action::DELETE,
     ];
 
-    public function __construct(private KernelInterface $kernel)
-    {
+    public function __construct(
+        private KernelInterface $kernel
+    ) {
     }
 
     /**
@@ -127,7 +83,7 @@ final readonly class RolePermissions
      */
     public function roleHasPermission(Role $role, string $permission): bool
     {
-        return (bool) ($role->getPermissions()[$this->normalizePermission($permission)] ?? false);
+        return (bool) ($role->getPermissions()[Permission::normalize($permission)] ?? false);
     }
 
     /**
@@ -157,7 +113,7 @@ final readonly class RolePermissions
      */
     public function userHasPermissionCrud(User $user, string $crud): bool
     {
-        return $this->userHasPermission($user, self::CRUD_PREFIX.'_'.$crud);
+        return $this->userHasPermission($user, Permission::CRUD.'_'.$crud);
     }
 
     /**
@@ -170,7 +126,7 @@ final readonly class RolePermissions
      */
     public function userHasPermissionCrudAction(User $user, string $crud, string $action): bool
     {
-        return $this->userHasPermission($user, self::CRUD_PREFIX.'_'.$crud.'_'.$action);
+        return $this->userHasPermission($user, Permission::CRUD.'_'.$crud.'_'.$action);
     }
 
     /**
@@ -182,7 +138,7 @@ final readonly class RolePermissions
      */
     public function getPermissions(): array
     {
-        return array_merge($this->getCrudPermissions(), $this->getExtraPermissions());
+        return array_merge($this->getCrudPermissions(), Permission::EXTRA_PERMISSIONS);
     }
 
     /**
@@ -228,11 +184,11 @@ final readonly class RolePermissions
      * Builds the flat list of CRUD permissions by scanning controller files.
      *
      * For each CrudController found in the configured paths, the following permissions
-     * are generated, unless that permission is listed in DISABLED_CRUD_PERMISSIONS:
+     * are generated, unless excluded by {@see Permission::DISABLED_CRUD_ACTIONS}:
      *   - Entity CRUD access permission (crud_<entity>).
      *   - One permission per standard action (crud_<entity>_<action>).
      *
-     * Extra CRUD action permissions (EXTRA_CRUD_ACTION_PERMISSIONS) are appended
+     * Extra CRUD action permissions declared in Permission::EXTRA_CRUD_ACTIONS are appended
      * exactly once, regardless of how many scan paths are configured.
      *
      * @return array<string>
@@ -240,7 +196,7 @@ final readonly class RolePermissions
     private function getCrudPermissions(): array
     {
         $permissions = [];
-        $disabled = $this->getDisabledCrudPermissions();
+        $disabled = Permission::disabledCrudKeys();
 
         foreach (self::CRUD_PATHS as $relativePath) {
             $absolutePath = $this->kernel->getProjectDir().rtrim($relativePath, '/');
@@ -253,7 +209,7 @@ final readonly class RolePermissions
             $finder->files()->in($absolutePath)->name('*CrudController.php');
 
             foreach ($finder as $file) {
-                $crudName = $this->normalizePermission(
+                $crudName = Permission::normalize(
                     str_replace('CrudController.php', '', $file->getFilename())
                 );
 
@@ -261,37 +217,27 @@ final readonly class RolePermissions
                     continue;
                 }
 
-                $permissions[] = self::CRUD_PREFIX.'_'.$crudName;
+                $permissions[] = Permission::CRUD.'_'.$crudName;
 
                 foreach (self::CRUD_ACTIONS as $action) {
-                    $actionName = $this->normalizePermission($action);
+                    $actionName = Permission::normalize($action);
                     $fullName = $crudName.'_'.$actionName;
 
                     if (in_array($fullName, $disabled, true)) {
                         continue;
                     }
 
-                    $permissions[] = self::CRUD_PREFIX.'_'.$fullName;
+                    $permissions[] = Permission::CRUD.'_'.$fullName;
                 }
             }
         }
 
         // Extra permissions are appended once, outside the path loop.
         foreach ($this->getExtraCrudActionPermissions() as $extra) {
-            $permissions[] = self::CRUD_PREFIX.'_'.$extra;
+            $permissions[] = Permission::CRUD.'_'.$extra;
         }
 
         return $permissions;
-    }
-
-    /**
-     * Returns the list of disabled CRUD permissions, normalised.
-     *
-     * @return array<string>
-     */
-    private function getDisabledCrudPermissions(): array
-    {
-        return array_map($this->normalizePermission(...), self::DISABLED_CRUD_PERMISSIONS);
     }
 
     /**
@@ -301,39 +247,15 @@ final readonly class RolePermissions
      */
     private function getExtraCrudActionPermissions(): array
     {
-        return array_map($this->normalizePermission(...), self::EXTRA_CRUD_ACTION_PERMISSIONS);
-    }
+        $permissions = [];
 
-    /**
-     * Returns the list of extra permissions, normalised.
-     *
-     * @return array<string>
-     */
-    private function getExtraPermissions(): array
-    {
-        return array_map($this->normalizePermission(...), self::EXTRA_PERMISSIONS);
-    }
+        foreach (Permission::EXTRA_CRUD_ACTIONS as $crud => $actions) {
+            foreach ($actions as $action) {
+                $permissions[] = Permission::normalize($crud.'_'.$action);
+            }
+        }
 
-    /**
-     * Normalises a permission identifier by splitting on underscores, applying
-     * lcfirst to each part, and rejoining with underscores.
-     *
-     * This preserves internal camelCase on multi-word entity names while ensuring
-     * the first character of each segment is lowercased:
-     *   'DemoEntity'  -> 'demoEntity'
-     *   'New'         -> 'new'
-     *   'config_Edit' -> 'config_edit'
-     *
-     * @param string $permission the raw identifier to normalise
-     *
-     * @return string the normalised identifier
-     */
-    private function normalizePermission(string $permission): string
-    {
-        $parts = array_filter(explode('_', $permission));
-        $parts = array_map(lcfirst(...), $parts);
-
-        return implode('_', $parts);
+        return $permissions;
     }
 
     /**

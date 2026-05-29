@@ -24,7 +24,7 @@ src/
 ├── Model/                       # DTO AppConfig (configuración en caché)
 ├── Repository/                  # AbstractRepository + repositorios por entidad
 │   └── Filter/                  # Sistema de filtros: AbstractFilter + clases de filtro por entidad
-├── Security/                    # AdminUserTrait + centinela VirtualPermission
+├── Security/                    # AdminUserTrait + helper Permission + PermissionVoter + centinela VirtualPermission
 ├── Service/                     # ConfigService, MailService, RolePermissions
 ├── Twig/
 │   ├── Components/              # Componentes Live (User, Role, UserAvatar, Media)

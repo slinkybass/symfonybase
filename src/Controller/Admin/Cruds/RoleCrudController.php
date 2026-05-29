@@ -7,8 +7,8 @@ use App\Entity\Role;
 use App\Field\BooleanField;
 use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;
+use App\Security\Permission;
 use App\Security\VirtualPermission;
-use App\Service\RolePermissions;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -67,9 +67,9 @@ class RoleCrudController extends AbstractCrudController
         $permissionsFields = [];
         $this->rolePermissions->loopPermissions($permissions, function ($permission, $parentPermission, $level) use (&$permissionsFields) {
             if ($this->hasPermission($permission)) {
-                $isCrudPermission = str_starts_with($permission, RolePermissions::CRUD_PREFIX.'_');
+                $isCrudPermission = str_starts_with($permission, Permission::CRUD.'_');
                 if ($isCrudPermission) {
-                    $permissionWithoutCrud = str_replace(RolePermissions::CRUD_PREFIX.'_', '', $permission);
+                    $permissionWithoutCrud = str_replace(Permission::CRUD.'_', '', $permission);
                     $parts = explode('_', $permissionWithoutCrud, 2);
                     $entity = $parts[0];
                     $action = $parts[1] ?? null;
@@ -230,6 +230,11 @@ class RoleCrudController extends AbstractCrudController
             $permissionsValues = [];
             $this->rolePermissions->loopPermissions($permissions, function ($permission) use (&$permissionsValues, $form) {
                 $permissionsValues[$permission] = $form->has($permission) ? $form->get($permission)->getData() : false;
+            });
+            $this->rolePermissions->loopPermissions($permissions, function ($permission, $parentPermission) use (&$permissionsValues) {
+                if ($parentPermission !== null && empty($permissionsValues[$parentPermission])) {
+                    $permissionsValues[$permission] = false;
+                }
             });
 
             $role->setPermissions($permissionsValues);

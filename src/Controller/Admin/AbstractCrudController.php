@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Model\AppConfig;
 use App\Security\AdminUserTrait;
+use App\Security\Permission;
 use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
@@ -23,7 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * RolePermissions to CRUD actions, and exposes helpers for request/session,
  * cached AppConfig, current entity, and translation keys under `entities.*`.
  *
- * Uses {@see AdminUserTrait}: under `/admin` the security principal is {@see \App\Entity\User}.
+ * Uses AdminUserTrait: under `/admin` the security principal is User.
  */
 abstract class AbstractCrudController extends EasyAbstractCrudController
 {
@@ -260,10 +261,28 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters[$name] ?? null;
     }
 
+    /** Normalized permission id for an arbitrary application permission. */
+    public function permission(string $permission): string
+    {
+        return Permission::normalize($permission);
+    }
+
+    /** Normalized permission id for this CRUD (or the given `$crud` key). */
+    public function permissionCrud(?string $crud = null): string
+    {
+        return Permission::crud($crud ?? $this->crud());
+    }
+
+    /** Normalized permission id for a specific CRUD action. */
+    public function permissionCrudAction(string $action, ?string $crud = null): string
+    {
+        return Permission::crudAction($crud ?? $this->crud(), $action);
+    }
+
     /** Whether the current user holds an arbitrary application permission. */
     public function hasPermission(string $permission): bool
     {
-        return $this->rolePermissions->userHasPermission($this->user(), $permission);
+        return $this->isGranted($this->permission($permission));
     }
 
     /**
@@ -271,7 +290,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
      */
     public function hasPermissionCrud(?string $crud = null): bool
     {
-        return $this->rolePermissions->userHasPermissionCrud($this->user(), $crud ?? $this->crud());
+        return $this->isGranted($this->permissionCrud($crud));
     }
 
     /**
@@ -279,7 +298,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
      */
     public function hasPermissionCrudAction(string $action, ?string $crud = null): bool
     {
-        return $this->rolePermissions->userHasPermissionCrudAction($this->user(), $crud ?? $this->crud(), $action);
+        return $this->isGranted($this->permissionCrudAction($action, $crud));
     }
 
     /** Singular entity label (`entities.{entity}.singular`). */

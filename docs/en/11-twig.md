@@ -33,7 +33,9 @@ Three Twig functions, all defaulting to the current security user:
 {% if has_permission_crud_action('user', 'edit') %} ... {% endif %}
 ```
 
-Non-`User` security tokens always evaluate as no permissions. See [permissions](05-permissions.md).
+For the **current** user, `is_granted('media_upload')` is equivalent (same `PermissionVoter`). Use `has_permission(..., $otherUser)` to evaluate another user's role. Full examples (routes, CRUD actions, menus): [permissions — cookbook](05-permissions.md#applying-permissions-cookbook).
+
+Non-`User` security tokens always evaluate as no permissions.
 
 ### `EnumExtension`
 

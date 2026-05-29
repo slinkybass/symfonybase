@@ -6,16 +6,16 @@ Other locales: see the [documentation hub](../README.md).
 
 ## How this base extends Symfony / EasyAdmin
 
-| Stock Symfony / EasyAdmin behavior   | What this base adds                                                                |
-| ------------------------------------ | ---------------------------------------------------------------------------------- |
-| `AbstractCrudController` (EasyAdmin) | `App\Controller\Admin\AbstractCrudController` (helpers, permission wiring...)      |
-| Field classes per type (EasyAdmin)   | `App\Field\*` wrappers + `FieldGenerator` factories with shared `FieldTrait`       |
-| Doctrine repositories                | `App\Repository\AbstractRepository` + composable `App\Repository\Filter\*` objects |
-| Symfony Form types                   | `App\Form\FormGenerator` reuses `App\Field\*` outside of EasyAdmin                 |
-| `security.yaml` roles / `IsGranted`  | `App\Service\RolePermissions` (per-CRUD + per-action permission tree)              |
-| Per-route `IsGranted`                | `App\EventSubscriber\AccessSubscriber` driven by `App\Model\AppConfig`             |
-| Hard-coded settings                  | `App\Entity\Config` + cached `App\Model\AppConfig` via `App\Service\ConfigService` |
-| Stock SymfonyCasts reset / verify    | Wired through `App\Controller\AuthController` + `App\Service\MailService`          |
+| Stock Symfony / EasyAdmin behavior   | What this base adds                                                                                 |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `AbstractCrudController` (EasyAdmin) | `App\Controller\Admin\AbstractCrudController` (helpers, permission wiring...)                       |
+| Field classes per type (EasyAdmin)   | `App\Field\*` wrappers + `FieldGenerator` factories with shared `FieldTrait`                        |
+| Doctrine repositories                | `App\Repository\AbstractRepository` + composable `App\Repository\Filter\*` objects                  |
+| Symfony Form types                   | `App\Form\FormGenerator` reuses `App\Field\*` outside of EasyAdmin                                  |
+| `security.yaml` roles / `IsGranted`  | `App\Security\Permission` + `App\Security\Voter\PermissionVoter` over `App\Service\RolePermissions` |
+| Per-route `IsGranted`                | `App\EventSubscriber\AccessSubscriber` driven by `App\Model\AppConfig`                              |
+| Hard-coded settings                  | `App\Entity\Config` + cached `App\Model\AppConfig` via `App\Service\ConfigService`                  |
+| Stock SymfonyCasts reset / verify    | Wired through `App\Controller\AuthController` + `App\Service\MailService`                           |
 
 ## Index
 

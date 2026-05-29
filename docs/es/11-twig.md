@@ -33,7 +33,9 @@ Tres funciones Twig, todas tomando por defecto el usuario de seguridad actual:
 {% if has_permission_crud_action('user', 'edit') %} ... {% endif %}
 ```
 
-Los tokens de seguridad que no sean de tipo `User` siempre se evalúan sin permisos. Ver [permissions](05-permissions.md).
+Para el usuario **actual**, `is_granted('media_upload')` es equivalente (mismo `PermissionVoter`). Usa `has_permission(..., $otroUsuario)` para evaluar el rol de otra persona. Ejemplos completos (rutas, acciones CRUD, menús): [permisos — recetario](05-permissions.md#cómo-aplicar-permisos-recetario).
+
+Los tokens de seguridad que no sean de tipo `User` siempre se evalúan sin permisos.
 
 ### `EnumExtension`
 

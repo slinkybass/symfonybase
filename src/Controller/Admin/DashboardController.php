@@ -4,9 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Config;
 use App\Security\AdminUserTrait;
+use App\Security\Permission;
 use App\Security\VirtualPermission;
 use App\Service\ConfigService;
-use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -34,7 +34,6 @@ final class DashboardController extends AbstractDashboardController
         private readonly EntityManagerInterface $em,
         private readonly TranslatorInterface $translator,
         private readonly ConfigService $configService,
-        private readonly RolePermissions $rolePermissions,
     ) {
     }
 
@@ -93,7 +92,6 @@ final class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        $user = $this->user();
         $configId = $this->em->getRepository(Config::class)->filterFirst()?->getId();
         $config = $this->configService->get();
         $labelAdmin = $config->enablePublic ? 'admin' : 'user';
@@ -102,37 +100,43 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard($this->translator->trans('admin.home.title'), 'home');
 
         $userItems = [];
+        $userItemsAvailable = [];
+        $permissionUser = Permission::crud('user');
+        $permissionAdmin = Permission::crud('admin');
+        $permissionRole = Permission::crud('role');
+        $permissionMedia = Permission::MEDIA;
+        $permissionSettings = Permission::crud('settings');
+        $permissionConfig = Permission::crud('config');
+        $permissionDemoEntity = Permission::crud('demoEntity');
         if ($config->enablePublic) {
-            $userItems[] = MenuItem::linkTo(Cruds\UserCrudController::class, $this->translator->trans('entities.user.plural'), 'user')
-                ->setPermission(VirtualPermission::allowed($this->rolePermissions->userHasPermissionCrud($user, 'user')));
+            $userItems[] = MenuItem::linkTo(Cruds\UserCrudController::class, $this->translator->trans('entities.user.plural'), 'user')->setPermission($permissionUser);
+            $userItemsAvailable[] = $this->isGranted($permissionUser);
         }
-        $userItems[] = MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('entities.'.$labelAdmin.'.plural'), $iconAdmin)
-            ->setPermission(VirtualPermission::allowed($this->rolePermissions->userHasPermissionCrud($user, 'admin')));
-        $userItems[] = MenuItem::linkTo(Cruds\RoleCrudController::class, $this->translator->trans('entities.role.plural'), 'lock')
-            ->setPermission(VirtualPermission::allowed($this->rolePermissions->userHasPermissionCrud($user, 'role')));
-        $userItemsAvailable = array_filter($userItems, fn ($item) => !VirtualPermission::isDenied($item->getAsDto()->getPermission()));
-        if (count($userItemsAvailable) <= 1) {
+        $userItems[] = MenuItem::linkTo(Cruds\AdminCrudController::class, $this->translator->trans('entities.'.$labelAdmin.'.plural'), $iconAdmin)->setPermission($permissionAdmin);
+        $userItemsAvailable[] = $this->isGranted($permissionAdmin);
+        $userItems[] = MenuItem::linkTo(Cruds\RoleCrudController::class, $this->translator->trans('entities.role.plural'), 'lock')->setPermission($permissionRole);
+        $userItemsAvailable[] = $this->isGranted($permissionRole);
+        if (count(array_filter($userItemsAvailable)) <= 1) {
             yield from $userItems;
         } else {
             yield MenuItem::subMenu($this->translator->trans('entities.user.plural'), 'users')->setSubItems($userItems);
         }
 
-        yield MenuItem::linkToRoute($this->translator->trans('entities.media.plural'), 'file', 'admin_media')
-            ->setPermission(VirtualPermission::allowed($this->rolePermissions->userHasPermission($user, 'media')));
+        yield MenuItem::linkToRoute($this->translator->trans('entities.media.plural'), 'file', 'admin_media')->setPermission($permissionMedia);
 
         $configItems = [];
-        $settingsLink = MenuItem::linkTo(Cruds\SettingsCrudController::class, $this->translator->trans('entities.settings.singular'), 'tool')
-            ->setPermission(VirtualPermission::allowed($this->rolePermissions->userHasPermissionCrud($user, 'settings')));
+        $configItemsAvailable = [];
+        $settingsLink = MenuItem::linkTo(Cruds\SettingsCrudController::class, $this->translator->trans('entities.settings.singular'), 'tool')->setPermission($permissionSettings);
+        $configItemsAvailable[] = $this->isGranted($permissionSettings);
         $configItems[] = $configId ? $settingsLink->setAction(Crud::PAGE_DETAIL)->setEntityId($configId) : $settingsLink->setAction(Crud::PAGE_NEW);
-        $configLink = MenuItem::linkTo(Cruds\ConfigCrudController::class, $this->translator->trans('entities.config.singular'), 'settings')
-            ->setPermission(VirtualPermission::allowed($this->rolePermissions->userHasPermissionCrud($user, 'config')));
+        $configLink = MenuItem::linkTo(Cruds\ConfigCrudController::class, $this->translator->trans('entities.config.singular'), 'settings')->setPermission($permissionConfig);
+        $configItemsAvailable[] = $this->isGranted($permissionConfig);
         $configItems[] = $configId ? $configLink->setAction(Crud::PAGE_DETAIL)->setEntityId($configId) : $configLink->setAction(Crud::PAGE_NEW);
         if (class_exists('App\\Entity\\DemoEntity')) {
-            $configItems[] = MenuItem::linkTo('App\\Controller\\Admin\\Cruds\\DemoEntityCrudController', $this->translator->trans('entities.demoEntity.singular'), 'flask')
-                ->setPermission(VirtualPermission::allowed($this->rolePermissions->userHasPermissionCrud($user, 'demoEntity')));
+            $configItems[] = MenuItem::linkTo('App\\Controller\\Admin\\Cruds\\DemoEntityCrudController', $this->translator->trans('entities.demoEntity.singular'), 'flask')->setPermission($permissionDemoEntity);
+            $configItemsAvailable[] = $this->isGranted($permissionDemoEntity);
         }
-        $configItemsAvailable = array_filter($configItems, fn ($item) => !VirtualPermission::isDenied($item->getAsDto()->getPermission()));
-        if (count($configItemsAvailable) <= 1) {
+        if (count(array_filter($configItemsAvailable)) <= 1) {
             yield from $configItems;
         } else {
             yield MenuItem::subMenu($this->translator->trans('entities.config.singular'), 'settings')->setSubItems($configItems);

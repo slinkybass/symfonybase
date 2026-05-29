@@ -10,6 +10,7 @@ use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;
 use App\Repository\Filter\User as UserFilter;
 use App\Repository\RoleRepository;
+use App\Security\Permission;
 use App\Security\VirtualPermission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
@@ -221,7 +222,7 @@ class AdminCrudController extends AbstractCrudController
         $actions->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->displayIf(fn (User $u) => $user === $u || ($hasPermissionEdit && $this->rolePermissions->isUp($user->getRole(), $u->getRole()))));
         $actions->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->displayIf(fn (User $u) => $user !== $u && ($hasPermissionDelete && $this->rolePermissions->isUp($user->getRole(), $u->getRole()))));
 
-        $denied = !$hasPermission ? [Action::INDEX] : [];
+        $denied = !$hasPermission ? [Action::INDEX, Action::NEW, Action::DETAIL, Action::EDIT, Action::DELETE, Action::BATCH_DELETE] : [];
         if (!$hasPermissionNew) {
             $denied[] = Action::NEW;
         }
@@ -238,14 +239,13 @@ class AdminCrudController extends AbstractCrudController
         }
         $actions->setPermissions(array_fill_keys(array_unique($denied), VirtualPermission::DENY));
 
-        $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
         $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
             ->linkToUrl(fn (User $u) => $this->generateUrl('home', ['_switch_user' => $u->getEmail()]))
             ->displayIf(fn (User $u) => $user !== $u && $u->isActive() && $this->rolePermissions->isUp($user->getRole(), $u->getRole()))
             ->asPrimaryAction()->addCssClass('btn-outline');
         $actions->add(Crud::PAGE_INDEX, $impersonate);
         $actions->add(Crud::PAGE_DETAIL, $impersonate);
-        $actions->setPermission('impersonate', VirtualPermission::allowed($hasPermissionImpersonate));
+        $actions->setPermission('impersonate', $this->permissionCrudAction(Permission::ACTION_IMPERSONATE));
 
         $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE]);
         $actions->reorder(Crud::PAGE_DETAIL, [Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX]);

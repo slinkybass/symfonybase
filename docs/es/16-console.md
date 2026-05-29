@@ -31,7 +31,7 @@ php bin/console app:create-users
 
 `src/Command/UpdatePermissionsCommand.php`. Recalcula el mapa de permisos para `ROLE_SUPERADMIN` a partir del árbol activo de [`RolePermissions`](05-permissions.md) (escaneo de CRUDs + extras) y lo persiste.
 
-Ejecutar cada vez que añadas o elimines un CRUD o modifiques las constantes `EXTRA_*` en `RolePermissions`:
+Ejecutar cada vez que añadas o elimines un CRUD o modifiques las constantes `EXTRA_*` / `DISABLED_CRUD_ACTIONS` en `Permission.php`:
 
 ```bash
 php bin/console app:update-permissions

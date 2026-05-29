@@ -10,7 +10,7 @@ use App\Field\FieldGenerator;
 use App\Repository\Filter\Role as RoleFilter;
 use App\Repository\Filter\User as UserFilter;
 use App\Repository\RoleRepository;
-use App\Security\VirtualPermission;
+use App\Security\Permission;
 use App\Service\ConfigService;
 use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
@@ -188,14 +188,14 @@ class UserCrudController extends AbstractCrudController
     {
         $actions = parent::configureActions($actions);
 
-        $hasPermissionImpersonate = $this->hasPermissionCrudAction('impersonate');
+        $user = $this->user();
         $impersonate = Action::new('impersonate', $this->transEntityAction('impersonate'))->setIcon('user-search')
             ->linkToUrl(fn (User $u) => $this->generateUrl('home', ['_switch_user' => $u->getEmail()]))
-            ->displayIf(fn (User $u) => $u->isActive())
+            ->displayIf(fn (User $u) => $user !== $u && $u->isActive() && $this->rolePermissions->isUp($user->getRole(), $u->getRole()))
             ->asPrimaryAction()->addCssClass('btn-outline');
         $actions->add(Crud::PAGE_INDEX, $impersonate);
         $actions->add(Crud::PAGE_DETAIL, $impersonate);
-        $actions->setPermission('impersonate', VirtualPermission::allowed($hasPermissionImpersonate));
+        $actions->setPermission('impersonate', $this->permissionCrudAction(Permission::ACTION_IMPERSONATE));
 
         $actions->reorder(Crud::PAGE_INDEX, [Action::DETAIL, 'impersonate', Action::EDIT, Action::DELETE]);
         $actions->reorder(Crud::PAGE_DETAIL, [Action::EDIT, Action::DELETE, 'impersonate', Action::INDEX]);

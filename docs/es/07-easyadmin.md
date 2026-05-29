@@ -12,7 +12,7 @@ Puntos destacados:
 - `configureDashboard()` construye el objeto `Dashboard`: título a partir del logo configurado (`appConfig.appLogo`), ruta del favicon, esquema de color `light` por defecto, contenido renderizado maximizado y selector de idioma construido desde el parámetro `LOCALES` (`config/services.yaml`).
 - `configureCrud()` establece la zona horaria global (`appConfig.appTimezone`) y la acción de fila por defecto `DETAIL`.
 - `configureAssets()` registra el conjunto de iconos `tabler` y los puntos de entrada `app` y `admin` de Asset Mapper (ver [assets](13-assets.md)).
-- `configureMenuItems()` tiene en cuenta los permisos: cada elemento de menú declara su permiso `crud_*` mediante `VirtualPermission::allowed(...)`. Los elementos se agrupan en un submenú solo cuando hay más de una entrada del grupo permitida.
+- `configureMenuItems()` tiene en cuenta los permisos: los permisos reales de aplicación se declaran directamente mediante `App\Security\Permission` + `setPermission()` de EasyAdmin, mientras que la agrupación de menús usa `isGranted()` para que la estructura coincida con el resultado final de acceso.
 - `configureUserMenu()` expone el perfil (detalle de `AdminCrudController` para el usuario actual), `Salir de la suplantación` (solo al suplantar) y la entrada de Logout.
 - `configureActions()` estandariza los iconos de los botones (Tabler), reordena las acciones y las estiliza (`device-floppy`, `chevron-left`, `trash`, etc.) para todos los CRUDs.
 
@@ -41,23 +41,24 @@ Las cuatro son propiedades públicas para que las subclases puedan pasarlas a tr
 
 ### Control de permisos
 
-`configureActions()` lee los permisos `crud_<entidad>` y `crud_<entidad>_<acción>` y usa [`VirtualPermission::DENY`](05-permissions.md#appsecurityvirtualpermission) para ocultar las acciones no autorizadas.
+`configureActions()` lee los permisos `crud_<entidad>` y `crud_<entidad>_<acción>` a través de los helpers de permisos / voter y usa [`VirtualPermission::DENY`](05-permissions.md#appsecurityvirtualpermission) solo en el último paso para ocultar acciones en EasyAdmin.
 
 ### Helpers disponibles para las subclases
 
-| Helper                                                                                                                  | Propósito                                                              |
-| ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `adminUrl()`                                                                                                            | `AdminUrlGenerator` desde el contenedor                                |
-| `request()`                                                                                                             | `RequestStack` desde el contenedor                                     |
-| `session()`                                                                                                             | Sesión actual si está disponible                                       |
-| `config()`                                                                                                              | `AppConfig` en caché                                                   |
+| Helper                                                                                                                  | Propósito                                                               |
+| ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `adminUrl()`                                                                                                            | `AdminUrlGenerator` desde el contenedor                                 |
+| `request()`                                                                                                             | `RequestStack` desde el contenedor                                      |
+| `session()`                                                                                                             | Sesión actual si está disponible                                        |
+| `config()`                                                                                                              | `AppConfig` en caché                                                    |
 | `entity()`                                                                                                              | Instancia de entidad activa (contexto EA o cargada por `EA::ENTITY_ID`) |
-| `crud()`                                                                                                                | Clave corta de entidad derivada del nombre de la clase controladora    |
-| `action()` / `isIndex()` / `isDetail()` / `isNew()` / `isEdit()` / `isForm()`                                           | Atajos para la acción actual de EA                                     |
-| `filters()` / `filtersShown()` / `filtersHidden()`                                                                      | Payload de filtros parseado desde `EA::FILTERS`                        |
-| `filter($name)` / `filterShown($name)` / `filterHidden($name)`                                                          | Valor de un filtro individual                                          |
-| `hasPermission()` / `hasPermissionCrud()` / `hasPermissionCrudAction()`                                                 | Acceso conveniente a `RolePermissions` para el `User` actual           |
-| `transEntitySingular()` / `transEntityPlural()` / `transEntitySection()` / `transEntityAction()` / `transEntityField()` | Búsquedas bajo `entities.{entity}.*`                                   |
+| `crud()`                                                                                                                | Clave corta de entidad derivada del nombre de la clase controladora     |
+| `action()` / `isIndex()` / `isDetail()` / `isNew()` / `isEdit()` / `isForm()`                                           | Atajos para la acción actual de EA                                      |
+| `filters()` / `filtersShown()` / `filtersHidden()`                                                                      | Payload de filtros parseado desde `EA::FILTERS`                         |
+| `filter($name)` / `filterShown($name)` / `filterHidden($name)`                                                          | Valor de un filtro individual                                           |
+| `permission()` / `permissionCrud()` / `permissionCrudAction()`                                                          | Construyen ids de permiso para `isGranted()` / `setPermission()`        |
+| `hasPermission()` / `hasPermissionCrud()` / `hasPermissionCrudAction()`                                                 | Wrappers cómodos sobre `isGranted()` para el `User` actual              |
+| `transEntitySingular()` / `transEntityPlural()` / `transEntitySection()` / `transEntityAction()` / `transEntityField()` | Búsquedas bajo `entities.{entity}.*`                                    |
 
 `adminUrl()` y `request()` utilizan el patrón de acceso al contenedor heredado de EasyAdmin (`$this->container->get(...)`).
 
@@ -65,17 +66,17 @@ Las cuatro son propiedades públicas para que las subclases puedan pasarlas a tr
 
 `src/Controller/Admin/Cruds/`:
 
-| Controlador              | Entidad                      | Notas                                                                                                        |
-| ------------------------ | ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `UserCrudController`     | `User` (no administrador)    | Filtra los roles de administrador en el índice y los formularios; acción de suplantación mediante `crud_user_impersonate`. |
-| `AdminCrudController`    | `User` (administrador)       | Añade comprobaciones de jerarquía (`RolePermissions::isUp`) al editar/eliminar; acción de suplantación.      |
-| `RoleCrudController`     | `Role`                       | Renderiza el árbol de permisos dinámico como switches anidados; enlaces por fila a admins/usuarios.          |
-| `SettingsCrudController` | `Config` (campos de marca)   | Fuerza una única fila; redirige al detalle tras guardar; carga la entrada de asset `settingsForm`.            |
-| `ConfigCrudController`   | `Config` (toggles de funcionalidades) | Mismo comportamiento singleton que Settings.                                                        |
+| Controlador              | Entidad                               | Notas                                                                                              |
+| ------------------------ | ------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `UserCrudController`     | `User` (no administrador)             | Filtra roles admin en índice/formularios; `impersonate` con `crud_user_impersonate` + `isUp()`.    |
+| `AdminCrudController`    | `User` (administrador)                | `isUp()` en editar/eliminar/suplantar; deniega todas las acciones estándar si falta `crud_admin`.  |
+| `RoleCrudController`     | `Role`                                | Switches dinámicos (solo permisos que el editor tiene); jerarquía padre/hijo al guardar.           |
+| `SettingsCrudController` | `Config` (campos de marca)            | Fuerza una única fila; redirige al detalle tras guardar; carga la entrada de asset `settingsForm`. |
+| `ConfigCrudController`   | `Config` (toggles de funcionalidades) | Mismo comportamiento singleton que Settings.                                                       |
 
 Ambos CRUDs de `User` aplican siempre `IsVerifiedFilter` + `IsAdminFilter` en el `QueryBuilder` del índice para que las cuentas desactivadas/no verificadas y el «lado» incorrecto nunca aparezcan en el listado. También registran un listener de `SUBMIT` en el formulario que hashea `plainPassword` si se ha proporcionado.
 
-`RoleCrudController` recorre `RolePermissions::getGroupedPermissions()` para generar un switch por permiso disponible, con sangría según el nivel del árbol. En `SUBMIT` reconstruye el mapa `permissions` del rol a partir de los valores del formulario.
+`RoleCrudController` recorre `RolePermissions::getGroupedPermissions()` para generar un switch por permiso que el usuario actual puede otorgar, con sangría según el nivel del árbol. En `SUBMIT` reconstruye el mapa `permissions` y anula hijos cuyo padre esté desactivado. Ver [permisos — recetario](05-permissions.md#cómo-aplicar-permisos-recetario).
 
 ## Sobreescrituras de plantillas del bundle
 
