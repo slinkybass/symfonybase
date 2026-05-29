@@ -66,15 +66,15 @@ assets/
 
 `importmap.php` declara los siguientes puntos de entrada visibles al usuario (`entrypoint => true`):
 
-| Nombre de entrada   | Ruta                                 | Utilizado por                                                             |
-| ------------------- | ------------------------------------ | ------------------------------------------------------------------------- |
-| `app`               | `assets/js/app.js`                   | Todas las páginas (admin + público). Añade `App` a `window`.              |
+| Nombre de entrada   | Ruta                                 | Utilizado por                                                                  |
+| ------------------- | ------------------------------------ | ------------------------------------------------------------------------------ |
+| `app`               | `assets/js/app.js`                   | Todas las páginas (admin + público). Añade `App` a `window`.                   |
 | `admin`             | `assets/js/admin.js`                 | Páginas de administración (cargado en `DashboardController::configureAssets`). |
-| `public`            | `assets/js/public.js`                | Páginas del sitio público.                                                |
-| `page-color-scheme` | `assets/js/app/page-color-scheme.js` | Importado por `app.js` (gestor de esquema claro/oscuro).                  |
-| `artgris_manager`   | `assets/js/app/artgris_manager.js`   | Cargado por `templates/admin/media.html.twig`.                            |
-| `settingsForm`      | `assets/js/app/settingsForm.js`      | Cargado por `SettingsCrudController::configureAssets`.                    |
-| `form-type-*`       | `assets/js/fields/form-type-*.js`    | Adjuntado automáticamente por el wrapper `App\Field\*` correspondiente.   |
+| `public`            | `assets/js/public.js`                | Páginas del sitio público.                                                     |
+| `page-color-scheme` | `assets/js/app/page-color-scheme.js` | Importado por `app.js` (gestor de esquema claro/oscuro).                       |
+| `artgris_manager`   | `assets/js/app/artgris_manager.js`   | Cargado por `templates/admin/media.html.twig`.                                 |
+| `settingsForm`      | `assets/js/app/settingsForm.js`      | Cargado por `SettingsCrudController::configureAssets`.                         |
+| `form-type-*`       | `assets/js/fields/form-type-*.js`    | Adjuntado automáticamente por el wrapper `App\Field\*` correspondiente.        |
 
 Las entradas de campos siguen la convención de EasyAdmin: cada clase `App\Field\*` registra su plugin con `addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())`, de modo que el bundle inyecta el script únicamente en las pantallas que renderizan el campo.
 

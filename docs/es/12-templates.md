@@ -58,12 +58,12 @@ templates/
 
 Los renderizadores de campos personalizados en `templates/field/` son referenciados explícitamente desde los wrappers PHP mediante `setTemplatePath('field/foo.html.twig')`. Ejemplos:
 
-| Archivo                                                            | Definido por                                       |
-| ------------------------------------------------------------------ | -------------------------------------------------- |
-| `field/role.html.twig`                                             | `FieldGenerator::role()` / `UserField`             |
-| `field/userAvatar.html.twig`                                       | `FieldGenerator::userAvatar()`                     |
-| `field/user.html.twig`                                             | `App\Field\UserField`                              |
+| Archivo                                                            | Definido por                                                     |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| `field/role.html.twig`                                             | `FieldGenerator::role()` / `UserField`                           |
+| `field/userAvatar.html.twig`                                       | `FieldGenerator::userAvatar()`                                   |
+| `field/user.html.twig`                                             | `App\Field\UserField`                                            |
 | `field/userIndexSelf.html.twig`, `field/roleIndexSelf.html.twig`   | Controladores CRUD de `User`/`Role` (renderizado de fila propia) |
-| `field/media.html.twig`                                            | `MediaField`, `SignatureField`                     |
-| `field/dateMultiple.html.twig`, `field/datetimeMultiple.html.twig` | `DateMultipleField`, `DateTimeMultipleField`       |
-| `field/age.html.twig`, `field/dateAgo.html.twig`                   | Renderizadores de campos personalizados usados en listados CRUD |
+| `field/media.html.twig`                                            | `MediaField`, `SignatureField`                                   |
+| `field/dateMultiple.html.twig`, `field/datetimeMultiple.html.twig` | `DateMultipleField`, `DateTimeMultipleField`                     |
+| `field/age.html.twig`, `field/dateAgo.html.twig`                   | Renderizadores de campos personalizados usados en listados CRUD  |

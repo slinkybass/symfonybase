@@ -37,42 +37,42 @@ También expone las primitivas de layout delegando en `FormField`: `tab`, `panel
 
 Todas las clases residen bajo `App\Field`. Cada una envuelve el tipo EasyAdmin correspondiente (o compone uno) y expone métodos de construcción a través de `FieldTrait`.
 
-| Wrapper                                                       | Envuelve (EasyAdmin)                      | Comportamiento destacado                                                          |
-| ------------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------- |
-| `Field`                                                       | `Field`                                   | Delegado genérico.                                                                |
-| `IdField`                                                     | `IdField`                                 | —                                                                                 |
-| `TextField`                                                   | `TextField`                               | —                                                                                 |
-| `MaskField`                                                   | `TextField`                               | Integración IMask mediante el asset `form-type-mask`.                             |
-| `HiddenField`                                                 | `TextField`                               | —                                                                                 |
-| `SlugField`                                                   | `SlugField`                               | Asset del plugin slug; `setTarget()` para el campo origen; `setConfirmText()`.    |
-| `TextareaField`                                               | `TextareaField`                           | —                                                                                 |
-| `TextEditorField`                                             | `TextEditorField`                         | Asset TinyMCE.                                                                    |
-| `CodeEditorField`                                             | `CodeEditorField`                         | Ace; constantes de tema/lenguaje expuestas.                                       |
-| `ChoiceField`                                                 | `ChoiceField`                             | Compatible con TomSelect.                                                         |
-| `EnumField`                                                   | `ChoiceField`                             | Compatible con backed-enum (usado con `App\Entity\Enum\UserGender`).              |
-| `BooleanField`                                                | `BooleanField`                            | `isSwitch`, `isHiddenOnTrue/False`, `isChecked`.                                  |
-| `EmailField`                                                  | `EmailField`                              | —                                                                                 |
-| `TelephoneField`                                              | `TelephoneField`                          | —                                                                                 |
-| `UrlField`                                                    | `UrlField`                                | —                                                                                 |
-| `DateField`                                                   | `DateField`                               | Integración Flatpickr.                                                            |
-| `DateTimeField`                                               | `DateTimeField`                           | Flatpickr.                                                                        |
-| `TimeField`                                                   | `TimeField`                               | —                                                                                 |
-| `DateMultipleField`                                           | compone `App\Form\Type\DateMultipleType`  | Entrada de múltiples fechas como cadena.                                          |
-| `DateTimeMultipleField`                                       | igual                                     | Variante multifecha con hora.                                                     |
-| `TimezoneField`                                               | `TimezoneField`                           | —                                                                                 |
-| `PasswordField`                                               | `TextField`                               | `isRepeated()` cambia a `RepeatedType`; `renderSwitch()`, `renderGenerator()`.    |
-| `RepeatField`                                                 | compone `RepeatedType`                    | Helper genérico de repetición.                                                    |
-| `IntegerField` / `FloatField` / `PercentField` / `MoneyField` | tipos EA correspondientes                 | Helpers numéricos.                                                                |
-| `ColorField`                                                  | `ColorField`                              | Selector Spectrum vanilla.                                                        |
-| `SignatureField`                                              | `TextField`                               | Asset SignaturePad; toggles de mostrar/deshacer/limpiar.                          |
-| `MediaField`                                                  | `TextField` + Arkounay UxMedia            | Claves `conf` de Artgris (`public_all`, etc.); opciones de recorte/zoom/tamaño.   |
-| `FileField`                                                   | `TextField`                               | Subida de archivo simple.                                                         |
-| `ImageField`                                                  | `ImageField`                              | —                                                                                 |
-| `ArrayField`                                                  | `ArrayField`                              | —                                                                                 |
-| `CollectionField`                                             | `CollectionField`                         | Compatible con Arkounay UxCollection.                                             |
-| `AssociationField`                                            | `AssociationField`                        | Valores por defecto compatibles con TomSelect; `setQueryBuilder`, `renderAsEmbeddedForm`. |
-| `UserField`                                                   | compone `AssociationField`                | Filtros de activo/verificado; variante tarjeta vs. insignia; tamaño de avatar; subetiqueta. |
-| `FormField`                                                   | `FormField`                               | Primitivas de layout — usa las factorías estáticas `panel/fieldset/row/col/tab`.  |
+| Wrapper                                                       | Envuelve (EasyAdmin)                     | Comportamiento destacado                                                                    |
+| ------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `Field`                                                       | `Field`                                  | Delegado genérico.                                                                          |
+| `IdField`                                                     | `IdField`                                | —                                                                                           |
+| `TextField`                                                   | `TextField`                              | —                                                                                           |
+| `MaskField`                                                   | `TextField`                              | Integración IMask mediante el asset `form-type-mask`.                                       |
+| `HiddenField`                                                 | `TextField`                              | —                                                                                           |
+| `SlugField`                                                   | `SlugField`                              | Asset del plugin slug; `setTarget()` para el campo origen; `setConfirmText()`.              |
+| `TextareaField`                                               | `TextareaField`                          | —                                                                                           |
+| `TextEditorField`                                             | `TextEditorField`                        | Asset TinyMCE.                                                                              |
+| `CodeEditorField`                                             | `CodeEditorField`                        | Ace; constantes de tema/lenguaje expuestas.                                                 |
+| `ChoiceField`                                                 | `ChoiceField`                            | Compatible con TomSelect.                                                                   |
+| `EnumField`                                                   | `ChoiceField`                            | Compatible con backed-enum (usado con `App\Entity\Enum\UserGender`).                        |
+| `BooleanField`                                                | `BooleanField`                           | `isSwitch`, `isHiddenOnTrue/False`, `isChecked`.                                            |
+| `EmailField`                                                  | `EmailField`                             | —                                                                                           |
+| `TelephoneField`                                              | `TelephoneField`                         | —                                                                                           |
+| `UrlField`                                                    | `UrlField`                               | —                                                                                           |
+| `DateField`                                                   | `DateField`                              | Integración Flatpickr.                                                                      |
+| `DateTimeField`                                               | `DateTimeField`                          | Flatpickr.                                                                                  |
+| `TimeField`                                                   | `TimeField`                              | —                                                                                           |
+| `DateMultipleField`                                           | compone `App\Form\Type\DateMultipleType` | Entrada de múltiples fechas como cadena.                                                    |
+| `DateTimeMultipleField`                                       | igual                                    | Variante multifecha con hora.                                                               |
+| `TimezoneField`                                               | `TimezoneField`                          | —                                                                                           |
+| `PasswordField`                                               | `TextField`                              | `isRepeated()` cambia a `RepeatedType`; `renderSwitch()`, `renderGenerator()`.              |
+| `RepeatField`                                                 | compone `RepeatedType`                   | Helper genérico de repetición.                                                              |
+| `IntegerField` / `FloatField` / `PercentField` / `MoneyField` | tipos EA correspondientes                | Helpers numéricos.                                                                          |
+| `ColorField`                                                  | `ColorField`                             | Selector Spectrum vanilla.                                                                  |
+| `SignatureField`                                              | `TextField`                              | Asset SignaturePad; toggles de mostrar/deshacer/limpiar.                                    |
+| `MediaField`                                                  | `TextField` + Arkounay UxMedia           | Claves `conf` de Artgris (`public_all`, etc.); opciones de recorte/zoom/tamaño.             |
+| `FileField`                                                   | `TextField`                              | Subida de archivo simple.                                                                   |
+| `ImageField`                                                  | `ImageField`                             | —                                                                                           |
+| `ArrayField`                                                  | `ArrayField`                             | —                                                                                           |
+| `CollectionField`                                             | `CollectionField`                        | Compatible con Arkounay UxCollection.                                                       |
+| `AssociationField`                                            | `AssociationField`                       | Valores por defecto compatibles con TomSelect; `setQueryBuilder`, `renderAsEmbeddedForm`.   |
+| `UserField`                                                   | compone `AssociationField`               | Filtros de activo/verificado; variante tarjeta vs. insignia; tamaño de avatar; subetiqueta. |
+| `FormField`                                                   | `FormField`                              | Primitivas de layout — usa las factorías estáticas `panel/fieldset/row/col/tab`.            |
 
 `FieldGenerator::role()` y `FieldGenerator::userAvatar()` son factorías de conveniencia que combinan un wrapper con la plantilla Twig correcta (`field/role.html.twig`, `field/userAvatar.html.twig`) y la conf de Artgris.
 

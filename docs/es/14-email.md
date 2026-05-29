@@ -59,10 +59,10 @@ $this->renderView('mails/template.html.twig', [
 
 Actualmente solo en `App\Controller\AuthController`:
 
-| Email                        | Asunto (clave i18n)                  | Se dispara cuando                                          |
-| ---------------------------- | ------------------------------------ | ---------------------------------------------------------- |
-| Verificación de email        | `email.verify.subject`               | Tras un registro exitoso                                   |
-| Solicitud de recuperación    | `email.resetPasswordRequest.subject` | Se solicita recuperación para un usuario activo y verificado |
+| Email                     | Asunto (clave i18n)                  | Se dispara cuando                                            |
+| ------------------------- | ------------------------------------ | ------------------------------------------------------------ |
+| Verificación de email     | `email.verify.subject`               | Tras un registro exitoso                                     |
+| Solicitud de recuperación | `email.resetPasswordRequest.subject` | Se solicita recuperación para un usuario activo y verificado |
 
 Las traducciones del asunto, párrafos del cuerpo, etiquetas de botones y contenido posterior residen bajo `email.*` en `translations/messages.es.yaml`.
 

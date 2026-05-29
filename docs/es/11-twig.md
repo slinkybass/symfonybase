@@ -41,16 +41,16 @@ Los tokens de seguridad que no sean de tipo `User` siempre se evalúan sin permi
 
 Filtros y helpers para enums con o sin valor de respaldo:
 
-| Filtro / función                                         | Propósito                                              |
-| -------------------------------------------------------- | ------------------------------------------------------ |
-| `\| enum_name`                                           | Nombre del caso (`UserGender.male`)                    |
-| `\| enum_value`                                          | Valor de respaldo (o null para enums puros)            |
-| `\| enum_label`                                          | Etiqueta traducida mediante `TranslatableInterface`    |
-| `\| enum_choices(class)`                                 | Mapa etiqueta→valor (formularios)                      |
-| `\| enum_from_value(class)` / `\| enum_from_name(class)` | Búsquedas inversas                                     |
-| `\| enum_is(other)`                                      | Compara contra un caso, nombre o valor                 |
-| `enum_cases(class)`                                      | Todos los casos                                        |
-| `enum_count(class)`                                      | Número de casos                                        |
+| Filtro / función                                         | Propósito                                           |
+| -------------------------------------------------------- | --------------------------------------------------- |
+| `\| enum_name`                                           | Nombre del caso (`UserGender.male`)                 |
+| `\| enum_value`                                          | Valor de respaldo (o null para enums puros)         |
+| `\| enum_label`                                          | Etiqueta traducida mediante `TranslatableInterface` |
+| `\| enum_choices(class)`                                 | Mapa etiqueta→valor (formularios)                   |
+| `\| enum_from_value(class)` / `\| enum_from_name(class)` | Búsquedas inversas                                  |
+| `\| enum_is(other)`                                      | Compara contra un caso, nombre o valor              |
+| `enum_cases(class)`                                      | Todos los casos                                     |
+| `enum_count(class)`                                      | Número de casos                                     |
 
 Usado en `RoleCrudController` y en las plantillas de campos que trabajan con `UserGender`.
 
@@ -66,12 +66,12 @@ Añade el filtro `hex_to_rgb` (`#RRGGBB` → `[R, G, B]`). Usado por `templates/
 
 `src/Twig/Components/` (plantillas en `templates/components/`):
 
-| Componente (PHP) | Plantilla                         | Propósito                                                                                    |
-| ---------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
-| `User`           | `components/User.html.twig`       | Variante de tarjeta o badge; recurre a `user.anonymous` (dominio EasyAdmin).                 |
-| `UserAvatar`     | `components/UserAvatar.html.twig` | Imagen de avatar o iniciales con variantes de tamaño y zoom opcional.                        |
-| `Role`           | `components/Role.html.twig`       | Badge cuyo color pastel se deriva de forma determinista a partir del id y el nombre.         |
-| `Media`          | `components/Media.html.twig`      | Imagen estilo avatar con tamaño; detección de imagen por extensión o URI `data:image:`.      |
+| Componente (PHP) | Plantilla                         | Propósito                                                                               |
+| ---------------- | --------------------------------- | --------------------------------------------------------------------------------------- |
+| `User`           | `components/User.html.twig`       | Variante de tarjeta o badge; recurre a `user.anonymous` (dominio EasyAdmin).            |
+| `UserAvatar`     | `components/UserAvatar.html.twig` | Imagen de avatar o iniciales con variantes de tamaño y zoom opcional.                   |
+| `Role`           | `components/Role.html.twig`       | Badge cuyo color pastel se deriva de forma determinista a partir del id y el nombre.    |
+| `Media`          | `components/Media.html.twig`      | Imagen estilo avatar con tamaño; detección de imagen por extensión o URI `data:image:`. |
 
 `UserField` (`src/Field/UserField.php`) configura las variantes y tamaños de avatar que el componente `User` consume a través de `field/user.html.twig`.
 

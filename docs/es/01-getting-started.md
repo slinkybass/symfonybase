@@ -24,16 +24,16 @@ Librerías de frontend y puntos de entrada: consulta `importmap.php`.
 
 Los valores por defecto residen en `.env` (sobreescribibles con `.env.local`):
 
-| Variable                  | Propósito                                                                |
-| ------------------------- | ------------------------------------------------------------------------ |
-| `APP_ENV`                 | `dev` / `prod` / `test`                                                  |
-| `APP_SECRET`              | Secreto de la aplicación Symfony                                         |
-| `DATABASE_URL`            | Conexión DBAL de Doctrine (MySQL/MariaDB/Postgres/SQLite)                |
-| `MAILER_DSN`              | DSN de transporte de Symfony Mailer (por defecto: `null://null`)         |
-| `MESSENGER_TRANSPORT_DSN` | Transporte asíncrono por defecto (Doctrine)                              |
-| `REQUIRED_SCHEME`         | Esquema requerido por el control de acceso de `security.yaml` (`http`/`https`) |
-| `LOCALES`                 | Lista permitida separada por barras, p. ej. `es\|en` (ver [i18n](15-i18n.md)) |
-| `DEFAULT_URI`             | Usado para la generación de URLs en comandos CLI                         |
+| Variable                  | Propósito                                                                            |
+| ------------------------- | ------------------------------------------------------------------------------------ |
+| `APP_ENV`                 | `dev` / `prod` / `test`                                                              |
+| `APP_SECRET`              | Secreto de la aplicación Symfony                                                     |
+| `DATABASE_URL`            | Conexión DBAL de Doctrine (MySQL/MariaDB/Postgres/SQLite)                            |
+| `MAILER_DSN`              | DSN de transporte de Symfony Mailer (por defecto: `null://null`)                     |
+| `MESSENGER_TRANSPORT_DSN` | Transporte asíncrono por defecto (Doctrine)                                          |
+| `REQUIRED_SCHEME`         | Esquema requerido por el control de acceso de `security.yaml` (`http`/`https`)       |
+| `LOCALES`                 | Lista permitida separada por barras, p. ej. `es\|en` (ver [i18n](15-i18n.md))        |
+| `DEFAULT_URI`             | Usado para la generación de URLs en comandos CLI                                     |
 | `APP_SHARE_DIR`           | Ruta del sistema de archivos usada como carpeta compartida (`var/share` por defecto) |
 
 ## Instalación e inicialización

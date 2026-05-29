@@ -32,7 +32,7 @@ Defaults live in `.env` (overridable with `.env.local`):
 | `MAILER_DSN`              | Symfony Mailer transport DSN (default: `null://null`)                   |
 | `MESSENGER_TRANSPORT_DSN` | Default async transport (Doctrine)                                      |
 | `REQUIRED_SCHEME`         | Required scheme used by `security.yaml` access control (`http`/`https`) |
-| `LOCALES`                 | Pipe-separated allow-list, e.g. `es\|en` (see [i18n](15-i18n.md))          |
+| `LOCALES`                 | Pipe-separated allow-list, e.g. `es\|en` (see [i18n](15-i18n.md))       |
 | `DEFAULT_URI`             | Used for URL generation in CLI commands                                 |
 | `APP_SHARE_DIR`           | Filesystem path used as share folder (`var/share` by default)           |
 
