@@ -40,7 +40,7 @@ class RoleFilter extends AbstractFilter
 
     public function apply(QueryBuilder $qb): void
     {
-        $this->ensureJoin($qb, 'role', 'r');
+        $this->ensureRootJoin($qb, 'role', 'r');
         $this->applyMultiComparison($qb, 'r.name', 'roleName', $this->roleNames, $this->operator);
     }
 }

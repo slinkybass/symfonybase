@@ -103,7 +103,7 @@ Normas y patrones del código, por ámbito (una sola lectura; evita repetir lo m
 ### Queries & repositories
 
 - Los repositorios de negocio extienden `AbstractRepository` y exponen listados / uno / paginación vía **`FilterInterface`** (p. ej. `UserRepository::filterOne` + `App\Repository\Filter\User\EmailFilter` en auth).
-- **`AbstractFilter`:** `ensureJoin`, comparaciones con enum **`ComparisonOperator`**, parsing de fechas, `assertOperator`. **`OrderFilter`** usa enum **`OrderDirection`** para el `ORDER BY`.
+- **`AbstractFilter`:** `ensureJoin` (path DQL completo), `ensureRootJoin` (asociación desde raíz), comparaciones con enum **`ComparisonOperator`**, parsing de fechas, `assertOperator`. **`OrderFilter`** usa enum **`OrderDirection`** para el `ORDER BY`.
 - No abrir queries ad hoc en controladores cuando ya hay filtro + repositorio para el mismo caso.
 
 ### Configuration

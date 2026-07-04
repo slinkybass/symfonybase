@@ -2,6 +2,7 @@
 
 namespace App\Repository\Filter;
 
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -18,22 +19,54 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Adds a join to the QueryBuilder only if it has not already been applied.
+     * Adds a join with the given DQL path only if the alias is not already present with the same join type.
      *
-     * @param string $relation  the relation name on the root entity
-     * @param string $joinAlias the alias to assign to the joined entity
+     * @param non-empty-string $join  full DQL join path (e.g. `u.role`, `r.permissions`)
+     * @param non-empty-string $alias alias assigned to the joined entity
      */
-    protected function ensureJoin(QueryBuilder $qb, string $relation, string $joinAlias): void
-    {
+    protected function ensureJoin(
+        QueryBuilder $qb,
+        string $join,
+        string $alias,
+        string $joinType = Join::LEFT_JOIN,
+    ): void {
         foreach ($qb->getDQLPart('join') as $joins) {
-            foreach ($joins as $join) {
-                if ($join->getAlias() === $joinAlias) {
+            foreach ($joins as $existingJoin) {
+                if ($existingJoin->getAlias() !== $alias) {
+                    continue;
+                }
+
+                if ($existingJoin->getJoinType() === $joinType) {
                     return;
                 }
+
+                throw new \InvalidArgumentException(sprintf(
+                    'Join alias "%s" is already used with a different join type.',
+                    $alias,
+                ));
             }
         }
 
-        $qb->leftJoin($this->getRootAlias($qb).".$relation", $joinAlias);
+        match ($joinType) {
+            Join::INNER_JOIN => $qb->innerJoin($join, $alias),
+            Join::LEFT_JOIN => $qb->leftJoin($join, $alias),
+            default => throw new \InvalidArgumentException(sprintf('Unsupported join type "%s".', $joinType)),
+        };
+    }
+
+    /**
+     * Adds a join from the query root only if the alias is not already present with the same join type.
+     *
+     * @param non-empty-string $association association path from the root (e.g. `role`, `role.permissions`)
+     * @param non-empty-string $alias       alias assigned to the joined entity
+     */
+    protected function ensureRootJoin(
+        QueryBuilder $qb,
+        string $association,
+        string $alias,
+        string $joinType = Join::LEFT_JOIN,
+    ): void {
+        $this->ensureJoin($qb, $this->getRootAlias($qb).'.'.$association, $alias, $joinType);
     }
 
     /**

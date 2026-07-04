@@ -20,7 +20,7 @@ class IsAdminFilter extends AbstractFilter
 
     public function apply(QueryBuilder $qb): void
     {
-        $this->ensureJoin($qb, 'role', 'r');
+        $this->ensureRootJoin($qb, 'role', 'r');
         $this->applyComparison($qb, 'r.isAdmin', 'isAdmin', $this->isAdmin, $this->operator);
     }
 }
