@@ -222,14 +222,14 @@
 
                                                         <div class="row g-2">
                                                             <div class="col">
-                                                                <div class="input-icon">
+                                                                <div class="input-icon" data-value="{{ app.request.query.get('query') }}">
                                                                     <span class="input-icon-addon">
                                                                         <twig:ea:Icon name="search" />
                                                                     </span>
                                                                     <input class="form-control" type="search" name="query"
                                                                         value="{{ app.request.query.get('query') ?? '' }}"
                                                                         placeholder="{{ t('action.search', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}"
-                                                                        spellcheck="false" autocorrect="off" onInput="this.parentNode.dataset.value=this.value"
+                                                                        spellcheck="false" autocorrect="off"
                                                                         {% if ea.crud.currentAction == 'index' and ea.crud.autofocusSearch == true %}autofocus="autofocus"{% endif %}>
                                                                 </div>
                                                             </div>

@@ -1,6 +1,28 @@
 import App from "./app.js";
 import Mark from "mark.js";
 
+function sanitizeUrl(url, requireSameOrigin = false) {
+    if (url === null || url === "") {
+        return null;
+    }
+
+    try {
+        const parsedUrl = new URL(url, window.location.origin);
+        const allowedProtocols = ["http:", "https:", "mailto:", "tel:"];
+        if (!allowedProtocols.includes(parsedUrl.protocol)) {
+            return null;
+        }
+
+        if (requireSameOrigin && parsedUrl.origin !== window.location.origin) {
+            return null;
+        }
+
+        return url;
+    } catch {
+        return null;
+    }
+}
+
 function toggleVisibilityClasses(element, removeVisibility) {
     if (removeVisibility) {
         element.classList.remove("d-block");
@@ -122,8 +144,13 @@ function createFilters() {
         return;
     }
 
+    const filtersUrl = sanitizeUrl(filterButton.getAttribute("data-href"), true);
+    if (null === filtersUrl) {
+        return;
+    }
+
     // this is needed to avoid errors when connection is slow
-    filterButton.setAttribute("href", filterButton.getAttribute("data-href"));
+    filterButton.setAttribute("href", filtersUrl);
     filterButton.removeAttribute("data-href");
     filterButton.classList.remove("disabled");
 
@@ -412,7 +439,7 @@ function createActionConfirmationModals() {
 
             modalButton.addEventListener("click", () => {
                 // Case 1: POST action with formaction (like DELETE with CSRF token)
-                const formAction = actionElement.getAttribute("formaction");
+                const formAction = sanitizeUrl(actionElement.getAttribute("formaction"));
                 if (formAction) {
                     const form = document.querySelector("#action-confirmation-form");
                     form?.setAttribute("action", formAction);
@@ -435,7 +462,7 @@ function createActionConfirmationModals() {
                 }
 
                 // Case 4: GET action with href
-                const href = actionElement.getAttribute("href");
+                const href = sanitizeUrl(actionElement.getAttribute("href"));
                 if (href) {
                     window.location.href = href;
                 }
@@ -509,7 +536,7 @@ function createDefaultRowAction() {
             return;
         }
 
-        const url = row.dataset.defaultActionUrl;
+        const url = sanitizeUrl(row.dataset.defaultActionUrl);
         if (url) {
             navigateToUrl(url);
         }
@@ -568,7 +595,7 @@ function createActionHandlers() {
                 return;
             }
             event.preventDefault();
-            const actionUrl = element.getAttribute("data-ea-action-url");
+            const actionUrl = sanitizeUrl(element.getAttribute("data-ea-action-url"));
             if (actionUrl) {
                 window.location.href = actionUrl;
             }
