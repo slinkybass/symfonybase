@@ -42,19 +42,19 @@ return [
         'type' => 'css',
     ],
     'intl-messageformat' => [
-        'version' => '11.2.7',
+        'version' => '10.7.18',
     ],
     'tslib' => [
         'version' => '2.8.1',
     ],
     '@formatjs/fast-memoize' => [
-        'version' => '3.1.5',
+        'version' => '2.2.7',
     ],
     '@formatjs/icu-messageformat-parser' => [
-        'version' => '3.5.10',
+        'version' => '2.11.4',
     ],
     '@formatjs/icu-skeleton-parser' => [
-        'version' => '2.1.9',
+        'version' => '1.8.16',
     ],
     '@symfony/ux-translator' => [
         'path' => './vendor/symfony/ux-translator/assets/dist/translator_controller.js',
