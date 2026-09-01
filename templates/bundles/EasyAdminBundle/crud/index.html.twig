@@ -259,7 +259,7 @@
         {% block table_body_empty %}
             <div class="empty">
                 <p class="empty-subtitle text-muted">
-                    {{ t('datagrid.no_results', {}, 'EasyAdminBundle')|trans }}
+                    {{ t('datagrid.no_results', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}
                 </p>
             </div>
         {% endblock table_body_empty %}

@@ -133,7 +133,7 @@
                             {{ tab.label|trans(domain: ea().i18n.translationDomain)|raw }}
 
                             {% if tab.help %}
-                                <span class="form-help ms-1" title="{{ tab.help|trans(domain: ea.i18n.translationDomain)|raw }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true">?</span>
+                                <span class="form-help ms-1" title="{{ tab.help|trans(domain: ea().i18n.translationDomain)|raw }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true">?</span>
                             {% endif %}
 
                             {% set tab_error_count = tab.getCustomOption(tab_error_count_option_name) %}
@@ -157,6 +157,7 @@
 {% macro render_tab_group_close(field) %}
         </div>
     </div>
+</div>
 {% endmacro %}
 
 {% macro render_tab_open(field) %}
@@ -164,9 +165,11 @@
     {% set tab_is_active_option_name = constant('EasyCorp\\Bundle\\EasyAdminBundle\\Field\\FormField::OPTION_TAB_IS_ACTIVE') %}
 
     <div id="{{ field.getCustomOption(tab_id_option_name) }}" class="tab-pane {% if field.getCustomOption(tab_is_active_option_name) %}active{% endif %} {{ field.cssClass }}" {% for key, value in field.getFormTypeOption('attr') %}{{ key }}="{{ value|e('html') }}"{% endfor %}>
+        <div class="row">
 {% endmacro %}
 
 {% macro render_tab_close(field) %}
+        </div>
     </div>
 {% endmacro %}
 

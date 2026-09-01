@@ -1,17 +1,6 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {% extends '@!EasyAdmin/crud/form_theme.html.twig' %}
 
-{% block form_start %}
-    {% if form.vars.errors|length > 0 and 'ea_crud' in form.vars.block_prefixes|default([]) %}
-        {{ form_errors(form, {attr: {errorClass: 'alert alert-danger'}}) }}
-    {% endif %}
-
-    {{ parent() }}
-    {% if ea().request.query.get('referrer') %}
-        <input type="hidden" name="referrer" value="{{ ea().request.query.get('referrer') }}">
-    {% endif %}
-{% endblock form_start %}
-
 {% block ea_form_fieldset_open_label %}
     {# don't use 'ea_help is not empty' here; it'll trigger deprecation messages: Method TranslatableMessage::__toString() is deprecated #}
     {% set has_help = ea_help is not same as(false) and ea_help is not null and ea_help is not same as('') %}
@@ -60,7 +49,7 @@
     {% set fieldset_has_errors = form.vars.ea_vars.field.getCustomOption(fieldset_error_count_option_name)|default(0) > 0 %}
     {% set is_collapsed = form.vars.ea_vars.field.getCustomOption(collapsed_option_name)|default(false) %}
 
-    <div class="card mb-3 {{ ea_css_class }}" {{ form.vars.attr.class|default('') }}" {% for key, value in form.vars.attr %}{% if key != 'class' %}{{ key }}="{{ value|e('html') }}" {% endif %}{% endfor %}>
+    <div class="card mb-3 {{ ea_css_class }} {{ form.vars.attr.class|default('') }}" {% for key, value in form.vars.attr %}{% if key != 'class' %}{{ key }}="{{ value|e('html') }}" {% endif %}{% endfor %}>
         <div class="card-status-top bg-primary"></div>
         <fieldset>
             {% if fieldset_has_header %}
@@ -109,6 +98,7 @@
 {% block ea_form_tabpane_group_close_row %}
         </div>
     </div>
+</div>
 {% endblock ea_form_tabpane_group_close_row %}
 
 {% block form_row %}
@@ -171,8 +161,11 @@
         {# don't display anything, not even an empty <label> element; if you want to not display
            any label contents but keep the form layout, use an empty string as the field label #}
     {%- else -%}
-        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-label')|trim}) %}
-        {%- if compound is not defined or not compound -%}
+        {%- if compound is defined and compound -%}
+            {%- set element = 'legend' -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-label')|trim}) -%}
+        {%- else -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-label')|trim}) -%}
             {%- set label_attr = label_attr|merge({for: id}) -%}
         {%- endif -%}
         {% if required -%}
@@ -366,7 +359,7 @@
         {% set attr = attr|merge({'data-empty-collection': block('empty_collection') }) %}
     {% endif %}
 
-    {% if allow_add|default(false) %}
+    {% if allow_add|default(false) and not disabled %}
         <button type="button" class="btn btn-secondary field-collection-add-button">
             <twig:ea:Icon name="plus" /> {{ 'action.add_new_item'|trans({}, 'EasyAdminBundle') }}
         </button>

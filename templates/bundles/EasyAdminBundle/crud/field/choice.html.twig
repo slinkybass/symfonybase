@@ -1,8 +1,8 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
-{% if field.value %}
-    {{ field.formattedValue|trans|raw }}
-{% else %}
+{% if field.value is same as(null) or field.value is same as('') or field.value is same as([]) %}
     {{ include(ea.templatePath('label/empty')) }}
+{% else %}
+    {{ field.formattedValue|trans|raw }}
 {% endif %}

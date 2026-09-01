@@ -20,7 +20,7 @@
                     {% set icon = 'info' %}
                 {% endif %}
                 Swal.fire({
-                    html: '{{ message|trans }}',
+                    text: '{{ message|trans|e('js') }}',
                     icon: '{{ icon }}',
                     showConfirmButton: false
                 });

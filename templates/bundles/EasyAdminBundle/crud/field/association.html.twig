@@ -36,7 +36,9 @@
 {% endif %}
 
 {% macro render_value(val, crudControllerFqcn) %}
-    {% if crudControllerFqcn %}
+    {% if val is null %}
+        {{ include(ea().templatePath('label/empty')) }}
+    {% elseif crudControllerFqcn %}
         {% set controllerName = crudControllerFqcn|split('\\')|last|replace({'CrudController': ''}) %}
         {% set hasPermission = has_permission_crud_action(controllerName, 'detail') %}
         {% set url = hasPermission ? ea_url().setController(crudControllerFqcn).setAction('detail').setEntityId(val.id) : null %}

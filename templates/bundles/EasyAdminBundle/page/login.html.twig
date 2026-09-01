@@ -85,7 +85,7 @@
     {% if error|default(false) %}
         <script type="module">
             Toast.fire({
-                title: "{{ error.messageKey|trans(error.messageData, 'security') }}",
+                title: "{{ error.messageKey|trans(error.messageData, 'security')|e('js') }}",
                 icon: 'error',
                 position: 'top'
             });
