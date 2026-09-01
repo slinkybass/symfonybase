@@ -10,8 +10,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class SettingsCrudController extends AbstractCrudController
 {
@@ -116,7 +118,7 @@ class SettingsCrudController extends AbstractCrudController
         return $actions;
     }
 
-    public function new(AdminContext $context)
+    public function new(AdminContext $context): KeyValueStore|Response
     {
         $redirect = parent::new($context);
         if ($redirect instanceof RedirectResponse) {
@@ -132,7 +134,7 @@ class SettingsCrudController extends AbstractCrudController
         return $redirect;
     }
 
-    public function edit(AdminContext $context)
+    public function edit(AdminContext $context): KeyValueStore|Response
     {
         $redirect = parent::edit($context);
         if ($redirect instanceof RedirectResponse) {

@@ -9,8 +9,10 @@ use App\Security\VirtualPermission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConfigCrudController extends AbstractCrudController
 {
@@ -99,7 +101,7 @@ class ConfigCrudController extends AbstractCrudController
         return $actions;
     }
 
-    public function new(AdminContext $context)
+    public function new(AdminContext $context): KeyValueStore|Response
     {
         $redirect = parent::new($context);
         if ($redirect instanceof RedirectResponse) {
@@ -115,7 +117,7 @@ class ConfigCrudController extends AbstractCrudController
         return $redirect;
     }
 
-    public function edit(AdminContext $context)
+    public function edit(AdminContext $context): KeyValueStore|Response
     {
         $redirect = parent::edit($context);
         if ($redirect instanceof RedirectResponse) {
