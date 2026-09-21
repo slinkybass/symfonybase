@@ -35,10 +35,10 @@ final class Permission
     /** @var array<string, list<string>> */
     public const EXTRA_CRUD_ACTIONS = [
         'admin' => [
-            self::ACTION_IMPERSONATE
+            self::ACTION_IMPERSONATE,
         ],
         'user' => [
-            self::ACTION_IMPERSONATE
+            self::ACTION_IMPERSONATE,
         ],
     ];
 

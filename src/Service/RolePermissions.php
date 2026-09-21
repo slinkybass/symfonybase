@@ -42,7 +42,7 @@ final readonly class RolePermissions
     ];
 
     public function __construct(
-        private KernelInterface $kernel
+        private KernelInterface $kernel,
     ) {
     }
 

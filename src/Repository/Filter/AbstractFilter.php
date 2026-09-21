@@ -40,10 +40,7 @@ abstract class AbstractFilter implements FilterInterface
                     return;
                 }
 
-                throw new \InvalidArgumentException(sprintf(
-                    'Join alias "%s" is already used with a different join type.',
-                    $alias,
-                ));
+                throw new \InvalidArgumentException(sprintf('Join alias "%s" is already used with a different join type.', $alias));
             }
         }
 

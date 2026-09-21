@@ -58,7 +58,7 @@ class EnumExtension
      *
      * @return array<string, int|string>
      */
-     #[AsTwigFilter('enum_choices')]
+    #[AsTwigFilter('enum_choices')]
     public function enumChoices(string $enumClass, ?string $locale = null): array
     {
         $choices = [];

@@ -12,7 +12,7 @@ use Twig\Attribute\AsTwigFunction;
  *
  * Non-`User` security tokens are treated as having no permissions.
  */
-class RolePermissionsExtension 
+class RolePermissionsExtension
 {
     public function __construct(
         private readonly RolePermissions $rolePermissions,
