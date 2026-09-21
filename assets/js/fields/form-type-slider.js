@@ -68,7 +68,7 @@ import noUiSlider from "nouislider";
             slider.classList.add("slider");
             parent.insertBefore(slider, e.nextSibling);
 
-            const noUiSliderOtps = {
+            const noUiSliderOpts = {
                 tooltips,
                 connect,
                 step,
@@ -88,9 +88,9 @@ import noUiSlider from "nouislider";
             };
 
             if (pips) {
-                noUiSliderOtps.pips = {
+                noUiSliderOpts.pips = {
                     mode: "steps",
-                    desity: 100,
+                    density: 100,
                     format: {
                         to: (value) => {
                             return parseFloat(parseFloat(value).toFixed(2));
@@ -102,10 +102,10 @@ import noUiSlider from "nouislider";
                 };
             }
 
-            noUiSlider.create(slider, noUiSliderOtps);
+            noUiSlider.create(slider, noUiSliderOpts);
 
-            slider.noUiSlider.on("update", (value) => {
-                e.value = value;
+            slider.noUiSlider.on("update", (values) => {
+                e.value = values[0];
             });
 
             const updateSlider = () => {

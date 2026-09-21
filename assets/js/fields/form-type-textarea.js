@@ -31,8 +31,8 @@
             field.style.overflow = "hidden";
             field.style.resize = "none";
             field.style.boxSizing = "border-box";
-            field.style.height = "auto";
             field.style.maxHeight = maxHeight;
+            field.style.height = "auto";
 
             // this check is needed because the <textarea> element can be inside a
             // minimizable panel, causing its scrollHeight value to be 0
@@ -40,9 +40,7 @@
                 field.style.height = `${field.scrollHeight}px`;
             }
 
-            const currentPx = Number.parseInt(String(field.style.height.replace("px", "")), 10);
-            const maxPx = Number.parseInt(String(maxHeight.replace("px", "")), 10);
-            if (Number.isFinite(currentPx) && Number.isFinite(maxPx) && currentPx > maxPx) {
+            if (field.scrollHeight > field.clientHeight + 1) {
                 field.style.overflow = "auto";
             }
         }

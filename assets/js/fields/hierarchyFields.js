@@ -63,6 +63,7 @@
             if (parent.dataset.hfInitialized === undefined) {
                 parent.dataset.hfInitialized = "";
                 parent.addEventListener("input", handleHierarchyFields);
+                parent.addEventListener("change", handleHierarchyFields);
             }
             handleHierarchyFields();
         });
@@ -255,7 +256,7 @@
             if (save && child.value) {
                 child.dataset.hfSavedValue = child.value;
             }
-            child.value = null;
+            child.value = "";
         }
         child.dispatchEvent(new Event("input"));
     }

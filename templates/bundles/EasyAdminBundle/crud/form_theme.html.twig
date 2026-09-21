@@ -243,7 +243,7 @@
     {% set allows_deleting_items = form_parent(form).vars.allow_delete|default(false) %}
     {% set render_expanded = not form.vars.valid or form_parent(form).vars.ea_vars.field.customOptions.get('renderExpanded')|default(false) %}
     {% set delete_item_button %}
-        <button type="button" class="btn btn-icon field-collection-delete-button" title="{{ 'action.remove_item'|trans({}, 'EasyAdminBundle') }}">
+        <button type="button" class="btn btn-outline-danger btn-icon m-2 field-collection-delete-button" title="{{ 'action.remove_item'|trans({}, 'EasyAdminBundle') }}">
             <twig:ea:Icon name="trash" />
         </button>
     {% endset %}

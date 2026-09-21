@@ -88,14 +88,14 @@ class DateField implements FieldInterface
 
     public function setDateFormat(string $dateFormat): self
     {
-        $this->setCustomOption(self::OPTION_DATE_FORMAT, $dateFormat);
+        $this->setHtmlAttribute(self::OPTION_DATE_FORMAT, $dateFormat);
 
         return $this;
     }
 
     public function setDateAltFormat(string $dateAltFormat): self
     {
-        $this->setCustomOption(self::OPTION_DATE_ALT_FORMAT, $dateAltFormat);
+        $this->setHtmlAttribute(self::OPTION_DATE_ALT_FORMAT, $dateAltFormat);
 
         return $this;
     }

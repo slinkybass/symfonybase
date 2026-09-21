@@ -104,17 +104,21 @@
                 const maxLength = maxLen > 0 ? maxLen : undefined;
                 let length;
                 if (minLength !== undefined && maxLength !== undefined && maxLength >= minLength) {
-                    length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+                    length = randomInt(maxLength - minLength + 1) + minLength;
                 } else {
                     length = minLength ?? maxLength ?? undefined;
                 }
                 const newPassword = generatePassword(length);
 
                 input.value = newPassword;
+                input.dispatchEvent(new Event("input", { bubbles: true }));
+                input.dispatchEvent(new Event("change", { bubbles: true }));
                 switchVisibility(input);
 
                 if (input2) {
                     input2.value = newPassword;
+                    input2.dispatchEvent(new Event("input", { bubbles: true }));
+                    input2.dispatchEvent(new Event("change", { bubbles: true }));
                     switchVisibility(input2);
                 }
             });
@@ -134,7 +138,7 @@
             return;
         }
 
-        const toggleButton = document.querySelector(`[data-input='${CSS.escape(input.id)}'], [data-input2='${CSS.escape(input.id)}']`);
+        const toggleButton = document.querySelector(`.btn-pass[data-input='${CSS.escape(input.id)}'], .btn-pass[data-input2='${CSS.escape(input.id)}']`);
         if (!toggleButton) {
             return;
         }
@@ -183,15 +187,36 @@
     /**
      * Selects `n` random characters from the string.
      *
+     * @param {string} str - Source characters.
      * @param {number} n - Number of characters to select.
      * @returns {string} Selected characters.
      */
     function pickStr(str, n) {
         let chars = "";
         for (let i = 0; i < n; i++) {
-            chars += str.charAt(Math.floor(Math.random() * str.length));
+            chars += str.charAt(randomInt(str.length));
         }
         return chars;
+    }
+
+    /**
+     * Unbiased integer in [0, maxExclusive).
+     *
+     * @param {number} maxExclusive
+     * @returns {number}
+     */
+    function randomInt(maxExclusive) {
+        if (maxExclusive <= 1) {
+            return 0;
+        }
+        const buf = new Uint32Array(1);
+        const limit = Math.floor(0x100000000 / maxExclusive) * maxExclusive;
+        let x;
+        do {
+            crypto.getRandomValues(buf);
+            x = buf[0];
+        } while (x >= limit);
+        return x % maxExclusive;
     }
 
     /**
@@ -203,7 +228,7 @@
     function shuffleStr(str) {
         const array = [...str];
         for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
+            const j = randomInt(i + 1);
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array.join("");

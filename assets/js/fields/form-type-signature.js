@@ -2,7 +2,7 @@
  * Signature pad field
  *
  * Autor: slinkybass
- * Version: 3.1
+ * Version: 3.2
  */
 
 import SignaturePad from "signature_pad";
@@ -51,58 +51,67 @@ import SignaturePad from "signature_pad";
                 const clearBtn = canvasActions.querySelector("[data-action='clear']");
                 if (undoBtn) {
                     undoBtn.classList.toggle("d-none", !showUndo);
-                    setTimeout(() => {
-                        undoBtn.disabled = true;
-                        signaturePad.addEventListener("afterUpdateStroke", () => undoBtn.disabled = signaturePad.isEmpty());
-                        undoBtn.addEventListener("click", () => {
-                            const data = signaturePad.toData();
-                            if (!data) {
-                                return;
-                            }
-                            data.pop();
-                            signaturePad.fromData(data);
-                            undoBtn.disabled = signaturePad.isEmpty();
-                            if (signaturePad.isEmpty()) {
-                                e.value = currentSignValue;
-                                setSignature(e, signaturePad);
-                            } else {
-                                setValue(e, signaturePad);
-                            }
-                            if (clearBtn) {
-                                clearBtn.disabled = !e.value;
-                            }
-                        });
-                    }, 100);
+                    undoBtn.disabled = true;
+                    signaturePad.addEventListener("afterUpdateStroke", () => {
+                        undoBtn.disabled = signaturePad.isEmpty();
+                    });
+                    undoBtn.addEventListener("click", () => {
+                        const data = signaturePad.toData();
+                        if (!data) {
+                            return;
+                        }
+                        data.pop();
+                        signaturePad.fromData(data);
+                        undoBtn.disabled = signaturePad.isEmpty();
+                        if (signaturePad.isEmpty()) {
+                            e.value = currentSignValue || "";
+                            setSignature(e, signaturePad);
+                        } else {
+                            setValue(e, signaturePad);
+                        }
+                        if (clearBtn) {
+                            clearBtn.disabled = !e.value;
+                        }
+                    });
                 }
                 if (clearBtn) {
                     clearBtn.classList.toggle("d-none", !showClear);
-                    setTimeout(() => {
+                    clearBtn.disabled = signaturePad.isEmpty();
+                    signaturePad.addEventListener("afterUpdateStroke", () => {
                         clearBtn.disabled = signaturePad.isEmpty();
-                        signaturePad.addEventListener("afterUpdateStroke", () => clearBtn.disabled = signaturePad.isEmpty());
-                        clearBtn.addEventListener("click", () => {
-                            clearBtn.disabled = true;
-                            if (undoBtn) {
-                                undoBtn.disabled = false;
-                            }
-                            signaturePad.clear();
-                            e.value = null;
-                        });
-                    }, 100);
+                    });
+                    clearBtn.addEventListener("click", () => {
+                        clearBtn.disabled = true;
+                        if (undoBtn) {
+                            undoBtn.disabled = false;
+                        }
+                        signaturePad.clear();
+                        e.value = "";
+                    });
                 }
             }
         });
 
+        function devicePixelRatio() {
+            return Math.max(window.devicePixelRatio || 1, 1);
+        }
+
         function resizeCanvas(e, signaturePad) {
-            const ratio = Math.max(window.devicePixelRatio || 1, 1);
             const canvas = signaturePad.canvas;
 
             if (!canvas || canvas.offsetWidth <= 0 || canvas.offsetHeight <= 0) {
                 return;
             }
 
+            const ratio = devicePixelRatio();
+            const ctx = canvas.getContext("2d");
+            if (!ctx) {
+                return;
+            }
+
             canvas.width = canvas.offsetWidth * ratio;
             canvas.height = canvas.offsetHeight * ratio;
-            canvas.getContext("2d").scale(ratio, ratio);
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
             setSignature(e, signaturePad);
         }
@@ -111,15 +120,24 @@ import SignaturePad from "signature_pad";
             if (!e.value) {
                 return;
             }
+            const canvas = signaturePad.canvas;
             const currentSignImg = new Image();
             currentSignImg.onload = () => {
-                const currentSignImgW = currentSignImg.width;
-                const currentSignImgH = currentSignImg.height;
+                const cssW = canvas.offsetWidth;
+                const cssH = canvas.offsetHeight;
+                const imgW = currentSignImg.width;
+                const imgH = currentSignImg.height;
+                if (imgW <= 0 || imgH <= 0 || cssW <= 0 || cssH <= 0) {
+                    return;
+                }
+                const scale = Math.min(cssW / imgW, cssH / imgH, 1);
+                const drawW = imgW * scale;
+                const drawH = imgH * scale;
                 signaturePad.fromDataURL(e.value, {
-                    width: currentSignImgW,
-                    height: currentSignImgH,
-                    xOffset: (signaturePad.canvas.width - currentSignImgW) / 2,
-                    yOffset: (signaturePad.canvas.height - currentSignImgH) / 2,
+                    width: drawW,
+                    height: drawH,
+                    xOffset: (cssW - drawW) / 2,
+                    yOffset: (cssH - drawH) / 2,
                 });
             };
             currentSignImg.src = e.value;
@@ -127,15 +145,15 @@ import SignaturePad from "signature_pad";
 
         function setValue(e, signaturePad) {
             if (signaturePad.isEmpty()) {
-                e.value = null;
+                e.value = "";
             } else {
                 const dataUrl = signaturePad.toDataURL("image/png");
                 cropDataURL(dataUrl)
                     .then((newDataUrl) => {
-                        e.value = newDataUrl;
+                        e.value = newDataUrl || "";
                     })
                     .catch(() => {
-                        e.value = null;
+                        e.value = "";
                     });
             }
         }
@@ -146,6 +164,10 @@ import SignaturePad from "signature_pad";
                 img.onload = () => {
                     const canvas = document.createElement("canvas");
                     const ctx = canvas.getContext("2d");
+                    if (!ctx) {
+                        resolve("");
+                        return;
+                    }
                     canvas.width = img.width;
                     canvas.height = img.height;
                     ctx.drawImage(img, 0, 0);
@@ -154,8 +176,8 @@ import SignaturePad from "signature_pad";
                     const pixels = imageData.data;
                     let minX = canvas.width;
                     let minY = canvas.height;
-                    let maxX = 0;
-                    let maxY = 0;
+                    let maxX = -1;
+                    let maxY = -1;
 
                     for (let y = 0; y < canvas.height; y++) {
                         for (let x = 0; x < canvas.width; x++) {
@@ -170,17 +192,26 @@ import SignaturePad from "signature_pad";
                         }
                     }
 
+                    if (maxX < minX || maxY < minY) {
+                        resolve("");
+                        return;
+                    }
+
                     const width = maxX - minX + 1;
                     const height = maxY - minY + 1;
                     const padding = 15;
                     const newCanvas = document.createElement("canvas");
                     const newCtx = newCanvas.getContext("2d");
+                    if (!newCtx) {
+                        resolve("");
+                        return;
+                    }
                     newCanvas.width = width + 2 * padding;
                     newCanvas.height = height + 2 * padding;
                     newCtx.clearRect(0, 0, newCanvas.width, newCanvas.height);
                     newCtx.drawImage(canvas, minX, minY, width, height, padding, padding, width, height);
 
-                    resolve(minY < maxY ? newCanvas.toDataURL("image/png") : null);
+                    resolve(newCanvas.toDataURL("image/png"));
                 };
                 img.onerror = reject;
                 img.src = dataUrl;

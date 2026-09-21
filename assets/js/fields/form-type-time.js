@@ -2,7 +2,7 @@
  * Flatpickr time field
  *
  * Autor: slinkybass
- * Version: 3.1
+ * Version: 3.2
  */
 
 import flatpickr from "flatpickr";
@@ -35,13 +35,13 @@ import "flatpickr/dist/flatpickr.min.css";
             const max = e.hasAttribute("max") ? e.getAttribute("max") : null;
             const min = e.hasAttribute("min") ? e.getAttribute("min") : null;
             const inline = e.hasAttribute("data-date-inline") ? e.getAttribute("data-date-inline") !== "false" : false;
-            const enableSeconds = e.hasAttribute("data-enable-seconds") ? e.getAttribute("data-enable-seconds") !== "false" : false;
+            const enableSeconds = e.hasAttribute("data-date-enable-seconds") ? e.getAttribute("data-date-enable-seconds") !== "false" : false;
             const minuteIncrementRaw = e.hasAttribute("data-date-minute-increment") ? e.getAttribute("data-date-minute-increment") : "1";
             const minuteIncrementNum = Number.parseInt(String(minuteIncrementRaw), 10);
             const minuteIncrement = Number.isFinite(minuteIncrementNum) && minuteIncrementNum > 0 ? minuteIncrementNum : 1;
             const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") === "false" : true;
 
-            const flatPickrOtps = {
+            const flatPickrOpts = {
                 inline,
                 altInputClass: inline ? "d-none" : "",
                 altInput: inline,
@@ -52,36 +52,40 @@ import "flatpickr/dist/flatpickr.min.css";
                 enableSeconds,
                 minuteIncrement,
                 noCalendar: true,
-                onOpen: (selectedDates, dateStr, instance) => {
-                    if (!instance.element.value) {
-                        const h = instance.config.defaultHour;
-                        const m = instance.config.defaultMinute;
-                        const t = `${(`0${h}`).slice(-2)}:${(`0${m}`).slice(-2)}`;
-                        instance.setDate(t, true);
-                    }
-                },
             };
 
             if (max) {
-                flatPickrOtps.maxTime = max;
+                flatPickrOpts.maxTime = max;
                 if (!min) {
                     const maxParts = max.split(":");
                     if (maxParts.length >= 2) {
-                        flatPickrOtps.defaultHour = maxParts[0];
-                        flatPickrOtps.defaultMinute = maxParts[1];
+                        const hour = Number.parseInt(maxParts[0], 10);
+                        const minute = Number.parseInt(maxParts[1], 10);
+                        if (Number.isFinite(hour)) {
+                            flatPickrOpts.defaultHour = hour;
+                        }
+                        if (Number.isFinite(minute)) {
+                            flatPickrOpts.defaultMinute = minute;
+                        }
                     }
                 }
             }
             if (min) {
-                flatPickrOtps.minTime = min;
+                flatPickrOpts.minTime = min;
                 const minParts = min.split(":");
                 if (minParts.length >= 2) {
-                    flatPickrOtps.defaultHour = minParts[0];
-                    flatPickrOtps.defaultMinute = minParts[1];
+                    const hour = Number.parseInt(minParts[0], 10);
+                    const minute = Number.parseInt(minParts[1], 10);
+                    if (Number.isFinite(hour)) {
+                        flatPickrOpts.defaultHour = hour;
+                    }
+                    if (Number.isFinite(minute)) {
+                        flatPickrOpts.defaultMinute = minute;
+                    }
                 }
             }
 
-            flatpickr(e, flatPickrOtps);
+            flatpickr(e, flatPickrOpts);
         });
     };
 })();

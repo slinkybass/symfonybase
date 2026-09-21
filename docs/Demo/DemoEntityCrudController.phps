@@ -392,7 +392,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(4);
         $collection = FieldGenerator::collection('collection')
             ->setLabel('Collection')
-            ->renderExpanded(true)
+            ->isExpanded(true)
             ->setColumns(4);
         $collectionFormType = FieldGenerator::collection('collectionFormType')
             ->setLabel('Collection with a FormType')

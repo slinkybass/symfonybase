@@ -16,7 +16,11 @@ import slugify from "slugify";
             }
 
             e.dataset.slugInitialized = "";
-            new Slugger(e);
+            try {
+                new Slugger(e);
+            } catch (err) {
+                console.error(err);
+            }
         });
     };
 
@@ -69,7 +73,9 @@ import slugify from "slugify";
     class Slugger {
         constructor(field) {
             this.field = field;
-            this.setTargetElement();
+            if (!this.setTargetElement()) {
+                return;
+            }
             this.locked = true;
             this.field.setAttribute("readonly", "readonly");
 
@@ -89,10 +95,12 @@ import slugify from "slugify";
             try {
                 fieldNames = JSON.parse(this.field.dataset.target ?? "null");
             } catch {
-                throw new Error("Invalid JSON in slug field data-target attribute.");
+                console.error("Invalid JSON in slug field data-target attribute.");
+                return false;
             }
             if (!Array.isArray(fieldNames)) {
-                throw new Error("Slug field data-target must be a JSON array of element ids.");
+                console.error("Slug field data-target must be a JSON array of element ids.");
+                return false;
             }
 
             this.targets = [];
@@ -101,11 +109,14 @@ import slugify from "slugify";
                 const target = document.getElementById(String(name));
 
                 if (null === target) {
-                    throw new Error(`Wrong target specified for slug widget ("${name}").`);
+                    console.error(`Wrong target specified for slug widget ("${name}").`);
+                    return false;
                 }
 
                 this.targets.push(target);
             }
+
+            return true;
         }
 
         /**

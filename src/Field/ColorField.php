@@ -22,7 +22,7 @@ class ColorField implements FieldInterface
     public const OPTION_COLOR_SHOW_PALETTE = 'data-color-show-palette';
     public const OPTION_COLOR_PALETTE_ONLY = 'data-color-palette-only';
     public const OPTION_COLOR_SHOW_ALPHA = 'data-color-show-alpha';
-    public const OPTION_COLOR_HIDE_AFTER_PALETTE_SELECT = 'hide-after-palette-select';
+    public const OPTION_COLOR_HIDE_AFTER_PALETTE_SELECT = 'data-color-hide-after-palette-select';
 
     /** types */
     public const COLOR_TYPE_TEXT = 'text';

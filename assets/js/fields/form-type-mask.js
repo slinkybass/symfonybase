@@ -39,8 +39,9 @@ import IMask from "imask";
             const overwrite = e.hasAttribute("data-mask-overwrite") ? e.getAttribute("data-mask-overwrite") !== "false" : false;
             const placeholderChar = e.hasAttribute("data-mask-placeholder") ? e.getAttribute("data-mask-placeholder") : null;
 
+            e.dataset.maskInitialized = "";
+
             if (mask) {
-                e.dataset.maskInitialized = "";
                 IMask(e, {
                     mask,
                     overwrite,

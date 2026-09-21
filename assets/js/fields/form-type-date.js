@@ -2,7 +2,7 @@
  * Flatpickr date field
  *
  * Autor: slinkybass
- * Version: 3.1
+ * Version: 3.2
  */
 
 import flatpickr from "flatpickr";
@@ -42,7 +42,7 @@ import "flatpickr/dist/flatpickr.min.css";
             const disabledDates = e.hasAttribute("data-date-disabled") ? e.getAttribute("data-date-disabled") : null;
             const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") === "false" : true;
 
-            const flatPickrOtps = {
+            const flatPickrOpts = {
                 inline,
                 mode,
                 dateFormat,
@@ -57,41 +57,52 @@ import "flatpickr/dist/flatpickr.min.css";
                 parseDate: (datestr, format) => {
                     return moment(datestr, format, true).toDate();
                 },
-                formatDate: (date, format, locale) => {
+                formatDate: (date, format) => {
                     return moment(date).format(format);
                 },
             };
 
             if (max) {
                 const maxDate = new Date(max);
-                maxDate.setHours(23, 59, 59, 999);
-                flatPickrOtps.maxDate = maxDate;
+                if (!Number.isNaN(maxDate.getTime())) {
+                    maxDate.setHours(23, 59, 59, 999);
+                    flatPickrOpts.maxDate = maxDate;
+                }
             }
             if (min) {
                 const minDate = new Date(min);
-                minDate.setHours(0, 0, 0, 0);
-                flatPickrOtps.minDate = minDate;
+                if (!Number.isNaN(minDate.getTime())) {
+                    minDate.setHours(0, 0, 0, 0);
+                    flatPickrOpts.minDate = minDate;
+                }
             }
 
             if (enabledDates) {
-                flatPickrOtps.enable = [
+                flatPickrOpts.enable = [
                     function (date) {
                         const dates = enabledDates.split(",").map(function (dt) {
                             const dateDt = new Date(dt);
+                            if (Number.isNaN(dateDt.getTime())) {
+                                return null;
+                            }
                             return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
-                        });
-                        const iDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
-                        return dates.find((dt) => dt === iDate) !== undefined;
+                        }).filter(Boolean);
+                        const iDate = Number.isNaN(date.getTime())
+                            ? null
+                            : new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
+                        return iDate !== null && dates.find((dt) => dt === iDate) !== undefined;
                     },
                 ];
-                flatPickrOtps.onOpen = function (selectedDates, dateStr, instance) {
+                flatPickrOpts.onOpen = function (selectedDates, dateStr, instance) {
                     const dates = enabledDates
                         .split(",")
                         .map(function (dt) {
                             const dateDt = new Date(dt);
-                            return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000);
+                            return Number.isNaN(dateDt.getTime())
+                                ? null
+                                : new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000);
                         })
-                        .filter((d) => !Number.isNaN(d.getTime()))
+                        .filter((d) => d !== null)
                         .sort((a, b) => a - b);
                     const first = dates[0];
                     if (!first) {
@@ -102,19 +113,24 @@ import "flatpickr/dist/flatpickr.min.css";
                     instance.redraw();
                 };
             } else if (disabledDates) {
-                flatPickrOtps.disable = [
+                flatPickrOpts.disable = [
                     function (date) {
                         const dates = disabledDates.split(",").map(function (dt) {
                             const dateDt = new Date(dt);
+                            if (Number.isNaN(dateDt.getTime())) {
+                                return null;
+                            }
                             return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
-                        });
-                        const iDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
-                        return dates.find((dt) => dt === iDate) !== undefined;
+                        }).filter(Boolean);
+                        const iDate = Number.isNaN(date.getTime())
+                            ? null
+                            : new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
+                        return iDate !== null && dates.find((dt) => dt === iDate) !== undefined;
                     },
                 ];
             }
 
-            flatpickr(e, flatPickrOtps);
+            flatpickr(e, flatPickrOpts);
         });
     };
 })();

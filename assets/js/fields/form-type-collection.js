@@ -58,8 +58,9 @@ const EaCollectionProperty = {
                 emptyCollectionBadge.outerHTML = isArrayCollection ? "" : '<div class="accordion"><div class="form-widget-compound"><div data-empty-collection></div></div></div>';
             }
 
-            const labelRegexp = new RegExp(formTypeNamePlaceholder + "label__", "g");
-            const nameRegexp = new RegExp(formTypeNamePlaceholder, "g");
+            const placeholderEscaped = formTypeNamePlaceholder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const labelRegexp = new RegExp(placeholderEscaped + "label__", "g");
+            const nameRegexp = new RegExp(placeholderEscaped, "g");
             const hfParentRegexp = new RegExp('data-hf-parent="([^"]*)"', "g");
             const hfChildRegexp = new RegExp('data-hf-child="([^"]*)"', "g");
 
@@ -79,12 +80,8 @@ const EaCollectionProperty = {
             collectionItemsWrapper.insertAdjacentHTML("beforeend", newItemHtml);
             collection.dataset.numItems = String(numItems + 1);
 
-            // Execute JS scripts embedded in prototype
             const collectionItems = collectionItemsWrapper.querySelectorAll(".field-collection-item");
             const lastElement = collectionItems[collectionItems.length - 1];
-            if (lastElement) {
-                lastElement.querySelectorAll("script").forEach((script) => eval(script.innerHTML));
-            }
 
             // for complex collections of items, show the newly added item as not collapsed
             if (!isArrayCollection && lastElement) {
