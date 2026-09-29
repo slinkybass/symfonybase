@@ -79,14 +79,12 @@ class AdminCrudController extends AbstractCrudController
 
         $user = $this->user();
         $entity = $this->entity();
-        $filterHiddenRole = $this->filterHidden('role');
+        $roleFilter = $this->getRoleHiddenFilter();
         $roles = array_values(array_filter(
             $this->em->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter()]),
             fn (Role $adminRole) => $this->rolePermissions->isUp($user->getRole(), $adminRole),
         ));
-        $roleDefaultValue = 1 === count($roles) ? $roles[0] : (
-            $filterHiddenRole ? $this->em->getRepository(Role::class)->find($filterHiddenRole['value']) : null
-        );
+        $roleDefaultValue = 1 === count($roles) ? $roles[0] : $roleFilter;
 
         /*** Data ***/
         $dataPanel = FieldGenerator::panel($this->transEntitySection('data'))
@@ -144,7 +142,7 @@ class AdminCrudController extends AbstractCrudController
         if ($this->isIndex()) {
             yield $userIndexSelf;
             yield $email;
-            yield $role->displayIf(count($roles) > 1 && !$filterHiddenRole);
+            yield $role->displayIf(count($roles) > 1 && !$roleFilter);
             yield $active->isSwitch(false)->addCssClass('w-1');
         } elseif ($this->isDetail()) {
             yield $dataPanel;
@@ -155,7 +153,7 @@ class AdminCrudController extends AbstractCrudController
             yield $phone;
             yield $birthdate;
             yield $gender;
-            yield $role->displayIf(count($roles) > 1 && !$filterHiddenRole)->setColumns(2);
+            yield $role->displayIf(count($roles) > 1)->setColumns(2);
             yield $active->setColumns(2);
             yield $createdAt;
         } elseif ($this->isForm()) {
