@@ -35,6 +35,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\Icons\IconRendererInterface;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -43,9 +44,10 @@ class UserCrudController extends AbstractCrudController
         public TranslatorInterface $translator,
         public ConfigService $configService,
         public RolePermissions $rolePermissions,
+        public IconRendererInterface $iconRenderer,
         public readonly UserPasswordHasherInterface $passwordHasher,
     ) {
-        parent::__construct($em, $translator, $configService, $rolePermissions);
+        parent::__construct($em, $translator, $configService, $rolePermissions, $iconRenderer);
     }
 
     public static function getEntityFqcn(): string

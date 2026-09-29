@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\Icons\IconRendererInterface;
 
 /**
  * Base EasyAdmin CRUD controller for this app: wires shared services, applies
@@ -41,12 +42,14 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
      * @param TranslatorInterface    $translator      `entities.{transEntity}.*` keys
      * @param ConfigService          $configService   Cached application config
      * @param RolePermissions        $rolePermissions CRUD/action permission checks
+     * @param IconRendererInterface  $iconRenderer    Icon renderer
      */
     public function __construct(
         public EntityManagerInterface $em,
         public TranslatorInterface $translator,
         public ConfigService $configService,
         public RolePermissions $rolePermissions,
+        public IconRendererInterface $iconRenderer,
     ) {
         $this->transEntity = $this->transEntity ?? $this->crud();
     }
@@ -342,5 +345,21 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $entity = $entity ?? $this->transEntity;
 
         return $this->translator->trans('entities.'.$entity.'.fields.'.$field);
+    }
+
+    /** Returns the HTML for a title tag with a badge. */
+    public function getTitleTag(string $text, $iconName = null): ?string
+    {
+        $icon = $iconName ? $this->iconRenderer->renderIcon($iconName, [
+            'class' => 'icon',
+            'width' => 16,
+            'height' => 16,
+        ]) . ' ' : '';
+
+        $tag = '</h3>';
+        $tag .= '<span class="badge badge-sm bg-primary-lt text-primary">' . $icon . ' ' . $text . '</span>';
+        $tag .= '<h3 class="d-none">';
+
+        return $tag;
     }
 }
