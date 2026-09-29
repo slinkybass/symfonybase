@@ -206,7 +206,10 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     public function filters(bool $withHiddenFilters = false): array
     {
         $request = $this->request()->getCurrentRequest();
-        $value = $request?->query->get(EA::FILTERS);
+        if ($request === null) {
+            return [];
+        }
+        $value = $request?->query->all(EA::FILTERS);
         $filters = \is_array($value) ? $value : [];
         if (!$withHiddenFilters) {
             unset($filters['hidden_filters']);
