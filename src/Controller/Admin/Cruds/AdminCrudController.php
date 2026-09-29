@@ -65,6 +65,11 @@ class AdminCrudController extends AbstractCrudController
         $crud = parent::configureCrud($crud);
         $crud->setDefaultSort(['name' => 'ASC', 'lastname' => 'ASC']);
 
+        $roleFilter = $this->getRoleHiddenFilter();
+        if ($roleFilter) {
+            $crud->setPageTitle(Crud::PAGE_INDEX, $this->transEntityPlural() . $this->getTitleTag($roleFilter, 'tabler:lock'));
+        }
+
         return $crud;
     }
 
@@ -295,5 +300,12 @@ class AdminCrudController extends AbstractCrudController
         }
 
         return $redirect;
+    }
+
+    private function getRoleHiddenFilter(): ?Role
+    {
+        $roleRepo = $this->em->getRepository(Role::class);
+        $roleFilter = $this->filterHidden('role');
+        return $roleFilter && $roleFilter['value'] ? $roleRepo->find($roleFilter['value']) : null;
     }
 }
