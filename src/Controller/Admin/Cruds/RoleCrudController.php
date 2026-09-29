@@ -150,6 +150,7 @@ class RoleCrudController extends AbstractCrudController
     {
         $actions = parent::configureActions($actions);
 
+        $config = $this->config();
         $user = $this->user();
         $entity = $this->entity();
 
@@ -162,7 +163,7 @@ class RoleCrudController extends AbstractCrudController
             $actions->setPermission(Action::DELETE, VirtualPermission::DENY);
         }
 
-        $admins = Action::new('admins', $this->transEntityPlural('admin'))->setIcon('user-shield')
+        $admins = Action::new('admins', $this->transEntityPlural($config->enablePublic ? 'admin' : 'user'))->setIcon('user'.($config->enablePublic ? '-shield' : ''))
             ->linkToUrl(fn (Role $r) => $this->adminUrl()->setController(AdminCrudController::class)->setAction(Action::INDEX)
                 ->set(EA::FILTERS, [
                     'role' => ['comparison' => ComparisonType::EQ, 'value' => $r->getId()],
