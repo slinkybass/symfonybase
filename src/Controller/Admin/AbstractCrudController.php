@@ -357,7 +357,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         ]) . ' ' : '';
 
         $tag = '</h3>';
-        $tag .= '<span class="badge badge-sm bg-primary-lt text-primary">' . $icon . ' ' . $text . '</span>';
+        $tag .= '<span class="badge badge-sm bg-primary-lt text-primary me-2">' . $icon . ' ' . $text . '</span>';
         $tag .= '<h3 class="d-none">';
 
         return $tag;
