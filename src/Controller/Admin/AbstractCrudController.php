@@ -67,6 +67,12 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         $crud->addFormTheme('@ArkounayUxCollection/ux_collection_form_theme.html.twig');
         $crud->addFormTheme('@ArkounayUxMedia/ux_media_form_theme.html.twig');
 
+        if ('' !== $suffix = $this->getPageTitleSuffix()) {
+            foreach ([Crud::PAGE_INDEX, Crud::PAGE_NEW, Crud::PAGE_EDIT, Crud::PAGE_DETAIL] as $page) {
+                $crud->setPageTitle($page, $this->translator->trans('page_title.' . $page, [], 'EasyAdminBundle') . $suffix);
+            }
+        }
+
         return $crud;
     }
 
@@ -251,6 +257,20 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters[$name] ?? null;
     }
 
+    /**
+     * Entity referenced by a filter (shown or hidden) via `filters[name][value]`, or null.
+     *
+     * @template T of object
+     *
+     * @param class-string<T> $entityFqcn
+     *
+     * @return T|null
+     */
+    public function filterEntity(string $name, string $entityFqcn): ?object
+    {
+        return $this->findEntityFromFilter($this->filter($name), $entityFqcn);
+    }
+
     /** Single filter value from the visible subset only. */
     public function filterShown(string $name): array|string|null
     {
@@ -259,12 +279,48 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         return $filters[$name] ?? null;
     }
 
+    /**
+     * Same as filterEntity(), from the visible subset only.
+     *
+     * @template T of object
+     *
+     * @param class-string<T> $entityFqcn
+     *
+     * @return T|null
+     */
+    public function filterShownEntity(string $name, string $entityFqcn): ?object
+    {
+        return $this->findEntityFromFilter($this->filterShown($name), $entityFqcn);
+    }
+
     /** Single filter value from the hidden subset only. */
     public function filterHidden(string $name): array|string|null
     {
         $filters = $this->filtersHidden();
 
         return $filters[$name] ?? null;
+    }
+
+    /**
+     * Same as filterEntity(), from the hidden subset only.
+     *
+     * @template T of object
+     *
+     * @param class-string<T> $entityFqcn
+     *
+     * @return T|null
+     */
+    public function filterHiddenEntity(string $name, string $entityFqcn): ?object
+    {
+        return $this->findEntityFromFilter($this->filterHidden($name), $entityFqcn);
+    }
+
+    /** Find an entity from a filter value. */
+    private function findEntityFromFilter(array|string|null $filter, string $entityFqcn): ?object
+    {
+        $value = \is_array($filter) ? ($filter['value'] ?? null) : null;
+
+        return $value && \is_scalar($value) ? $this->em->find($entityFqcn, $value) : null;
     }
 
     /** Normalized permission id for an arbitrary application permission. */
@@ -348,7 +404,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     }
 
     /** Returns the HTML for a title tag with a badge. */
-    public function getTitleTag(string $text, $iconName = null): ?string
+    public function getTitleTag(string|\Stringable $text, ?string $iconName = null): ?string
     {
         $icon = $iconName ? $this->iconRenderer->renderIcon($iconName, [
             'class' => 'icon',
@@ -357,9 +413,14 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
         ]) . ' ' : '';
 
         $tag = '</h3>';
-        $tag .= '<span class="badge badge-sm bg-primary-lt text-primary me-2">' . $icon . ' ' . $text . '</span>';
+        $tag .= '<span class="badge badge-sm bg-primary-lt text-primary me-2">' . $icon . htmlspecialchars((string) $text, ENT_QUOTES) . '</span>';
         $tag .= '<h3 class="d-none">';
 
         return $tag;
+    }
+
+    protected function getPageTitleSuffix(): string
+    {
+        return '';
     }
 }

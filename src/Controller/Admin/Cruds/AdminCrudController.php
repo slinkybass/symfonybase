@@ -65,13 +65,14 @@ class AdminCrudController extends AbstractCrudController
         $crud = parent::configureCrud($crud);
         $crud->setDefaultSort(['name' => 'ASC', 'lastname' => 'ASC']);
 
-        $roleFilter = $this->getRoleHiddenFilter();
-        $roleTag = $roleFilter ? $this->getTitleTag($roleFilter, 'tabler:lock') : '';
-        if ($roleTag) {
-            $crud->setPageTitle(Crud::PAGE_INDEX, $this->transEntityPlural() . $roleTag);
-        }
-
         return $crud;
+    }
+
+    protected function getPageTitleSuffix(): string
+    {
+        $role = $this->filterHiddenEntity('role', Role::class);
+
+        return ($role ? $this->getTitleTag($role, 'tabler:lock') : '');
     }
 
     public function configureFields(string $pageName): iterable
@@ -80,7 +81,7 @@ class AdminCrudController extends AbstractCrudController
 
         $user = $this->user();
         $entity = $this->entity();
-        $roleFilter = $this->getRoleHiddenFilter();
+        $roleFilter = $this->filterHiddenEntity('role', Role::class);
         $roles = array_values(array_filter(
             $this->em->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter()]),
             fn (Role $adminRole) => $this->rolePermissions->isUp($user->getRole(), $adminRole),
@@ -299,12 +300,5 @@ class AdminCrudController extends AbstractCrudController
         }
 
         return $redirect;
-    }
-
-    private function getRoleHiddenFilter(): ?Role
-    {
-        $roleRepo = $this->em->getRepository(Role::class);
-        $roleFilter = $this->filterHidden('role');
-        return $roleFilter && $roleFilter['value'] ? $roleRepo->find($roleFilter['value']) : null;
     }
 }

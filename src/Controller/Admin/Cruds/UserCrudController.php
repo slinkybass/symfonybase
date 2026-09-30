@@ -60,18 +60,19 @@ class UserCrudController extends AbstractCrudController
         $crud = parent::configureCrud($crud);
         $crud->setDefaultSort(['name' => 'ASC', 'lastname' => 'ASC']);
 
-        $roleFilter = $this->getRoleHiddenFilter();
-        $roleTag = $roleFilter ? $this->getTitleTag($roleFilter, 'tabler:lock') : '';
-        if ($roleTag) {
-            $crud->setPageTitle(Crud::PAGE_INDEX, $this->transEntityPlural() . $roleTag);
-        }
-
         return $crud;
+    }
+
+    protected function getPageTitleSuffix(): string
+    {
+        $role = $this->filterHiddenEntity('role', Role::class);
+
+        return ($role ? $this->getTitleTag($role, 'tabler:lock') : '');
     }
 
     public function configureFields(string $pageName): iterable
     {
-        $roleFilter = $this->getRoleHiddenFilter();
+        $roleFilter = $this->filterHiddenEntity('role', Role::class);
         $roles = $this->em->getRepository(Role::class)->filter([new RoleFilter\IsAdminFilter(false)]);
         $roleDefaultValue = 1 === count($roles) ? $roles[0] : $roleFilter;
 
@@ -234,12 +235,5 @@ class UserCrudController extends AbstractCrudController
                 $user->setPlainPassword(null);
             }
         });
-    }
-
-    private function getRoleHiddenFilter(): ?Role
-    {
-        $roleRepo = $this->em->getRepository(Role::class);
-        $roleFilter = $this->filterHidden('role');
-        return $roleFilter && $roleFilter['value'] ? $roleRepo->find($roleFilter['value']) : null;
     }
 }
