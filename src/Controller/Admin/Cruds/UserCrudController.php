@@ -61,8 +61,9 @@ class UserCrudController extends AbstractCrudController
         $crud->setDefaultSort(['name' => 'ASC', 'lastname' => 'ASC']);
 
         $roleFilter = $this->getRoleHiddenFilter();
-        if ($roleFilter) {
-            $crud->setPageTitle(Crud::PAGE_INDEX, $this->transEntityPlural() . $this->getTitleTag($roleFilter, 'tabler:lock'));
+        $roleTag = $roleFilter ? $this->getTitleTag($roleFilter, 'tabler:lock') : '';
+        if ($roleTag) {
+            $crud->setPageTitle(Crud::PAGE_INDEX, $this->transEntityPlural() . $roleTag);
         }
 
         return $crud;
