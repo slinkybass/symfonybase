@@ -67,7 +67,7 @@ class UserCrudController extends AbstractCrudController
     {
         $role = $this->filterHiddenEntity('role', Role::class);
 
-        return ($role ? $this->getTitleTag($role, 'tabler:lock') : '');
+        return ($role ? $this->titleTag($role, 'tabler:lock') : '');
     }
 
     public function configureFields(string $pageName): iterable

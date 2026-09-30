@@ -404,7 +404,7 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
     }
 
     /** Returns the HTML for a title tag with a badge. */
-    public function getTitleTag(string|\Stringable $text, ?string $iconName = null): ?string
+    public function titleTag(string|\Stringable $text, ?string $iconName = null): ?string
     {
         $icon = $iconName ? $this->iconRenderer->renderIcon($iconName, [
             'class' => 'icon',
