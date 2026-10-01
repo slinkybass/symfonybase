@@ -227,4 +227,17 @@ class FieldGenerator extends AbstractType
         return AssociationField::new($name)
             ->setTemplatePath('field/role.html.twig');
     }
+
+    public static function entity(string $name, string $crudControllerFqcn): Field
+    {
+        $parts = explode('\\', $crudControllerFqcn);
+        $crud = lcfirst(str_replace('CrudController', '', end($parts)));
+
+        return Field::new($name)
+            ->setTemplatePath('field/entity.html.twig')
+            ->setCustomOptions([
+                'crudController' => $crudControllerFqcn,
+                'crud' => $crud,
+            ]);
+    }
 }

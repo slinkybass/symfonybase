@@ -1,0 +1,12 @@
+{% set crud = field.customOptions.get('crud') %}
+{% set canLink = has_permission_crud(crud) and has_permission_crud_action(crud, 'detail') %}
+{% set raw = field.value %}
+{% set items = raw is iterable ? raw : (raw ? [raw] : []) %}
+{% for item in items %}
+    {%- if canLink -%}
+        <a href="{{ ea_url().setController(field.customOptions.get('crudController')).setAction('detail').setEntityId(item.id) }}">{{ item }}</a>
+    {%- else -%}
+        {{ item }}
+    {%- endif -%}
+    {%- if not loop.last %}<br />{% endif -%}
+{% endfor %}
