@@ -9,4 +9,6 @@
         {{ item }}
     {%- endif -%}
     {%- if not loop.last %}<br />{% endif -%}
+{% else %}
+    {{ include(ea.templatePath('label/empty')) }}
 {% endfor %}
