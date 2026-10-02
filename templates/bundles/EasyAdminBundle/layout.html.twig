@@ -2,10 +2,22 @@
 {% set ea = ea() %}
 {% trans_default_domain ea.i18n.translationDomain %}
 
-<!DOCTYPE html>
 {% set darkMode = ea.dashboardHasDarkModeEnabled and (app.request.cookies.get('colorScheme') == 'dark' or ea.dashboardDefaultColorScheme == 'dark') %}
+{% set contentMaximized = (ea.crud is not null and ea.crud.contentWidth == 'full') or ea.dashboardContentWidth == 'full' %}
+{% set sidebarMinimized = (ea.crud is not null and ea.crud.sidebarWidth == 'compact') or ea.dashboardSidebarWidth == 'compact' %}
 {% set bsTheme = darkMode ? 'dark' : 'light' %}
-<html lang="{{ ea.i18n.htmlLocale }}" dir="{{ ea.i18n.textDirection }}" data-turbo="false" data-bs-theme="{{ bsTheme }}">
+{% set bsContent = contentMaximized ? 'fluid' : '' %}
+{% set bsSidebar = sidebarMinimized ? 'folded' : '' %}
+
+<!DOCTYPE html>
+<html
+    lang="{{ ea.i18n.htmlLocale }}"
+    dir="{{ ea.i18n.textDirection }}"
+    data-turbo="false"
+    data-bs-theme="{{ bsTheme }}"
+    data-bs-layout="{{ bsContent }}"
+    data-bs-sidebar="{{ bsSidebar }}"
+    data-bs-navbar-position="vertical">
 <head>
     {% block head_metas %}
         <meta charset="utf-8">
@@ -29,11 +41,9 @@
         {{ include('@EasyAdmin/includes/_css_assets.html.twig', { assets: ea.assets.cssAssets ?? [] }, with_context = false) }}
         {{ include('@EasyAdmin/includes/_encore_link_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
         {% set hexColor = appConfig.appColor %}
-        {% set rgbColor = hexColor|hex_to_rgb %}
         <style>
-            :root, [data-bs-theme="light"] {
+            :root, [data-bs-theme="light"], [data-bs-theme="dark"] {
                 --tblr-primary: {{ hexColor }} !important;
-                --tblr-primary-rgb: {{ rgbColor[0] }}, {{ rgbColor[1] }}, {{ rgbColor[2] }} !important;
             }
         </style>
     {% endblock %}
@@ -61,11 +71,7 @@
 </head>
 
 {% block body %}
-    {% set contentWidth = ea.crud.contentWidth ?? ea.dashboardContentWidth ?? '' %}
-    {% set contentWidthClass = contentWidth == 'normal' ? '' : 'layout-fluid' %}
-    {% set sidebarWidth = ea.crud.sidebarWidth ?? ea.dashboardSidebarWidth ?? '' %}
-    {% set sidebarWidthClass = sidebarWidth == 'normal' ? '' : '' %}
-    <body {% block body_attr %}{% endblock %} id="{% block body_id %}{% endblock %}" class="{{ contentWidthClass }} {% block body_class %}{% endblock %}">
+    <body {% block body_attr %}{% endblock %} id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
         {% block wrapper_wrapper %}
             {% block flash_messages %}
                 {{ include(ea.templatePath('flash_messages')) }}
@@ -155,7 +161,7 @@
                                     {% block header_navbar %}
                                         <div class="navbar-brand navbar-brand-autodark">
                                             {% block header_logo %}
-                                                <a href="{{ path(ea.dashboardRouteName) }}">
+                                                <a href="{{ path(ea.dashboardRouteName) }}" class="mx-auto">
                                                     {{ ea.dashboardTitle|raw }}
                                                 </a>
                                             {% endblock header_logo %}

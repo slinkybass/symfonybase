@@ -58,10 +58,6 @@ Usado en `RoleCrudController` y en las plantillas de campos que trabajan con `Us
 
 Añade el filtro Twig `json_decode` que envuelve la función PHP `json_decode()`.
 
-### `HEXtoRGBExtension`
-
-Añade el filtro `hex_to_rgb` (`#RRGGBB` → `[R, G, B]`). Usado por `templates/bundles/EasyAdminBundle/layout.html.twig` para derivar la variable CSS `--tblr-primary-rgb` de Tabler a partir de `appConfig.appColor`.
-
 ## Componentes Live
 
 `src/Twig/Components/` (plantillas en `templates/components/`):

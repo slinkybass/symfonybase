@@ -51,7 +51,7 @@ import "./fields/hierarchyFields.js";
 // TomSelect
 import Autocomplete from "./fields/autocomplete.js";
 window.Autocomplete = Autocomplete;
-import "tom-select/dist/css/tom-select.bootstrap5.css";
+import "@tabler/core/dist/libs/tom-select/dist/css/tom-select.bootstrap5.min.css";
 
 // NoUISlider
 import "nouislider/dist/nouislider.min.css";

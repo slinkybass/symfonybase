@@ -20,7 +20,7 @@
                         <twig:UserAvatar :user="user" :size="stackedAvatarSize" />
                     {%- endfor -%}
                     {%- if field.value|length > limit -%}
-                        <span class="avatar avatar-{{ stackedAvatarSize }}">+{{ field.value|length - limit }}</span>
+                        <span class="avatar avatar-{{ stackedAvatarSize }} rounded">+{{ field.value|length - limit }}</span>
                     {%- endif -%}
                 </div>
             </div>

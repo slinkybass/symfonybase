@@ -44,7 +44,7 @@ templates/
 
 ## Aspectos destacados
 
-- `templates/bundles/EasyAdminBundle/layout.html.twig` sobrescribe el layout de EA. Obtiene `appConfig` (logo, color, favicon, nombre, zona horaria) y calcula las variables CSS del color primario de Tabler a partir de `appConfig.appColor` usando el filtro Twig `hex_to_rgb` ([twig](11-twig.md)).
+- `templates/bundles/EasyAdminBundle/layout.html.twig` sobrescribe el layout de EA. Obtiene `appConfig` (logo, color, favicon, nombre, zona horaria) y calcula las variables CSS del color primario de Tabler a partir de `appConfig.appColor` ([twig](11-twig.md)).
 - `templates/bundles/EasyAdminBundle/menu.html.twig` y `flash_messages.html.twig` mantienen el aspecto de EasyAdmin adaptado a Tabler.
 - `templates/bundles/EasyAdminBundle/page/login.html.twig` es la plantilla renderizada por `AuthController::login`.
 - `templates/bundles/EasyAdminBundle/crud/` sobrescribe `index`, `detail`, `new`, `edit`, `filters`, `paginator` y el tema del formulario. La subcarpeta `crud/field/` contiene sobrescrituras para tipos de campo individuales.

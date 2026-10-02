@@ -5,7 +5,7 @@
  * Version: 3.2
  */
 
-import SignaturePad from "signature_pad";
+import SignaturePad from "@tabler/core/dist/libs/signature_pad/dist/signature_pad.umd.min.js";
 
 (function () {
     document.addEventListener("DOMContentLoaded", () => {

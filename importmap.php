@@ -60,18 +60,18 @@ return [
         'path' => './vendor/symfony/ux-translator/assets/dist/translator_controller.js',
     ],
     '@tabler/core' => [
-        'version' => '1.4.0',
+        'version' => '1.6.1',
     ],
     '@tabler/core/dist/css/tabler.min.css' => [
-        'version' => '1.4.0',
+        'version' => '1.6.1',
         'type' => 'css',
     ],
     '@tabler/core/dist/css/tabler-flags.min.css' => [
-        'version' => '1.4.0',
+        'version' => '1.6.1',
         'type' => 'css',
     ],
     '@tabler/core/dist/css/tabler-vendors.min.css' => [
-        'version' => '1.4.0',
+        'version' => '1.6.1',
         'type' => 'css',
     ],
     'mark.js' => [
@@ -91,10 +91,10 @@ return [
         'version' => '2.30.1',
     ],
     'tom-select' => [
-        'version' => '2.6.1',
+        'version' => '2.6.2',
     ],
-    'tom-select/dist/css/tom-select.bootstrap5.css' => [
-        'version' => '2.6.1',
+    '@tabler/core/dist/libs/tom-select/dist/css/tom-select.bootstrap5.min.css' => [
+        'version' => '1.6.1',
         'type' => 'css',
     ],
     '@orchidjs/sifter' => [
@@ -232,8 +232,8 @@ return [
         'version' => '1.1.2',
         'type' => 'css',
     ],
-    'signature_pad' => [
-        'version' => '5.1.3',
+    '@tabler/core/dist/libs/signature_pad/dist/signature_pad.umd.min.js' => [
+        'version' => '1.6.1',
     ],
     'basiclightbox' => [
         'version' => '5.0.4',

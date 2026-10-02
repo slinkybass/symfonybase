@@ -287,11 +287,13 @@ function createLightboxes() {
         link.addEventListener("click", (e) => {
             e.preventDefault();
             const href = link.getAttribute("href");
+            const wrapper = document.createElement("div");
             const img = document.createElement("img");
             img.width = 1400;
             img.height = 900;
             img.src = href ?? "";
-            basicLightbox.create(img).show();
+            wrapper.appendChild(img);
+            basicLightbox.create(wrapper).show();
         });
     });
 }

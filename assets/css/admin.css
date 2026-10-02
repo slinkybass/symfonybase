@@ -2,21 +2,16 @@
    EasyAdmin
    ----------------------------------------------------------------------------- */
 
-/* Sidebar */
 aside .navbar-brand img {
     max-height: 32px;
 }
-
-/* Tables — clickable row: default row action */
 .table tr[data-default-action-url] {
     cursor: pointer;
 }
-
 .table tr[data-default-action-url] td.actions,
-.table tr[data-default-action-url] td.batch-actions-selector {
+.table tr[data-default-action-url] td.batch-actions-selector .form-check {
     cursor: default;
 }
-
 .table tr[data-default-action-url] td.actions a,
 .table tr[data-default-action-url] td.actions button,
 .table tr[data-default-action-url] td.batch-actions-selector .form-check {

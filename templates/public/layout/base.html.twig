@@ -1,6 +1,12 @@
+{% set darkMode = app.request.cookies.get('colorScheme') == 'dark' %}
+{% set bsTheme = darkMode ? 'dark' : 'light' %}
+
 <!DOCTYPE html>
-{% set bsTheme = app.request.cookies.get('colorScheme') == 'dark' ? 'dark' : 'light' %}
-<html lang="{{ app.request.locale }}" data-bs-theme="{{ bsTheme }}" data-turbo="{{ enable_turbo|default(false) ? 'true' : 'false' }}">
+<html
+    lang="{{ app.request.locale }}"
+    data-turbo="{{ enable_turbo|default(false) ? 'true' : 'false' }}"
+    data-bs-theme="{{ bsTheme }}"
+    data-bs-navbar-position="vertical">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,11 +20,9 @@
             {{ importmap('public') }}
             {{ include('public/includes/_flash_messages.html.twig') }}
             {% set hexColor = appConfig.appColor %}
-            {% set rgbColor = hexColor|hex_to_rgb %}
             <style>
-                :root, [data-bs-theme="light"] {
+                :root, [data-bs-theme="light"], [data-bs-theme="dark"] {
                     --tblr-primary: {{ hexColor }} !important;
-                    --tblr-primary-rgb: {{ rgbColor[0] }}, {{ rgbColor[1] }}, {{ rgbColor[2] }} !important;
                 }
             </style>
         {% endblock %}

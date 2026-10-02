@@ -28,7 +28,7 @@ class UserAvatar
     {
         $sizeClass = 'avatar-'.($this->size ? $this->size : self::DEFAULT_SIZE);
 
-        return trim("avatar $sizeClass {$this->class}");
+        return trim("avatar $sizeClass rounded {$this->class}");
     }
 
     public function getLabel(): string

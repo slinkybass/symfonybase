@@ -44,7 +44,7 @@ templates/
 
 ## Highlights
 
-- `templates/bundles/EasyAdminBundle/layout.html.twig` overrides the EA layout. It pulls `appConfig` (logo, color, favicon, name, timezone) and computes the Tabler primary color CSS variables from `appConfig.appColor` using the `hex_to_rgb` Twig filter ([twig](11-twig.md)).
+- `templates/bundles/EasyAdminBundle/layout.html.twig` overrides the EA layout. It pulls `appConfig` (logo, color, favicon, name, timezone) and computes the Tabler primary color CSS variables from `appConfig.appColor` ([twig](11-twig.md)).
 - `templates/bundles/EasyAdminBundle/menu.html.twig` and `flash_messages.html.twig` keep the EasyAdmin chrome but adapted to Tabler.
 - `templates/bundles/EasyAdminBundle/page/login.html.twig` is the template rendered by `AuthController::login`.
 - `templates/bundles/EasyAdminBundle/crud/` overrides `index`, `detail`, `new`, `edit`, `filters`, `paginator`, and the form theme. The `crud/field/` subfolder contains overrides for individual field types.

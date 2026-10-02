@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-status-top bg-primary"></div>
-    <table class="table table-vcenter table-mobile-md card-table">
+    <table class="table table-vcenter card-table table-hover table-mobile-md">
         <thead>
             <tr>
                 {% if canEdit %}
@@ -52,7 +52,7 @@
                                 {{ preview|raw }}
                             {% else %}
                                 {% set icon = fileEntity.preview.folder is defined ? 'folder' : 'file' %}
-                                <span class="avatar bg-transparent {% if fileEntity.preview.folder is defined %}shadow-none{% endif %}">
+                                <span class="avatar rounded bg-transparent {% if fileEntity.preview.folder is defined %}shadow-none{% endif %}">
                                     <twig:ux:icon class="icon" name="tabler:{{ icon }}" />
                                     {% if not fileEntity.preview.folder is defined %}
                                         <a href="{{ fileEntity.preview.path }}" target="_blank" class="stretched-link" style="cursor: zoom-in;"></a>

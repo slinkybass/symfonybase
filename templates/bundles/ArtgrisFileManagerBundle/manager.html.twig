@@ -34,11 +34,9 @@
             <link rel="stylesheet" href="{{ asset('bundles/artgrisfilemanager/libs/blueimp-file-upload/css/jquery.fileupload.css') }}">
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
             {% set hexColor = appConfig.appColor %}
-            {% set rgbColor = hexColor|hex_to_rgb %}
             <style>
-                :root, [data-bs-theme="light"] {
+                :root, [data-bs-theme="light"], [data-bs-theme="dark"] {
                     --tblr-primary: {{ hexColor }} !important;
-                    --tblr-primary-rgb: {{ rgbColor[0] }} , {{ rgbColor[1] }} , {{ rgbColor[2] }} !important;
                 }
             </style>
         {% endblock %}

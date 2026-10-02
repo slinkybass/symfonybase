@@ -82,7 +82,7 @@ Ambos CRUDs de `User` aplican siempre `IsVerifiedFilter` + `IsAdminFilter` en el
 
 `templates/bundles/EasyAdminBundle/`:
 
-- `layout.html.twig` — sobreescritura del layout principal; inyecta variables CSS personalizadas calculadas desde `appConfig.appColor` (usa el filtro Twig `hex_to_rgb`).
+- `layout.html.twig` — sobreescritura del layout principal; inyecta variables CSS personalizadas calculadas desde `appConfig.appColor`.
 - `menu.html.twig`, `flash_messages.html.twig`.
 - `crud/` — sobreescrituras de `index`, `detail`, `new`, `edit`, `filters`, `paginator`, `form_theme`, más plantillas por campo bajo `crud/field/`.
 - `page/login.html.twig` — usada por `AuthController::login`.
