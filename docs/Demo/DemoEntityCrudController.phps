@@ -263,12 +263,12 @@ class DemoEntityCrudController extends AbstractCrudController
         $choiceRow = FieldGenerator::row();
         $choice4 = FieldGenerator::choice('choice4')
             ->setLabel('Multiple choice')
-            ->setChoices(UserGender::cases())
+            ->setChoices(UserGender::choices())
             ->isMultiple()
             ->setColumns(4);
         $choice5 = FieldGenerator::choice('choice5')
             ->setLabel('Multiple choice expanded')
-            ->setChoices(UserGender::cases())
+            ->setChoices(UserGender::choices())
             ->isExpanded()
             ->isMultiple()
             ->setColumns(4);
