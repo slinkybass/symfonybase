@@ -1,6 +1,6 @@
 # Comandos de consola
 
-`src/Command/` incluye tres comandos personalizados. Todos extienden `Symfony\Component\Console\Command\Command` y usan `#[AsCommand(name: 'app:...')]`.
+`src/Command/` incluye tres comandos personalizados. Son invocables (`__invoke`) y usan `#[AsCommand(name: 'app:...')]`.
 
 ## `app:create-users`
 

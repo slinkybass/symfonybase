@@ -1,6 +1,6 @@
 # Console commands
 
-`src/Command/` ships three custom commands. All extend `Symfony\Component\Console\Command\Command` and use `#[AsCommand(name: 'app:...')]`.
+`src/Command/` ships three custom commands. They are invokable (`__invoke`) and use `#[AsCommand(name: 'app:...')]`.
 
 ## `app:create-users`
 

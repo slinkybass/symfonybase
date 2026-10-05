@@ -1,6 +1,6 @@
 # HTTP event subscribers
 
-Symfony kernel events drive cross-cutting behavior. All HTTP subscribers guard with `$event->isMainRequest()` and live under `src/EventSubscriber/`.
+Symfony kernel events drive cross-cutting behavior. HTTP listeners use `#[AsEventListener]`, guard with `$event->isMainRequest()`, and live under `src/EventSubscriber/`.
 
 | Subscriber               | Event                        | Priority |
 | ------------------------ | ---------------------------- | -------- |
@@ -17,7 +17,7 @@ The Doctrine entity listener `App\EventListener\ConfigCacheListener` is covered 
 `src/EventSubscriber/LocaleSubscriber.php`.
 
 - Resolves the request locale from the session (`_locale` key), seeded by `_locale` request attribute or query string.
-- The allow-list comes from the `LOCALES` env var (pipe-separated; injected through `services.yaml`).
+- The allow-list comes from the `LOCALES` env var (pipe-separated; `#[Autowire('%locales%')]`).
 - Falls back to `kernel.default_locale` (`es`) when the stored locale is invalid.
 - Requires an active session (no-op otherwise).
 
@@ -60,7 +60,7 @@ When adding a route under any of these policies, register its name in the matchi
 
 ## UserLoginSubscriber
 
-`src/EventSubscriber/UserLoginSubscriber.php`. Listens to `SecurityEvents::INTERACTIVE_LOGIN`. Throws `DisabledException` (and adds an error flash if a session exists) when the freshly authenticated user is:
+`src/EventSubscriber/UserLoginSubscriber.php`. Listens to interactive login (`InteractiveLoginEvent`). Throws `DisabledException` (and adds an error flash if a session exists) when the freshly authenticated user is:
 
 - Not active → `app.messages.userDeactivated`.
 - Not email-verified → `app.messages.userUnverified`.

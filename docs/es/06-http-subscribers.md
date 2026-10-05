@@ -1,6 +1,6 @@
 # Suscriptores de eventos HTTP
 
-Los eventos del kernel de Symfony gestionan el comportamiento transversal. Todos los suscriptores HTTP comprueban `$event->isMainRequest()` y residen en `src/EventSubscriber/`.
+Los eventos del kernel de Symfony gestionan el comportamiento transversal. Los listeners HTTP usan `#[AsEventListener]`, comprueban `$event->isMainRequest()` y residen en `src/EventSubscriber/`.
 
 | Suscriptor               | Evento                       | Prioridad |
 | ------------------------ | ---------------------------- | --------- |
@@ -17,7 +17,7 @@ El entity listener de Doctrine `App\EventListener\ConfigCacheListener` se trata 
 `src/EventSubscriber/LocaleSubscriber.php`.
 
 - Resuelve el locale de la petición desde la sesión (clave `_locale`), inicializado por el atributo de petición `_locale` o la cadena de consulta.
-- La lista de locales permitidos proviene de la variable de entorno `LOCALES` (separada por barras verticales; inyectada a través de `services.yaml`).
+- La lista de locales permitidos proviene de la variable de entorno `LOCALES` (separada por barras verticales; `#[Autowire('%locales%')]`).
 - Recurre a `kernel.default_locale` (`es`) cuando el locale almacenado no es válido.
 - Requiere una sesión activa (no hace nada en caso contrario).
 
@@ -60,7 +60,7 @@ Al añadir una ruta bajo alguna de estas políticas, registra su nombre en la co
 
 ## UserLoginSubscriber
 
-`src/EventSubscriber/UserLoginSubscriber.php`. Escucha `SecurityEvents::INTERACTIVE_LOGIN`. Lanza `DisabledException` (y añade un flash de error si existe una sesión) cuando el usuario recién autenticado:
+`src/EventSubscriber/UserLoginSubscriber.php`. Escucha el login interactivo (`InteractiveLoginEvent`). Lanza `DisabledException` (y añade un flash de error si existe una sesión) cuando el usuario recién autenticado:
 
 - No está activo → `app.messages.userDeactivated`.
 - No ha verificado el email → `app.messages.userUnverified`.
