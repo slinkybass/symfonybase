@@ -57,7 +57,7 @@
     {% else %}
         <a {% if item.hasSubItems %}role="button"{% else %}href="{{ item.linkUrl }}"{% endif %}
             class="{{ isChild ? 'dropdown-item gap-0' : 'nav-link' }} {{ item.hasSubItems ? 'dropdown-toggle' }} {{ item.cssClass }}"
-            {% if item.hasSubItems %}data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ ea.mainMenu.isExpanded(item) ? 'true' : 'false' }}"{% endif %}
+            {% if item.hasSubItems %}data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ ea().mainMenu.isExpanded(item) ? 'true' : 'false' }}"{% endif %}
             target="{{ item.linkTarget }}" rel="{{ item.linkRel }}" referrerpolicy="origin-when-cross-origin" {{ _self.render_html_attributes(item) }}>
             {% if item.icon is not empty %}
                 <span class="nav-link-icon d-md-none d-lg-inline-block">

@@ -1,6 +1,7 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% set ea = ea() %}
 
 {% set associationType = field.customOptions.get(constant('App\\Field\\UserField::OPTION_ASSOCIATION_TYPE')) %}
 {% set isToMany = associationType == 'toMany' or field.value is iterable %}

@@ -1,6 +1,7 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% set ea = ea() %}
 
 {% if field.value %}
     <a href="{{ asset(field.formattedValue) }}" target="_blank" class="btn btn-sm btn-ghost btn-primary" title="{{ 'field.file.download'|trans(domain: 'EasyAdminBundle') }}">

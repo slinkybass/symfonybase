@@ -1,3 +1,4 @@
+{% set ea = ea() %}
 {% set crud = field.customOptions.get('crud') %}
 {% set canLink = has_permission_crud(crud) and has_permission_crud_action(crud, 'detail') %}
 {% set raw = field.value %}

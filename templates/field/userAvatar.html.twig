@@ -1,6 +1,7 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% set ea = ea() %}
 
 {% set allowZoom = field.customOptions.get(constant('App\\Field\\MediaField::OPTION_ALLOW_ZOOM')) ?? constant('App\\Field\\MediaField::DEFAULT_ALLOW_ZOOM') %}
 {% set sizeIndex = field.customOptions.get(constant('App\\Field\\MediaField::OPTION_SIZE_INDEX')) ?? constant('App\\Field\\MediaField::DEFAULT_SIZE_INDEX') %}
