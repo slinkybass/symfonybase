@@ -2,10 +2,10 @@
 
 # Symfony Base
 
-**A reusable Symfony 7.4 + EasyAdmin 4 starter kit for building admin-driven applications.**
+**A reusable Symfony 8.1 + EasyAdmin 4 starter kit for building admin-driven applications.**
 
 [![PHP](https://img.shields.io/badge/PHP-%5E8.4-777BB4?logo=php&logoColor=FFFFFF)](https://www.php.net)
-[![Symfony](https://img.shields.io/badge/Symfony-7.4-000000?logo=symfony&logoColor=FFFFFF)](https://symfony.com)
+[![Symfony](https://img.shields.io/badge/Symfony-8.1-000000?logo=symfony&logoColor=FFFFFF)](https://symfony.com)
 [![Doctrine ORM](https://img.shields.io/badge/Doctrine_ORM-3.6-FC6A31?logo=doctrine&logoColor=FFFFFF)](https://www.doctrine-project.org)
 [![EasyAdmin](https://img.shields.io/badge/EasyAdmin-4-blue)](https://github.com/EasyCorp/EasyAdminBundle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](https://opensource.org/licenses/MIT)
@@ -85,7 +85,7 @@ Everything is built on official Symfony and EasyAdmin components, so upgrades fo
 | Layer         | Stack                                                                      |
 | ------------- | -------------------------------------------------------------------------- |
 | **Runtime**   | PHP **^8.4**                                                               |
-| **Framework** | Symfony **7.4** (Framework, Security, Mailer, Form, Translator, UX)        |
+| **Framework** | Symfony **8.1** (Framework, Security, Mailer, Form, Translator, UX)        |
 | **Database**  | Doctrine ORM **3.6** · DBAL **4.4** · Migrations **3.9**                   |
 | **Admin**     | EasyAdmin **4** · Arkounay UX Media / UX Collection · Artgris File Manager |
 | **Auth**      | SymfonyCasts Reset Password & Verify Email                                 |

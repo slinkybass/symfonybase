@@ -1,6 +1,6 @@
 # Symfony Base — Documentation
 
-Reusable starter built on **Symfony 7.4** and **EasyAdmin 4** that ships with extensions for configuration, permissions, custom fields, repository filters, and admin/public layouts.
+Reusable starter built on **Symfony 8.1** and **EasyAdmin 4** that ships with extensions for configuration, permissions, custom fields, repository filters, and admin/public layouts.
 
 Other locales: see the [documentation hub](../README.md).
 

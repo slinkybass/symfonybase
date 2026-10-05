@@ -13,7 +13,7 @@ La autenticación se construye sobre el componente de seguridad estándar de Sym
     - `^/admin` requiere `ROLE_ADMIN` y `%env(REQUIRED_SCHEME)%`.
     - `^/` requiere `%env(REQUIRED_SCHEME)%`.
 
-`User` implementa `UserInterface` + `PasswordAuthenticatedUserInterface`. Los roles devueltos por `User::getRoles()` provienen del `Role` vinculado (siempre incluye `ROLE_ADMIN` cuando `Role.isAdmin = true`). Las sesiones nunca almacenan el hash real de la contraseña: `User::__serialize()` lo sustituye por un CRC32C del hash (patrón de Symfony 7.3+).
+`User` implementa `UserInterface` + `PasswordAuthenticatedUserInterface`. Los roles devueltos por `User::getRoles()` provienen del `Role` vinculado (siempre incluye `ROLE_ADMIN` cuando `Role.isAdmin = true`). Las sesiones nunca almacenan el hash real de la contraseña: `User::__serialize()` lo sustituye por un CRC32C del hash y omite `plainPassword` (Symfony 8 eliminó `eraseCredentials()`).
 
 ## Rutas (públicas)
 

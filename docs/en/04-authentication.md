@@ -13,7 +13,7 @@ Authentication is built on stock Symfony Security plus SymfonyCasts **reset-pass
     - `^/admin` requires `ROLE_ADMIN` and `%env(REQUIRED_SCHEME)%`.
     - `^/` requires `%env(REQUIRED_SCHEME)%`.
 
-`User` implements `UserInterface` + `PasswordAuthenticatedUserInterface`. Roles returned by `User::getRoles()` come from the linked `Role` (always includes `ROLE_ADMIN` when `Role.isAdmin = true`). Sessions never store the real password hash: `User::__serialize()` substitutes it with a CRC32C of the hash (Symfony 7.3+ pattern).
+`User` implements `UserInterface` + `PasswordAuthenticatedUserInterface`. Roles returned by `User::getRoles()` come from the linked `Role` (always includes `ROLE_ADMIN` when `Role.isAdmin = true`). Sessions never store the real password hash: `User::__serialize()` substitutes it with a CRC32C of the hash and drops `plainPassword` (Symfony 8 dropped `eraseCredentials()`).
 
 ## Routes (public)
 

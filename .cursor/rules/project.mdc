@@ -126,7 +126,7 @@ Normas y patrones del código, por ámbito (una sola lectura; evita repetir lo m
 - Subscribers que reaccionan al request de **`HttpKernel`:** guard **`$event->isMainRequest()`** si mutan request/response (convención en `LocaleSubscriber`, `MediaSubscriber`, `AccessSubscriber`, `InactiveUserSubscriber`).
 - **`AccessSubscriber`** (prioridad **7**): listas de nombres de ruta (`PUBLIC_ROUTES`, `LOGIN_ROUTES`, …) más constantes **`PRIVACY_ROUTE`** / **`COOKIES_ROUTE`**; flags en `AppConfig`. Al añadir rutas bajo la misma política, actualizar esas constantes.
 - **`MediaSubscriber`** (prioridad **30**): directorios Artgris según `file_manager` + query `conf`.
-- **`User::__serialize()`:** hash de contraseña sustituido por `crc32c` en sesión (comentario Symfony 7.3+).
+- **`User::__serialize()`:** hash de contraseña sustituido por `crc32c` en sesión; sin `eraseCredentials()` (eliminado en Symfony 8).
 
 ### Forms & fields
 

@@ -121,22 +121,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
+     * Session payload: CRC32C of the password hash (not the hash itself) and no plaintext password.
+     * Symfony 8 dropped UserInterface::eraseCredentials(); sensitive fields belong here.
      */
     public function __serialize(): array
     {
         $data = (array) $this;
-        unset($data["\0".self::class."\0password"]);
+        $data["\0".self::class."\0password"] = hash('crc32c', (string) $this->password);
         unset($data["\0".self::class."\0plainPassword"]);
 
         return $data;
-    }
-
-    #[\Deprecated]
-    public function eraseCredentials(): void
-    {
-        // @deprecated, to be removed when upgrading to Symfony 8
-        $this->plainPassword = null;
     }
 
     public function getRole(): ?Role
