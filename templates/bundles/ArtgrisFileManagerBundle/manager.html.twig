@@ -6,7 +6,7 @@
 {% set canUpload = app.user and has_permission('media_upload') %}
 {% set canEdit = not isModal and app.user and has_permission('media_edit') %}
 {% set canCreateFolders = not isModal and app.user and has_permission('media_folders') %}
-{% set isRoot = not fileManager.parent or app.request.get('route') == '\\' %}
+{% set isRoot = not fileManager.parent or app.request.query.get('route') == '\\' %}
 
 <!doctype html>
 <html lang="{{ app.request.locale }}" id="dropzone" data-turbo="false">
