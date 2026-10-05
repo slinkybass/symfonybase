@@ -167,8 +167,10 @@ final class AuthController extends AbstractController
 
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
-        } catch (ResetPasswordExceptionInterface) {
-            return $this->redirectToRoute('reset_password_request_sent');
+        } catch (ResetPasswordExceptionInterface $e) {
+            $this->addFlash('error', $this->translator->trans($e->getReason(), [], 'ResetPasswordBundle'));
+
+            return $this->redirectToRoute('reset_password_request');
         }
 
         $subject = $this->translator->trans('email.resetPasswordRequest.subject');
