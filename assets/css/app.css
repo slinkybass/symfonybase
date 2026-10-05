@@ -37,6 +37,8 @@ textarea.no-resize {
     .navbar-expand-lg .navbar-nav .nav-item {
         position: relative;
         border-radius: var(--tblr-border-radius);
+    }
+    .navbar-expand-lg .navbar-nav .nav-item:not(.dropdown) {
         overflow: hidden;
     }
     .navbar-expand-lg .navbar-nav .nav-item.active::after {
@@ -79,8 +81,8 @@ textarea.no-resize {
     content: "";
     transform: rotate(45deg);
 }
-.dropdown-toggle::after {
-    margin-inline-start: auto;
+.dropdown-menu .dropdown .dropdown-toggle::after {
+    margin-left: auto;
 }
 
 .card-table tr td:first-child,
