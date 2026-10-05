@@ -3,11 +3,10 @@
 namespace App\EventSubscriber;
 
 use App\Entity\User;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -15,7 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * Flashes a translated error when a session exists, then throws `DisabledException` so Symfony treats the login as failed.
  */
-final class UserLoginSubscriber implements EventSubscriberInterface
+final class UserLoginSubscriber
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
@@ -25,6 +24,7 @@ final class UserLoginSubscriber implements EventSubscriberInterface
     /**
      * @throws DisabledException when the authenticated principal is inactive or unverified
      */
+    #[AsEventListener]
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         /** @var User $user */
@@ -47,12 +47,5 @@ final class UserLoginSubscriber implements EventSubscriberInterface
             $session->getFlashBag()->add('error', $error);
         }
         throw new DisabledException($error);
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            SecurityEvents::INTERACTIVE_LOGIN => ['onSecurityInteractiveLogin', 0],
-        ];
     }
 }

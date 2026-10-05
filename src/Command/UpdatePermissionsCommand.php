@@ -9,23 +9,21 @@ use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Recomputes the superadmin role permission map from `RolePermissions` (CRUD scan + extras) and persists it to `ROLE_SUPERADMIN`.
  */
 #[AsCommand(name: 'app:update-permissions')]
-class UpdatePermissionsCommand extends Command
+class UpdatePermissionsCommand
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly RolePermissions $rolePermissions,
     ) {
-        parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(OutputInterface $output): int
     {
         $this->permissions($output);
 

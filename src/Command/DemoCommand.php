@@ -8,7 +8,7 @@ use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
@@ -16,18 +16,18 @@ use Symfony\Component\Process\Process;
  * Enables or disables the optional demo entity/CRUD/form by swapping tracked files with `docs/Demo/*.phps` backups, then runs `doctrine:schema:update --force` and `app:update-permissions`.
  */
 #[AsCommand(name: 'app:demo')]
-class DemoCommand extends Command
+class DemoCommand
 {
     public function __construct(
-        private readonly ParameterBagInterface $params,
+        #[Autowire('%kernel.project_dir%')]
+        private readonly string $projectDir,
     ) {
-        parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $projectDir = $this->params->get('kernel.project_dir');
+        $projectDir = $this->projectDir;
         $fs = new Filesystem();
 
         $docsPath = $projectDir.'/docs/Demo';

@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Model\AppConfig;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -22,7 +22,8 @@ use Symfony\Component\Mime\Email;
 final readonly class MailService
 {
     public function __construct(
-        private ParameterBagInterface $params,
+        #[Autowire('%kernel.environment%')]
+        private string $environment,
         private MailerInterface $mailer,
         private LoggerInterface $logger,
         private ConfigService $configService,
@@ -49,7 +50,7 @@ final readonly class MailService
     ): bool {
         $config = $this->configService->get();
 
-        $isProd = $this->params->get('kernel.environment') === 'prod';
+        $isProd = $this->environment === 'prod';
 
         if ($isProd && empty($to)) {
             $this->logger->error('MailService: no recipients provided.');

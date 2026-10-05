@@ -3,10 +3,9 @@
 namespace App\EventSubscriber;
 
 use App\Service\ConfigService;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -15,7 +14,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * Runs only on the main request (priority 7). Extend the route name constants when adding routes under the same policy.
  */
-final class AccessSubscriber implements EventSubscriberInterface
+final class AccessSubscriber
 {
     private const PUBLIC_ROUTES = [
         'home',
@@ -45,6 +44,7 @@ final class AccessSubscriber implements EventSubscriberInterface
     /**
      * Short-circuits the request with a redirect when the route and auth/config combination is not allowed.
      */
+    #[AsEventListener(priority: 7)]
     public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
@@ -98,12 +98,5 @@ final class AccessSubscriber implements EventSubscriberInterface
         if ($redirect !== null) {
             $event->setResponse(new RedirectResponse($redirect));
         }
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::REQUEST => ['onKernelRequest', 7],
-        ];
     }
 }

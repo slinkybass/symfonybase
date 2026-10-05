@@ -12,7 +12,6 @@ use App\Service\RolePermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -22,7 +21,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  * Intended for local/bootstrap setups; change default passwords immediately outside trusted environments.
  */
 #[AsCommand(name: 'app:create-users')]
-class CreateUsersCommand extends Command
+class CreateUsersCommand
 {
     /** Role that receives the full scanned permission tree in this command. */
     public const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
@@ -36,10 +35,9 @@ class CreateUsersCommand extends Command
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly RolePermissions $rolePermissions,
     ) {
-        parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(OutputInterface $output): int
     {
         $this->roles($output);
         $this->users($output);
