@@ -10,6 +10,25 @@ import "tinymce/models/dom/model";
 import "tinymce/themes/silver";
 import "tinymce/icons/default";
 import "tinymce/skins/ui/oxide/skin.min.css";
+import "tinymce/skins/ui/oxide-dark/skin.min.css";
+
+function syncTinyMceSkin() {
+    const dark = document.documentElement.getAttribute("data-bs-theme") === "dark";
+    document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
+        const href = link.href;
+        if (href.includes("/skins/ui/oxide-dark/")) {
+            link.disabled = !dark;
+        } else if (href.includes("/skins/ui/oxide/")) {
+            link.disabled = dark;
+        }
+    });
+}
+
+syncTinyMceSkin();
+new MutationObserver(syncTinyMceSkin).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-bs-theme"],
+});
 
 import "tinymce-i18n/langs/es.js";
 

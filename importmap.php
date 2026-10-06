@@ -132,6 +132,10 @@ return [
         'version' => '8.5.1',
         'type' => 'css',
     ],
+    'tinymce/skins/ui/oxide-dark/skin.min.css' => [
+        'version' => '8.5.1',
+        'type' => 'css',
+    ],
     'tinymce/plugins/accordion' => [
         'version' => '8.5.1',
     ],
