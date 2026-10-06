@@ -14,6 +14,27 @@ ace.config.set("modePath", CDN);
 ace.config.set("themePath", CDN);
 ace.config.set("workerPath", CDN);
 
+const ACE_THEME_LIGHT = "chrome";
+const ACE_THEME_DARK = "twilight";
+const aceEditors = [];
+
+function isDarkTheme() {
+    return document.documentElement.getAttribute("data-bs-theme") === "dark";
+}
+
+function syncAceThemes() {
+    const theme = isDarkTheme() ? ACE_THEME_DARK : ACE_THEME_LIGHT;
+    aceEditors.forEach((editor) => {
+        editor.setTheme(`ace/theme/${theme}`);
+    });
+}
+
+syncAceThemes();
+new MutationObserver(syncAceThemes).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-bs-theme"],
+});
+
 (function () {
     document.addEventListener("DOMContentLoaded", () => {
         formTypeCodeEditor();
@@ -35,7 +56,8 @@ ace.config.set("workerPath", CDN);
 
             e.dataset.codeeditorInitialized = "";
 
-            const theme = e.hasAttribute("data-codeeditor-theme") ? e.getAttribute("data-codeeditor-theme") : "chrome";
+            const customTheme = e.hasAttribute("data-codeeditor-theme") ? e.getAttribute("data-codeeditor-theme") : null;
+            const theme = customTheme || (isDarkTheme() ? ACE_THEME_DARK : ACE_THEME_LIGHT);
             const language = e.hasAttribute("data-codeeditor-language") ? e.getAttribute("data-codeeditor-language") : "javascript";
             const tabSizeRaw = e.hasAttribute("data-codeeditor-tab-size") ? e.getAttribute("data-codeeditor-tab-size") : "4";
             const tabSize = Number.parseInt(String(tabSizeRaw), 10);
@@ -68,6 +90,10 @@ ace.config.set("workerPath", CDN);
                 autoScrollEditorIntoView: true,
                 showPrintMargin: false,
             });
+
+            if (!customTheme) {
+                aceEditors.push(editor);
+            }
 
             editor.getSession().setValue(e.value);
             editor.getSession().on("change", () => {

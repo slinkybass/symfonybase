@@ -240,8 +240,8 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Default')
             ->setColumns(6);
         $codeeditor2 = FieldGenerator::codeeditor('codeeditor2')
-            ->setLabel('With custom language (PHP) and theme (Twilight)')
-            ->setTheme('twilight')
+            ->setLabel('With custom language (PHP) and theme (GitHub)')
+            ->setTheme('github')
             ->setLanguage('php')
             ->setColumns(6);
 
