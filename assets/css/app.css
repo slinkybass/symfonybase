@@ -275,6 +275,7 @@ textarea.no-resize {
     border-radius: var(--tblr-border-radius-lg) !important;
     color: var(--tblr-body-color) !important;
     box-shadow: var(--tblr-shadow-card) !important;
+    z-index: 9998 !important;
 }
 .sp-container .sp-palette-container {
     border-right: var(--tblr-border-width) solid var(--tblr-border-color-translucent) !important;
