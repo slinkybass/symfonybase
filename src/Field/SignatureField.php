@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** Signature capture using EasyAdmin `TextField` plus `FieldTrait` and custom assets. */
 class SignatureField implements FieldInterface
@@ -23,7 +24,7 @@ class SignatureField implements FieldInterface
     public const DEFAULT_BLOCK_PREFIX = 'signature';
     public const DEFAULT_TEMPLATE_PATH = 'field/media.html.twig';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

@@ -4,6 +4,7 @@ namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** EasyAdmin `BooleanField` wrapper with `FieldTrait` (checkbox or switch styling). */
 class BooleanField implements FieldInterface
@@ -16,7 +17,7 @@ class BooleanField implements FieldInterface
     public const OPTION_CHECKED = 'checked';
     public const DEFAULT_SWITCH = false;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

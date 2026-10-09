@@ -23,9 +23,11 @@
 {# handle both string and enum values #}
 {% set html_element_value = htmlElement.value is defined ? htmlElement.value : htmlElement %}
 {% set variant_value = variant.value is defined ? variant.value : variant %}
+{% set type_value = type.value is defined ? type.value : (type ?? 'submit') %}
+{% set size_value = size.value is defined ? size.value : size %}
 
 {% set variant_class = variant_value == 'default' ? 'btn-secondary' : 'btn-' ~ variant_value %}
-{% set size_class = size == 'md' ? '' : 'btn-' ~ size %}
+{% set size_class = size_value == 'md' ? '' : 'btn-' ~ size_value %}
 {% set css_class = html_classes('btn', variant_class, size_class, {
     'btn-ghost': isInvisible,
     'btn-outline': isOutline,
@@ -60,7 +62,7 @@
         {% endif %}
 
         <button {{ attributes.only('class').defaults({class: css_class}) }}
-            type="{{ type ?? 'submit' }}"
+            type="{{ type_value }}"
             {% if name %}name="{{ name }}"{% endif %}
             {% if value %}value="{{ value }}"{% endif %}
             {% if inactive %}disabled="disabled"{% endif %}
@@ -80,7 +82,7 @@
     </form>
 {% else %}
     <button {{ attributes.only('class').defaults({class: css_class}) }}
-        type="{{ type ?? 'submit' }}"
+        type="{{ type_value }}"
         {% if inactive %}disabled="disabled"{% endif %}
         {% for attrName, attrValue in htmlAttributes %}{{ attrName }}="{{ (attrValue.trans is defined ? attrValue|trans : attrValue)|e('html') }}" {% endfor %}
         {{ attributes.without('class', 'type', 'disabled')|raw }}>

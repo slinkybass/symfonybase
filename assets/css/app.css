@@ -158,6 +158,11 @@ textarea.no-resize {
     transition: box-shadow 0.15s ease-in-out;
 }
 
+/* List group active border color */
+.list-group-item.active {
+    border-inline-start-color: var(--tblr-primary);
+}
+
 /* -----------------------------------------------------------------------------
    TomSelect
    ----------------------------------------------------------------------------- */

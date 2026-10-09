@@ -1,9 +1,12 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
-{% set ea = ea() %}
-{% if field.value is same as(null) or field.value is same as('') or field.value is same as([]) %}
-    {{ include(ea.templatePath('label/empty')) }}
+{% if field.formattedValue is iterable and field.formattedValue.isRenderedAsBadge %}
+    {%- for choice in field.formattedValue -%}
+        <span class="badge bg-{{ choice.variant }}-lt">{{ choice.message|trans|raw }}</span>
+    {%- endfor -%}
+{% elseif field.value is same as(null) or field.value is same as('') or field.value is same as([]) %}
+    {{ include(ea().templatePath('label/empty')) }}
 {% else %}
     {{ field.formattedValue|trans|raw }}
 {% endif %}

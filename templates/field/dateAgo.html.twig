@@ -1,10 +1,9 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
-{% set ea = ea() %}
 
 {% if field.value %}
     <time datetime="{{ field.value|date('c') }}" title="{{ field.value|date('r') }}">{{ field.value|ago|capitalize }}</time>
 {% else %}
-    {{ include(ea.templatePath('label/empty')) }}
+    {{ include(ea().templatePath('label/empty')) }}
 {% endif %}

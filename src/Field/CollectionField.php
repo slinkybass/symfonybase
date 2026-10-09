@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** EasyAdmin `CollectionField` wrapper with `FieldTrait`. */
 class CollectionField implements FieldInterface
@@ -15,7 +16,7 @@ class CollectionField implements FieldInterface
     }
     private EasyField $innerField;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

@@ -14,7 +14,7 @@ class ChoiceField implements FieldInterface
     }
     private EasyField $innerField;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

@@ -5,6 +5,7 @@ namespace App\Field;
 use App\Repository\Filter\User as UserFilter;
 use App\Twig\Components\User as UserComponent;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * User association picker built on `AssociationField`: filters (active/verified), card/badge display, and avatar sizing for Twig templates.
@@ -31,7 +32,7 @@ class UserField implements FieldInterface
     public const DEFAULT_ONLY_VERIFIED = true;
     public const DEFAULT_ONLY_ACTIVE = true;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = AssociationField::new($propertyName, $label);

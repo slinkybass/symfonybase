@@ -4,6 +4,7 @@ namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** EasyAdmin `AssociationField` wrapper with `FieldTrait` and TomSelect-friendly defaults. */
 class AssociationField implements FieldInterface
@@ -13,7 +14,7 @@ class AssociationField implements FieldInterface
     }
     private EasyField $innerField;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

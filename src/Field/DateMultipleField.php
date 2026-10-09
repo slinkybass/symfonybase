@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * Multiple calendar dates: plugin mode uses `DateMultipleType` + Flatpickr; plain mode uses a `CollectionType` of `DateType` rows.
@@ -21,7 +22,7 @@ class DateMultipleField implements FieldInterface
     private EasyField $innerField;
     public const DEFAULT_ENTRY_TYPE = DateType::class;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

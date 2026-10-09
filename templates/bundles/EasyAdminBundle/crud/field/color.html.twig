@@ -2,13 +2,10 @@
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
 {% if field.customOptions.get('showSample') %}
-    <span class="badge text-light" style="background: {{ field.value|e('html_attr') }};">
-        {% if field.customOptions.get('showValue') %}
-            {{ field.formattedValue }}
-        {% else %}
-            &nbsp;
-        {% endif %}
-    </span>
-{% elseif field.customOptions.get('showValue') %}
+    {# ColorConfigurator sanitizes values before storing them, but for values stored before we
+       introduced this feature, we need to escape the field value to break CSS-declaration injection #}
+    <span class="badge text-light" style="background: {{ field.value|e('html_attr') }};" title="{{ field.formattedValue }}">&nbsp;</span>
+{% endif %}
+{% if field.customOptions.get('showValue') %}
     {{ field.formattedValue }}
 {% endif %}

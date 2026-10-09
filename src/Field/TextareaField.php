@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** EasyAdmin `TextareaField` wrapper with `FieldTrait`. */
 class TextareaField implements FieldInterface
@@ -22,7 +23,7 @@ class TextareaField implements FieldInterface
     public const OPTION_RESIZEABLE = 'resizeable';
     public const DEFAULT_ROWS = 5;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

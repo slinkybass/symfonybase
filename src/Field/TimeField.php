@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** EasyAdmin `TimeField` wrapper with `FieldTrait`. */
 class TimeField implements FieldInterface
@@ -20,7 +21,7 @@ class TimeField implements FieldInterface
     public const OPTION_DATE_ENABLE_SECONDS = 'data-date-enable-seconds';
     public const OPTION_DATE_MINUTE_INCREMENT = 'data-date-minute-increment';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

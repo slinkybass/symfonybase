@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** File uploads on top of EasyAdmin `ImageField` with `FieldTrait` and `File` constraint defaults. */
 class FileField implements FieldInterface
@@ -22,7 +23,7 @@ class FileField implements FieldInterface
     public const DEFAULT_DIR = 'media';
     public const DEFAULT_TEMPLATE_PATH = 'field/file.html.twig';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

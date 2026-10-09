@@ -5,6 +5,7 @@ namespace App\Field;
 use Arkounay\Bundle\UxMediaBundle\Form\UxMediaType;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * Arkounay `UxMediaType` on an EasyAdmin `TextField` shell: Artgris `conf` keys, crop/zoom options, and `field/media.html.twig`.
@@ -41,7 +42,7 @@ class MediaField implements FieldInterface
     public const DEFAULT_SIZE_INDEX = 'md';
     public const DEFAULT_SIZE_DETAIL = 'xl';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

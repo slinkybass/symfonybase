@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** Symfony `RepeatedType` exposed as an EasyAdmin field with paired first/second option helpers. */
 class RepeatField implements FieldInterface
@@ -17,7 +18,7 @@ class RepeatField implements FieldInterface
     public const OPTION_FIRST_OPTIONS = 'first_options';
     public const OPTION_SECOND_OPTIONS = 'second_options';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

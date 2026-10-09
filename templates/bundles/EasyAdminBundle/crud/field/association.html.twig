@@ -1,12 +1,11 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
-{% set ea = ea() %}
 
 {% set isToMany = field.customOptions.get('associationType') == 'toMany' %}
 
 {% if isToMany %}
-    {% if ea.crud.currentAction == 'index' %}
+    {% if ea().crud.currentAction == 'index' %}
         <a data-bs-toggle="modal" data-bs-target="#info-{{ field.uniqueId }}" role="button">
             <span class="badge badge-outline text-primary">{{ field.value|length }}</span>
         </a>

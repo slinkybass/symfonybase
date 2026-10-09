@@ -1,11 +1,10 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
-{% set ea = ea() %}
 {% trans_default_domain 'EasyAdminBundle' %}
 
-{% if ea.crud.currentAction == 'detail' or not field.customOptions.get('renderAsSwitch') %}
-    {% set badge_is_hidden = ea.crud.currentAction == 'index'
+{% if ea().crud.currentAction == 'detail' or not field.customOptions.get('renderAsSwitch') %}
+    {% set badge_is_hidden = ea().crud.currentAction == 'index'
         and (
             (field.value == true and field.customOptions.get('hideValueWhenTrue') == true)
             or
@@ -18,10 +17,16 @@
         </span>
     {% endif %}
 {% else %}
-    <div class="form-check form-switch mb-0">
+    {# a TranslatableMessage can't be stringified directly, so translate it before passing it as an attribute #}
+    {% set switch_aria_label = (field.label is ea_is_not_empty)
+        ? field.label|trans(domain: ea().i18n.translationDomain) : null %}
+    <div class="form-check form-switch ea-switch mb-0">
         <input type="checkbox" class="form-check-input" id="{{ field.uniqueId }}" {{ field.value == true ? 'checked' }}
-            data-toggle-url="{{ field.customOptions.get('toggleUrl') }}"
-            {{ field.formTypeOption('disabled') == true ? 'disabled' }} autocomplete="off">
+            data-toggle-url="{{ field.customOptions.get('toggleUrl')|default('') }}"
+            {{ field.formTypeOption('disabled') == true ? 'disabled' }}
+            {% if switch_aria_label %}aria-label="{{ switch_aria_label }}"{% endif %}
+            autocomplete="off"
+            {% for name, value in field.htmlAttributes %}{{ name }}="{{ value|e('html_attr') }}" {% endfor %}>
         <label class="form-check-label" for="{{ field.uniqueId }}"></label>
     </div>
 {% endif %}

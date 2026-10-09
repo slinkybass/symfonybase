@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** EasyAdmin `ImageField` wrapper with `FieldTrait` and upload constraints helpers. */
 class ImageField implements FieldInterface
@@ -15,7 +16,7 @@ class ImageField implements FieldInterface
     }
     private EasyField $innerField;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

@@ -87,6 +87,24 @@ function persistSelectedTab() {
         }
         isNavigatingHistory = false;
     });
+
+    const actionLinks = document.querySelectorAll('a[data-action-name="edit"][href]:not([data-ea-action-form-id]), a[data-action-name="detail"][href]:not([data-ea-action-form-id])');
+    const actionUrls = new Map();
+    actionLinks.forEach((actionLink) => {
+        actionUrls.set(actionLink, actionLink.getAttribute("href").split("#")[0]);
+    });
+    const updateActionLinks = () => {
+        const selectedTab = document.querySelector('a[data-bs-toggle="tab"][id^="tablist-"].active');
+        actionLinks.forEach((actionLink) => {
+            const actionUrl = actionUrls.get(actionLink);
+            const hash = selectedTab?.getAttribute("href") ?? "";
+            actionLink.setAttribute("href", hash.startsWith("#") ? `${actionUrl}${hash}` : actionUrl);
+        });
+    };
+    updateActionLinks();
+    document.querySelectorAll('a[data-bs-toggle="tab"][id^="tablist-"]').forEach((tabElement) => {
+        tabElement.addEventListener("shown.bs.tab", updateActionLinks);
+    });
 }
 
 function createUnsavedFormChangesWarning() {

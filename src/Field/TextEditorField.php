@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** EasyAdmin `TextEditorField` wrapper with `FieldTrait`. */
 class TextEditorField implements FieldInterface
@@ -21,7 +22,7 @@ class TextEditorField implements FieldInterface
     public const OPTION_TEXTEDITOR_SPELLCHECK = 'data-texteditor-spellcheck';
     public const OPTION_TEXTEDITOR_TOOLBAR = 'data-texteditor-toolbar';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

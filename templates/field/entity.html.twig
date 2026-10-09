@@ -1,4 +1,3 @@
-{% set ea = ea() %}
 {% set crud = field.customOptions.get('crud') %}
 {% set canLink = has_permission_crud(crud) and has_permission_crud_action(crud, 'detail') %}
 {% set raw = field.value %}
@@ -11,5 +10,5 @@
     {%- endif -%}
     {%- if not loop.last %}<br />{% endif -%}
 {% else %}
-    {{ include(ea.templatePath('label/empty')) }}
+    {{ include(ea().templatePath('label/empty')) }}
 {% endfor %}

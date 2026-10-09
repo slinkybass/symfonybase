@@ -4,6 +4,7 @@ namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** EasyAdmin `PercentField` wrapper with `FieldTrait`. */
 class PercentField implements FieldInterface
@@ -14,7 +15,7 @@ class PercentField implements FieldInterface
     private EasyField $innerField;
     public const DEFAULT_STORED_AS_FRACTIONAL = false;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

@@ -5,6 +5,7 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** PHP enums on top of EasyAdmin `ChoiceField` using `EnumType` with `FieldTrait`. */
 class EnumField implements FieldInterface
@@ -14,7 +15,7 @@ class EnumField implements FieldInterface
     }
     private EasyField $innerField;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

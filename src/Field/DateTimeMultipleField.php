@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * Multiple date-times: same plugin/collection split as `DateMultipleField`, with `DateTimeType` entries by default.
@@ -21,7 +22,7 @@ class DateTimeMultipleField implements FieldInterface
     private EasyField $innerField;
     public const DEFAULT_ENTRY_TYPE = DateTimeType::class;
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

@@ -483,3 +483,19 @@
 {% block datemultiple_widget %}
     {{ block('form_widget_simple') }}
 {% endblock datemultiple_widget %}
+
+{%- block checkbox_widget -%}
+    {%- set parent_label_class = parent_label_class|default(label_attr.class|default('')) -%}
+    {%- if 'checkbox-switch' in parent_label_class -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-check-input')|trim}) -%}
+        <div class="form-check form-switch">
+            {{- form_label(form, null, {widget: block('checkbox_switch_input')}) -}}
+        </div>
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock checkbox_widget %}
+
+{%- block checkbox_switch_input -%}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock checkbox_switch_input %}

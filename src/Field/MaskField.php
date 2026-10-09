@@ -6,6 +6,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /** Input masks on top of EasyAdmin `TextField` (IMask assets) with `FieldTrait`. */
 class MaskField implements FieldInterface
@@ -22,7 +23,7 @@ class MaskField implements FieldInterface
     public const OPTION_MASK_OVERWRITE = 'data-mask-overwrite';
     public const OPTION_MASK_PLACEHOLDER = 'data-mask-placeholder';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

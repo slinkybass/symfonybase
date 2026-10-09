@@ -520,40 +520,52 @@ function createDefaultRowAction() {
         return row.contains(selection.getRangeAt(0).commonAncestorContainer);
     };
 
-    const navigateToUrl = (url) => {
-        // create a temporary link and click it to let Turbo (or other libraries) intercept the navigation
+    const navigateToUrl = (url, event) => {
         const link = document.createElement("a");
         link.href = url;
+        if (event && (event.metaKey || event.ctrlKey || 1 === event.button)) {
+            link.target = "_blank";
+            link.rel = "noopener";
+            window.getSelection()?.removeAllRanges();
+        }
         link.style.display = "none";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
 
-    const handleRowActivation = (row) => {
-        // don't navigate if rows are selected (batch mode)
+    const handleRowActivation = (row, event) => {
         if (row.classList.contains("selected-row")) {
             return;
         }
 
         const url = sanitizeUrl(row.dataset.defaultActionUrl);
         if (url) {
-            navigateToUrl(url);
+            navigateToUrl(url, event);
         }
     };
 
     clickableRows.forEach((row) => {
-        // handle mouse clicks
         row.addEventListener(clickTrigger === "double" ? "dblclick" : "click", (event) => {
             if (isInteractiveElement(event.target)) {
                 return;
             }
 
-            if (userIsSelectingTextInRow(row)) {
+            const opensNewTab = event.metaKey || event.ctrlKey || 1 === event.button;
+            if (!opensNewTab && userIsSelectingTextInRow(row)) {
                 return;
             }
 
-            handleRowActivation(row);
+            handleRowActivation(row, event);
+        });
+
+        row.addEventListener("auxclick", (event) => {
+            if (1 !== event.button || isInteractiveElement(event.target)) {
+                return;
+            }
+
+            event.preventDefault();
+            handleRowActivation(row, event);
         });
 
         // handle keyboard navigation (Enter and Space)

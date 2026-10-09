@@ -19,7 +19,7 @@ class FormField implements FieldInterface
     /**
      * @return never use `fieldset`, `row`, `col`, or `tab` instead
      */
-    public static function new(string $propertyName, ?string $label = null): never
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): never
     {
         EasyField::new($propertyName, $label);
     }

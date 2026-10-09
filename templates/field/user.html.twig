@@ -1,11 +1,10 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
-{% set ea = ea() %}
 
 {% set associationType = field.customOptions.get(constant('App\\Field\\UserField::OPTION_ASSOCIATION_TYPE')) %}
 {% set isToMany = associationType == 'toMany' or field.value is iterable %}
-{% set isIndex = ea.crud.currentAction == 'index' %}
+{% set isIndex = ea().crud.currentAction == 'index' %}
 {% set avatarSize = field.customOptions.get(constant('App\\Field\\UserField::OPTION_AVATAR_SIZE')) ?? constant('App\\Field\\UserField::DEFAULT_AVATAR_SIZE') %}
 {% set stackedAvatarSize = field.customOptions.get(constant('App\\Field\\UserField::OPTION_STACKED_AVATAR_SIZE')) ?? constant('App\\Field\\UserField::DEFAULT_STACKED_AVATAR_SIZE') %}
 {% set variantDetail = field.customOptions.get(constant('App\\Field\\UserField::OPTION_VARIANT_DETAIL')) ?? constant('App\\Field\\UserField::DEFAULT_VARIANT_DETAIL') %}
@@ -61,7 +60,7 @@
         {{ _self.render_user(field.value, constant('App\\Twig\\Components\\User::VARIANT_BADGE'), avatarSize, sublabel) }}
     {% endif %}
 {% else %}
-    {{ include(ea.templatePath('label/empty')) }}
+    {{ include(ea().templatePath('label/empty')) }}
 {% endif %}
 
 {% macro render_user(user, variant = null, avatarSize = null, sublabel = null) %}

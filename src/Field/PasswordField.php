@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * Password entry built on EasyAdmin `TextField`: toggles `PasswordType` vs `RepeatedType` and exposes UI flags for switch/generator rendering.
@@ -21,7 +22,7 @@ class PasswordField implements FieldInterface
     public const OPTION_RENDER_SWITCH = 'renderSwitch';
     public const OPTION_RENDER_GENERATOR = 'renderGenerator';
 
-    public static function new(string $propertyName, ?string $label = null): self
+    public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
         $field->innerField = EasyField::new($propertyName, $label);

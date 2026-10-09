@@ -140,17 +140,25 @@ abstract class AbstractCrudController extends EasyAbstractCrudController
      */
     public function entity(): ?object
     {
-        $entity = $this->getContext()?->getEntity()?->getInstance();
-        if (is_object($entity)) {
-            return $entity;
+        $expected = $this->getEntityFqcn();
+        $instance = $this->getContext()?->getEntity()?->getInstance();
+        if (is_a($instance, $expected)) {
+            return $instance;
         }
+
         $request = $this->request()->getCurrentRequest();
         if ($request === null) {
             return null;
         }
+
+        $crudController = $request->attributes->get(EA::CRUD_CONTROLLER_FQCN) ?? $request->query->get(EA::CRUD_CONTROLLER_FQCN);
+        if (null !== $crudController && $crudController !== static::class) {
+            return null;
+        }
+
         $entityId = $request->attributes->get(EA::ENTITY_ID) ?? $request->query->get(EA::ENTITY_ID);
         if ($entityId) {
-            return $this->em->getRepository($this->getEntityFqcn())->find($entityId);
+            return $this->em->getRepository($expected)->find($entityId);
         }
 
         return null;
