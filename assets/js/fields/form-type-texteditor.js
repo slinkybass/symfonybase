@@ -44,8 +44,46 @@ import "tinymce/plugins/visualblocks";
 import "tinymce/plugins/visualchars";
 import "tinymce/plugins/wordcount";
 
+function isDarkTheme() {
+    return document.documentElement.getAttribute("data-bs-theme") === "dark";
+}
+
+function resolvedTablerColor(property, variable) {
+    const probe = document.createElement("span");
+    probe.style[property] = `var(${variable})`;
+    document.documentElement.appendChild(probe);
+    const value = getComputedStyle(probe)[property];
+    probe.remove();
+
+    return value;
+}
+
+function tablerContentColors() {
+    return {
+        background: resolvedTablerColor("backgroundColor", "--tblr-bg-surface"),
+        color: resolvedTablerColor("color", "--tblr-body-color"),
+    };
+}
+
+function editorContentStyle() {
+    const { background, color } = tablerContentColors();
+
+    return `body { background-color: ${background}; color: ${color}; }`;
+}
+
+function applyEditorContentTheme(editor) {
+    const body = editor.getBody?.();
+    if (!body) {
+        return;
+    }
+
+    const { background, color } = tablerContentColors();
+    body.style.backgroundColor = background;
+    body.style.color = color;
+}
+
 function syncTinyMceSkin() {
-    const dark = document.documentElement.getAttribute("data-bs-theme") === "dark";
+    const dark = isDarkTheme();
     document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
         const href = link.href;
         if (href.includes("/skins/ui/oxide-dark/")) {
@@ -54,6 +92,8 @@ function syncTinyMceSkin() {
             link.disabled = dark;
         }
     });
+
+    tinymce.get().forEach(applyEditorContentTheme);
 }
 
 syncTinyMceSkin();
@@ -127,6 +167,10 @@ new MutationObserver(syncTinyMceSkin).observe(document.documentElement, {
                 autoresize_bottom_margin: 0,
                 skin: false,
                 content_css: false,
+                content_style: editorContentStyle(),
+                setup: (editor) => {
+                    editor.on("init", () => applyEditorContentTheme(editor));
+                },
                 branding: false,
                 convert_urls: false,
                 license_key: "gpl",
