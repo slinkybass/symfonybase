@@ -57,7 +57,12 @@ textarea.no-resize {
     content: "" !important;
     top: 0;
     border: 0;
+	width: 3px;
     border-left: 3px var(--tblr-border-style) var(--tblr-navbar-active-border-color);
+}
+.nav-link,
+.dropdown-toggle {
+	user-select: none;
 }
 
 /* Icon height */
