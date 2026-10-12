@@ -2,18 +2,9 @@
    EasyAdmin
    ----------------------------------------------------------------------------- */
 
-aside .navbar-brand img {
-    max-height: 32px;
-}
 .table tr[data-default-action-url] {
     cursor: pointer;
 }
-.table tr[data-default-action-url] td.actions,
-.table tr[data-default-action-url] td.batch-actions-selector .form-check {
+.table tr[data-default-action-url] td.actions {
     cursor: default;
-}
-.table tr[data-default-action-url] td.actions a,
-.table tr[data-default-action-url] td.actions button,
-.table tr[data-default-action-url] td.batch-actions-selector .form-check {
-    cursor: pointer;
 }

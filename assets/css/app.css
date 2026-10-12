@@ -48,6 +48,11 @@ textarea.no-resize {
    Fixes
    ----------------------------------------------------------------------------- */
 
+/* Logo height */
+aside .navbar-brand img {
+    max-height: 32px;
+}
+
 /* Navbar active bar */
 .navbar-vertical .navbar-nav .nav-item {
     border-radius: var(--tblr-border-radius);
@@ -57,12 +62,12 @@ textarea.no-resize {
     content: "" !important;
     top: 0;
     border: 0;
-	width: 3px;
+    width: 3px;
     border-left: 3px var(--tblr-border-style) var(--tblr-navbar-active-border-color);
 }
 .nav-link,
 .dropdown-toggle {
-	user-select: none;
+    user-select: none;
 }
 
 /* Icon height */
@@ -91,14 +96,8 @@ textarea.no-resize {
 }
 
 /* Active state in menu navbar */
-.navbar-vertical[class*="navbar-expand"]
-    .navbar-collapse
-    .dropdown-menu
-    .dropdown-item.active,
-.navbar-vertical[class*="navbar-expand"]
-    .navbar-collapse
-    .dropdown-menu
-    .dropdown-item:active {
+.navbar-vertical[class*="navbar-expand"] .navbar-collapse .dropdown-menu .dropdown-item.active,
+.navbar-vertical[class*="navbar-expand"] .navbar-collapse .dropdown-menu .dropdown-item:active {
     font-weight: var(--tblr-font-weight-normal);
 }
 
@@ -177,7 +176,7 @@ textarea.no-resize {
 }
 .ts-wrapper:focus .ts-control,
 .ts-wrapper:focus-within .ts-control {
-    outline: var(--tblr-focus-ring,var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color));
+    outline: var(--tblr-focus-ring, var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color));
     border-radius: var(--tblr-border-radius);
 }
 .plugin-dropdown_input.focus .ts-dropdown .dropdown-input {
@@ -307,15 +306,9 @@ textarea.no-resize {
     border-radius: var(--tblr-border-radius) !important;
 }
 .sp-container .sp-input:focus {
-    border-color: color-mix(
-        in oklab var(--tblr-white) 50%,
-        var(--tblr-primary)
-    ) !important;
+    border-color: color-mix(in oklab var(--tblr-white) 50%, var(--tblr-primary)) !important;
     --tblr-focus-ring-offset: -1px;
-    outline: var(
-        --tblr-focus-ring,
-        var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color)
-    );
+    outline: var(--tblr-focus-ring, var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color));
     outline-offset: var(--tblr-focus-ring-offset);
 }
 .sp-container .sp-input.sp-validation-error {
@@ -324,7 +317,7 @@ textarea.no-resize {
 }
 .sp-container .sp-input.sp-validation-error:focus {
     border-color: var(--tblr-form-invalid-border-color);
-    outline: var(--tblr-focus-ring-width) solid light-dark(color-mix(in oklab,var(--tblr-danger) calc(var(--tblr-focus-ring-opacity) * 100%),var(--tblr-body-bg)),color-mix(in oklab,var(--tblr-danger) calc(var(--tblr-focus-ring-opacity-dark) * 100%),var(--tblr-body-bg)));
+    outline: var(--tblr-focus-ring-width) solid light-dark(color-mix(in oklab, var(--tblr-danger) calc(var(--tblr-focus-ring-opacity) * 100%), var(--tblr-body-bg)), color-mix(in oklab, var(--tblr-danger) calc(var(--tblr-focus-ring-opacity-dark) * 100%), var(--tblr-body-bg)));
     outline-offset: var(--tblr-focus-ring-offset);
 }
 .sp-palette .sp-thumb-el,
@@ -432,13 +425,15 @@ span.flatpickr-weekday,
     background: var(--tblr-primary) !important;
     color: var(--tblr-primary-fg) !important;
 }
-.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)),
-.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)),
-.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
     box-shadow: -10px 0 0 var(--tblr-primary) !important;
 }
 .flatpickr-day.inRange {
-    box-shadow: -5px 0 0 var(--tblr-primary), 5px 0 0 var(--tblr-primary) !important;
+    box-shadow:
+        -5px 0 0 var(--tblr-primary),
+        5px 0 0 var(--tblr-primary) !important;
     border-color: transparent !important;
 }
 .flatpickr-day.flatpickr-disabled,
@@ -486,8 +481,7 @@ div:where(.swal2-container) div:where(.swal2-actions) {
     gap: 0.5rem;
 }
 div:where(.swal2-container) div:where(.swal2-loader) {
-    border-color: var(--tblr-primary) rgba(0, 0, 0, 0) var(--tblr-primary)
-        rgba(0, 0, 0, 0) !important;
+    border-color: var(--tblr-primary) rgba(0, 0, 0, 0) var(--tblr-primary) rgba(0, 0, 0, 0) !important;
 }
 div:where(.swal2-container) input:where(.swal2-input),
 div:where(.swal2-container) .swal2-select,
@@ -508,10 +502,7 @@ div:where(.swal2-container) input:where(.swal2-input):focus,
 div:where(.swal2-container) input:where(.swal2-file):focus,
 div:where(.swal2-container) textarea:where(.swal2-textarea):focus {
     --tblr-focus-ring-offset: -1px;
-    outline: var(
-        --tblr-focus-ring,
-        var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color)
-    ) !important;
+    outline: var(--tblr-focus-ring, var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color)) !important;
     outline-offset: var(--tblr-focus-ring-offset);
 }
 div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step,
@@ -669,16 +660,13 @@ div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-act
 .tox .tox-textfield:focus,
 .tox .tox-toolbar-textfield:focus {
     --tblr-focus-ring-offset: -1px;
-    outline: var(
-        --tblr-focus-ring,
-        var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color)
-    ) !important;
+    outline: var(--tblr-focus-ring, var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color)) !important;
     outline-offset: var(--tblr-focus-ring-offset) !important;
 }
 .tox .tox-label,
 .tox .tox-toolbar-label {
     color: var(--tblr-body-color) !important;
-    margin-bottom: .5rem !important;
+    margin-bottom: 0.5rem !important;
     font-weight: var(--tblr-font-weight-medium) !important;
 }
 .tox .tox-button::before,
@@ -699,7 +687,8 @@ div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-act
 .tox .tox-checkbox__icons .tox-checkbox-icon__checked svg {
     fill: var(--tblr-primary) !important;
 }
-.tox .tox-color-input span:focus:not([aria-disabled="true"]), .tox .tox-color-input span:hover:not([aria-disabled="true"]) {
+.tox .tox-color-input span:focus:not([aria-disabled="true"]),
+.tox .tox-color-input span:hover:not([aria-disabled="true"]) {
     border-color: var(--tblr-primary) !important;
 }
 .tox .tox-hue-slider-spectrum:focus,
@@ -794,5 +783,5 @@ div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-act
     border-left-color: var(--tblr-body-color) !important;
 }
 .tox .tox-dialog-wrap__backdrop {
-    background-color: color-mix(in oklab, light-dark(var(--tblr-gray-800), var(--tblr-black)) 32%,transparent) !important;
+    background-color: color-mix(in oklab, light-dark(var(--tblr-gray-800), var(--tblr-black)) 32%, transparent) !important;
 }
