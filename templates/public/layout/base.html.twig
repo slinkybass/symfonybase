@@ -6,6 +6,7 @@
     lang="{{ app.request.locale }}"
     data-turbo="{{ enable_turbo|default(false) ? 'true' : 'false' }}"
     data-bs-theme="{{ bsTheme }}"
+    style="color-scheme: {{ bsTheme }}"
     data-bs-navbar-position="vertical">
     <head>
         <meta charset="UTF-8">
@@ -52,7 +53,7 @@
                                 <a class="nav-link hide-theme-light" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="colorScheme.click()" data-bs-original-title="{{ 'settings.appearance.label'|trans(domain: 'EasyAdminBundle') }} {{ 'settings.appearance.light'|trans(domain: 'EasyAdminBundle') }}" role="button">
                                     <twig:ux:icon class="icon" name="tabler:sun" />
                                 </a>
-                                <input id="colorScheme" class="d-none" type="checkbox" data-color-scheme="true" {% if app.request.cookies.get('ea/colorScheme') == 'dark' %}checked{% endif %}>
+                                <input id="colorScheme" class="d-none" type="checkbox" data-color-scheme {% if darkMode %}checked{% endif %}>
                                 {# Language #}
                                 {% set supportedLocales = locales|split('|') %}
                                 {% if supportedLocales|length %}

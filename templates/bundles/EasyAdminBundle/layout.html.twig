@@ -1,7 +1,8 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {% trans_default_domain ea().i18n.translationDomain %}
 
-{% set darkMode = ea().dashboardHasDarkModeEnabled and (app.request.cookies.get('colorScheme') == 'dark' or ea().dashboardDefaultColorScheme == 'dark') %}
+{% set colorScheme = app.request.cookies.get('colorScheme') %}
+{% set darkMode = ea().dashboardHasDarkModeEnabled and (colorScheme == 'dark' or (colorScheme is empty and ea().dashboardDefaultColorScheme == 'dark')) %}
 {% set contentMaximized = (ea().crud is not null and ea().crud.contentWidth == 'full') or ea().dashboardContentWidth == 'full' %}
 {% set sidebarMinimized = (ea().crud is not null and ea().crud.sidebarWidth == 'compact') or ea().dashboardSidebarWidth == 'compact' %}
 {% set bsTheme = darkMode ? 'dark' : 'light' %}
@@ -14,6 +15,7 @@
     dir="{{ ea().i18n.textDirection }}"
     data-turbo="false"
     data-bs-theme="{{ bsTheme }}"
+    style="color-scheme: {{ bsTheme }}"
     data-bs-layout="{{ bsContent }}"
     data-bs-sidebar="{{ bsSidebar }}"
     data-bs-navbar-position="vertical">
@@ -70,7 +72,9 @@
 </head>
 
 {% block body %}
-    <body {% block body_attr %}{% endblock %} id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+    <body {% block body_attr %}{% endblock %} id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}"
+        data-ea-dark-scheme-is-enabled="{{ ea().dashboardHasDarkModeEnabled ? 'true' : 'false' }}"
+        data-ea-default-color-scheme="{{ ea().dashboardDefaultColorScheme }}">
         {% block wrapper_wrapper %}
             {% block flash_messages %}
                 {{ include(ea().templatePath('flash_messages')) }}

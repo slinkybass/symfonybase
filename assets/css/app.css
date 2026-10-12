@@ -16,6 +16,43 @@
 }
 
 /* -----------------------------------------------------------------------------
+   Page color scheme transition
+   ----------------------------------------------------------------------------- */
+html.theme-switching,
+html.theme-switching * {
+    transition: none !important;
+}
+
+::view-transition-group(root) {
+    animation: none;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    mix-blend-mode: normal;
+    pointer-events: none;
+}
+
+::view-transition-old(root) {
+    animation: none;
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 2;
+    animation: theme-reveal 0.5s ease-in both;
+}
+
+@keyframes theme-reveal {
+    from {
+        clip-path: circle(0 at var(--theme-x, calc(100% - 1.75rem)) var(--theme-y, 1.25rem));
+    }
+    to {
+        clip-path: circle(150vmax at var(--theme-x, calc(100% - 1.75rem)) var(--theme-y, 1.25rem));
+    }
+}
+
+/* -----------------------------------------------------------------------------
    Utils
    ----------------------------------------------------------------------------- */
 
@@ -323,6 +360,9 @@ aside .navbar-brand img {
 .sp-palette .sp-thumb-el,
 .sp-original-input-container .sp-add-on {
     background: transparent !important;
+}
+.sp-original-input-container .sp-add-on {
+    border-color: var(--tblr-border-color) !important;
 }
 
 /* -----------------------------------------------------------------------------

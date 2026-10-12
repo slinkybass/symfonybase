@@ -1,14 +1,24 @@
 class ColorSchemeHandler {
     #cookieKey;
+    #originX;
+    #originY;
+    #viewTransition;
 
     constructor() {
         this.#cookieKey = "colorScheme";
+        document.addEventListener(
+            "pointerdown",
+            (event) => {
+                this.#originX = event.clientX;
+                this.#originY = event.clientY;
+            },
+            true,
+        );
     }
 
-    /** Applies theme from cookie (or default light) to `data-bs-theme`. */
+    /** Applies the cookie, else the EasyAdmin dashboard default, else the rendered theme. Does not write the cookie. */
     applyStoredTheme() {
-        const scheme = this.#getCookie(this.#cookieKey) || "light";
-        this.#applyTheme(scheme);
+        this.#applyTheme(this.#resolveScheme());
     }
 
     initToggleControls() {
@@ -28,18 +38,66 @@ class ColorSchemeHandler {
 
         checkboxes.forEach((checkbox) => {
             checkbox.addEventListener("change", () => {
-                const scheme = checkbox.checked ? "dark" : "light";
-                this.#applyTheme(scheme);
-                checkboxes.forEach((other) => {
-                    other.checked = checkbox.checked;
+                const apply = (holdSwitching = false) => {
+                    const scheme = checkbox.checked ? "dark" : "light";
+                    this.#applyTheme(scheme, holdSwitching);
+                    this.#setCookie(this.#cookieKey, scheme);
+                    checkboxes.forEach((other) => {
+                        other.checked = checkbox.checked;
+                    });
+                };
+
+                if (!document.startViewTransition || this.#viewTransition) {
+                    apply();
+                    return;
+                }
+
+                const root = document.documentElement;
+                root.style.setProperty("--theme-x", `${this.#originX ?? window.innerWidth - 28}px`);
+                root.style.setProperty("--theme-y", `${this.#originY ?? 28}px`);
+                const transition = document.startViewTransition(() => apply(true));
+                this.#viewTransition = transition;
+                transition.finished.finally(() => {
+                    root.classList.remove("theme-switching");
+                    if (this.#viewTransition === transition) {
+                        this.#viewTransition = null;
+                    }
                 });
             });
         });
     }
 
-    #applyTheme(scheme) {
-        document.documentElement.setAttribute("data-bs-theme", scheme);
-        this.#setCookie(this.#cookieKey, scheme);
+    #resolveScheme() {
+        if ("false" === document.body?.getAttribute("data-ea-dark-scheme-is-enabled")) {
+            return "light";
+        }
+
+        const stored = this.#getCookie(this.#cookieKey);
+        if ("dark" === stored || "light" === stored) {
+            return stored;
+        }
+
+        const dashboardDefault = document.body?.getAttribute("data-ea-default-color-scheme");
+        if ("dark" === dashboardDefault || "light" === dashboardDefault) {
+            return dashboardDefault;
+        }
+
+        return "dark" === document.documentElement.getAttribute("data-bs-theme") ? "dark" : "light";
+    }
+
+    #applyTheme(scheme, holdSwitching = false) {
+        const root = document.documentElement;
+        root.classList.add("theme-switching");
+        root.setAttribute("data-bs-theme", scheme);
+        root.style.colorScheme = scheme;
+        if (holdSwitching) {
+            return;
+        }
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                root.classList.remove("theme-switching");
+            });
+        });
     }
 
     #setCookie(name, value, days = 365) {
@@ -49,7 +107,7 @@ class ColorSchemeHandler {
             date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
             expires = `; expires=${date.toUTCString()}`;
         }
-        document.cookie = `${name}=${value || ""}${expires}; path=/`;
+        document.cookie = `${name}=${value || ""}${expires}; path=/; SameSite=Lax`;
     }
 
     #getCookie(name) {
@@ -66,11 +124,8 @@ class ColorSchemeHandler {
 
 const colorSchemeHandler = new ColorSchemeHandler();
 
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    colorSchemeHandler.applyStoredTheme();
-});
+colorSchemeHandler.applyStoredTheme();
 
 document.addEventListener("DOMContentLoaded", () => {
-    colorSchemeHandler.applyStoredTheme();
     colorSchemeHandler.initToggleControls();
 });
