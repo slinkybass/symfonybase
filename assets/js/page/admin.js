@@ -437,42 +437,46 @@ function createActionConfirmationModals() {
             modalIcon.classList.remove(...allVariantTxtClasses);
             modalIcon.classList.add(variantTxtToClass[variant] || "text");
 
-            modalButton.addEventListener("click", () => {
-                // Case 1: POST action with formaction (like DELETE with CSRF token)
-                const formAction = sanitizeUrl(actionElement.getAttribute("formaction"));
-                if (formAction) {
-                    const form = document.querySelector("#action-confirmation-form");
-                    form?.setAttribute("action", formAction);
-                    form?.submit();
-                    return;
-                }
+            modalButton.addEventListener(
+                "click",
+                () => {
+                    // Case 1: POST action with formaction (like DELETE with CSRF token)
+                    const formAction = sanitizeUrl(actionElement.getAttribute("formaction"));
+                    if (formAction) {
+                        const form = document.querySelector("#action-confirmation-form");
+                        form?.setAttribute("action", formAction);
+                        form?.submit();
+                        return;
+                    }
 
-                // Case 2: dropdown action rendered as form (data-ea-action-form-id)
-                const actionFormId = actionElement.getAttribute("data-ea-action-form-id");
-                if (actionFormId) {
-                    document.getElementById(actionFormId)?.submit();
-                    return;
-                }
+                    // Case 2: dropdown action rendered as form (data-ea-action-form-id)
+                    const actionFormId = actionElement.getAttribute("data-ea-action-form-id");
+                    if (actionFormId) {
+                        document.getElementById(actionFormId)?.submit();
+                        return;
+                    }
 
-                // Case 3: standalone button inside a <form> (renderAsForm)
-                const parentForm = actionElement.closest("form");
-                if (parentForm?.hasAttribute("action")) {
-                    parentForm.submit();
-                    return;
-                }
+                    // Case 3: standalone button inside a <form> (renderAsForm)
+                    const parentForm = actionElement.closest("form");
+                    if (parentForm?.hasAttribute("action")) {
+                        parentForm.submit();
+                        return;
+                    }
 
-                // Case 4: GET action with href
-                const href = sanitizeUrl(actionElement.getAttribute("href"));
-                if (href) {
-                    window.location.href = href;
-                }
-            }, { once: true });
+                    // Case 4: GET action with href
+                    const href = sanitizeUrl(actionElement.getAttribute("href"));
+                    if (href) {
+                        window.location.href = href;
+                    }
+                },
+                { once: true },
+            );
         });
     });
 }
 
 function createDefaultRowAction() {
-    const clickableRows = document.querySelectorAll('tr[data-default-action-url]');
+    const clickableRows = document.querySelectorAll("tr[data-default-action-url]");
     if (0 === clickableRows.length) {
         return;
     }
@@ -508,7 +512,7 @@ function createDefaultRowAction() {
     };
 
     const userIsSelectingTextInRow = (row) => {
-        if ('double' === clickTrigger) {
+        if ("double" === clickTrigger) {
             return false;
         }
 

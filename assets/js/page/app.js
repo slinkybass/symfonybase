@@ -339,7 +339,7 @@ function preventMultipleFormSubmission() {
                     });
                 }, 1);
             },
-            false
+            false,
         );
     });
 }

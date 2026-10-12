@@ -21,11 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function applyPrimaryColorVars() {
         const hexColor = colorInput.value.trim() ? colorInput.value : "#22a6b3";
-		
-        let styleTag = document.getElementById('color-override');
+
+        let styleTag = document.getElementById("color-override");
         if (!styleTag) {
-            styleTag = document.createElement('style');
-            styleTag.id = 'color-override';
+            styleTag = document.createElement("style");
+            styleTag.id = "color-override";
             document.head.appendChild(styleTag);
         }
         styleTag.textContent = `:root, [data-bs-theme] { --tblr-primary: ${hexColor} !important; }`;

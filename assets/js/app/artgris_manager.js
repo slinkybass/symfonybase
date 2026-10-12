@@ -82,8 +82,7 @@ $(function () {
 
     if (moduleName === "tiny") {
         $("#form-multiple-delete").on("click", ".select", function () {
-            var windowManager =
-                top !== undefined && top.tinymceWindowManager !== undefined ? top.tinymceWindowManager : "";
+            var windowManager = top !== undefined && top.tinymceWindowManager !== undefined ? top.tinymceWindowManager : "";
 
             if (windowManager !== "") {
                 if (top.tinymceCallBackURL !== undefined) {
