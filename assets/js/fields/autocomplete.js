@@ -12,19 +12,12 @@ export default class Autocomplete {
             return;
         }
 
-        const autocompleteEndpointUrl = element.getAttribute(
-            "data-ea-autocomplete-endpoint-url",
-        );
+        const autocompleteEndpointUrl = element.getAttribute("data-ea-autocomplete-endpoint-url");
         if (null !== autocompleteEndpointUrl) {
-            return this.#createAutocompleteWithRemoteData(
-                element,
-                autocompleteEndpointUrl,
-            );
+            return this.#createAutocompleteWithRemoteData(element, autocompleteEndpointUrl);
         }
 
-        const renderOptionsAsHtml =
-            "true" ===
-            element.getAttribute("data-ea-autocomplete-render-items-as-html");
+        const renderOptionsAsHtml = "true" === element.getAttribute("data-ea-autocomplete-render-items-as-html");
         if (renderOptionsAsHtml) {
             return this.#createAutocompleteWithHtmlContents(element);
         }
@@ -35,18 +28,14 @@ export default class Autocomplete {
     #getCommonConfig(element) {
         const config = {
             render: {
-                no_results: (data, escape) =>
-                    `<div class="no-results">${element.getAttribute("data-ea-i18n-no-results-found")}</div>`,
+                no_results: (data, escape) => `<div class="no-results">${element.getAttribute("data-ea-i18n-no-results-found")}</div>`,
             },
             plugins: {
                 dropdown_input: {},
             },
         };
 
-        if (
-            null === element.getAttribute("required") &&
-            null === element.getAttribute("disabled")
-        ) {
+        if (null === element.getAttribute("required") && null === element.getAttribute("disabled")) {
             config.plugins.clear_button = { title: "" };
         }
 
@@ -54,16 +43,11 @@ export default class Autocomplete {
             config.plugins.remove_button = { title: "" };
         }
 
-        if (
-            null !== element.getAttribute("data-ea-autocomplete-endpoint-url")
-        ) {
+        if (null !== element.getAttribute("data-ea-autocomplete-endpoint-url")) {
             config.plugins.virtual_scroll = {};
         }
 
-        if (
-            "true" ===
-            element.getAttribute("data-ea-autocomplete-allow-item-create")
-        ) {
+        if ("true" === element.getAttribute("data-ea-autocomplete-allow-item-create")) {
             config.create = true;
         }
 
@@ -76,10 +60,7 @@ export default class Autocomplete {
         });
 
         if (this.#hasPreferredChoices(element)) {
-            const { options, optgroups } = this.#extractOptionsWithOptgroups(
-                element,
-                false,
-            );
+            const { options, optgroups } = this.#extractOptionsWithOptgroups(element, false);
             config = this.#mergeObjects(config, {
                 options: options,
                 optgroups: optgroups,
@@ -107,10 +88,7 @@ export default class Autocomplete {
         });
 
         if (this.#hasPreferredChoices(element)) {
-            const { options, optgroups } = this.#extractOptionsWithOptgroups(
-                element,
-                true,
-            );
+            const { options, optgroups } = this.#extractOptionsWithOptgroups(element, true);
             config = this.#mergeObjects(config, {
                 options: options,
                 optgroups: optgroups,
@@ -125,13 +103,16 @@ export default class Autocomplete {
     }
 
     #createAutocompleteWithRemoteData(element, autocompleteEndpointUrl) {
-        const renderOptionsAsHtml =
-            "true" ===
-            element.getAttribute("data-ea-autocomplete-render-items-as-html");
-        const config = this.#mergeObjects(this.#getCommonConfig(element), {
+        const renderOptionsAsHtml = "true" === element.getAttribute("data-ea-autocomplete-render-items-as-html");
+        const autocomplete = this;
+        let config = this.#mergeObjects(this.#getCommonConfig(element), {
             valueField: "entityId",
             labelField: "entityAsString",
             searchField: ["entityAsString"],
+            // each result may define an 'entityGroup' (the group_by option of the form type)
+            // to render it under an <optgroup>-like header in the dropdown
+            optgroupField: "entityGroup",
+            lockOptgroupOrder: true,
             firstUrl: (query) => {
                 return `${autocompleteEndpointUrl}&query=${encodeURIComponent(query)}`;
             },
@@ -145,7 +126,7 @@ export default class Autocomplete {
                     // important: next_url must be set before invoking callback()
                     .then((json) => {
                         this.setNextUrl(query, json.next_page);
-                        callback(json.results);
+                        callback(json.results, autocomplete.#extractOptgroupsFromResults(json.results));
                     })
                     .catch(() => callback());
             },
@@ -155,54 +136,33 @@ export default class Autocomplete {
             // this override causes all results to be returned with the sorting from the server
             score: (search) => (item) => 1,
             render: {
-                option: (item, escape) =>
-                    `<div>${renderOptionsAsHtml ? item.entityAsString : escape(item.entityAsString)}</div>`,
-                item: (item, escape) =>
-                    `<div>${renderOptionsAsHtml ? item.entityAsString : escape(item.entityAsString)}</div>`,
-                loading_more: (data, escape) =>
-                    `<div class="loading-more-results">${element.getAttribute("data-ea-i18n-loading-more-results")}</div>`,
-                no_more_results: (data, escape) =>
-                    `<div class="no-more-results">${element.getAttribute("data-ea-i18n-no-more-results")}</div>`,
-                no_results: (data, escape) =>
-                    `<div class="no-results">${element.getAttribute("data-ea-i18n-no-results-found")}</div>`,
+                option: (item, escape) => `<div>${renderOptionsAsHtml ? item.entityAsString : escape(item.entityAsString)}</div>`,
+                item: (item, escape) => `<div>${renderOptionsAsHtml ? item.entityAsString : escape(item.entityAsString)}</div>`,
+                loading_more: (data, escape) => `<div class="loading-more-results">${element.getAttribute("data-ea-i18n-loading-more-results")}</div>`,
+                no_more_results: (data, escape) => `<div class="no-more-results">${element.getAttribute("data-ea-i18n-no-more-results")}</div>`,
+                no_results: (data, escape) => `<div class="no-results">${element.getAttribute("data-ea-i18n-no-results-found")}</div>`,
             },
         });
+
+        // when using group_by, the server renders the selected items inside <optgroup> elements;
+        // extract them keyed by the group LABEL so they merge with the groups of the Ajax results
+        // (TomSelect's own DOM import assigns numeric ids to these groups, which would duplicate the headers)
+        if (null !== element.querySelector("optgroup")) {
+            const { options, optgroups } = this.#extractRemoteOptionsWithOptgroups(element);
+            config = this.#mergeObjects(config, { options: options, optgroups: optgroups });
+        }
 
         return this.#initializeTomSelect(element, config);
     }
 
     #initializeTomSelect(element, config) {
-        element.dispatchEvent(
-            new CustomEvent("ea.autocomplete.pre-connect", {
-                detail: { config, prefix: "autocomplete" },
-                bubbles: true,
-            }),
-        );
+        element.dispatchEvent(new CustomEvent("ea.autocomplete.pre-connect", { detail: { config, prefix: "autocomplete" }, bubbles: true }));
 
         const tomSelect = new TomSelect(element, config);
 
-        element.dispatchEvent(
-            new CustomEvent("ea.autocomplete.connect", {
-                detail: { tomSelect, config, prefix: "autocomplete" },
-                bubbles: true,
-            }),
-        );
-
-        if (element.required && !element.value) {
-            element.setCustomValidity(this.#getValueMissingMessage());
-        }
-        tomSelect.on('change', (value) => {
-            element.setCustomValidity(element.required && !value ? this.#getValueMissingMessage() : '');
-        });
+        element.dispatchEvent(new CustomEvent("ea.autocomplete.connect", { detail: { tomSelect, config, prefix: "autocomplete" }, bubbles: true }));
 
         return tomSelect;
-    }
-
-    #getValueMissingMessage() {
-        const tmp = document.createElement('select');
-        tmp.required = true;
-        tmp.checkValidity();
-        return tmp.validationMessage;
     }
 
     #stripTags(string) {
@@ -214,7 +174,7 @@ export default class Autocomplete {
     }
 
     #hasPreferredChoices(element) {
-        for (let i = 0; i < element.options.length; i++) {
+        for (let i = 0; i < element.options?.length; i++) {
             if (this.#isPreferredChoicesSeparator(element.options[i])) {
                 return true;
             }
@@ -281,21 +241,79 @@ export default class Autocomplete {
 
             const optionData = withHtmlSupport
                 ? {
-                    value: opt.value,
-                    label_text: this.#stripTags(opt.text),
-                    label_raw: opt.text,
-                    optgroup: foundSeparator ? "regular" : "preferred",
-                }
+                      value: opt.value,
+                      label_text: this.#stripTags(opt.text),
+                      label_raw: opt.text,
+                      optgroup: foundSeparator ? "regular" : "preferred",
+                  }
                 : {
-                    value: opt.value,
-                    text: opt.text,
-                    optgroup: foundSeparator ? "regular" : "preferred",
-                };
+                      value: opt.value,
+                      text: opt.text,
+                      optgroup: foundSeparator ? "regular" : "preferred",
+                  };
 
             options.push(optionData);
 
             if (!foundSeparator) {
                 seenValues.add(opt.value);
+            }
+        }
+
+        return { options, optgroups };
+    }
+
+    #extractOptgroupsFromResults(results) {
+        const optgroups = [];
+        const seenGroups = new Set();
+
+        (results || []).forEach((result) => {
+            const groups = Array.isArray(result.entityGroup) ? result.entityGroup : [result.entityGroup];
+            groups.forEach((group) => {
+                if (null === group || undefined === group || seenGroups.has(group)) {
+                    return;
+                }
+
+                seenGroups.add(group);
+                // 'value' is the field TomSelect uses as the optgroup id (optgroupValueField)
+                optgroups.push({ value: group, label: group });
+            });
+        });
+
+        return optgroups;
+    }
+
+    #extractRemoteOptionsWithOptgroups(element) {
+        const options = [];
+        const optgroups = [];
+        const seenGroups = new Set();
+
+        const addOption = (opt, groupLabel) => {
+            // skip empty placeholder options
+            if ("" === opt.value) {
+                return;
+            }
+
+            // use textContent (like TomSelect's own DOM import): with renderAsHtml, the HTML
+            // markup is stored escaped as the option text and rendered raw later by render.item
+            const optionData = { ...opt.dataset, entityId: opt.value, entityAsString: opt.textContent };
+            if (undefined !== groupLabel) {
+                optionData.entityGroup = groupLabel;
+            }
+            options.push(optionData);
+        };
+
+        for (let i = 0; i < element.children.length; i++) {
+            const child = element.children[i];
+            if ("OPTGROUP" === child.tagName) {
+                if (!seenGroups.has(child.label)) {
+                    seenGroups.add(child.label);
+                    optgroups.push({ value: child.label, label: child.label });
+                }
+                for (let j = 0; j < child.children.length; j++) {
+                    addOption(child.children[j], child.label);
+                }
+            } else if ("OPTION" === child.tagName) {
+                addOption(child);
             }
         }
 
