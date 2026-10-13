@@ -91,16 +91,22 @@ aside .navbar-brand img {
 }
 
 /* Navbar active bar */
-.navbar-vertical .navbar-nav .nav-item {
+.navbar-vertical .navbar-collapse .navbar-nav .nav-item {
     border-radius: var(--tblr-border-radius);
     overflow: hidden;
 }
-.navbar-vertical .navbar-nav .nav-item.active::after {
+.navbar-vertical .navbar-collapse .navbar-nav .nav-item.active {
+    position: relative;
+}
+.navbar-vertical .navbar-collapse .navbar-nav .nav-item.active::after {
     content: "" !important;
+    position: absolute;
     top: 0;
-    border: 0;
+    bottom: 0;
+    inset-inline-start: 0;
     width: 3px;
-    border-left: 3px var(--tblr-border-style) var(--tblr-navbar-active-border-color);
+    border: 0;
+    border-inline-start: 3px var(--tblr-border-style) var(--tblr-navbar-active-border-color);
 }
 .nav-link,
 .dropdown-toggle {
