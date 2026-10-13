@@ -70,11 +70,13 @@ class ConfigCrudController extends AbstractCrudController
         /*** Privacy ***/
         $privacyPanel = FieldGenerator::panel($this->transEntitySection('privacy'))
             ->setIcon('settings')
+            ->setCssClass('hf-config-privacy')
             ->displayIf($isForm || $isEnablePublic);
         $enableCookies = FieldGenerator::switch('enableCookies')
             ->setLabel($this->transEntityField('enableCookies'))
             ->isSwitch($isForm)
             ->setHtmlAttribute('data-hf-child', 'enablePublic')
+            ->setHtmlAttribute('data-hf-container', '.hf-config-privacy')
             ->displayIf($isForm || $isEnablePublic)
             ->setColumns(12);
 

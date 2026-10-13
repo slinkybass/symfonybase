@@ -459,13 +459,14 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(6);
         $hierarchyRow2 = FieldGenerator::row();
         $hierarchySwitchShow = FieldGenerator::switch('hierarchySwitchShow')
-            ->setLabel('Readonly mode')
+            ->setLabel('Show mode (locked when parent off; keep-value so text is not cleared)')
             ->setHtmlAttribute('data-hf-parent', 'hierarchySwitchShow')
             ->setColumns(6);
         $hierarchySwitchShowChild = FieldGenerator::text('hierarchySwitchShowChild')
             ->setLabel('Child text input')
             ->setHtmlAttribute('data-hf-child', 'hierarchySwitchShow')
             ->setHtmlAttribute('data-hf-show', 'true')
+            ->setHtmlAttribute('data-hf-keep-value', 'true')
             ->isRequired()
             ->setColumns(6);
         $hierarchyRow3 = FieldGenerator::row();
@@ -480,14 +481,14 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(6);
         $hierarchyRow4 = FieldGenerator::row();
         $hierarchySwitchInvertValue = FieldGenerator::switch('hierarchySwitchInvertValue')
-            ->setLabel('Only on unchecked')
+            ->setLabel('Only on unchecked (data-hf-negate)')
             ->isChecked()
             ->setHtmlAttribute('data-hf-parent', 'hierarchySwitchInvertValue')
             ->setColumns(6);
         $hierarchySwitchInvertValueChild = FieldGenerator::text('hierarchySwitchInvertValueChild')
             ->setLabel('Child text input')
             ->setHtmlAttribute('data-hf-child', 'hierarchySwitchInvertValue')
-            ->setHtmlAttribute('data-hf-parent-value', 'false')
+            ->setHtmlAttribute('data-hf-negate', 'true')
             ->setColumns(6);
         $hierarchyRow5 = FieldGenerator::row();
         $hierarchyText = FieldGenerator::text('hierarchyText')
@@ -510,7 +511,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(6);
         $hierarchyRow7 = FieldGenerator::row();
         $hierarchyKeepValue = FieldGenerator::switch('hierarchyKeepValue')
-            ->setLabel('Keep value on child, but the value keeps if unchecked.')
+            ->setLabel('keep-value: text stays when parent is unchecked')
             ->setHtmlAttribute('data-hf-parent', 'hierarchyKeepValue')
             ->setColumns(6);
         $hierarchyKeepValueChild = FieldGenerator::text('hierarchyKeepValueChild')
@@ -520,7 +521,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(6);
         $hierarchyRow8 = FieldGenerator::row();
         $hierarchySaveValue = FieldGenerator::switch('hierarchySaveValue')
-            ->setLabel('Keep value on child, but the value is removed if unchecked.')
+            ->setLabel('save-value: cleared while hidden, restored when shown again')
             ->setHtmlAttribute('data-hf-parent', 'hierarchySaveValue')
             ->setColumns(6);
         $hierarchySaveValueChild = FieldGenerator::text('hierarchySaveValueChild')
