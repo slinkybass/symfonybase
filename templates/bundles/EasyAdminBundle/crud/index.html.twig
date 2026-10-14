@@ -192,7 +192,7 @@
                                                 {% if entity.actions.count > 0 %}
                                                     {% if ea().crud.showEntityActionsAsDropdown %}
                                                         {% set hasAnyActionWithIcon = entity.actions|filter(item => item.isActionGroup ? false : item.icon is not null)|length > 0 %}
-                                                        <twig:ea:ActionMenu class="dropdown-actions">
+                                                        <twig:ea:ActionMenu class="dropdown-actions position-static text-end">
                                                             <twig:ea:ActionMenu:Button withoutDropdownToggleMarker>
                                                                 <twig:ea:Icon name="dots" />
                                                             </twig:ea:ActionMenu:Button>
