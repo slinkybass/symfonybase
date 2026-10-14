@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Field;
+namespace App\Field\Trait;
 
 use App\Security\VirtualPermission;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait as EasyTrait;

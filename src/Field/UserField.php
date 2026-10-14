@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use App\Field\Trait\FieldTrait;
 use App\Repository\Filter\User as UserFilter;
 use App\Twig\Components\User as UserComponent;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;

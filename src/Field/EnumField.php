@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use App\Field\Trait\FieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;

@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use App\Field\Trait\FieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
