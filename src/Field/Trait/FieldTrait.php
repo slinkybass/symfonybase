@@ -10,7 +10,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait as EasyTrait;
  */
 trait FieldTrait
 {
-    use EasyTrait;
+    use EasyTrait {
+        setRequired as private;
+        setDisabled as private;
+    }
 
     public const OPTION_MAPPED = 'mapped';
     public const OPTION_REQUIRED = 'required';
