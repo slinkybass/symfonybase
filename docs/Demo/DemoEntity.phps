@@ -81,39 +81,6 @@ class DemoEntity
     private ?bool $switch = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $color = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorPalette = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorPaletteOnly = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInline = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInlinePalette = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInlinePaletteOnly = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorAlpha = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorCustomPalette = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorTogglePalette = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorButtons = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorSelection = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
     private ?string $mask = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -206,15 +173,6 @@ class DemoEntity
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateDisable = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $dateInline = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $datetimeInline = null;
-
-    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $timeInline = null;
-
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $dateMultiple = null;
 
@@ -235,6 +193,15 @@ class DemoEntity
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $dateRangeCustom = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateInline = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $datetimeInline = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $timeInline = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateCalendarUi = null;
@@ -259,6 +226,39 @@ class DemoEntity
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $datetime12h = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $color = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorInline = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorAlpha = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorButtons = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorPalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorPaletteOnly = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorInlinePalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorInlinePaletteOnly = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorCustomPalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorTogglePalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorSelection = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $array = null;
@@ -288,10 +288,10 @@ class DemoEntity
     private ?string $file = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
+    private ?string $filePDF = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $filePDF = null;
+    private ?string $image = null;
 
     #[ORM\Column]
     private ?bool $hierarchySwitch = null;
@@ -617,138 +617,6 @@ class DemoEntity
     public function setSwitch(?bool $switch): static
     {
         $this->switch = $switch;
-
-        return $this;
-    }
-
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    public function setColor(?string $color): static
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    public function getColorPalette(): ?string
-    {
-        return $this->colorPalette;
-    }
-
-    public function setColorPalette(?string $colorPalette): static
-    {
-        $this->colorPalette = $colorPalette;
-
-        return $this;
-    }
-
-    public function getColorPaletteOnly(): ?string
-    {
-        return $this->colorPaletteOnly;
-    }
-
-    public function setColorPaletteOnly(?string $colorPaletteOnly): static
-    {
-        $this->colorPaletteOnly = $colorPaletteOnly;
-
-        return $this;
-    }
-
-    public function getColorInline(): ?string
-    {
-        return $this->colorInline;
-    }
-
-    public function setColorInline(?string $colorInline): static
-    {
-        $this->colorInline = $colorInline;
-
-        return $this;
-    }
-
-    public function getColorInlinePalette(): ?string
-    {
-        return $this->colorInlinePalette;
-    }
-
-    public function setColorInlinePalette(?string $colorInlinePalette): static
-    {
-        $this->colorInlinePalette = $colorInlinePalette;
-
-        return $this;
-    }
-
-    public function getColorInlinePaletteOnly(): ?string
-    {
-        return $this->colorInlinePaletteOnly;
-    }
-
-    public function setColorInlinePaletteOnly(?string $colorInlinePaletteOnly): static
-    {
-        $this->colorInlinePaletteOnly = $colorInlinePaletteOnly;
-
-        return $this;
-    }
-
-    public function getColorAlpha(): ?string
-    {
-        return $this->colorAlpha;
-    }
-
-    public function setColorAlpha(?string $colorAlpha): static
-    {
-        $this->colorAlpha = $colorAlpha;
-
-        return $this;
-    }
-
-    public function getColorCustomPalette(): ?string
-    {
-        return $this->colorCustomPalette;
-    }
-
-    public function setColorCustomPalette(?string $colorCustomPalette): static
-    {
-        $this->colorCustomPalette = $colorCustomPalette;
-
-        return $this;
-    }
-
-    public function getColorTogglePalette(): ?string
-    {
-        return $this->colorTogglePalette;
-    }
-
-    public function setColorTogglePalette(?string $colorTogglePalette): static
-    {
-        $this->colorTogglePalette = $colorTogglePalette;
-
-        return $this;
-    }
-
-    public function getColorButtons(): ?string
-    {
-        return $this->colorButtons;
-    }
-
-    public function setColorButtons(?string $colorButtons): static
-    {
-        $this->colorButtons = $colorButtons;
-
-        return $this;
-    }
-
-    public function getColorSelection(): ?string
-    {
-        return $this->colorSelection;
-    }
-
-    public function setColorSelection(?string $colorSelection): static
-    {
-        $this->colorSelection = $colorSelection;
 
         return $this;
     }
@@ -1125,42 +993,6 @@ class DemoEntity
         return $this;
     }
 
-    public function getDateInline(): ?\DateTimeInterface
-    {
-        return $this->dateInline;
-    }
-
-    public function setDateInline(?\DateTimeInterface $dateInline): static
-    {
-        $this->dateInline = $dateInline;
-
-        return $this;
-    }
-
-    public function getDatetimeInline(): ?\DateTimeInterface
-    {
-        return $this->datetimeInline;
-    }
-
-    public function setDatetimeInline(?\DateTimeInterface $datetimeInline): static
-    {
-        $this->datetimeInline = $datetimeInline;
-
-        return $this;
-    }
-
-    public function getTimeInline(): ?\DateTimeInterface
-    {
-        return $this->timeInline;
-    }
-
-    public function setTimeInline(?\DateTimeInterface $timeInline): static
-    {
-        $this->timeInline = $timeInline;
-
-        return $this;
-    }
-
     public function getDateMultiple(): ?array
     {
         return $this->dateMultiple;
@@ -1241,6 +1073,42 @@ class DemoEntity
     public function setDateRangeCustom(?array $dateRangeCustom): static
     {
         $this->dateRangeCustom = $dateRangeCustom;
+
+        return $this;
+    }
+
+    public function getDateInline(): ?\DateTimeInterface
+    {
+        return $this->dateInline;
+    }
+
+    public function setDateInline(?\DateTimeInterface $dateInline): static
+    {
+        $this->dateInline = $dateInline;
+
+        return $this;
+    }
+
+    public function getDatetimeInline(): ?\DateTimeInterface
+    {
+        return $this->datetimeInline;
+    }
+
+    public function setDatetimeInline(?\DateTimeInterface $datetimeInline): static
+    {
+        $this->datetimeInline = $datetimeInline;
+
+        return $this;
+    }
+
+    public function getTimeInline(): ?\DateTimeInterface
+    {
+        return $this->timeInline;
+    }
+
+    public function setTimeInline(?\DateTimeInterface $timeInline): static
+    {
+        $this->timeInline = $timeInline;
 
         return $this;
     }
@@ -1337,6 +1205,138 @@ class DemoEntity
     public function setDatetime12h(?\DateTimeInterface $datetime12h): static
     {
         $this->datetime12h = $datetime12h;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getColorInline(): ?string
+    {
+        return $this->colorInline;
+    }
+
+    public function setColorInline(?string $colorInline): static
+    {
+        $this->colorInline = $colorInline;
+
+        return $this;
+    }
+
+    public function getColorAlpha(): ?string
+    {
+        return $this->colorAlpha;
+    }
+
+    public function setColorAlpha(?string $colorAlpha): static
+    {
+        $this->colorAlpha = $colorAlpha;
+
+        return $this;
+    }
+
+    public function getColorButtons(): ?string
+    {
+        return $this->colorButtons;
+    }
+
+    public function setColorButtons(?string $colorButtons): static
+    {
+        $this->colorButtons = $colorButtons;
+
+        return $this;
+    }
+
+    public function getColorPalette(): ?string
+    {
+        return $this->colorPalette;
+    }
+
+    public function setColorPalette(?string $colorPalette): static
+    {
+        $this->colorPalette = $colorPalette;
+
+        return $this;
+    }
+
+    public function getColorPaletteOnly(): ?string
+    {
+        return $this->colorPaletteOnly;
+    }
+
+    public function setColorPaletteOnly(?string $colorPaletteOnly): static
+    {
+        $this->colorPaletteOnly = $colorPaletteOnly;
+
+        return $this;
+    }
+
+    public function getColorInlinePalette(): ?string
+    {
+        return $this->colorInlinePalette;
+    }
+
+    public function setColorInlinePalette(?string $colorInlinePalette): static
+    {
+        $this->colorInlinePalette = $colorInlinePalette;
+
+        return $this;
+    }
+
+    public function getColorInlinePaletteOnly(): ?string
+    {
+        return $this->colorInlinePaletteOnly;
+    }
+
+    public function setColorInlinePaletteOnly(?string $colorInlinePaletteOnly): static
+    {
+        $this->colorInlinePaletteOnly = $colorInlinePaletteOnly;
+
+        return $this;
+    }
+
+    public function getColorCustomPalette(): ?string
+    {
+        return $this->colorCustomPalette;
+    }
+
+    public function setColorCustomPalette(?string $colorCustomPalette): static
+    {
+        $this->colorCustomPalette = $colorCustomPalette;
+
+        return $this;
+    }
+
+    public function getColorTogglePalette(): ?string
+    {
+        return $this->colorTogglePalette;
+    }
+
+    public function setColorTogglePalette(?string $colorTogglePalette): static
+    {
+        $this->colorTogglePalette = $colorTogglePalette;
+
+        return $this;
+    }
+
+    public function getColorSelection(): ?string
+    {
+        return $this->colorSelection;
+    }
+
+    public function setColorSelection(?string $colorSelection): static
+    {
+        $this->colorSelection = $colorSelection;
 
         return $this;
     }
@@ -1449,18 +1449,6 @@ class DemoEntity
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     public function getFilePDF(): ?string
     {
         return $this->filePDF;
@@ -1469,6 +1457,18 @@ class DemoEntity
     public function setFilePDF(?string $filePDF): static
     {
         $this->filePDF = $filePDF;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
