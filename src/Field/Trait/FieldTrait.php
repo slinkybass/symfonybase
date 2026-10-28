@@ -40,6 +40,7 @@ trait FieldTrait
         $this->setDefaultColumns(self::DEFAULT_COLUMNS);
     }
 
+    /** Whether the field is mapped to the underlying object (Symfony Form `mapped`). */
     public function isMapped(bool $mapped = true): self
     {
         $this->setFormTypeOption(self::OPTION_MAPPED, $mapped);
@@ -47,6 +48,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** Mark the field required in the form and on the HTML input. */
     public function isRequired(bool $required = true): self
     {
         $this->setFormTypeOption(self::OPTION_REQUIRED, $required);
@@ -55,6 +57,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** Disable the form widget (Symfony Form `disabled`). */
     public function isDisabled(bool $disabled = true): self
     {
         $this->setFormTypeOption(self::OPTION_DISABLED, $disabled);
@@ -62,6 +65,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** Set the HTML `readonly` attribute on the input. */
     public function isReadonly(bool $readonly = true): self
     {
         $this->setHtmlAttribute(self::OPTION_READ_ONLY, $readonly);
@@ -69,6 +73,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** Symfony Form `data` option (initial / transformed value for the widget). */
     public function setData(mixed $data): self
     {
         $this->setFormTypeOption(self::OPTION_DATA, $data);
@@ -76,6 +81,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** Placeholder text on the HTML input. */
     public function setPlaceholder(?string $placeholder): self
     {
         $this->setHtmlAttribute(self::OPTION_PLACEHOLDER, $placeholder);
@@ -83,6 +89,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** HTML `maxlength` on the input. */
     public function setMaxLength(?int $maxLength): self
     {
         $this->setHtmlAttribute(self::OPTION_MAX_LENGTH, $maxLength);
@@ -90,6 +97,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** HTML `minlength` on the input. */
     public function setMinLength(?int $minLength): self
     {
         $this->setHtmlAttribute(self::OPTION_MIN_LENGTH, $minLength);
@@ -97,6 +105,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** EasyAdmin index/detail: render the value as HTML (`renderAsHtml`). */
     public function isHtml(bool $html = true): self
     {
         $this->setCustomOption(self::OPTION_RENDER_AS_HTML, $html);
@@ -104,6 +113,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** EasyAdmin index/detail: strip HTML tags from the value (`stripTags`). */
     public function isSanitized(bool $sanitized = true): self
     {
         $this->setCustomOption(self::OPTION_STRIP_TAGS, $sanitized);
@@ -111,6 +121,7 @@ trait FieldTrait
         return $this;
     }
 
+    /** Show or hide the field via EasyAdmin permission (`VirtualPermission`). */
     public function displayIf(bool $visible): self
     {
         $this->setPermission(VirtualPermission::allowed($visible));
