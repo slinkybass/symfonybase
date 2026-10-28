@@ -3,25 +3,32 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\FlatpickrClockTrait;
+use App\Field\Trait\FlatpickrFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `TimeField` wrapper with `FieldTrait`. */
 class TimeField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use FlatpickrFieldTrait;
+    use FlatpickrClockTrait;
+
     private EasyField $innerField;
 
     public const OPTION_PLUGIN = 'data-time-field';
 
-    public const OPTION_DATE_ENABLE_SECONDS = 'data-date-enable-seconds';
-    public const OPTION_DATE_MINUTE_INCREMENT = 'data-date-minute-increment';
+    /** EasyAdmin display tokens for `setFormat()`, not `data-date-format`. */
+    public const DISPLAY_FORMAT_FULL = 'full';
+    public const DISPLAY_FORMAT_LONG = 'long';
+    public const DISPLAY_FORMAT_MEDIUM = 'medium';
+    public const DISPLAY_FORMAT_SHORT = 'short';
+    public const DISPLAY_FORMAT_NONE = 'none';
 
+    /** Build a time-of-day field (Flatpickr time plugin, no calendar). */
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
@@ -37,52 +44,25 @@ class TimeField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load Flatpickr (`data-time-field`). `false` keeps a native/choice widget. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-time')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
-
-        return $this;
+        return $this->enableMappedPlugin('form-type-time', self::OPTION_PLUGIN, $enable);
     }
 
-    public function setMax(\DateTime|string|null $max): self
+    /** Latest selectable time. Writes `data-date-max-time`, not HTML `max`. */
+    public function setMax(\DateTimeInterface|string|null $max): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MAX, $max instanceof \DateTime ? $max->format('H:i:s') : $max);
-
-        return $this;
+        return $this->setMaxTime($max);
     }
 
-    public function setMin(\DateTime|string|null $min): self
+    /** Earliest selectable time. Writes `data-date-min-time`, not HTML `min`. */
+    public function setMin(\DateTimeInterface|string|null $min): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MIN, $min instanceof \DateTime ? $min->format('H:i:s') : $min);
-
-        return $this;
+        return $this->setMinTime($min);
     }
 
-    public function isInline(bool $inline = true): self
-    {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($inline));
-
-        return $this;
-    }
-
-    public function enableSeconds(bool $enable = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_DATE_ENABLE_SECONDS, json_encode($enable));
-
-        return $this;
-    }
-
-    public function setMinuteIncrement(int $minutes): self
-    {
-        $this->setHtmlAttribute(self::OPTION_DATE_MINUTE_INCREMENT, $minutes);
-
-        return $this;
-    }
-
+    /** EasyAdmin index/detail timezone. Does not configure Flatpickr. */
     public function setTimezone(string $timezone): self
     {
         $this->innerField->setTimezone($timezone);
@@ -90,6 +70,11 @@ class TimeField implements FieldInterface
         return $this;
     }
 
+    /**
+     * EasyAdmin index/detail time display format, not the picker. Also accepts an ICU pattern.
+     *
+     * @param self::DISPLAY_FORMAT_*|string $timeFormat
+     */
     public function setFormat(string $timeFormat): self
     {
         $this->innerField->setFormat($timeFormat);
@@ -97,6 +82,7 @@ class TimeField implements FieldInterface
         return $this;
     }
 
+    /** Native select widgets instead of Flatpickr. `false` restores the plugin. */
     public function renderAsChoice(bool $choice = true): self
     {
         if ($choice) {

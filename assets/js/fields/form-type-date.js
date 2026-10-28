@@ -2,135 +2,19 @@
  * Flatpickr date field
  *
  * Autor: slinkybass
- * Version: 3.2
+ * Version: 3.3
+ *
+ * Contract: lib/flatpickr.js. Posted value: data-date-format (default YYYY-MM-DD).
  */
 
-import flatpickr from "flatpickr";
-import "flatpickr/dist/l10n/index.js";
-import "flatpickr/dist/flatpickr.min.css";
+import { definePlugin } from "./lib/plugin.js";
+import { ATTR, createPicker, datePickerDefaults, localizeFlatpickr, pickerOptsFromElement } from "./lib/flatpickr.js";
 
-(function () {
-    document.addEventListener("DOMContentLoaded", () => {
-        const loc = moment.locale();
-        const flatpickrLocale = flatpickr.l10ns[loc];
-        if (flatpickrLocale) {
-            flatpickr.localize(flatpickrLocale);
-        }
-
-        formTypeDate();
-    });
-
-    document.addEventListener("ea.collection.item-added", () => {
-        formTypeDate();
-    });
-
-    window.formTypeDate = function formTypeDate(selector = '[data-date-field="true"]') {
-        document.querySelectorAll(selector).forEach((e) => {
-            if (e.dataset.dateInitialized !== undefined) {
-                return;
-            }
-
-            e.dataset.dateInitialized = "";
-
-            const max = e.hasAttribute("max") ? e.getAttribute("max") : null;
-            const min = e.hasAttribute("min") ? e.getAttribute("min") : null;
-            const inline = e.hasAttribute("data-date-inline") ? e.getAttribute("data-date-inline") !== "false" : false;
-            const mode = e.hasAttribute("data-date-mode") ? e.getAttribute("data-date-mode") : "single";
-            const dateFormat = e.hasAttribute("data-date-format") ? e.getAttribute("data-date-format") : "YYYY-MM-DD";
-            const altFormat = e.hasAttribute("data-date-alt-format") ? e.getAttribute("data-date-alt-format") : moment.localeData().longDateFormat("L");
-            const enabledDates = e.hasAttribute("data-date-enabled") ? e.getAttribute("data-date-enabled") : null;
-            const disabledDates = e.hasAttribute("data-date-disabled") ? e.getAttribute("data-date-disabled") : null;
-            const allowInput = e.hasAttribute("readonly") ? e.getAttribute("readonly") === "false" : true;
-
-            const flatPickrOpts = {
-                inline,
-                mode,
-                dateFormat,
-                altInput: true,
-                altInputClass: inline ? "d-none" : "",
-                altFormat,
-                allowInput,
-                disableMobile: true,
-                locale: {
-                    rangeSeparator: ", ",
-                },
-                parseDate: (datestr, format) => {
-                    return moment(datestr, format, true).toDate();
-                },
-                formatDate: (date, format) => {
-                    return moment(date).format(format);
-                },
-            };
-
-            if (max) {
-                const maxDate = new Date(max);
-                if (!Number.isNaN(maxDate.getTime())) {
-                    maxDate.setHours(23, 59, 59, 999);
-                    flatPickrOpts.maxDate = maxDate;
-                }
-            }
-            if (min) {
-                const minDate = new Date(min);
-                if (!Number.isNaN(minDate.getTime())) {
-                    minDate.setHours(0, 0, 0, 0);
-                    flatPickrOpts.minDate = minDate;
-                }
-            }
-
-            if (enabledDates) {
-                flatPickrOpts.enable = [
-                    function (date) {
-                        const dates = enabledDates.split(",").map(function (dt) {
-                            const dateDt = new Date(dt);
-                            if (Number.isNaN(dateDt.getTime())) {
-                                return null;
-                            }
-                            return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
-                        }).filter(Boolean);
-                        const iDate = Number.isNaN(date.getTime())
-                            ? null
-                            : new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
-                        return iDate !== null && dates.find((dt) => dt === iDate) !== undefined;
-                    },
-                ];
-                flatPickrOpts.onOpen = function (selectedDates, dateStr, instance) {
-                    const dates = enabledDates
-                        .split(",")
-                        .map(function (dt) {
-                            const dateDt = new Date(dt);
-                            return Number.isNaN(dateDt.getTime())
-                                ? null
-                                : new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000);
-                        })
-                        .filter((d) => d !== null)
-                        .sort((a, b) => a - b);
-                    const first = dates[0];
-                    if (!first) {
-                        return;
-                    }
-                    instance.currentMonth = first.getMonth();
-                    instance.currentYear = first.getFullYear();
-                    instance.redraw();
-                };
-            } else if (disabledDates) {
-                flatPickrOpts.disable = [
-                    function (date) {
-                        const dates = disabledDates.split(",").map(function (dt) {
-                            const dateDt = new Date(dt);
-                            if (Number.isNaN(dateDt.getTime())) {
-                                return null;
-                            }
-                            return new Date(dateDt.getTime() - dateDt.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
-                        }).filter(Boolean);
-                        const iDate = Number.isNaN(date.getTime())
-                            ? null
-                            : new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString().split("T")[0];
-                        return iDate !== null && dates.find((dt) => dt === iDate) !== undefined;
-                    },
-                ];
-            }
-
-            flatpickr(e, flatPickrOpts);
-        });
-    };
-})();
+definePlugin("formTypeDate", {
+    attr: ATTR.DATE_PLUGIN,
+    datasetKey: "dateInitialized",
+    onReady: localizeFlatpickr,
+    setup(el) {
+        createPicker(el, pickerOptsFromElement(el, datePickerDefaults()));
+    },
+});

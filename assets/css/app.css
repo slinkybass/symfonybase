@@ -449,6 +449,11 @@ span.flatpickr-weekday,
     border-color: var(--tblr-primary-lt) !important;
     color: var(--tblr-primary-fg) !important;
 }
+.flatpickr-weeks .flatpickr-day:hover {
+    background: inherit !important;
+    border-color: inherit !important;
+    color: inherit !important;
+}
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
 .flatpickr-day.endRange,
@@ -514,6 +519,9 @@ span.flatpickr-weekday,
 }
 .flatpickr-time .numInputWrapper span.arrowDown::after {
     border-top-color: var(--tblr-body-color) !important;
+}
+.flatpickr-current-month span.cur-month {
+    font-weight: 300 !important;
 }
 
 /* -----------------------------------------------------------------------------

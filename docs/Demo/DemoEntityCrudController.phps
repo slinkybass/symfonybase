@@ -5,6 +5,8 @@ namespace App\Controller\Admin\Cruds;
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\DemoEntity;
 use App\Entity\Enum\UserGender;
+use App\Field\DateField;
+use App\Field\DateMultipleField;
 use App\Field\FieldGenerator;
 use App\Form\Type\DemoEntityType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -26,7 +28,7 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $entity = $this->entity();
         if ($entity) {
-            $pageTitle = 'Demo: ' . $entity;
+            $pageTitle = 'Demo: '.$entity;
             $editTitle = $this->translator->trans('page_title.edit', ['%entity_label_singular%' => $pageTitle], 'EasyAdminBundle');
             $crud->setPageTitle(Crud::PAGE_DETAIL, $pageTitle);
             $crud->setPageTitle(Crud::PAGE_EDIT, $editTitle);
@@ -41,7 +43,7 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $basicFieldsTab = FieldGenerator::tab('Basic');
 
-        $idPanel = FieldGenerator::panel('ID')->setIcon('input-search')->setHelp("This field is not editable");
+        $idPanel = FieldGenerator::panel('ID')->setIcon('input-search')->setHelp('This field is not editable');
         $id = FieldGenerator::id('id')
             ->setLabel('Default')
             ->setDisabled()
@@ -278,12 +280,15 @@ class DemoEntityCrudController extends AbstractCrudController
         $datePanel = FieldGenerator::panel('DATE')->setIcon('input-search');
         $date = FieldGenerator::date('date')
             ->setLabel('Date')
+            ->setFormat(DateField::DISPLAY_FORMAT_MEDIUM)
             ->setColumns(4);
         $datetime = FieldGenerator::datetime('datetime')
             ->setLabel('Datetime')
+            ->setFormat(DateField::DISPLAY_FORMAT_MEDIUM, DateField::DISPLAY_FORMAT_SHORT)
             ->setColumns(4);
         $time = FieldGenerator::time('time')
             ->setLabel('Time')
+            ->setFormat(DateField::DISPLAY_FORMAT_SHORT)
             ->setColumns(4);
 
         $dateDefaultValuesPanel = FieldGenerator::panel('DEFAULT VALUES')->setIcon('input-search');
@@ -291,7 +296,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Default date value')
             ->setColumns(4);
         if ($entity && !$entity->getDateDefaultValue()) {
-            $dateDefaultValue->setData(new \DateTime('today'));
+            $dateDefaultValue->setData(new \DateTime('tomorrow'));
         }
         $datetimeDefaultValue = FieldGenerator::datetime('datetimeDefaultValue')
             ->setLabel('Default datetime value')
@@ -327,36 +332,36 @@ class DemoEntityCrudController extends AbstractCrudController
         $dateEnable = FieldGenerator::date('dateEnable')
             ->setLabel('Enabled dates')
             ->setEnabledDates(['1992-03-07', '1992-03-15'])
-            ->setColumns(4);
+            ->setColumns(6);
         $dateDisable = FieldGenerator::date('dateDisable')
             ->setLabel('Disabled dates')
             ->setDisabledDates([new \DateTime('tomorrow'), new \DateTime('yesterday')])
-            ->setColumns(4);
+            ->setColumns(6);
 
-        // Multiple dates should be set in a FormBuilder EventListener (preferably into another entity or an array property)
         $dateMultiplePanel = FieldGenerator::panel('MULTIPLE')->setIcon('input-search');
         $dateMultiple = FieldGenerator::dateMultiple('dateMultiple')
-            ->setLabel('Multiple dates')
-            ->setColumns(4);
+            ->setLabel('Multiple dates (conjunction " | ")')
+            ->setConjunction(' | ')
+            ->setColumns(6);
         $datetimeMultiple = FieldGenerator::datetimeMultiple('datetimeMultiple')
             ->setLabel('Multiple datetimes')
-            ->setColumns(4);
+            ->setColumns(6);
         $dateMultipleRow = FieldGenerator::row();
         $dateMultipleCustom = FieldGenerator::dateMultiple('dateMultipleCustom')
             ->setLabel('Multiple dates with enabled dates')
             ->setEnabledDates(['1992-03-07', '1992-03-09', '1992-03-12', '1992-03-15'])
-            ->setColumns(4);
+            ->setColumns(6);
         $datetimeMultipleCustom = FieldGenerator::datetimeMultiple('datetimeMultipleCustom')
             ->setLabel('Multiple datetimes with min and max datetime')
             ->setMin('1992-03-07 06:00')
             ->setMax('1992-03-15 10:00')
-            ->setColumns(4);
+            ->setColumns(6);
 
-        // Range dates should be set in a FormBuilder EventListener (preferably into dateStart and dateEnd properties)
         $dateRangePanel = FieldGenerator::panel('RANGE')->setIcon('input-search');
         $dateRange = FieldGenerator::dateMultiple('dateRange')
             ->setLabel('Range dates')
             ->isRange()
+            ->setRangeSeparator(DateMultipleField::DATE_RANGE_SEPARATOR_DEFAULT)
             ->setColumns(4);
         $datetimeRange = FieldGenerator::datetimeMultiple('datetimeRange')
             ->setLabel('Range datetimes')
@@ -382,6 +387,58 @@ class DemoEntityCrudController extends AbstractCrudController
         $timeInline = FieldGenerator::time('timeInline')
             ->setLabel('Inline time')
             ->isInline()
+            ->setColumns(4);
+
+        $dateCalendarUiPanel = FieldGenerator::panel('CALENDAR UI')->setIcon('input-search');
+        $dateCalendarUi = FieldGenerator::date('dateCalendarUi')
+            ->setLabel('2 months and custom arrows')
+            ->setShowMonths(2)
+            ->setPrevArrow('Prev')
+            ->setNextArrow('Next')
+            ->setColumns(6);
+        $dateStatic = FieldGenerator::date('dateStatic')
+            ->setLabel('Week numbers and shorthand month')
+            ->isShorthandCurrentMonth()
+            ->isWeekNumbers()
+            ->setColumns(6);
+
+        $datePickerPanel = FieldGenerator::panel('PICKER')->setIcon('input-search');
+        $datePickerOpts = FieldGenerator::date('datePickerOpts')
+            ->setLabel('Above, no animation and stay open on select')
+            ->setPosition(DateField::DATE_POSITION_ABOVE)
+            ->isAnimate(false)
+            ->isCloseOnSelect(false)
+            ->setColumns(4);
+        $dateAltFormat = FieldGenerator::date('dateAltFormat')
+            ->setLabel('Alt input (Moment LL)')
+            ->isAltInput()
+            ->setDateFormat('YYYY-MM-DD')
+            ->setDateAltFormat('LL')
+            ->setColumns(4);
+        $dateNative = FieldGenerator::date('dateNative')
+            ->setLabel('Native selects')
+            ->renderAsChoice()
+            ->setColumns(4);
+
+        $dateClockPanel = FieldGenerator::panel('CLOCK')->setIcon('input-search');
+        $datetimeClock = FieldGenerator::datetime('datetimeClock')
+            ->setLabel('Seconds, 15-min steps, default time, 08:30–16:30')
+            ->isEnableSeconds()
+            ->setMinuteIncrement(15)
+            ->setDefaultHour(8)
+            ->setDefaultMinute(30)
+            ->isAutoFillDefaultTime()
+            ->setMinTime('08:30')
+            ->setMaxTime('16:30')
+            ->setColumns(4);
+        $time12h = FieldGenerator::time('time12h')
+            ->setLabel('12-hour clock with seconds')
+            ->isTime24hr(false)
+            ->isEnableSeconds()
+            ->setColumns(4);
+        $datetime12h = FieldGenerator::datetime('datetime12h')
+            ->setLabel('Datetime 12-hour')
+            ->isTime24hr(false)
             ->setColumns(4);
 
         $collectionFieldsTab = FieldGenerator::tab('Collection');
@@ -549,7 +606,6 @@ class DemoEntityCrudController extends AbstractCrudController
             ->showClear(false)
             ->setColumns(6);
 
-
         yield $basicFieldsTab;
 
         yield $idPanel;
@@ -668,6 +724,20 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $dateInline;
         yield $datetimeInline;
         yield $timeInline;
+
+        yield $dateCalendarUiPanel;
+        yield $dateCalendarUi;
+        yield $dateStatic;
+
+        yield $datePickerPanel;
+        yield $datePickerOpts;
+        yield $dateAltFormat;
+        yield $dateNative;
+
+        yield $dateClockPanel;
+        yield $datetimeClock;
+        yield $time12h;
+        yield $datetime12h;
 
         yield $collectionFieldsTab;
 

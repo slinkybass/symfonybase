@@ -3,26 +3,29 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
+use App\Field\Trait\FlatpickrCalendarTrait;
+use App\Field\Trait\FlatpickrFieldTrait;
+use App\Field\Trait\FlatpickrRangeTrait;
 use App\Form\Type\DateMultipleType;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/**
- * Multiple calendar dates: plugin mode uses `DateMultipleType` + Flatpickr; plain mode uses a `CollectionType` of `DateType` rows.
- */
 class DateMultipleField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use FlatpickrFieldTrait;
+    use FlatpickrCalendarTrait;
+    use FlatpickrRangeTrait;
+
     private EasyField $innerField;
     public const DEFAULT_ENTRY_TYPE = DateType::class;
 
+    /** Build a multi-date field (Flatpickr `multiple`/`range`, posted as CSV). */
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
@@ -39,17 +42,15 @@ class DateMultipleField implements FieldInterface
         $this->setFormTypeOption('entry_type', self::DEFAULT_ENTRY_TYPE);
     }
 
+    /** Plugin: one Flatpickr input. Off: CollectionType of date rows. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(DateField::OPTION_PLUGIN, json_encode($enable));
+        $this->enableMappedPlugin('form-type-date', DateField::OPTION_PLUGIN, $enable);
 
         $this->setFormType($enable ? DateMultipleType::class : CollectionType::class);
-        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, $enable ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_SINGLE);
+        $this->setDateMode($enable ? self::DATE_MODE_MULTIPLE : self::DATE_MODE_SINGLE);
         if ($enable) {
+            $this->setRangeSeparator();
             $this->setTemplatePath('field/dateMultiple.html.twig');
         } else {
             $this->setTemplateName('crud/field/array');
@@ -58,67 +59,15 @@ class DateMultipleField implements FieldInterface
         return $this;
     }
 
-    public function setMax(\DateTime|string|null $max): self
+    /** Last selectable calendar day (`max` attribute, `Y-m-d`). */
+    public function setMax(\DateTimeInterface|string|null $max): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MAX, $max instanceof \DateTime ? $max->format('Y-m-d') : $max);
-
-        return $this;
+        return $this->setHtmlMinMax(self::OPTION_MAX, $max, 'Y-m-d');
     }
 
-    public function setMin(\DateTime|string|null $min): self
+    /** First selectable calendar day (`min` attribute, `Y-m-d`). */
+    public function setMin(\DateTimeInterface|string|null $min): self
     {
-        $this->setHtmlAttribute(DateField::OPTION_MIN, $min instanceof \DateTime ? $min->format('Y-m-d') : $min);
-
-        return $this;
-    }
-
-    public function isInline(bool $inline = true): self
-    {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_INLINE, json_encode($inline));
-
-        return $this;
-    }
-
-    public function isRange(bool $range = true): self
-    {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_MODE, !$range ? DateField::DATE_MODE_MULTIPLE : DateField::DATE_MODE_RANGE);
-
-        return $this;
-    }
-
-    public function setDateFormat(string $dateFormat): self
-    {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_FORMAT, $dateFormat);
-
-        return $this;
-    }
-
-    public function setDateAltFormat(string $dateAltFormat): self
-    {
-        $this->setHtmlAttribute(DateField::OPTION_DATE_ALT_FORMAT, $dateAltFormat);
-
-        return $this;
-    }
-
-    public function setEnabledDates(?array $dates): self
-    {
-        $datesArr = [];
-        foreach ($dates as $date) {
-            $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
-        }
-        $this->setHtmlAttribute(DateField::OPTION_DATE_ENABLED, implode(',', $datesArr));
-
-        return $this;
-    }
-
-    public function setDisabledDates(?array $dates): self
-    {
-        $datesArr = [];
-        foreach ($dates as $date) {
-            $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
-        }
-        $this->setHtmlAttribute(DateField::OPTION_DATE_DISABLED, implode(',', $datesArr));
-
-        return $this;
+        return $this->setHtmlMinMax(self::OPTION_MIN, $min, 'Y-m-d');
     }
 }

@@ -3,44 +3,32 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\FlatpickrCalendarTrait;
+use App\Field\Trait\FlatpickrFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `DateField` wrapper with `FieldTrait` and Flatpickr-oriented options. */
 class DateField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
-    private EasyField $innerField;
+    use FlatpickrFieldTrait;
+    use FlatpickrCalendarTrait;
 
-    public const OPTION_MAX = 'max';
-    public const OPTION_MIN = 'min';
+    private EasyField $innerField;
 
     public const OPTION_PLUGIN = 'data-date-field';
 
-    public const OPTION_DATE_INLINE = 'data-date-inline';
-    public const OPTION_DATE_MODE = 'data-date-mode';
-    public const OPTION_DATE_FORMAT = 'data-date-format';
-    public const OPTION_DATE_ALT_FORMAT = 'data-date-alt-format';
-    public const OPTION_DATE_ENABLED = 'data-date-enabled';
-    public const OPTION_DATE_DISABLED = 'data-date-disabled';
+    /** EasyAdmin display tokens for `setFormat()`, not `data-date-format`. */
+    public const DISPLAY_FORMAT_FULL = 'full';
+    public const DISPLAY_FORMAT_LONG = 'long';
+    public const DISPLAY_FORMAT_MEDIUM = 'medium';
+    public const DISPLAY_FORMAT_SHORT = 'short';
+    public const DISPLAY_FORMAT_NONE = 'none';
 
-    /** modes */
-    public const DATE_MODE_SINGLE = 'single';
-    public const DATE_MODE_MULTIPLE = 'multiple';
-    public const DATE_MODE_RANGE = 'range';
-
-    /** formats */
-    public const DATE_FORMAT_FULL = 'full';
-    public const DATE_FORMAT_LONG = 'long';
-    public const DATE_FORMAT_MEDIUM = 'medium';
-    public const DATE_FORMAT_SHORT = 'short';
-    public const DATE_FORMAT_NONE = 'none';
-
+    /** Build a calendar-date field (Flatpickr date plugin). */
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
         $field = new self();
@@ -56,74 +44,25 @@ class DateField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load Flatpickr (`data-date-field`). `false` keeps a native/choice widget. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-date')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
-
-        return $this;
+        return $this->enableMappedPlugin('form-type-date', self::OPTION_PLUGIN, $enable);
     }
 
-    public function setMax(\DateTime|string|null $max): self
+    /** Last selectable calendar day (`max` attribute, `Y-m-d`). */
+    public function setMax(\DateTimeInterface|string|null $max): self
     {
-        $this->setHtmlAttribute(self::OPTION_MAX, $max instanceof \DateTime ? $max->format('Y-m-d') : $max);
-
-        return $this;
+        return $this->setHtmlMinMax(self::OPTION_MAX, $max, 'Y-m-d');
     }
 
-    public function setMin(\DateTime|string|null $min): self
+    /** First selectable calendar day (`min` attribute, `Y-m-d`). */
+    public function setMin(\DateTimeInterface|string|null $min): self
     {
-        $this->setHtmlAttribute(self::OPTION_MIN, $min instanceof \DateTime ? $min->format('Y-m-d') : $min);
-
-        return $this;
+        return $this->setHtmlMinMax(self::OPTION_MIN, $min, 'Y-m-d');
     }
 
-    public function isInline(bool $inline = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_DATE_INLINE, json_encode($inline));
-
-        return $this;
-    }
-
-    public function setDateFormat(string $dateFormat): self
-    {
-        $this->setHtmlAttribute(self::OPTION_DATE_FORMAT, $dateFormat);
-
-        return $this;
-    }
-
-    public function setDateAltFormat(string $dateAltFormat): self
-    {
-        $this->setHtmlAttribute(self::OPTION_DATE_ALT_FORMAT, $dateAltFormat);
-
-        return $this;
-    }
-
-    public function setEnabledDates(?array $dates): self
-    {
-        $datesArr = [];
-        foreach ($dates as $date) {
-            $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
-        }
-        $this->setHtmlAttribute(self::OPTION_DATE_ENABLED, implode(',', $datesArr));
-
-        return $this;
-    }
-
-    public function setDisabledDates(?array $dates): self
-    {
-        $datesArr = [];
-        foreach ($dates as $date) {
-            $datesArr[] = $date instanceof \DateTime ? $date->format('Y-m-d') : $date;
-        }
-        $this->setHtmlAttribute(self::OPTION_DATE_DISABLED, implode(',', $datesArr));
-
-        return $this;
-    }
-
+    /** EasyAdmin index/detail timezone. Does not configure Flatpickr. */
     public function setTimezone(string $timezone): self
     {
         $this->innerField->setTimezone($timezone);
@@ -131,6 +70,11 @@ class DateField implements FieldInterface
         return $this;
     }
 
+    /**
+     * EasyAdmin index/detail display format, not the picker. Also accepts an ICU pattern.
+     *
+     * @param self::DISPLAY_FORMAT_*|string $dateFormat
+     */
     public function setFormat(string $dateFormat): self
     {
         $this->innerField->setFormat($dateFormat);
@@ -138,6 +82,7 @@ class DateField implements FieldInterface
         return $this;
     }
 
+    /** Native select widgets instead of Flatpickr. `false` restores the plugin. */
     public function renderAsChoice(bool $choice = true): self
     {
         if ($choice) {

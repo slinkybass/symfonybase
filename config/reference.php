@@ -1500,7 +1500,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  * }
  * @psalm-type ArtgrisFileManagerConfig = array{
- *     web_dir?: scalar|Param|null, // Default: "C:\\laragon\\www\\projects\\symfonybase/public"
+ *     web_dir?: scalar|Param|null, // Default: "/var/www/html/public"
  *     conf?: list<array{ // Default: []
  *         dir?: scalar|Param|null,
  *         type?: "file"|"image"|"media"|Param,

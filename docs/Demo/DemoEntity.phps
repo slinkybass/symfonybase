@@ -224,6 +224,30 @@ class DemoEntity
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $dateRangeCustom = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateCalendarUi = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateStatic = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $datePickerOpts = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateAltFormat = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateNative = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $datetimeClock = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $time12h = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $datetime12h = null;
+
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $array = null;
 
@@ -1157,6 +1181,102 @@ class DemoEntity
     public function setDateRangeCustom(?array $dateRangeCustom): static
     {
         $this->dateRangeCustom = $dateRangeCustom;
+
+        return $this;
+    }
+
+    public function getDateCalendarUi(): ?\DateTimeInterface
+    {
+        return $this->dateCalendarUi;
+    }
+
+    public function setDateCalendarUi(?\DateTimeInterface $dateCalendarUi): static
+    {
+        $this->dateCalendarUi = $dateCalendarUi;
+
+        return $this;
+    }
+
+    public function getDateStatic(): ?\DateTimeInterface
+    {
+        return $this->dateStatic;
+    }
+
+    public function setDateStatic(?\DateTimeInterface $dateStatic): static
+    {
+        $this->dateStatic = $dateStatic;
+
+        return $this;
+    }
+
+    public function getDatePickerOpts(): ?\DateTimeInterface
+    {
+        return $this->datePickerOpts;
+    }
+
+    public function setDatePickerOpts(?\DateTimeInterface $datePickerOpts): static
+    {
+        $this->datePickerOpts = $datePickerOpts;
+
+        return $this;
+    }
+
+    public function getDateAltFormat(): ?\DateTimeInterface
+    {
+        return $this->dateAltFormat;
+    }
+
+    public function setDateAltFormat(?\DateTimeInterface $dateAltFormat): static
+    {
+        $this->dateAltFormat = $dateAltFormat;
+
+        return $this;
+    }
+
+    public function getDateNative(): ?\DateTimeInterface
+    {
+        return $this->dateNative;
+    }
+
+    public function setDateNative(?\DateTimeInterface $dateNative): static
+    {
+        $this->dateNative = $dateNative;
+
+        return $this;
+    }
+
+    public function getDatetimeClock(): ?\DateTimeInterface
+    {
+        return $this->datetimeClock;
+    }
+
+    public function setDatetimeClock(?\DateTimeInterface $datetimeClock): static
+    {
+        $this->datetimeClock = $datetimeClock;
+
+        return $this;
+    }
+
+    public function getTime12h(): ?\DateTimeInterface
+    {
+        return $this->time12h;
+    }
+
+    public function setTime12h(?\DateTimeInterface $time12h): static
+    {
+        $this->time12h = $time12h;
+
+        return $this;
+    }
+
+    public function getDatetime12h(): ?\DateTimeInterface
+    {
+        return $this->datetime12h;
+    }
+
+    public function setDatetime12h(?\DateTimeInterface $datetime12h): static
+    {
+        $this->datetime12h = $datetime12h;
 
         return $this;
     }

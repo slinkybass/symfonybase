@@ -15,6 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DateMultipleType extends AbstractType
 {
+    public const SEPARATOR = ', ';
+
     public function getParent(): string
     {
         return TextType::class;
@@ -22,14 +24,19 @@ class DateMultipleType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addModelTransformer(new class implements DataTransformerInterface {
+        $separator = $options['separator'];
+        $builder->addModelTransformer(new class($separator) implements DataTransformerInterface {
+            public function __construct(private string $separator)
+            {
+            }
+
             public function transform(mixed $value): string
             {
                 if (!is_array($value)) {
                     return '';
                 }
 
-                return implode(', ', $value);
+                return implode($this->separator, $value);
             }
 
             public function reverseTransform(mixed $value): ?array
@@ -37,7 +44,8 @@ class DateMultipleType extends AbstractType
                 if (!is_string($value)) {
                     return null;
                 }
-                $dates = array_values(array_filter(array_map('trim', explode(',', $value)), static fn (string $item): bool => $item !== ''));
+                $delimiter = str_contains($this->separator, ',') ? ',' : $this->separator;
+                $dates = array_values(array_filter(array_map('trim', explode($delimiter, $value)), static fn (string $item): bool => $item !== ''));
 
                 return empty($dates) ? null : $dates;
             }
@@ -52,6 +60,7 @@ class DateMultipleType extends AbstractType
             'delete_empty' => false,
             'entry_options' => [],
             'entry_type' => TextType::class,
+            'separator' => self::SEPARATOR,
         ]);
     }
 
