@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Cruds;
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\DemoEntity;
 use App\Entity\Enum\UserGender;
+use App\Field\ColorField;
 use App\Field\DateField;
 use App\Field\DateMultipleField;
 use App\Field\FieldGenerator;
@@ -168,8 +169,46 @@ class DemoEntityCrudController extends AbstractCrudController
         $colorAlpha = FieldGenerator::color('colorAlpha')
             ->setLabel('RGBA')
             ->showAlpha()
-            ->setPreferredFormat('rgb')
+            ->setPreferredFormat(ColorField::COLOR_FORMAT_RGB)
             ->setColumns(4);
+
+        $colorOptionsPanel = FieldGenerator::panel('COLOR OPTIONS')->setIcon('input-search');
+        $colorCustomPalette = FieldGenerator::color('colorCustomPalette')
+            ->setLabel('Custom palette (hide after select)')
+            ->isPaletteOnly()
+            ->hideAfterPaletteSelect()
+            ->setPalette([
+                ['#000000', '#ffffff', '#f44336', '#4caf50'],
+                ['#2196f3', '#ff9800', '#9c27b0', '#607d8b'],
+            ])
+            ->setColumns(6);
+        $colorTogglePalette = FieldGenerator::color('colorTogglePalette')
+            ->setLabel('Toggle palette only (more / less)')
+            ->isPaletteOnly()
+            ->isTogglePaletteOnly()
+            ->setTogglePaletteMoreText('more')
+            ->setTogglePaletteLessText('less')
+            ->setPalette([
+                ['#000', '#444', '#666', '#999', '#ccc', '#eee', '#f3f3f3', '#fff'],
+                ['#f00', '#f90', '#ff0', '#0f0', '#0ff', '#00f', '#90f', '#f0f'],
+            ])
+            ->setColumns(6);
+        $colorButtons = FieldGenerator::color('colorButtons')
+            ->setLabel('Buttons + initial + allow empty')
+            ->showButtons()
+            ->showInitial()
+            ->isAllowEmpty()
+            ->showInput()
+            ->setPreferredFormat(ColorField::COLOR_FORMAT_HEX)
+            ->setColumns(6);
+        $colorSelection = FieldGenerator::color('colorSelection')
+            ->setLabel('Selection palette (localStorage)')
+            ->showPalette()
+            ->showSelectionPalette()
+            ->setLocalStorageKey('demo.spectrum.selection')
+            ->setSelectionPalette(['#276cb8', '#e69138', '#6aa84f'])
+            ->setMaxSelectionSize(6)
+            ->setColumns(6);
 
         $maskPanel = FieldGenerator::panel('MASK')->setIcon('input-search');
         $mask = FieldGenerator::mask('mask')
@@ -649,6 +688,12 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $colorInlinePalette;
         yield $colorInlinePaletteOnly;
         yield $colorAlpha;
+
+        yield $colorOptionsPanel;
+        yield $colorCustomPalette;
+        yield $colorTogglePalette;
+        yield $colorButtons;
+        yield $colorSelection;
 
         yield $maskPanel;
         yield $mask;

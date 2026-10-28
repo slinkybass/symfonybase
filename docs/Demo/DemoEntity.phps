@@ -102,6 +102,18 @@ class DemoEntity
     private ?string $colorAlpha = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorCustomPalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorTogglePalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorButtons = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorSelection = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $mask = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -689,6 +701,54 @@ class DemoEntity
     public function setColorAlpha(?string $colorAlpha): static
     {
         $this->colorAlpha = $colorAlpha;
+
+        return $this;
+    }
+
+    public function getColorCustomPalette(): ?string
+    {
+        return $this->colorCustomPalette;
+    }
+
+    public function setColorCustomPalette(?string $colorCustomPalette): static
+    {
+        $this->colorCustomPalette = $colorCustomPalette;
+
+        return $this;
+    }
+
+    public function getColorTogglePalette(): ?string
+    {
+        return $this->colorTogglePalette;
+    }
+
+    public function setColorTogglePalette(?string $colorTogglePalette): static
+    {
+        $this->colorTogglePalette = $colorTogglePalette;
+
+        return $this;
+    }
+
+    public function getColorButtons(): ?string
+    {
+        return $this->colorButtons;
+    }
+
+    public function setColorButtons(?string $colorButtons): static
+    {
+        $this->colorButtons = $colorButtons;
+
+        return $this;
+    }
+
+    public function getColorSelection(): ?string
+    {
+        return $this->colorSelection;
+    }
+
+    public function setColorSelection(?string $colorSelection): static
+    {
+        $this->colorSelection = $colorSelection;
 
         return $this;
     }

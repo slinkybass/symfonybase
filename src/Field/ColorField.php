@@ -3,34 +3,20 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\SpectrumFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `ColorField` wrapper with `FieldTrait`. */
+/** EasyAdmin `ColorField` wrapper with Spectrum plugin options. */
 class ColorField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use SpectrumFieldTrait;
+
     private EasyField $innerField;
-
-    public const OPTION_PLUGIN = 'data-color-field';
-
-    public const OPTION_COLOR_TYPE = 'data-color-type';
-    public const OPTION_COLOR_PREFERRED_FORMAT = 'data-color-preferred-format';
-    public const OPTION_COLOR_SHOW_PALETTE = 'data-color-show-palette';
-    public const OPTION_COLOR_PALETTE_ONLY = 'data-color-palette-only';
-    public const OPTION_COLOR_SHOW_ALPHA = 'data-color-show-alpha';
-    public const OPTION_COLOR_HIDE_AFTER_PALETTE_SELECT = 'data-color-hide-after-palette-select';
-
-    /** types */
-    public const COLOR_TYPE_TEXT = 'text';
-    public const COLOR_TYPE_COMPONENT = 'component';
-    public const COLOR_TYPE_COLOR = 'color';
-    public const COLOR_TYPE_FLAT = 'flat';
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -47,59 +33,13 @@ class ColorField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load Spectrum (`data-color-field`). `false` keeps a native color widget. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-color')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
-
-        return $this;
+        return $this->enableMappedPlugin('form-type-color', self::OPTION_PLUGIN, $enable);
     }
 
-    public function setType(string $type): self
-    {
-        $this->setHtmlAttribute(self::OPTION_COLOR_TYPE, $type);
-
-        return $this;
-    }
-
-    public function setPreferredFormat(string $preferredFormat): self
-    {
-        $this->setHtmlAttribute(self::OPTION_COLOR_PREFERRED_FORMAT, $preferredFormat);
-
-        return $this;
-    }
-
-    public function showPalette(bool $show = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_COLOR_SHOW_PALETTE, json_encode($show));
-
-        return $this;
-    }
-
-    public function isPaletteOnly(bool $paletteOnly = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_COLOR_PALETTE_ONLY, json_encode($paletteOnly));
-
-        return $this;
-    }
-
-    public function showAlpha(bool $show = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_COLOR_SHOW_ALPHA, json_encode($show));
-
-        return $this;
-    }
-
-    public function hideAfterPaletteSelect(bool $hide = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_COLOR_HIDE_AFTER_PALETTE_SELECT, json_encode($hide));
-
-        return $this;
-    }
-
+    /** EasyAdmin index/detail color swatch. */
     public function showSample(bool $show = true): self
     {
         $this->innerField->showSample($show);
@@ -107,6 +47,7 @@ class ColorField implements FieldInterface
         return $this;
     }
 
+    /** EasyAdmin index/detail formatted color value. */
     public function showValue(bool $show = true): self
     {
         $this->innerField->showValue($show);

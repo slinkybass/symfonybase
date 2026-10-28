@@ -1,47 +1,19 @@
 /**
- * Spectrum field
+ * Spectrum color field
  *
  * Autor: slinkybass
- * Version: 3.1
+ * Version: 3.3
+ *
+ * Contract: lib/spectrum.js.
  */
 
-import Spectrum from "spectrum-vanilla";
-import "spectrum-vanilla/dist/spectrum.min.css";
+import { definePlugin } from "./lib/plugin.js";
+import { ATTR, colorPickerDefaults, createPicker, pickerOptsFromElement } from "./lib/spectrum.js";
 
-(function () {
-    document.addEventListener("DOMContentLoaded", () => {
-        formTypeColor();
-    });
-
-    document.addEventListener("ea.collection.item-added", () => {
-        formTypeColor();
-    });
-
-    window.formTypeColor = function formTypeColor(selector = '[data-color-field="true"]') {
-        document.querySelectorAll(selector).forEach((e) => {
-            if (e.dataset.colorInitialized !== undefined) {
-                return;
-            }
-
-            const type = e.hasAttribute("data-color-type") ? e.getAttribute("data-color-type") : "component";
-            const preferredFormat = e.hasAttribute("data-color-preferred-format") ? e.getAttribute("data-color-preferred-format") : "hex";
-            const showPalette = e.hasAttribute("data-color-show-palette") ? e.getAttribute("data-color-show-palette") !== "false" : false;
-            const showPaletteOnly = e.hasAttribute("data-color-palette-only") ? e.getAttribute("data-color-palette-only") !== "false" : false;
-            const showAlpha = e.hasAttribute("data-color-show-alpha") ? e.getAttribute("data-color-show-alpha") !== "false" : false;
-            const showInput = e.hasAttribute("data-color-type") ? e.getAttribute("data-color-type") === "flat" : false;
-            const hideAfterPaletteSelect = e.hasAttribute("data-color-hide-after-palette-select") ? e.getAttribute("data-color-hide-after-palette-select") !== "false" : true;
-
-            Spectrum.create(e, {
-                type,
-                preferredFormat,
-                showPalette: showPalette || showPaletteOnly,
-                showPaletteOnly,
-                showAlpha,
-                showInput,
-                hideAfterPaletteSelect,
-                showButtons: false,
-            });
-            e.dataset.colorInitialized = "";
-        });
-    };
-})();
+definePlugin("formTypeColor", {
+    attr: ATTR.PLUGIN,
+    datasetKey: "colorInitialized",
+    setup(el) {
+        createPicker(el, pickerOptsFromElement(el, colorPickerDefaults()));
+    },
+});
