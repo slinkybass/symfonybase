@@ -49,6 +49,6 @@ Cada subcarpeta tiene su propia página de documentación (ver [README](README.m
 
 ## `assets/`, `templates/`, `translations/`
 
-- [Assets de frontend](13-assets.md) — Estructura de Asset Mapper: entrypoints, módulos de página, plugins de campo, controladores Stimulus.
+- [Assets de frontend](13-assets.md) — Estructura de Asset Mapper: entrypoints, `shell/` / `base/` / `fields/` / `project/`, controladores Stimulus.
 - [Plantillas](12-templates.md) — Layout de Twig, sobreescrituras de los bundles EasyAdmin / Artgris / UxMedia, plantillas de correo y Live Components.
 - [i18n](15-i18n.md) — Traducciones en `translations/messages.es.yaml`, `EasyAdminBundle.es.yaml`, `ArkounayUxMediaBundle.es.yaml`, `validators/`.

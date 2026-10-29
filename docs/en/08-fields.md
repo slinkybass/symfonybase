@@ -78,7 +78,7 @@ All classes live under `App\Field`. Each one wraps the matching EasyAdmin type (
 
 ## Asset wiring per field
 
-Most field wrappers auto-register a JavaScript entry point with `addAssetMapperEntries(Asset::new('form-type-...')->onlyOnForms())`. Frontend implementation lives under `assets/js/fields/` (see [assets](13-assets.md)). The EasyAdmin asset graph then loads each script only on screens where the field is rendered.
+Most field wrappers auto-register a JavaScript entry point with `addAssetMapperEntries(Asset::new('form-type-...')->onlyOnForms())`. Those plugins live under `assets/js/fields/form-type-*.js` (see [assets](13-assets.md)); general form helpers live under `assets/js/fields/helpers/`. The EasyAdmin asset graph then loads each `form-type-*` script only on screens where the field is rendered.
 
 ## Templates
 

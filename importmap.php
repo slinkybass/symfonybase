@@ -268,16 +268,16 @@ return [
         'path' => './assets/js/public.js',
         'entrypoint' => true,
     ],
-    'page-color-scheme' => [
-        'path' => './assets/js/app/page-color-scheme.js',
+    'color-scheme' => [
+        'path' => './assets/js/base/color-scheme.js',
         'entrypoint' => true,
     ],
-    'artgris_manager' => [
-        'path' => './assets/js/app/artgris_manager.js',
+    'artgris-manager' => [
+        'path' => './assets/js/base/artgris-manager.js',
         'entrypoint' => true,
     ],
-    'settingsForm' => [
-        'path' => './assets/js/app/settingsForm.js',
+    'settings-form' => [
+        'path' => './assets/js/base/settings-form.js',
         'entrypoint' => true,
     ],
     'form-type-codeeditor' => [

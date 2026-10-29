@@ -36,7 +36,7 @@ class SettingsCrudController extends AbstractCrudController
 
     public function configureAssets(Assets $assets): Assets
     {
-        $assets->addAssetMapperEntry('settingsForm');
+        $assets->addAssetMapperEntry('settings-form');
 
         return $assets;
     }

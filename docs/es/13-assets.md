@@ -35,46 +35,38 @@ assets/
     ├── app.js                      # Entrypoint registrado como `app`
     ├── admin.js                    # Entrypoint registrado como `admin`
     ├── public.js                   # Entrypoint registrado como `public`
-    ├── app/                        # Helpers de shell por aplicación (registrados como entradas propias)
-    │   ├── artgris_manager.js
-    │   ├── page-color-scheme.js
-    │   └── settingsForm.js
-    ├── page/                       # Módulos de página (objetos App / Admin / Public)
+    ├── shell/                      # Lógica DOM de los entrypoints (objetos App / Admin / Public)
     │   ├── app.js
     │   ├── admin.js
     │   └── public.js
-    └── fields/                     # Un módulo por plugin de campo personalizado de EasyAdmin
-        ├── autocomplete.js
-        ├── form-type-codeeditor.js
-        ├── form-type-collection.js
-        ├── form-type-color.js
-        ├── form-type-date.js
-        ├── form-type-datetime.js
-        ├── form-type-file.js
-        ├── form-type-mask.js
-        ├── form-type-password.js
-        ├── form-type-signature.js
-        ├── form-type-slider.js
-        ├── form-type-slug.js
-        ├── form-type-textarea.js
-        ├── form-type-texteditor.js
-        ├── form-type-time.js
-        └── hierarchyFields.js
+    ├── base/                       # Features de la plataforma (no JS de producto)
+    │   ├── artgris-manager.js
+    │   ├── color-scheme.js
+    │   └── settings-form.js
+    ├── fields/                     # Plugins de campo EasyAdmin
+    │   ├── form-type-*.js          # Entrypoints por campo (importmap + App\Field\*)
+    │   ├── helpers/                # Helpers generales de formulario (no form-type-*)
+    │   │   ├── autocomplete.js
+    │   │   └── hierarchy-fields.js
+    │   └── lib/                    # Infra compartida de los form-type-*
+    └── project/                    # JS del producto al clonar la base (vacío en el starter)
 ```
+
+**Ownership:** `shell/`, `base/` y `fields/` pertenecen a la base. Al construir tu app sobre el clon, mete tu JS en `project/` (y/o `assets/controllers/` para Stimulus).
 
 ## Puntos de entrada
 
 `importmap.php` declara los siguientes puntos de entrada visibles al usuario (`entrypoint => true`):
 
-| Nombre de entrada   | Ruta                                 | Utilizado por                                                                  |
-| ------------------- | ------------------------------------ | ------------------------------------------------------------------------------ |
-| `app`               | `assets/js/app.js`                   | Todas las páginas (admin + público). Añade `App` a `window`.                   |
-| `admin`             | `assets/js/admin.js`                 | Páginas de administración (cargado en `DashboardController::configureAssets`). |
-| `public`            | `assets/js/public.js`                | Páginas del sitio público.                                                     |
-| `page-color-scheme` | `assets/js/app/page-color-scheme.js` | Importado por `app.js` (gestor de esquema claro/oscuro).                       |
-| `artgris_manager`   | `assets/js/app/artgris_manager.js`   | Cargado por `templates/admin/media.html.twig`.                                 |
-| `settingsForm`      | `assets/js/app/settingsForm.js`      | Cargado por `SettingsCrudController::configureAssets`.                         |
-| `form-type-*`       | `assets/js/fields/form-type-*.js`    | Adjuntado automáticamente por el wrapper `App\Field\*` correspondiente.        |
+| Nombre de entrada | Ruta                                 | Utilizado por                                                                  |
+| ----------------- | ------------------------------------ | ------------------------------------------------------------------------------ |
+| `app`             | `assets/js/app.js`                   | Todas las páginas (admin + público). Añade `App` a `window`.                   |
+| `admin`           | `assets/js/admin.js`                 | Páginas de administración (cargado en `DashboardController::configureAssets`). |
+| `public`          | `assets/js/public.js`                | Páginas del sitio público.                                                     |
+| `color-scheme`    | `assets/js/base/color-scheme.js`     | Importado por `app.js` (gestor de esquema claro/oscuro).                       |
+| `artgris-manager` | `assets/js/base/artgris-manager.js`  | Cargado por el override del file manager Artgris.                              |
+| `settings-form`   | `assets/js/base/settings-form.js`    | Cargado por `SettingsCrudController::configureAssets`.                         |
+| `form-type-*`     | `assets/js/fields/form-type-*.js`    | Adjuntado automáticamente por el wrapper `App\Field\*` correspondiente.        |
 
 Las entradas de campos siguen la convención de EasyAdmin: cada clase `App\Field\*` registra su plugin con `addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())`, de modo que el bundle inyecta el script únicamente en las pantallas que renderizan el campo.
 
@@ -83,9 +75,10 @@ Las entradas de campos siguen la convención de EasyAdmin: cada clase `App\Field
 La estructura refleja lo que hacen `assets/js/app.js`, `assets/js/admin.js` y `assets/js/public.js`:
 
 - Los puntos de entrada (`app/admin/public.js`) son ligeros: importan librerías de terceros y CSS global, y ejecutan los métodos de configuración de `App` / `Admin` / `Public` dentro de `DOMContentLoaded`. Exponen el objeto de página en `window` para que las plantillas de EasyAdmin puedan invocarlos.
-- Los módulos de página en `assets/js/page/` contienen la lógica DOM (exports con nombre como `App.createAutoCompleteFields`, `Admin.createSearchHighlight`).
-- Los helpers de shell por página o funcionalidad en `assets/js/app/` se registran como entradas propias en el importmap cuando deben cargarse desde una plantilla Twig concreta (`artgris_manager`, `settingsForm`) o como parte del shell global de la aplicación (`page-color-scheme`).
-- Los plugins de campo en `assets/js/fields/` siguen el patrón de atributo `data-<plugin>-field` (p. ej. `data-signature-field`, `data-codeeditor-field`, `data-slug-field`) para localizar nodos del DOM e inicializar la librería correspondiente.
+- Los módulos en `assets/js/shell/` contienen la lógica DOM del entrypoint (exports con nombre como `App.createAutoCompleteFields`, `Admin.createSearchHighlight`).
+- Las features de plataforma en `assets/js/base/` se registran como entradas propias en el importmap cuando deben cargarse desde Twig/CRUD (`artgris-manager`, `settings-form`) o como parte del shell global (`color-scheme`).
+- Los plugins `form-type-*` en `assets/js/fields/` siguen el patrón `data-<plugin>-field` y se registran desde `App\Field\*`. Los helpers generales viven en `fields/helpers/` (p. ej. autocomplete, hierarchy-fields) y se importan desde el entrypoint `app`, no vía importmap por campo.
+- El JS de producto del clon va en `assets/js/project/` (vacío en el starter).
 
 ## Controladores Stimulus
 

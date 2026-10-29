@@ -1,4 +1,4 @@
-import Admin from "./page/admin.js";
+import Admin from "./shell/admin.js";
 window.Admin = Admin;
 
 document.addEventListener("DOMContentLoaded", () => {

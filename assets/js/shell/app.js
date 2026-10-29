@@ -2,7 +2,7 @@ import * as bootstrap from "@tabler/core";
 import basicLightbox from "basiclightbox";
 import DirtyForm from "dirty-form";
 import moment from "moment/min/moment-with-locales.min.js";
-import Autocomplete from "../fields/autocomplete.js";
+import Autocomplete from "../fields/helpers/autocomplete.js";
 import { trans } from "../../translator.js";
 
 let isNavigatingHistory = false;

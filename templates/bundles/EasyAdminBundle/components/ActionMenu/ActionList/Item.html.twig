@@ -12,7 +12,7 @@
 
 {% set is_selectable = selected is not null %}
 {# `aria-checked` is the source of truth for the selected state; the legacy `active`
-   class is mirrored alongside it (kept for one release, in sync with page-color-scheme.js) #}
+   class is mirrored alongside it (kept for one release, in sync with color-scheme.js) #}
 {% set item_class = html_classes('dropdown-item', {'dropdown-item-selectable': is_selectable, active: selected}) %}
 
 {% if wrapInListItem %}<li>{% endif %}

@@ -46,10 +46,10 @@ window.basicLightbox = basicLightbox;
 import "basiclightbox/dist/basicLightbox.min.css";
 
 // HierarchyFields
-import "./fields/hierarchyFields.js";
+import "./fields/helpers/hierarchy-fields.js";
 
 // TomSelect
-import Autocomplete from "./fields/autocomplete.js";
+import Autocomplete from "./fields/helpers/autocomplete.js";
 window.Autocomplete = Autocomplete;
 import "@tabler/core/dist/libs/tom-select/dist/css/tom-select.bootstrap5.min.css";
 
@@ -64,9 +64,9 @@ import { trans } from "../translator.js";
 window.trans = trans;
 
 // Page color scheme
-import "./app/page-color-scheme.js";
+import "./base/color-scheme.js";
 
-import App from "./page/app.js";
+import App from "./shell/app.js";
 window.App = App;
 
 document.addEventListener("DOMContentLoaded", () => {

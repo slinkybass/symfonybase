@@ -71,7 +71,7 @@ All four are public properties so subclasses can pass them through `parent::__co
 | `UserCrudController`     | `User` (non-admin)         | Filters out admin roles from index/forms; `impersonate` gated by `crud_user_impersonate` + `isUp()`. |
 | `AdminCrudController`    | `User` (admin)             | `isUp()` on edit/delete/impersonate; denies all standard actions when `crud_admin` is missing.       |
 | `RoleCrudController`     | `Role`                     | Dynamic permission switches (only permissions the editor holds); parent/child enforced on save.      |
-| `SettingsCrudController` | `Config` (branding fields) | Forces a single row; redirects to detail after save; loads `settingsForm` asset entry.               |
+| `SettingsCrudController` | `Config` (branding fields) | Forces a single row; redirects to detail after save; loads `settings-form` asset entry.              |
 | `ConfigCrudController`   | `Config` (feature toggles) | Same singleton behavior as Settings.                                                                 |
 
 Both `User` CRUDs always apply `IsVerifiedFilter` + `IsAdminFilter` on the index `QueryBuilder` so deactivated/unverified accounts and the wrong "side" never leak into the listing. They also wire a Form `SUBMIT` listener that hashes `plainPassword` if provided.

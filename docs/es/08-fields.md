@@ -78,7 +78,7 @@ Todas las clases residen bajo `App\Field`. Cada una envuelve el tipo EasyAdmin c
 
 ## Registro de assets por campo
 
-La mayoría de los wrappers de campo registran automáticamente un punto de entrada JavaScript con `addAssetMapperEntries(Asset::new('form-type-...')->onlyOnForms())`. La implementación frontend reside en `assets/js/fields/` (ver [assets](13-assets.md)). El grafo de assets de EasyAdmin carga entonces cada script únicamente en las pantallas donde se renderiza el campo.
+La mayoría de los wrappers de campo registran automáticamente un punto de entrada JavaScript con `addAssetMapperEntries(Asset::new('form-type-...')->onlyOnForms())`. La implementación frontend de esos plugins vive en `assets/js/fields/form-type-*.js` (ver [assets](13-assets.md)); los helpers generales de formulario están en `assets/js/fields/helpers/`. El grafo de assets de EasyAdmin carga cada `form-type-*` únicamente en las pantallas donde se renderiza el campo.
 
 ## Plantillas
 

@@ -71,7 +71,7 @@ Las cuatro son propiedades públicas para que las subclases puedan pasarlas a tr
 | `UserCrudController`     | `User` (no administrador)             | Filtra roles admin en índice/formularios; `impersonate` con `crud_user_impersonate` + `isUp()`.    |
 | `AdminCrudController`    | `User` (administrador)                | `isUp()` en editar/eliminar/suplantar; deniega todas las acciones estándar si falta `crud_admin`.  |
 | `RoleCrudController`     | `Role`                                | Switches dinámicos (solo permisos que el editor tiene); jerarquía padre/hijo al guardar.           |
-| `SettingsCrudController` | `Config` (campos de marca)            | Fuerza una única fila; redirige al detalle tras guardar; carga la entrada de asset `settingsForm`. |
+| `SettingsCrudController` | `Config` (campos de marca)            | Fuerza una única fila; redirige al detalle tras guardar; carga la entrada de asset `settings-form`. |
 | `ConfigCrudController`   | `Config` (toggles de funcionalidades) | Mismo comportamiento singleton que Settings.                                                       |
 
 Ambos CRUDs de `User` aplican siempre `IsVerifiedFilter` + `IsAdminFilter` en el `QueryBuilder` del índice para que las cuentas desactivadas/no verificadas y el «lado» incorrecto nunca aparezcan en el listado. También registran un listener de `SUBMIT` en el formulario que hashea `plainPassword` si se ha proporcionado.

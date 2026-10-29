@@ -49,6 +49,6 @@ Each subfolder has its own dedicated documentation page (see [README](README.md)
 
 ## `assets/`, `templates/`, `translations/`
 
-- [Frontend assets](13-assets.md) — Asset Mapper layout: entrypoints, page modules, field plugins, Stimulus controllers.
+- [Frontend assets](13-assets.md) — Asset Mapper layout: entrypoints, `shell/` / `base/` / `fields/` / `project/`, Stimulus controllers.
 - [Templates](12-templates.md) — Twig layout, EasyAdmin / Artgris / UxMedia bundle overrides, mail templates and Live Components.
 - [i18n](15-i18n.md) — translations under `translations/messages.es.yaml`, `EasyAdminBundle.es.yaml`, `ArkounayUxMediaBundle.es.yaml`, `validators/`.
