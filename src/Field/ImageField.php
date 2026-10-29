@@ -3,6 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
@@ -30,12 +31,17 @@ class ImageField implements FieldInterface
     {
         $this->applyDefaultsTrait();
         $this->dto->setAssets(new AssetsDto());
+        $this->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms());
         $this->setDir('media');
     }
 
+    /** HTML `accept` / EasyAdmin `mimeTypes` (defaults to `image/*`). */
     public function setAccept(?string $filetype): self
     {
-        $this->setHtmlAttribute(FileField::OPTION_ACCEPT, $filetype);
+        $this->setCustomOption(EasyField::OPTION_MIME_TYPES, $filetype);
+        if (null !== $filetype) {
+            $this->setHtmlAttribute(FileField::OPTION_ACCEPT, $filetype);
+        }
 
         return $this;
     }

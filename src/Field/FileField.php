@@ -41,11 +41,17 @@ class FileField implements FieldInterface
         $this->setDir(self::DEFAULT_DIR);
         $this->setTemplatePath(self::DEFAULT_TEMPLATE_PATH);
         $this->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()]);
+        // EasyAdmin ImageField defaults mimeTypes to image/*; FileField allows any type.
+        $this->setCustomOption(EasyField::OPTION_MIME_TYPES, null);
     }
 
+    /** HTML `accept` / EasyAdmin `mimeTypes` (ImageConfigurator writes `attr.accept`). */
     public function setAccept(?string $filetype): self
     {
-        $this->setHtmlAttribute(self::OPTION_ACCEPT, $filetype);
+        $this->setCustomOption(EasyField::OPTION_MIME_TYPES, $filetype);
+        if (null !== $filetype) {
+            $this->setHtmlAttribute(self::OPTION_ACCEPT, $filetype);
+        }
 
         return $this;
     }
