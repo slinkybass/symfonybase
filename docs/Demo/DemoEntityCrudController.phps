@@ -9,6 +9,7 @@ use App\Field\ColorField;
 use App\Field\DateField;
 use App\Field\DateMultipleField;
 use App\Field\FieldGenerator;
+use App\Field\MaskField;
 use App\Form\Type\DemoEntityType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -139,23 +140,6 @@ class DemoEntityCrudController extends AbstractCrudController
         $switch = FieldGenerator::switch('switch')
             ->setLabel('Switch')
             ->setColumns(3);
-
-        $maskPanel = FieldGenerator::panel('MASK')->setIcon('input-search');
-        $mask = FieldGenerator::mask('mask')
-            ->setLabel('With a simple mask <small class="text-muted">+34 000 000 000</small>')
-            ->setPattern('+34 000 000 000')
-            ->setColumns(4);
-        $mask2 = FieldGenerator::mask('mask2')
-            ->setLabel('With a regex mask <small class="text-muted">^\d+$</small>')
-            ->setPattern('^\d+$')
-            ->isRegex()
-            ->setColumns(4);
-        $mask3 = FieldGenerator::mask('mask3')
-            ->setLabel('Overwrite mode and placeholder <small class="text-muted">000000</small>')
-            ->setPattern('000000')
-            ->isOverwrite()
-            ->setMaskPlaceholder('_')
-            ->setColumns(4);
 
         $slugPanel = FieldGenerator::panel('SLUG')->setIcon('input-search');
         $slugTarget = FieldGenerator::text('slugTarget')
@@ -482,6 +466,74 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setMaxSelectionSize(6)
             ->setColumns(4);
 
+        $maskFieldsTab = FieldGenerator::tab('Mask');
+
+        $maskPanel = FieldGenerator::panel('MASK')->setIcon('input-search');
+        $mask = FieldGenerator::mask('mask')
+            ->setLabel('Phone (default) <small class="text-muted">+34 600 000 000</small>')
+            ->setHelp('Pattern mask with fixed prefix. No <code>_</code> guide (IMask default <code>lazy</code>).')
+            ->setPattern('+34 000 000 000')
+            ->setColumns(4);
+        $mask2 = FieldGenerator::mask('mask2')
+            ->setLabel('Plate + uppercase + unmask <small class="text-muted">1234 BCD → 1234BCD</small>')
+            ->setHelp('Letters uppercased while typing. On submit the space is dropped from the saved value.')
+            ->setPattern('0000 aaa')
+            ->isUppercase()
+            ->isUnmask()
+            ->setColumns(4);
+        $mask3 = FieldGenerator::mask('mask3')
+            ->setLabel('PIN with visible guide <small class="text-muted">______</small>')
+            ->setHelp('<code>lazy</code> off + placeholder: empty slots always show <code>_</code>. New digits replace in place.')
+            ->setPattern('000000')
+            ->isOverwrite()
+            ->setMaskPlaceholder('_')
+            ->isLazy(false)
+            ->setColumns(4);
+        $maskEager = FieldGenerator::mask('maskEager')
+            ->setLabel('Date with auto separators <small class="text-muted">__/__/____</small>')
+            ->setHelp('Visible guide; <code>/</code> is inserted as you type (<code>eager: append</code>).')
+            ->setPattern('00/00/0000')
+            ->setEager(MaskField::MASK_EAGER_APPEND)
+            ->setMaskPlaceholder('_')
+            ->isLazy(false)
+            ->setColumns(4);
+        $maskSecure = FieldGenerator::mask('maskSecure')
+            ->setLabel('Secure display <small class="text-muted">######</small>')
+            ->setHelp('Digits are typed for real but shown as <code>#</code> (<code>displayChar</code>).')
+            ->setPattern('000000')
+            ->setDisplayChar('#')
+            ->isLazy(false)
+            ->setOverwrite(MaskField::MASK_OVERWRITE_SHIFT)
+            ->setColumns(4);
+        $maskNumber = FieldGenerator::mask('maskNumber')
+            ->setLabel('Amount (ES) <small class="text-muted">1.234,56</small>')
+            ->setHelp('Number mask: <code>.</code> thousands, <code>,</code> decimals, 2 places, range 0–999999.99.')
+            ->setMaskType(MaskField::MASK_TYPE_NUMBER)
+            ->setScale(2)
+            ->setRadix(',')
+            ->setThousandsSeparator('.')
+            ->setMapToRadix(['.'])
+            ->isPadFractionalZeros()
+            ->setAutofix()
+            ->setMaskMin(0)
+            ->setMaskMax(999999.99)
+            ->setColumns(4);
+        $maskPrepareDigits = FieldGenerator::mask('maskPrepareDigits')
+            ->setLabel('Paste cleanup → phone <small class="text-muted">+34…</small>')
+            ->setHelp('Strips spaces and non-digits before the mask. Paste <code>34600000000</code> or <code>+34 600-000-000</code>.')
+            ->setPattern('+34 000 000 000')
+            ->setPrepare([MaskField::PREPARE_STRIP_SPACES, MaskField::PREPARE_DIGITS_ONLY])
+            ->setColumns(4);
+        $maskDefinitions = FieldGenerator::mask('maskDefinitions')
+            ->setLabel('Custom hex slots <small class="text-muted">#A1B2C3</small>')
+            ->setHelp('Literal <code>#</code> + 6 custom hex slots. Lowercase → uppercase.')
+            ->setPattern('\\#hhhhhh')
+            ->setDefinitions(['h' => '[0-9A-Fa-f]'])
+            ->isUppercase()
+            ->setMaskPlaceholder('_')
+            ->isLazy(false)
+            ->setColumns(4);
+
         $collectionFieldsTab = FieldGenerator::tab('Collection');
 
         $collectionPanel = FieldGenerator::panel('COLLECTION')->setIcon('input-search');
@@ -682,11 +734,6 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $checkbox;
         yield $switch;
 
-        yield $maskPanel;
-        yield $mask;
-        yield $mask2;
-        yield $mask3;
-
         yield $slugPanel;
         yield $slugTarget;
         yield $slug;
@@ -787,6 +834,18 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $colorCustomPalette;
         yield $colorTogglePalette;
         yield $colorSelection;
+
+        yield $maskFieldsTab;
+
+        yield $maskPanel;
+        yield $mask;
+        yield $mask2;
+        yield $mask3;
+        yield $maskEager;
+        yield $maskSecure;
+        yield $maskNumber;
+        yield $maskPrepareDigits;
+        yield $maskDefinitions;
 
         yield $collectionFieldsTab;
 

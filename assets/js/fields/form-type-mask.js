@@ -1,54 +1,19 @@
 /**
- * Mask field
+ * IMask field
  *
  * Autor: slinkybass
- * Version: 3.1
+ * Version: 3.3
+ *
+ * Contract: lib/imask.js.
  */
 
-import IMask from "imask";
+import { definePlugin } from "./lib/plugin.js";
+import { ATTR, createMask, maskOptsFromElement } from "./lib/imask.js";
 
-(function () {
-    document.addEventListener("DOMContentLoaded", () => {
-        formTypeMask();
-    });
-
-    document.addEventListener("ea.collection.item-added", () => {
-        formTypeMask();
-    });
-
-    window.formTypeMask = function formTypeMask(selector = '[data-mask-field="true"]') {
-        document.querySelectorAll(selector).forEach((e) => {
-            if (e.dataset.maskInitialized !== undefined) {
-                return;
-            }
-
-            const isRegex = e.hasAttribute("data-mask-regex") ? e.getAttribute("data-mask-regex") !== "false" : false;
-            const maskPattern = e.hasAttribute("data-mask-pattern") ? e.getAttribute("data-mask-pattern") : null;
-            let mask = null;
-            if (maskPattern) {
-                if (isRegex) {
-                    try {
-                        mask = new RegExp(maskPattern);
-                    } catch {
-                        mask = null;
-                    }
-                } else {
-                    mask = maskPattern;
-                }
-            }
-            const overwrite = e.hasAttribute("data-mask-overwrite") ? e.getAttribute("data-mask-overwrite") !== "false" : false;
-            const placeholderChar = e.hasAttribute("data-mask-placeholder") ? e.getAttribute("data-mask-placeholder") : null;
-
-            e.dataset.maskInitialized = "";
-
-            if (mask) {
-                IMask(e, {
-                    mask,
-                    overwrite,
-                    lazy: !placeholderChar,
-                    placeholderChar,
-                });
-            }
-        });
-    };
-})();
+definePlugin("formTypeMask", {
+    attr: ATTR.PLUGIN,
+    datasetKey: "maskInitialized",
+    setup(el) {
+        createMask(el, maskOptsFromElement(el));
+    },
+});

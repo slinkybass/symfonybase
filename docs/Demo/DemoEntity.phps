@@ -90,6 +90,21 @@ class DemoEntity
     private ?string $mask3 = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskEager = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskSecure = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskNumber = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskPrepareDigits = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskDefinitions = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $slugTarget = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -653,6 +668,66 @@ class DemoEntity
     public function setMask3(?string $mask3): static
     {
         $this->mask3 = $mask3;
+
+        return $this;
+    }
+
+    public function getMaskEager(): ?string
+    {
+        return $this->maskEager;
+    }
+
+    public function setMaskEager(?string $maskEager): static
+    {
+        $this->maskEager = $maskEager;
+
+        return $this;
+    }
+
+    public function getMaskSecure(): ?string
+    {
+        return $this->maskSecure;
+    }
+
+    public function setMaskSecure(?string $maskSecure): static
+    {
+        $this->maskSecure = $maskSecure;
+
+        return $this;
+    }
+
+    public function getMaskNumber(): ?string
+    {
+        return $this->maskNumber;
+    }
+
+    public function setMaskNumber(?string $maskNumber): static
+    {
+        $this->maskNumber = $maskNumber;
+
+        return $this;
+    }
+
+    public function getMaskPrepareDigits(): ?string
+    {
+        return $this->maskPrepareDigits;
+    }
+
+    public function setMaskPrepareDigits(?string $maskPrepareDigits): static
+    {
+        $this->maskPrepareDigits = $maskPrepareDigits;
+
+        return $this;
+    }
+
+    public function getMaskDefinitions(): ?string
+    {
+        return $this->maskDefinitions;
+    }
+
+    public function setMaskDefinitions(?string $maskDefinitions): static
+    {
+        $this->maskDefinitions = $maskDefinitions;
 
         return $this;
     }

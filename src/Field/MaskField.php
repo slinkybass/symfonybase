@@ -3,26 +3,20 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\IMaskFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** Input masks on top of EasyAdmin `TextField` (IMask assets) with `FieldTrait`. */
+/** EasyAdmin `TextField` wrapper with IMask plugin options. */
 class MaskField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use IMaskFieldTrait;
+
     private EasyField $innerField;
-
-    public const OPTION_PLUGIN = 'data-mask-field';
-
-    public const OPTION_MASK_REGEX = 'data-mask-regex';
-    public const OPTION_MASK_PATTERN = 'data-mask-pattern';
-    public const OPTION_MASK_OVERWRITE = 'data-mask-overwrite';
-    public const OPTION_MASK_PLACEHOLDER = 'data-mask-placeholder';
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -39,42 +33,9 @@ class MaskField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load IMask (`data-mask-field`). `false` keeps a plain text input. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-mask')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
-
-        return $this;
-    }
-
-    public function isRegex(bool $regex = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_MASK_REGEX, json_encode($regex));
-
-        return $this;
-    }
-
-    public function setPattern(string $pattern): self
-    {
-        $this->setHtmlAttribute(self::OPTION_MASK_PATTERN, $pattern);
-
-        return $this;
-    }
-
-    public function isOverwrite(bool $overwrite = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_MASK_OVERWRITE, json_encode($overwrite));
-
-        return $this;
-    }
-
-    public function setMaskPlaceholder(string $placeholder): self
-    {
-        $this->setHtmlAttribute(self::OPTION_MASK_PLACEHOLDER, $placeholder);
-
-        return $this;
+        return $this->enableMappedPlugin('form-type-mask', self::OPTION_PLUGIN, $enable);
     }
 }
