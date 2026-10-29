@@ -167,7 +167,29 @@ export function pickerOptsFromElement(el, defaults = colorPickerDefaults()) {
     return opts;
 }
 
+/**
+ * Spectrum sets `.sp-add-on` width from input `offsetHeight` at create time.
+ * Hidden Bootstrap tabs (`display: none`) report 0 → inline `width: 0px`.
+ * `picker.reflow()` does not recalculate the add-on; sync again when visible.
+ */
+function syncComponentAddOn(el) {
+    const height = el.offsetHeight;
+    if (height <= 0) {
+        return;
+    }
+    const addOn = el.closest(".sp-original-input-container")?.querySelector(".sp-colorize-container.sp-add-on");
+    if (!addOn) {
+        return;
+    }
+    addOn.style.width = `${height}px`;
+}
+
 /** @param {Element} el @param {Record<string, unknown>} [opts] */
 export function createPicker(el, opts = {}) {
-    return Spectrum.create(el, opts);
+    const picker = Spectrum.create(el, opts);
+    const sync = () => syncComponentAddOn(el);
+    sync();
+    window.addEventListener("shown.bs.tab", sync);
+    window.addEventListener("resize", sync);
+    return picker;
 }

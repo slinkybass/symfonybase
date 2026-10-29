@@ -399,16 +399,16 @@ class DemoEntityCrudController extends AbstractCrudController
         $colorPanel = FieldGenerator::panel('COLOR')->setIcon('input-search');
         $color = FieldGenerator::color('color')
             ->setLabel('Default')
-            ->setColumns(4);
+            ->setColumns(3);
         $colorInline = FieldGenerator::color('colorInline')
             ->setLabel('Flat')
             ->setType(ColorField::COLOR_TYPE_FLAT)
-            ->setColumns(4);
+            ->setColumns(3);
         $colorAlpha = FieldGenerator::color('colorAlpha')
             ->setLabel('RGBA')
             ->showAlpha()
             ->setPreferredFormat(ColorField::COLOR_FORMAT_RGB)
-            ->setColumns(4);
+            ->setColumns(3);
         $colorButtons = FieldGenerator::color('colorButtons')
             ->setLabel('Buttons + initial + allow empty')
             ->showButtons()
@@ -416,7 +416,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->isAllowEmpty()
             ->showInput()
             ->setPreferredFormat(ColorField::COLOR_FORMAT_HEX)
-            ->setColumns(4);
+            ->setColumns(3);
 
         $colorPalettePanel = FieldGenerator::panel('PALETTE')->setIcon('input-search');
         $colorPalette = FieldGenerator::color('colorPalette')
