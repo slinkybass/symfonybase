@@ -9,6 +9,7 @@ use App\Field\ColorField;
 use App\Field\DateField;
 use App\Field\DateMultipleField;
 use App\Field\FieldGenerator;
+use App\Field\FloatField;
 use App\Field\MaskField;
 use App\Field\SignatureField;
 use App\Form\Type\DemoEntityType;
@@ -119,20 +120,6 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Money with custom currency')
             ->setCurrency('USD')
             ->setColumns(3);
-        $slider = FieldGenerator::integer('slider')
-            ->setLabel('Slider <small class="text-muted">3–8</small>')
-            ->isSlider()
-            ->setMin(3)
-            ->setMax(8)
-            ->setColumns(6);
-        $sliderFloat = FieldGenerator::float('sliderFloat')
-            ->setLabel('Float + pips <small class="text-muted">0–10 / step 0.5</small>')
-            ->isSlider()
-            ->setMin(0)
-            ->setMax(10)
-            ->setStep(0.5)
-            ->sliderPips()
-            ->setColumns(6);
 
         $checkboxPanel = FieldGenerator::panel('CHECKBOX')->setIcon('input-search');
         $checkbox = FieldGenerator::checkbox('checkbox')
@@ -535,6 +522,79 @@ class DemoEntityCrudController extends AbstractCrudController
             ->isLazy(false)
             ->setColumns(4);
 
+        $sliderFieldsTab = FieldGenerator::tab('Slider');
+
+        $sliderPanel = FieldGenerator::panel('BASIC')->setIcon('adjustments-horizontal');
+        $slider = FieldGenerator::integer('slider')
+            ->setLabel('Default <small class="text-muted">3–8</small>')
+            ->isSlider()
+            ->setMin(3)
+            ->setMax(8)
+            ->setColumns(4);
+        $sliderFloat = FieldGenerator::float('sliderFloat')
+            ->setLabel('Float + pips <small class="text-muted">0–10 / 0.5</small>')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(10)
+            ->setStep(0.5)
+            ->sliderPips()
+            ->setColumns(4);
+        $sliderShowInput = FieldGenerator::integer('sliderShowInput')
+            ->setLabel('Show backing input')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->sliderShowInput()
+            ->setColumns(4);
+
+        $sliderConnectPanel = FieldGenerator::panel('CONNECT')->setIcon('adjustments-horizontal');
+        $sliderConnectUpper = FieldGenerator::integer('sliderConnectUpper')
+            ->setLabel('Connect upper')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->sliderConnectUpper()
+            ->setColumns(4);
+        $sliderNoTooltip = FieldGenerator::integer('sliderNoTooltip')
+            ->setLabel('No tooltips')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->sliderShowTooltip(false)
+            ->setColumns(4);
+        $sliderRtl = FieldGenerator::integer('sliderRtl')
+            ->setLabel('RTL')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->setSliderDirection(FloatField::SLIDER_DIRECTION_RTL)
+            ->setColumns(4);
+
+        $sliderLayoutPanel = FieldGenerator::panel('LAYOUT')->setIcon('adjustments-vertical');
+        $sliderVertical = FieldGenerator::integer('sliderVertical')
+            ->setLabel('Vertical <small class="text-muted">200px</small>')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->setSliderOrientation(FloatField::SLIDER_ORIENTATION_VERTICAL)
+            ->setSliderHeight('200px')
+            ->setColumns(4);
+        $sliderSnap = FieldGenerator::float('sliderSnap')
+            ->setLabel('Snap <small class="text-muted">step 10</small>')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->setStep(10)
+            ->isSliderSnap()
+            ->setColumns(4);
+        $sliderBehaviour = FieldGenerator::integer('sliderBehaviour')
+            ->setLabel('Behaviour <small class="text-muted">tap-drag</small>')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->setSliderBehaviour('tap-drag')
+            ->setColumns(4);
+
         $signatureFieldsTab = FieldGenerator::tab('Signature');
 
         $signaturePanel = FieldGenerator::panel('UI')->setIcon('input-search');
@@ -755,8 +815,6 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $percent;
         yield $money;
         yield $moneyCustomCurrency;
-        yield $slider;
-        yield $sliderFloat;
 
         yield $checkboxPanel;
         yield $checkbox;
@@ -874,6 +932,23 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $maskNumber;
         yield $maskPrepareDigits;
         yield $maskDefinitions;
+
+        yield $sliderFieldsTab;
+
+        yield $sliderPanel;
+        yield $slider;
+        yield $sliderFloat;
+        yield $sliderShowInput;
+
+        yield $sliderConnectPanel;
+        yield $sliderConnectUpper;
+        yield $sliderNoTooltip;
+        yield $sliderRtl;
+
+        yield $sliderLayoutPanel;
+        yield $sliderVertical;
+        yield $sliderSnap;
+        yield $sliderBehaviour;
 
         yield $signatureFieldsTab;
 

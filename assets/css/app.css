@@ -302,29 +302,63 @@ aside .navbar-brand img {
    noUiSlider
    ----------------------------------------------------------------------------- */
 
+.noUi-target:hover .noUi-tooltip {
+    opacity: 1;
+}
 .noUi-tooltip {
-    bottom: -250% !important;
-    transform: translate(-50%, 0) scale(0.9) !important;
     line-height: 1;
     opacity: 0;
     transition: opacity 0.3s;
 }
-.noUi-target:hover .noUi-tooltip {
-    opacity: 1;
+.noUi-handle::before,
+.noUi-handle::after {
+    content: none;
 }
+
 .noUi-horizontal {
     height: auto;
 }
-.noUi-base {
+.noUi-horizontal .noUi-base {
     height: 0.25rem;
 }
-.noUi-pips {
+.noUi-horizontal .noUi-handle {
+    width: 1rem;
+    height: 1rem;
+    right: -0.5rem;
+    top: -0.375rem;
+    border-radius: 50%;
+}
+.noUi-horizontal .noUi-tooltip {
+    bottom: -250% !important;
+    transform: translate(-50%, 0) scale(0.9) !important;
+}
+.noUi-horizontal .noUi-pips {
     position: relative;
     height: 2.75rem;
     padding: 10px 0 0;
 }
 .noUi-value-horizontal {
     transform: translate(-50%, 70%);
+}
+.noUi-vertical {
+    width: 1rem;
+}
+.noUi-vertical .noUi-base {
+    width: 0.25rem;
+    height: 100%;
+}
+.noUi-vertical .noUi-handle {
+    width: 1rem;
+    height: 1rem;
+    right: -0.375rem;
+    bottom: -0.5rem;
+    border-radius: 50%;
+}
+.noUi-vertical .noUi-tooltip {
+    right: -250% !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: translate(0, -50%) scale(0.9) !important;
 }
 
 /* -----------------------------------------------------------------------------

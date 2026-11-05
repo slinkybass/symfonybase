@@ -3,18 +3,19 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\NoUiSliderFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `IntegerField` wrapper with `FieldTrait`. */
+/** EasyAdmin `IntegerField` wrapper with optional noUiSlider. */
 class IntegerField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use NoUiSliderFieldTrait;
+
     private EasyField $innerField;
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
@@ -29,52 +30,6 @@ class IntegerField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-    }
-
-    public function isSlider(bool $enable = true): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(FloatField::OPTION_PLUGIN_SLIDER, json_encode($enable));
-
-        return $this;
-    }
-
-    public function sliderShowInput(bool $show = true): self
-    {
-        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_SHOW_INPUT, json_encode($show));
-
-        return $this;
-    }
-
-    public function sliderShowTooltip(bool $tooltips = true): self
-    {
-        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_TOOLTIPS, json_encode($tooltips));
-
-        return $this;
-    }
-
-    public function sliderConnectUpper(): self
-    {
-        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_CONNECT, FloatField::SLIDER_CONNECT_UPPER);
-
-        return $this;
-    }
-
-    public function sliderConnectLower(): self
-    {
-        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_CONNECT, FloatField::SLIDER_CONNECT_LOWER);
-
-        return $this;
-    }
-
-    public function sliderPips(bool $pips = true): self
-    {
-        $this->setHtmlAttribute(FloatField::OPTION_SLIDER_PIPS, json_encode($pips));
-
-        return $this;
     }
 
     public function setMax(int|float|null $max): self

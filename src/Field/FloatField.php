@@ -3,18 +3,19 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\NoUiSliderFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `NumberField` wrapper (float/decimal) with `FieldTrait`. */
+/** EasyAdmin `NumberField` wrapper (float/decimal) with optional noUiSlider. */
 class FloatField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use NoUiSliderFieldTrait;
+
     private EasyField $innerField;
 
     public const OPTION_HTML5 = 'html5';
@@ -22,16 +23,6 @@ class FloatField implements FieldInterface
     public const OPTION_MIN = 'min';
     public const OPTION_STEP = 'step';
 
-    public const OPTION_PLUGIN_SLIDER = 'data-slider-field';
-
-    public const OPTION_SLIDER_SHOW_INPUT = 'data-slider-show-input';
-    public const OPTION_SLIDER_TOOLTIPS = 'data-slider-tooltips';
-    public const OPTION_SLIDER_CONNECT = 'data-slider-connect';
-    public const OPTION_SLIDER_PIPS = 'data-slider-pips';
-
-    /** connect types */
-    public const SLIDER_CONNECT_UPPER = 'upper';
-    public const SLIDER_CONNECT_LOWER = 'lower';
     public const DEFAULT_DECIMALS = 2;
     public const DEFAULT_STEP = 0.1;
     public const DEFAULT_HTML5 = true;
@@ -51,52 +42,6 @@ class FloatField implements FieldInterface
         $this->setDecimals(self::DEFAULT_DECIMALS);
         $this->setStep(self::DEFAULT_STEP);
         $this->setFormTypeOption(self::OPTION_HTML5, self::DEFAULT_HTML5);
-    }
-
-    public function isSlider(bool $enable = true): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-slider')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN_SLIDER, json_encode($enable));
-
-        return $this;
-    }
-
-    public function sliderShowInput(bool $show = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_SHOW_INPUT, json_encode($show));
-
-        return $this;
-    }
-
-    public function sliderShowTooltip(bool $tooltip = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_TOOLTIPS, json_encode($tooltip));
-
-        return $this;
-    }
-
-    public function sliderConnectUpper(): self
-    {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_CONNECT, self::SLIDER_CONNECT_UPPER);
-
-        return $this;
-    }
-
-    public function sliderConnectLower(): self
-    {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_CONNECT, self::SLIDER_CONNECT_LOWER);
-
-        return $this;
-    }
-
-    public function sliderPips(bool $pips = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_SLIDER_PIPS, json_encode($pips));
-
-        return $this;
     }
 
     public function setMax(int|float|null $max): self

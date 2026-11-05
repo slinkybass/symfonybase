@@ -69,12 +69,6 @@ class DemoEntity
     private ?float $moneyCustomCurrency = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $slider = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $sliderFloat = null;
-
-    #[ORM\Column(nullable: true)]
     private ?bool $checkbox = null;
 
     #[ORM\Column(nullable: true)]
@@ -274,6 +268,33 @@ class DemoEntity
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $maskDefinitions = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $slider = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $sliderFloat = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderShowInput = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderConnectUpper = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderNoTooltip = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderRtl = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderVertical = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $sliderSnap = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderBehaviour = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $signature = null;
@@ -596,30 +617,6 @@ class DemoEntity
     public function setMoneyCustomCurrency(?float $moneyCustomCurrency): static
     {
         $this->moneyCustomCurrency = $moneyCustomCurrency;
-
-        return $this;
-    }
-
-    public function getSlider(): ?int
-    {
-        return $this->slider;
-    }
-
-    public function setSlider(?int $slider): static
-    {
-        $this->slider = $slider;
-
-        return $this;
-    }
-
-    public function getSliderFloat(): ?float
-    {
-        return $this->sliderFloat;
-    }
-
-    public function setSliderFloat(?float $sliderFloat): static
-    {
-        $this->sliderFloat = $sliderFloat;
 
         return $this;
     }
@@ -1424,6 +1421,114 @@ class DemoEntity
     public function setMaskDefinitions(?string $maskDefinitions): static
     {
         $this->maskDefinitions = $maskDefinitions;
+
+        return $this;
+    }
+
+    public function getSlider(): ?int
+    {
+        return $this->slider;
+    }
+
+    public function setSlider(?int $slider): static
+    {
+        $this->slider = $slider;
+
+        return $this;
+    }
+
+    public function getSliderFloat(): ?float
+    {
+        return $this->sliderFloat;
+    }
+
+    public function setSliderFloat(?float $sliderFloat): static
+    {
+        $this->sliderFloat = $sliderFloat;
+
+        return $this;
+    }
+
+    public function getSliderShowInput(): ?int
+    {
+        return $this->sliderShowInput;
+    }
+
+    public function setSliderShowInput(?int $sliderShowInput): static
+    {
+        $this->sliderShowInput = $sliderShowInput;
+
+        return $this;
+    }
+
+    public function getSliderConnectUpper(): ?int
+    {
+        return $this->sliderConnectUpper;
+    }
+
+    public function setSliderConnectUpper(?int $sliderConnectUpper): static
+    {
+        $this->sliderConnectUpper = $sliderConnectUpper;
+
+        return $this;
+    }
+
+    public function getSliderNoTooltip(): ?int
+    {
+        return $this->sliderNoTooltip;
+    }
+
+    public function setSliderNoTooltip(?int $sliderNoTooltip): static
+    {
+        $this->sliderNoTooltip = $sliderNoTooltip;
+
+        return $this;
+    }
+
+    public function getSliderRtl(): ?int
+    {
+        return $this->sliderRtl;
+    }
+
+    public function setSliderRtl(?int $sliderRtl): static
+    {
+        $this->sliderRtl = $sliderRtl;
+
+        return $this;
+    }
+
+    public function getSliderVertical(): ?int
+    {
+        return $this->sliderVertical;
+    }
+
+    public function setSliderVertical(?int $sliderVertical): static
+    {
+        $this->sliderVertical = $sliderVertical;
+
+        return $this;
+    }
+
+    public function getSliderSnap(): ?float
+    {
+        return $this->sliderSnap;
+    }
+
+    public function setSliderSnap(?float $sliderSnap): static
+    {
+        $this->sliderSnap = $sliderSnap;
+
+        return $this;
+    }
+
+    public function getSliderBehaviour(): ?int
+    {
+        return $this->sliderBehaviour;
+    }
+
+    public function setSliderBehaviour(?int $sliderBehaviour): static
+    {
+        $this->sliderBehaviour = $sliderBehaviour;
 
         return $this;
     }
