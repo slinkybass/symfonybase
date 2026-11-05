@@ -3,25 +3,21 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\SignatureFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** Signature capture using EasyAdmin `TextField` plus `FieldTrait` and custom assets. */
+/** EasyAdmin `TextField` wrapper with SignaturePad plugin options. */
 class SignatureField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use SignatureFieldTrait;
+
     private EasyField $innerField;
 
-    public const OPTION_PLUGIN = 'data-signature-field';
-
-    public const OPTION_SIGNATURE_SHOW_INPUT = 'data-signature-show-input';
-    public const OPTION_SIGNATURE_SHOW_UNDO = 'data-signature-show-undo';
-    public const OPTION_SIGNATURE_SHOW_CLEAR = 'data-signature-show-clear';
     public const DEFAULT_BLOCK_PREFIX = 'signature';
     public const DEFAULT_TEMPLATE_PATH = 'field/media.html.twig';
 
@@ -42,35 +38,9 @@ class SignatureField implements FieldInterface
         $this->setTemplatePath(self::DEFAULT_TEMPLATE_PATH);
     }
 
+    /** Load SignaturePad (`data-signature-field`). `false` keeps a plain text input. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-signature')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
-
-        return $this;
-    }
-
-    public function showInput(bool $show = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_SIGNATURE_SHOW_INPUT, json_encode($show));
-
-        return $this;
-    }
-
-    public function showUndo(bool $show = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_SIGNATURE_SHOW_UNDO, json_encode($show));
-
-        return $this;
-    }
-
-    public function showClear(bool $show = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_SIGNATURE_SHOW_CLEAR, json_encode($show));
-
-        return $this;
+        return $this->enableMappedPlugin('form-type-signature', self::OPTION_PLUGIN, $enable);
     }
 }

@@ -469,18 +469,36 @@
 {% endblock color_widget %}
 
 {% block signature_widget %}
-    <div class="signature-pad-wrapper">
-        <canvas class="signature-pad"></canvas>
-    </div>
+    {% set plugin_on = attr['data-signature-field']|default('true') not in ['false', '0', false] %}
+    {% set show_input = attr['data-signature-show-input']|default('false') not in ['false', '0', false] %}
+    {% set show_undo = plugin_on and (attr['data-signature-show-undo']|default('true') not in ['false', '0', false]) %}
+    {% set show_clear = plugin_on and (attr['data-signature-show-clear']|default('true') not in ['false', '0', false]) %}
+
+    {% if plugin_on %}
+        <div class="signature-pad-wrapper">
+            <canvas class="signature-pad"></canvas>
+        </div>
+    {% endif %}
+
+    {% if plugin_on and not show_input %}
+        {% set attr = attr|merge({ class: (attr.class|default('') ~ ' d-none')|trim }) %}
+    {% endif %}
     {{ block('form_widget_simple') }}
-    <div class="signature-pad-actions">
-        <button class="btn btn-icon btn-secondary" type="button" data-action="undo">
-            <twig:ea:Icon name="arrow-back-up" />
-        </button>
-        <button class="btn btn-icon btn-danger" type="button" data-action="clear">
-            <twig:ea:Icon name="eraser" />
-        </button>
-    </div>
+
+    {% if show_undo or show_clear %}
+        <div class="signature-pad-actions">
+            {% if show_undo %}
+                <button class="btn btn-icon btn-secondary" type="button" data-signature-undo>
+                    <twig:ea:Icon name="arrow-back-up" />
+                </button>
+            {% endif %}
+            {% if show_clear %}
+                <button class="btn btn-icon btn-danger" type="button" data-signature-clear>
+                    <twig:ea:Icon name="eraser" />
+                </button>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock signature_widget %}
 
 {% block datemultiple_widget %}

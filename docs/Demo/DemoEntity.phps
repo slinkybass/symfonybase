@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
-#[ORM\Table(name: "demoEntity")]
+#[ORM\Table(name: 'demoEntity')]
 class DemoEntity
 {
     #[ORM\Id]
@@ -366,13 +366,25 @@ class DemoEntity
     private ?string $signature = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureWithInput = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $signatureWithoutUndo = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $signatureWithoutClear = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signaturePenColor = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureThick = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureBackground = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureJpeg = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureSvg = null;
 
     public function __toString(): string
     {
@@ -1776,18 +1788,6 @@ class DemoEntity
         return $this;
     }
 
-    public function getSignatureWithInput(): ?string
-    {
-        return $this->signatureWithInput;
-    }
-
-    public function setSignatureWithInput(?string $signatureWithInput): static
-    {
-        $this->signatureWithInput = $signatureWithInput;
-
-        return $this;
-    }
-
     public function getSignatureWithoutUndo(): ?string
     {
         return $this->signatureWithoutUndo;
@@ -1808,6 +1808,66 @@ class DemoEntity
     public function setSignatureWithoutClear(?string $signatureWithoutClear): static
     {
         $this->signatureWithoutClear = $signatureWithoutClear;
+
+        return $this;
+    }
+
+    public function getSignaturePenColor(): ?string
+    {
+        return $this->signaturePenColor;
+    }
+
+    public function setSignaturePenColor(?string $signaturePenColor): static
+    {
+        $this->signaturePenColor = $signaturePenColor;
+
+        return $this;
+    }
+
+    public function getSignatureThick(): ?string
+    {
+        return $this->signatureThick;
+    }
+
+    public function setSignatureThick(?string $signatureThick): static
+    {
+        $this->signatureThick = $signatureThick;
+
+        return $this;
+    }
+
+    public function getSignatureBackground(): ?string
+    {
+        return $this->signatureBackground;
+    }
+
+    public function setSignatureBackground(?string $signatureBackground): static
+    {
+        $this->signatureBackground = $signatureBackground;
+
+        return $this;
+    }
+
+    public function getSignatureJpeg(): ?string
+    {
+        return $this->signatureJpeg;
+    }
+
+    public function setSignatureJpeg(?string $signatureJpeg): static
+    {
+        $this->signatureJpeg = $signatureJpeg;
+
+        return $this;
+    }
+
+    public function getSignatureSvg(): ?string
+    {
+        return $this->signatureSvg;
+    }
+
+    public function setSignatureSvg(?string $signatureSvg): static
+    {
+        $this->signatureSvg = $signatureSvg;
 
         return $this;
     }
