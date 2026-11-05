@@ -3,7 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use App\Field\Trait\SignatureFieldTrait;
+use App\Field\Trait\SignaturePadFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -14,7 +14,7 @@ class SignatureField implements FieldInterface
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
-    use SignatureFieldTrait;
+    use SignaturePadFieldTrait;
 
     private EasyField $innerField;
 

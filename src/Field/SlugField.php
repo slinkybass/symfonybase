@@ -3,7 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use App\Field\Trait\SlugFieldTrait;
+use App\Field\Trait\SlugifyFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -14,7 +14,7 @@ class SlugField implements FieldInterface
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
-    use SlugFieldTrait;
+    use SlugifyFieldTrait;
 
     private EasyField $innerField;
 
