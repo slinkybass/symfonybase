@@ -10,7 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
  *
  * Not mapped: `dotSize` as a function; stroke event hooks; per-stroke point-group overrides.
  */
-trait SignatureFieldTrait
+trait SignaturePadFieldTrait
 {
     public const OPTION_PLUGIN = 'data-signature-field';
 

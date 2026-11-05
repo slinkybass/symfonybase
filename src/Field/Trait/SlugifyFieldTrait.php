@@ -10,7 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
  *
  * Not mapped: per-field `extend` (global char map applied once in JS).
  */
-trait SlugFieldTrait
+trait SlugifyFieldTrait
 {
     public const OPTION_PLUGIN = 'data-slug-field';
     public const OPTION_CONFIRM_TEXT = 'data-slug-confirm-text';
