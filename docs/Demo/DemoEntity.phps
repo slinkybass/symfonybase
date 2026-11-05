@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'demoEntity')]
 class DemoEntity
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -74,6 +75,15 @@ class DemoEntity
     #[ORM\Column(nullable: true)]
     private ?bool $switch = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $file = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $filePDF = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $textarea = null;
 
@@ -85,21 +95,6 @@ class DemoEntity
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $textarea4 = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor2 = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor3 = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor2 = null;
 
     #[ORM\Column(length: 255, nullable: true, enumType: UserGender::class)]
     private ?UserGender $choice = null;
@@ -115,6 +110,54 @@ class DemoEntity
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $choice5 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor2 = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $array = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $collection = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $collectionFormType = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $color = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorInline = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorAlpha = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorButtons = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorPalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorPaletteOnly = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorInlinePalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorInlinePaletteOnly = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorCustomPalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorTogglePalette = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $colorSelection = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
@@ -203,165 +246,6 @@ class DemoEntity
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $datetime12h = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $color = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInline = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorAlpha = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorButtons = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorPalette = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorPaletteOnly = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInlinePalette = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInlinePaletteOnly = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorCustomPalette = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorTogglePalette = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorSelection = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask2 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask3 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskEager = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskSecure = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskNumber = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskPrepareDigits = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskDefinitions = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $slider = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $sliderFloat = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $sliderShowInput = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $sliderConnectUpper = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $sliderNoTooltip = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $sliderRtl = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $sliderVertical = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $sliderSnap = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $sliderBehaviour = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signature = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureWithoutUndo = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureWithoutClear = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signaturePenColor = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureThick = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureBackground = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureJpeg = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureSvg = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slugTarget = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug2 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug3 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug4 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug5 = null;
-
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $array = null;
-
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $collection = null;
-
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $collectionFormType = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $media = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mediaImage = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mediaImageUsers = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mediaWithoutFileManager = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mediaWithCrop = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $file = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $filePDF = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
-
     #[ORM\Column]
     private ?bool $hierarchySwitch = null;
 
@@ -416,10 +300,122 @@ class DemoEntity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $hierarchySaveValueChild = null;
 
-    public function __toString(): string
-    {
-        return (string) ($this->getId() ?? '');
-    }
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $media = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mediaImage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mediaImageUsers = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mediaWithoutFileManager = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mediaWithCrop = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mask = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mask2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mask3 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskEager = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskSecure = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskNumber = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskPrepareDigits = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskDefinitions = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signature = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureWithoutUndo = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureWithoutClear = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signaturePenColor = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureThick = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureBackground = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureJpeg = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureSvg = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $slider = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $sliderFloat = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderShowInput = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderConnectUpper = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderNoTooltip = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderRtl = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderVertical = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $sliderSnap = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $sliderBehaviour = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slugTarget = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug3 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug4 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug5 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor2 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor3 = null;
 
     public function getId(): ?int
     {
@@ -654,6 +650,42 @@ class DemoEntity
         return $this;
     }
 
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    public function setFile(?string $file): static
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    public function getFilePDF(): ?string
+    {
+        return $this->filePDF;
+    }
+
+    public function setFilePDF(?string $filePDF): static
+    {
+        $this->filePDF = $filePDF;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
     public function getTextarea(): ?string
     {
         return $this->textarea;
@@ -698,66 +730,6 @@ class DemoEntity
     public function setTextarea4(?string $textarea4): static
     {
         $this->textarea4 = $textarea4;
-
-        return $this;
-    }
-
-    public function getTexteditor(): ?string
-    {
-        return $this->texteditor;
-    }
-
-    public function setTexteditor(?string $texteditor): static
-    {
-        $this->texteditor = $texteditor;
-
-        return $this;
-    }
-
-    public function getTexteditor2(): ?string
-    {
-        return $this->texteditor2;
-    }
-
-    public function setTexteditor2(?string $texteditor2): static
-    {
-        $this->texteditor2 = $texteditor2;
-
-        return $this;
-    }
-
-    public function getTexteditor3(): ?string
-    {
-        return $this->texteditor3;
-    }
-
-    public function setTexteditor3(?string $texteditor3): static
-    {
-        $this->texteditor3 = $texteditor3;
-
-        return $this;
-    }
-
-    public function getCodeeditor(): ?string
-    {
-        return $this->codeeditor;
-    }
-
-    public function setCodeeditor(?string $codeeditor): static
-    {
-        $this->codeeditor = $codeeditor;
-
-        return $this;
-    }
-
-    public function getCodeeditor2(): ?string
-    {
-        return $this->codeeditor2;
-    }
-
-    public function setCodeeditor2(?string $codeeditor2): static
-    {
-        $this->codeeditor2 = $codeeditor2;
 
         return $this;
     }
@@ -818,6 +790,198 @@ class DemoEntity
     public function setChoice5(?array $choice5): static
     {
         $this->choice5 = $choice5;
+
+        return $this;
+    }
+
+    public function getCodeeditor(): ?string
+    {
+        return $this->codeeditor;
+    }
+
+    public function setCodeeditor(?string $codeeditor): static
+    {
+        $this->codeeditor = $codeeditor;
+
+        return $this;
+    }
+
+    public function getCodeeditor2(): ?string
+    {
+        return $this->codeeditor2;
+    }
+
+    public function setCodeeditor2(?string $codeeditor2): static
+    {
+        $this->codeeditor2 = $codeeditor2;
+
+        return $this;
+    }
+
+    public function getArray(): ?array
+    {
+        return $this->array;
+    }
+
+    public function setArray(?array $array): static
+    {
+        $this->array = $array;
+
+        return $this;
+    }
+
+    public function getCollection(): ?array
+    {
+        return $this->collection;
+    }
+
+    public function setCollection(?array $collection): static
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
+
+    public function getCollectionFormType(): ?array
+    {
+        return $this->collectionFormType;
+    }
+
+    public function setCollectionFormType(?array $collectionFormType): static
+    {
+        $this->collectionFormType = $collectionFormType;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getColorInline(): ?string
+    {
+        return $this->colorInline;
+    }
+
+    public function setColorInline(?string $colorInline): static
+    {
+        $this->colorInline = $colorInline;
+
+        return $this;
+    }
+
+    public function getColorAlpha(): ?string
+    {
+        return $this->colorAlpha;
+    }
+
+    public function setColorAlpha(?string $colorAlpha): static
+    {
+        $this->colorAlpha = $colorAlpha;
+
+        return $this;
+    }
+
+    public function getColorButtons(): ?string
+    {
+        return $this->colorButtons;
+    }
+
+    public function setColorButtons(?string $colorButtons): static
+    {
+        $this->colorButtons = $colorButtons;
+
+        return $this;
+    }
+
+    public function getColorPalette(): ?string
+    {
+        return $this->colorPalette;
+    }
+
+    public function setColorPalette(?string $colorPalette): static
+    {
+        $this->colorPalette = $colorPalette;
+
+        return $this;
+    }
+
+    public function getColorPaletteOnly(): ?string
+    {
+        return $this->colorPaletteOnly;
+    }
+
+    public function setColorPaletteOnly(?string $colorPaletteOnly): static
+    {
+        $this->colorPaletteOnly = $colorPaletteOnly;
+
+        return $this;
+    }
+
+    public function getColorInlinePalette(): ?string
+    {
+        return $this->colorInlinePalette;
+    }
+
+    public function setColorInlinePalette(?string $colorInlinePalette): static
+    {
+        $this->colorInlinePalette = $colorInlinePalette;
+
+        return $this;
+    }
+
+    public function getColorInlinePaletteOnly(): ?string
+    {
+        return $this->colorInlinePaletteOnly;
+    }
+
+    public function setColorInlinePaletteOnly(?string $colorInlinePaletteOnly): static
+    {
+        $this->colorInlinePaletteOnly = $colorInlinePaletteOnly;
+
+        return $this;
+    }
+
+    public function getColorCustomPalette(): ?string
+    {
+        return $this->colorCustomPalette;
+    }
+
+    public function setColorCustomPalette(?string $colorCustomPalette): static
+    {
+        $this->colorCustomPalette = $colorCustomPalette;
+
+        return $this;
+    }
+
+    public function getColorTogglePalette(): ?string
+    {
+        return $this->colorTogglePalette;
+    }
+
+    public function setColorTogglePalette(?string $colorTogglePalette): static
+    {
+        $this->colorTogglePalette = $colorTogglePalette;
+
+        return $this;
+    }
+
+    public function getColorSelection(): ?string
+    {
+        return $this->colorSelection;
+    }
+
+    public function setColorSelection(?string $colorSelection): static
+    {
+        $this->colorSelection = $colorSelection;
 
         return $this;
     }
@@ -1170,642 +1334,6 @@ class DemoEntity
         return $this;
     }
 
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    public function setColor(?string $color): static
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    public function getColorInline(): ?string
-    {
-        return $this->colorInline;
-    }
-
-    public function setColorInline(?string $colorInline): static
-    {
-        $this->colorInline = $colorInline;
-
-        return $this;
-    }
-
-    public function getColorAlpha(): ?string
-    {
-        return $this->colorAlpha;
-    }
-
-    public function setColorAlpha(?string $colorAlpha): static
-    {
-        $this->colorAlpha = $colorAlpha;
-
-        return $this;
-    }
-
-    public function getColorButtons(): ?string
-    {
-        return $this->colorButtons;
-    }
-
-    public function setColorButtons(?string $colorButtons): static
-    {
-        $this->colorButtons = $colorButtons;
-
-        return $this;
-    }
-
-    public function getColorPalette(): ?string
-    {
-        return $this->colorPalette;
-    }
-
-    public function setColorPalette(?string $colorPalette): static
-    {
-        $this->colorPalette = $colorPalette;
-
-        return $this;
-    }
-
-    public function getColorPaletteOnly(): ?string
-    {
-        return $this->colorPaletteOnly;
-    }
-
-    public function setColorPaletteOnly(?string $colorPaletteOnly): static
-    {
-        $this->colorPaletteOnly = $colorPaletteOnly;
-
-        return $this;
-    }
-
-    public function getColorInlinePalette(): ?string
-    {
-        return $this->colorInlinePalette;
-    }
-
-    public function setColorInlinePalette(?string $colorInlinePalette): static
-    {
-        $this->colorInlinePalette = $colorInlinePalette;
-
-        return $this;
-    }
-
-    public function getColorInlinePaletteOnly(): ?string
-    {
-        return $this->colorInlinePaletteOnly;
-    }
-
-    public function setColorInlinePaletteOnly(?string $colorInlinePaletteOnly): static
-    {
-        $this->colorInlinePaletteOnly = $colorInlinePaletteOnly;
-
-        return $this;
-    }
-
-    public function getColorCustomPalette(): ?string
-    {
-        return $this->colorCustomPalette;
-    }
-
-    public function setColorCustomPalette(?string $colorCustomPalette): static
-    {
-        $this->colorCustomPalette = $colorCustomPalette;
-
-        return $this;
-    }
-
-    public function getColorTogglePalette(): ?string
-    {
-        return $this->colorTogglePalette;
-    }
-
-    public function setColorTogglePalette(?string $colorTogglePalette): static
-    {
-        $this->colorTogglePalette = $colorTogglePalette;
-
-        return $this;
-    }
-
-    public function getColorSelection(): ?string
-    {
-        return $this->colorSelection;
-    }
-
-    public function setColorSelection(?string $colorSelection): static
-    {
-        $this->colorSelection = $colorSelection;
-
-        return $this;
-    }
-
-    public function getMask(): ?string
-    {
-        return $this->mask;
-    }
-
-    public function setMask(?string $mask): static
-    {
-        $this->mask = $mask;
-
-        return $this;
-    }
-
-    public function getMask2(): ?string
-    {
-        return $this->mask2;
-    }
-
-    public function setMask2(?string $mask2): static
-    {
-        $this->mask2 = $mask2;
-
-        return $this;
-    }
-
-    public function getMask3(): ?string
-    {
-        return $this->mask3;
-    }
-
-    public function setMask3(?string $mask3): static
-    {
-        $this->mask3 = $mask3;
-
-        return $this;
-    }
-
-    public function getMaskEager(): ?string
-    {
-        return $this->maskEager;
-    }
-
-    public function setMaskEager(?string $maskEager): static
-    {
-        $this->maskEager = $maskEager;
-
-        return $this;
-    }
-
-    public function getMaskSecure(): ?string
-    {
-        return $this->maskSecure;
-    }
-
-    public function setMaskSecure(?string $maskSecure): static
-    {
-        $this->maskSecure = $maskSecure;
-
-        return $this;
-    }
-
-    public function getMaskNumber(): ?string
-    {
-        return $this->maskNumber;
-    }
-
-    public function setMaskNumber(?string $maskNumber): static
-    {
-        $this->maskNumber = $maskNumber;
-
-        return $this;
-    }
-
-    public function getMaskPrepareDigits(): ?string
-    {
-        return $this->maskPrepareDigits;
-    }
-
-    public function setMaskPrepareDigits(?string $maskPrepareDigits): static
-    {
-        $this->maskPrepareDigits = $maskPrepareDigits;
-
-        return $this;
-    }
-
-    public function getMaskDefinitions(): ?string
-    {
-        return $this->maskDefinitions;
-    }
-
-    public function setMaskDefinitions(?string $maskDefinitions): static
-    {
-        $this->maskDefinitions = $maskDefinitions;
-
-        return $this;
-    }
-
-    public function getSlider(): ?int
-    {
-        return $this->slider;
-    }
-
-    public function setSlider(?int $slider): static
-    {
-        $this->slider = $slider;
-
-        return $this;
-    }
-
-    public function getSliderFloat(): ?float
-    {
-        return $this->sliderFloat;
-    }
-
-    public function setSliderFloat(?float $sliderFloat): static
-    {
-        $this->sliderFloat = $sliderFloat;
-
-        return $this;
-    }
-
-    public function getSliderShowInput(): ?int
-    {
-        return $this->sliderShowInput;
-    }
-
-    public function setSliderShowInput(?int $sliderShowInput): static
-    {
-        $this->sliderShowInput = $sliderShowInput;
-
-        return $this;
-    }
-
-    public function getSliderConnectUpper(): ?int
-    {
-        return $this->sliderConnectUpper;
-    }
-
-    public function setSliderConnectUpper(?int $sliderConnectUpper): static
-    {
-        $this->sliderConnectUpper = $sliderConnectUpper;
-
-        return $this;
-    }
-
-    public function getSliderNoTooltip(): ?int
-    {
-        return $this->sliderNoTooltip;
-    }
-
-    public function setSliderNoTooltip(?int $sliderNoTooltip): static
-    {
-        $this->sliderNoTooltip = $sliderNoTooltip;
-
-        return $this;
-    }
-
-    public function getSliderRtl(): ?int
-    {
-        return $this->sliderRtl;
-    }
-
-    public function setSliderRtl(?int $sliderRtl): static
-    {
-        $this->sliderRtl = $sliderRtl;
-
-        return $this;
-    }
-
-    public function getSliderVertical(): ?int
-    {
-        return $this->sliderVertical;
-    }
-
-    public function setSliderVertical(?int $sliderVertical): static
-    {
-        $this->sliderVertical = $sliderVertical;
-
-        return $this;
-    }
-
-    public function getSliderSnap(): ?float
-    {
-        return $this->sliderSnap;
-    }
-
-    public function setSliderSnap(?float $sliderSnap): static
-    {
-        $this->sliderSnap = $sliderSnap;
-
-        return $this;
-    }
-
-    public function getSliderBehaviour(): ?int
-    {
-        return $this->sliderBehaviour;
-    }
-
-    public function setSliderBehaviour(?int $sliderBehaviour): static
-    {
-        $this->sliderBehaviour = $sliderBehaviour;
-
-        return $this;
-    }
-
-    public function getSignature(): ?string
-    {
-        return $this->signature;
-    }
-
-    public function setSignature(?string $signature): static
-    {
-        $this->signature = $signature;
-
-        return $this;
-    }
-
-    public function getSignatureWithoutUndo(): ?string
-    {
-        return $this->signatureWithoutUndo;
-    }
-
-    public function setSignatureWithoutUndo(?string $signatureWithoutUndo): static
-    {
-        $this->signatureWithoutUndo = $signatureWithoutUndo;
-
-        return $this;
-    }
-
-    public function getSignatureWithoutClear(): ?string
-    {
-        return $this->signatureWithoutClear;
-    }
-
-    public function setSignatureWithoutClear(?string $signatureWithoutClear): static
-    {
-        $this->signatureWithoutClear = $signatureWithoutClear;
-
-        return $this;
-    }
-
-    public function getSignaturePenColor(): ?string
-    {
-        return $this->signaturePenColor;
-    }
-
-    public function setSignaturePenColor(?string $signaturePenColor): static
-    {
-        $this->signaturePenColor = $signaturePenColor;
-
-        return $this;
-    }
-
-    public function getSignatureThick(): ?string
-    {
-        return $this->signatureThick;
-    }
-
-    public function setSignatureThick(?string $signatureThick): static
-    {
-        $this->signatureThick = $signatureThick;
-
-        return $this;
-    }
-
-    public function getSignatureBackground(): ?string
-    {
-        return $this->signatureBackground;
-    }
-
-    public function setSignatureBackground(?string $signatureBackground): static
-    {
-        $this->signatureBackground = $signatureBackground;
-
-        return $this;
-    }
-
-    public function getSignatureJpeg(): ?string
-    {
-        return $this->signatureJpeg;
-    }
-
-    public function setSignatureJpeg(?string $signatureJpeg): static
-    {
-        $this->signatureJpeg = $signatureJpeg;
-
-        return $this;
-    }
-
-    public function getSignatureSvg(): ?string
-    {
-        return $this->signatureSvg;
-    }
-
-    public function setSignatureSvg(?string $signatureSvg): static
-    {
-        $this->signatureSvg = $signatureSvg;
-
-        return $this;
-    }
-
-    public function getSlugTarget(): ?string
-    {
-        return $this->slugTarget;
-    }
-
-    public function setSlugTarget(?string $slugTarget): static
-    {
-        $this->slugTarget = $slugTarget;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getSlug2(): ?string
-    {
-        return $this->slug2;
-    }
-
-    public function setSlug2(?string $slug2): static
-    {
-        $this->slug2 = $slug2;
-
-        return $this;
-    }
-
-    public function getSlug3(): ?string
-    {
-        return $this->slug3;
-    }
-
-    public function setSlug3(?string $slug3): static
-    {
-        $this->slug3 = $slug3;
-
-        return $this;
-    }
-
-    public function getSlug4(): ?string
-    {
-        return $this->slug4;
-    }
-
-    public function setSlug4(?string $slug4): static
-    {
-        $this->slug4 = $slug4;
-
-        return $this;
-    }
-
-    public function getSlug5(): ?string
-    {
-        return $this->slug5;
-    }
-
-    public function setSlug5(?string $slug5): static
-    {
-        $this->slug5 = $slug5;
-
-        return $this;
-    }
-
-    public function getArray(): ?array
-    {
-        return $this->array;
-    }
-
-    public function setArray(?array $array): static
-    {
-        $this->array = $array;
-
-        return $this;
-    }
-
-    public function getCollection(): ?array
-    {
-        return $this->collection;
-    }
-
-    public function setCollection(?array $collection): static
-    {
-        $this->collection = $collection;
-
-        return $this;
-    }
-
-    public function getCollectionFormType(): ?array
-    {
-        return $this->collectionFormType;
-    }
-
-    public function setCollectionFormType(?array $collectionFormType): static
-    {
-        $this->collectionFormType = $collectionFormType;
-
-        return $this;
-    }
-
-    public function getMedia(): ?string
-    {
-        return $this->media;
-    }
-
-    public function setMedia(?string $media): static
-    {
-        $this->media = $media;
-
-        return $this;
-    }
-
-    public function getMediaImage(): ?string
-    {
-        return $this->mediaImage;
-    }
-
-    public function setMediaImage(?string $mediaImage): static
-    {
-        $this->mediaImage = $mediaImage;
-
-        return $this;
-    }
-
-    public function getMediaImageUsers(): ?string
-    {
-        return $this->mediaImageUsers;
-    }
-
-    public function setMediaImageUsers(?string $mediaImageUsers): static
-    {
-        $this->mediaImageUsers = $mediaImageUsers;
-
-        return $this;
-    }
-
-    public function getMediaWithoutFileManager(): ?string
-    {
-        return $this->mediaWithoutFileManager;
-    }
-
-    public function setMediaWithoutFileManager(?string $mediaWithoutFileManager): static
-    {
-        $this->mediaWithoutFileManager = $mediaWithoutFileManager;
-
-        return $this;
-    }
-
-    public function getMediaWithCrop(): ?string
-    {
-        return $this->mediaWithCrop;
-    }
-
-    public function setMediaWithCrop(?string $mediaWithCrop): static
-    {
-        $this->mediaWithCrop = $mediaWithCrop;
-
-        return $this;
-    }
-
-    public function getFile(): ?string
-    {
-        return $this->file;
-    }
-
-    public function setFile(?string $file): static
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    public function getFilePDF(): ?string
-    {
-        return $this->filePDF;
-    }
-
-    public function setFilePDF(?string $filePDF): static
-    {
-        $this->filePDF = $filePDF;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     public function isHierarchySwitch(): ?bool
     {
         return $this->hierarchySwitch;
@@ -2018,6 +1546,474 @@ class DemoEntity
     public function setHierarchySaveValueChild(?string $hierarchySaveValueChild): static
     {
         $this->hierarchySaveValueChild = $hierarchySaveValueChild;
+
+        return $this;
+    }
+
+    public function getMedia(): ?string
+    {
+        return $this->media;
+    }
+
+    public function setMedia(?string $media): static
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
+    public function getMediaImage(): ?string
+    {
+        return $this->mediaImage;
+    }
+
+    public function setMediaImage(?string $mediaImage): static
+    {
+        $this->mediaImage = $mediaImage;
+
+        return $this;
+    }
+
+    public function getMediaImageUsers(): ?string
+    {
+        return $this->mediaImageUsers;
+    }
+
+    public function setMediaImageUsers(?string $mediaImageUsers): static
+    {
+        $this->mediaImageUsers = $mediaImageUsers;
+
+        return $this;
+    }
+
+    public function getMediaWithoutFileManager(): ?string
+    {
+        return $this->mediaWithoutFileManager;
+    }
+
+    public function setMediaWithoutFileManager(?string $mediaWithoutFileManager): static
+    {
+        $this->mediaWithoutFileManager = $mediaWithoutFileManager;
+
+        return $this;
+    }
+
+    public function getMediaWithCrop(): ?string
+    {
+        return $this->mediaWithCrop;
+    }
+
+    public function setMediaWithCrop(?string $mediaWithCrop): static
+    {
+        $this->mediaWithCrop = $mediaWithCrop;
+
+        return $this;
+    }
+
+    public function getMask(): ?string
+    {
+        return $this->mask;
+    }
+
+    public function setMask(?string $mask): static
+    {
+        $this->mask = $mask;
+
+        return $this;
+    }
+
+    public function getMask2(): ?string
+    {
+        return $this->mask2;
+    }
+
+    public function setMask2(?string $mask2): static
+    {
+        $this->mask2 = $mask2;
+
+        return $this;
+    }
+
+    public function getMask3(): ?string
+    {
+        return $this->mask3;
+    }
+
+    public function setMask3(?string $mask3): static
+    {
+        $this->mask3 = $mask3;
+
+        return $this;
+    }
+
+    public function getMaskEager(): ?string
+    {
+        return $this->maskEager;
+    }
+
+    public function setMaskEager(?string $maskEager): static
+    {
+        $this->maskEager = $maskEager;
+
+        return $this;
+    }
+
+    public function getMaskSecure(): ?string
+    {
+        return $this->maskSecure;
+    }
+
+    public function setMaskSecure(?string $maskSecure): static
+    {
+        $this->maskSecure = $maskSecure;
+
+        return $this;
+    }
+
+    public function getMaskNumber(): ?string
+    {
+        return $this->maskNumber;
+    }
+
+    public function setMaskNumber(?string $maskNumber): static
+    {
+        $this->maskNumber = $maskNumber;
+
+        return $this;
+    }
+
+    public function getMaskPrepareDigits(): ?string
+    {
+        return $this->maskPrepareDigits;
+    }
+
+    public function setMaskPrepareDigits(?string $maskPrepareDigits): static
+    {
+        $this->maskPrepareDigits = $maskPrepareDigits;
+
+        return $this;
+    }
+
+    public function getMaskDefinitions(): ?string
+    {
+        return $this->maskDefinitions;
+    }
+
+    public function setMaskDefinitions(?string $maskDefinitions): static
+    {
+        $this->maskDefinitions = $maskDefinitions;
+
+        return $this;
+    }
+
+    public function getSignature(): ?string
+    {
+        return $this->signature;
+    }
+
+    public function setSignature(?string $signature): static
+    {
+        $this->signature = $signature;
+
+        return $this;
+    }
+
+    public function getSignatureWithoutUndo(): ?string
+    {
+        return $this->signatureWithoutUndo;
+    }
+
+    public function setSignatureWithoutUndo(?string $signatureWithoutUndo): static
+    {
+        $this->signatureWithoutUndo = $signatureWithoutUndo;
+
+        return $this;
+    }
+
+    public function getSignatureWithoutClear(): ?string
+    {
+        return $this->signatureWithoutClear;
+    }
+
+    public function setSignatureWithoutClear(?string $signatureWithoutClear): static
+    {
+        $this->signatureWithoutClear = $signatureWithoutClear;
+
+        return $this;
+    }
+
+    public function getSignaturePenColor(): ?string
+    {
+        return $this->signaturePenColor;
+    }
+
+    public function setSignaturePenColor(?string $signaturePenColor): static
+    {
+        $this->signaturePenColor = $signaturePenColor;
+
+        return $this;
+    }
+
+    public function getSignatureThick(): ?string
+    {
+        return $this->signatureThick;
+    }
+
+    public function setSignatureThick(?string $signatureThick): static
+    {
+        $this->signatureThick = $signatureThick;
+
+        return $this;
+    }
+
+    public function getSignatureBackground(): ?string
+    {
+        return $this->signatureBackground;
+    }
+
+    public function setSignatureBackground(?string $signatureBackground): static
+    {
+        $this->signatureBackground = $signatureBackground;
+
+        return $this;
+    }
+
+    public function getSignatureJpeg(): ?string
+    {
+        return $this->signatureJpeg;
+    }
+
+    public function setSignatureJpeg(?string $signatureJpeg): static
+    {
+        $this->signatureJpeg = $signatureJpeg;
+
+        return $this;
+    }
+
+    public function getSignatureSvg(): ?string
+    {
+        return $this->signatureSvg;
+    }
+
+    public function setSignatureSvg(?string $signatureSvg): static
+    {
+        $this->signatureSvg = $signatureSvg;
+
+        return $this;
+    }
+
+    public function getSlider(): ?int
+    {
+        return $this->slider;
+    }
+
+    public function setSlider(?int $slider): static
+    {
+        $this->slider = $slider;
+
+        return $this;
+    }
+
+    public function getSliderFloat(): ?float
+    {
+        return $this->sliderFloat;
+    }
+
+    public function setSliderFloat(?float $sliderFloat): static
+    {
+        $this->sliderFloat = $sliderFloat;
+
+        return $this;
+    }
+
+    public function getSliderShowInput(): ?int
+    {
+        return $this->sliderShowInput;
+    }
+
+    public function setSliderShowInput(?int $sliderShowInput): static
+    {
+        $this->sliderShowInput = $sliderShowInput;
+
+        return $this;
+    }
+
+    public function getSliderConnectUpper(): ?int
+    {
+        return $this->sliderConnectUpper;
+    }
+
+    public function setSliderConnectUpper(?int $sliderConnectUpper): static
+    {
+        $this->sliderConnectUpper = $sliderConnectUpper;
+
+        return $this;
+    }
+
+    public function getSliderNoTooltip(): ?int
+    {
+        return $this->sliderNoTooltip;
+    }
+
+    public function setSliderNoTooltip(?int $sliderNoTooltip): static
+    {
+        $this->sliderNoTooltip = $sliderNoTooltip;
+
+        return $this;
+    }
+
+    public function getSliderRtl(): ?int
+    {
+        return $this->sliderRtl;
+    }
+
+    public function setSliderRtl(?int $sliderRtl): static
+    {
+        $this->sliderRtl = $sliderRtl;
+
+        return $this;
+    }
+
+    public function getSliderVertical(): ?int
+    {
+        return $this->sliderVertical;
+    }
+
+    public function setSliderVertical(?int $sliderVertical): static
+    {
+        $this->sliderVertical = $sliderVertical;
+
+        return $this;
+    }
+
+    public function getSliderSnap(): ?float
+    {
+        return $this->sliderSnap;
+    }
+
+    public function setSliderSnap(?float $sliderSnap): static
+    {
+        $this->sliderSnap = $sliderSnap;
+
+        return $this;
+    }
+
+    public function getSliderBehaviour(): ?int
+    {
+        return $this->sliderBehaviour;
+    }
+
+    public function setSliderBehaviour(?int $sliderBehaviour): static
+    {
+        $this->sliderBehaviour = $sliderBehaviour;
+
+        return $this;
+    }
+
+    public function getSlugTarget(): ?string
+    {
+        return $this->slugTarget;
+    }
+
+    public function setSlugTarget(?string $slugTarget): static
+    {
+        $this->slugTarget = $slugTarget;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getSlug2(): ?string
+    {
+        return $this->slug2;
+    }
+
+    public function setSlug2(?string $slug2): static
+    {
+        $this->slug2 = $slug2;
+
+        return $this;
+    }
+
+    public function getSlug3(): ?string
+    {
+        return $this->slug3;
+    }
+
+    public function setSlug3(?string $slug3): static
+    {
+        $this->slug3 = $slug3;
+
+        return $this;
+    }
+
+    public function getSlug4(): ?string
+    {
+        return $this->slug4;
+    }
+
+    public function setSlug4(?string $slug4): static
+    {
+        $this->slug4 = $slug4;
+
+        return $this;
+    }
+
+    public function getSlug5(): ?string
+    {
+        return $this->slug5;
+    }
+
+    public function setSlug5(?string $slug5): static
+    {
+        $this->slug5 = $slug5;
+
+        return $this;
+    }
+
+    public function getTexteditor(): ?string
+    {
+        return $this->texteditor;
+    }
+
+    public function setTexteditor(?string $texteditor): static
+    {
+        $this->texteditor = $texteditor;
+
+        return $this;
+    }
+
+    public function getTexteditor2(): ?string
+    {
+        return $this->texteditor2;
+    }
+
+    public function setTexteditor2(?string $texteditor2): static
+    {
+        $this->texteditor2 = $texteditor2;
+
+        return $this;
+    }
+
+    public function getTexteditor3(): ?string
+    {
+        return $this->texteditor3;
+    }
+
+    public function setTexteditor3(?string $texteditor3): static
+    {
+        $this->texteditor3 = $texteditor3;
 
         return $this;
     }

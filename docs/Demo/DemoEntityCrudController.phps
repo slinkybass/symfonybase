@@ -129,7 +129,18 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Switch')
             ->setColumns(3);
 
-        $textareaFieldsTab = FieldGenerator::tab('Textarea');
+        $filesPanel = FieldGenerator::panel('FILES')->setIcon('input-search');
+        $file = FieldGenerator::file('file')
+            ->setLabel('File')
+            ->setColumns(4);
+        $filePDF = FieldGenerator::file('filePDF')
+            ->setLabel('PDF')
+            ->setAccept('application/pdf')
+            ->setColumns(4);
+        $image = FieldGenerator::image('image')
+            ->setLabel('Image')
+            ->setAccept('image/*')
+            ->setColumns(4);
 
         $textareaPanel = FieldGenerator::panel('TEXTAREA')->setIcon('input-search');
         $textarea = FieldGenerator::textarea('textarea')
@@ -149,32 +160,6 @@ class DemoEntityCrudController extends AbstractCrudController
             ->enablePlugin(false)
             ->isResizeable(false)
             ->setColumns(3);
-
-        $texteditorPanel = FieldGenerator::panel('TEXTEDITOR')->setIcon('input-search');
-        $texteditor = FieldGenerator::texteditor('texteditor')
-            ->setLabel('Default')
-            ->setColumns(4);
-        $texteditor2 = FieldGenerator::texteditor('texteditor2')
-            ->setLabel('Enable resize and disable spellcheck')
-            ->isResizeable()
-            ->isSpellcheck(false)
-            ->setColumns(4);
-        $texteditor3 = FieldGenerator::texteditor('texteditor3')
-            ->setLabel('Custom toolbar')
-            ->setToolbar('undo redo | bold italic underline | emoticons')
-            ->setColumns(4);
-
-        $codeeditorPanel = FieldGenerator::panel('CODEEDITOR')->setIcon('input-search');
-        $codeeditor = FieldGenerator::codeeditor('codeeditor')
-            ->setLabel('Default')
-            ->setColumns(6);
-        $codeeditor2 = FieldGenerator::codeeditor('codeeditor2')
-            ->setLabel('With custom language (PHP) and theme (GitHub)')
-            ->setTheme('github')
-            ->setLanguage('php')
-            ->setColumns(6);
-
-        $choiceFieldsTab = FieldGenerator::tab('Choice');
 
         $choicePanel = FieldGenerator::panel('CHOICE')->setIcon('input-search');
         $choice = FieldGenerator::enum('choice')
@@ -200,6 +185,105 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setChoices(UserGender::choices())
             ->isExpanded()
             ->isMultiple()
+            ->setColumns(4);
+
+        $codeeditorFieldsTab = FieldGenerator::tab('Code editor');
+
+        $codeeditorPanel = FieldGenerator::panel('CODE EDITOR')->setIcon('input-search');
+        $codeeditor = FieldGenerator::codeeditor('codeeditor')
+            ->setLabel('Default')
+            ->setColumns(6);
+        $codeeditor2 = FieldGenerator::codeeditor('codeeditor2')
+            ->setLabel('With custom language (PHP) and theme (GitHub)')
+            ->setTheme('github')
+            ->setLanguage('php')
+            ->setColumns(6);
+
+        $collectionFieldsTab = FieldGenerator::tab('Collection');
+
+        $collectionPanel = FieldGenerator::panel('COLLECTION')->setIcon('input-search');
+        $array = FieldGenerator::array('array')
+            ->setLabel('Array')
+            ->setColumns(4);
+        $collection = FieldGenerator::collection('collection')
+            ->setLabel('Collection')
+            ->isExpanded(true)
+            ->setColumns(4);
+        $collectionFormType = FieldGenerator::collection('collectionFormType')
+            ->setLabel('Collection with a FormType')
+            ->setEntryType(DemoEntityType::class)
+            ->setColumns(4);
+
+        $colorFieldsTab = FieldGenerator::tab('Color');
+
+        $colorPanel = FieldGenerator::panel('COLOR')->setIcon('input-search');
+        $color = FieldGenerator::color('color')
+            ->setLabel('Default')
+            ->setColumns(3);
+        $colorInline = FieldGenerator::color('colorInline')
+            ->setLabel('Flat')
+            ->setType(ColorField::COLOR_TYPE_FLAT)
+            ->setColumns(3);
+        $colorAlpha = FieldGenerator::color('colorAlpha')
+            ->setLabel('RGBA')
+            ->showAlpha()
+            ->setPreferredFormat(ColorField::COLOR_FORMAT_RGB)
+            ->setColumns(3);
+        $colorButtons = FieldGenerator::color('colorButtons')
+            ->setLabel('Buttons + initial + allow empty')
+            ->showButtons()
+            ->showInitial()
+            ->isAllowEmpty()
+            ->showInput()
+            ->setPreferredFormat(ColorField::COLOR_FORMAT_HEX)
+            ->setColumns(3);
+
+        $colorPalettePanel = FieldGenerator::panel('PALETTE')->setIcon('input-search');
+        $colorPalette = FieldGenerator::color('colorPalette')
+            ->setLabel('Palette')
+            ->showPalette()
+            ->setColumns(6);
+        $colorPaletteOnly = FieldGenerator::color('colorPaletteOnly')
+            ->setLabel('Palette only')
+            ->isPaletteOnly()
+            ->setColumns(6);
+        $colorInlinePalette = FieldGenerator::color('colorInlinePalette')
+            ->setLabel('Flat + palette')
+            ->setType(ColorField::COLOR_TYPE_FLAT)
+            ->showPalette()
+            ->setColumns(6);
+        $colorInlinePaletteOnly = FieldGenerator::color('colorInlinePaletteOnly')
+            ->setLabel('Flat + palette only')
+            ->setType(ColorField::COLOR_TYPE_FLAT)
+            ->isPaletteOnly()
+            ->setColumns(6);
+        $colorCustomPalette = FieldGenerator::color('colorCustomPalette')
+            ->setLabel('Custom palette (hide after select)')
+            ->isPaletteOnly()
+            ->hideAfterPaletteSelect()
+            ->setPalette([
+                ['#000000', '#ffffff', '#f44336', '#4caf50'],
+                ['#2196f3', '#ff9800', '#9c27b0', '#607d8b'],
+            ])
+            ->setColumns(4);
+        $colorTogglePalette = FieldGenerator::color('colorTogglePalette')
+            ->setLabel('Toggle palette only (more / less)')
+            ->isPaletteOnly()
+            ->isTogglePaletteOnly()
+            ->setTogglePaletteMoreText('more')
+            ->setTogglePaletteLessText('less')
+            ->setPalette([
+                ['#000', '#444', '#666', '#999', '#ccc', '#eee', '#f3f3f3', '#fff'],
+                ['#f00', '#f90', '#ff0', '#0f0', '#0ff', '#00f', '#90f', '#f0f'],
+            ])
+            ->setColumns(4);
+        $colorSelection = FieldGenerator::color('colorSelection')
+            ->setLabel('Selection palette (localStorage)')
+            ->showPalette()
+            ->showSelectionPalette()
+            ->setLocalStorageKey('demo.spectrum.selection')
+            ->setSelectionPalette(['#276cb8', '#e69138', '#6aa84f'])
+            ->setMaxSelectionSize(6)
             ->setColumns(4);
 
         $dateFieldsTab = FieldGenerator::tab('Date & Time');
@@ -368,352 +452,6 @@ class DemoEntityCrudController extends AbstractCrudController
             ->isTime24hr(false)
             ->setColumns(4);
 
-        $colorFieldsTab = FieldGenerator::tab('Color');
-
-        $colorPanel = FieldGenerator::panel('COLOR')->setIcon('input-search');
-        $color = FieldGenerator::color('color')
-            ->setLabel('Default')
-            ->setColumns(3);
-        $colorInline = FieldGenerator::color('colorInline')
-            ->setLabel('Flat')
-            ->setType(ColorField::COLOR_TYPE_FLAT)
-            ->setColumns(3);
-        $colorAlpha = FieldGenerator::color('colorAlpha')
-            ->setLabel('RGBA')
-            ->showAlpha()
-            ->setPreferredFormat(ColorField::COLOR_FORMAT_RGB)
-            ->setColumns(3);
-        $colorButtons = FieldGenerator::color('colorButtons')
-            ->setLabel('Buttons + initial + allow empty')
-            ->showButtons()
-            ->showInitial()
-            ->isAllowEmpty()
-            ->showInput()
-            ->setPreferredFormat(ColorField::COLOR_FORMAT_HEX)
-            ->setColumns(3);
-
-        $colorPalettePanel = FieldGenerator::panel('PALETTE')->setIcon('input-search');
-        $colorPalette = FieldGenerator::color('colorPalette')
-            ->setLabel('Palette')
-            ->showPalette()
-            ->setColumns(6);
-        $colorPaletteOnly = FieldGenerator::color('colorPaletteOnly')
-            ->setLabel('Palette only')
-            ->isPaletteOnly()
-            ->setColumns(6);
-        $colorInlinePalette = FieldGenerator::color('colorInlinePalette')
-            ->setLabel('Flat + palette')
-            ->setType(ColorField::COLOR_TYPE_FLAT)
-            ->showPalette()
-            ->setColumns(6);
-        $colorInlinePaletteOnly = FieldGenerator::color('colorInlinePaletteOnly')
-            ->setLabel('Flat + palette only')
-            ->setType(ColorField::COLOR_TYPE_FLAT)
-            ->isPaletteOnly()
-            ->setColumns(6);
-        $colorCustomPalette = FieldGenerator::color('colorCustomPalette')
-            ->setLabel('Custom palette (hide after select)')
-            ->isPaletteOnly()
-            ->hideAfterPaletteSelect()
-            ->setPalette([
-                ['#000000', '#ffffff', '#f44336', '#4caf50'],
-                ['#2196f3', '#ff9800', '#9c27b0', '#607d8b'],
-            ])
-            ->setColumns(4);
-        $colorTogglePalette = FieldGenerator::color('colorTogglePalette')
-            ->setLabel('Toggle palette only (more / less)')
-            ->isPaletteOnly()
-            ->isTogglePaletteOnly()
-            ->setTogglePaletteMoreText('more')
-            ->setTogglePaletteLessText('less')
-            ->setPalette([
-                ['#000', '#444', '#666', '#999', '#ccc', '#eee', '#f3f3f3', '#fff'],
-                ['#f00', '#f90', '#ff0', '#0f0', '#0ff', '#00f', '#90f', '#f0f'],
-            ])
-            ->setColumns(4);
-        $colorSelection = FieldGenerator::color('colorSelection')
-            ->setLabel('Selection palette (localStorage)')
-            ->showPalette()
-            ->showSelectionPalette()
-            ->setLocalStorageKey('demo.spectrum.selection')
-            ->setSelectionPalette(['#276cb8', '#e69138', '#6aa84f'])
-            ->setMaxSelectionSize(6)
-            ->setColumns(4);
-
-        $maskFieldsTab = FieldGenerator::tab('Mask');
-
-        $maskPanel = FieldGenerator::panel('MASK')->setIcon('input-search');
-        $mask = FieldGenerator::mask('mask')
-            ->setLabel('Phone (default) <small class="text-muted">+34 600 000 000</small>')
-            ->setHelp('Pattern mask with fixed prefix. No <code>_</code> guide (IMask default <code>lazy</code>).')
-            ->setPattern('+34 000 000 000')
-            ->setColumns(4);
-        $mask2 = FieldGenerator::mask('mask2')
-            ->setLabel('Plate + uppercase + unmask <small class="text-muted">1234 BCD → 1234BCD</small>')
-            ->setHelp('Letters uppercased while typing. On submit the space is dropped from the saved value.')
-            ->setPattern('0000 aaa')
-            ->isUppercase()
-            ->isUnmask()
-            ->setColumns(4);
-        $mask3 = FieldGenerator::mask('mask3')
-            ->setLabel('PIN with visible guide <small class="text-muted">______</small>')
-            ->setHelp('<code>lazy</code> off + placeholder: empty slots always show <code>_</code>. New digits replace in place.')
-            ->setPattern('000000')
-            ->isOverwrite()
-            ->setMaskPlaceholder('_')
-            ->isLazy(false)
-            ->setColumns(4);
-        $maskEager = FieldGenerator::mask('maskEager')
-            ->setLabel('Date with auto separators <small class="text-muted">__/__/____</small>')
-            ->setHelp('Visible guide; <code>/</code> is inserted as you type (<code>eager: append</code>).')
-            ->setPattern('00/00/0000')
-            ->setEager(MaskField::MASK_EAGER_APPEND)
-            ->setMaskPlaceholder('_')
-            ->isLazy(false)
-            ->setColumns(4);
-        $maskSecure = FieldGenerator::mask('maskSecure')
-            ->setLabel('Secure display <small class="text-muted">######</small>')
-            ->setHelp('Digits are typed for real but shown as <code>#</code> (<code>displayChar</code>).')
-            ->setPattern('000000')
-            ->setDisplayChar('#')
-            ->isLazy(false)
-            ->setOverwrite(MaskField::MASK_OVERWRITE_SHIFT)
-            ->setColumns(4);
-        $maskNumber = FieldGenerator::mask('maskNumber')
-            ->setLabel('Amount (ES) <small class="text-muted">1.234,56</small>')
-            ->setHelp('Number mask: <code>.</code> thousands, <code>,</code> decimals, 2 places, range 0–999999.99.')
-            ->setMaskType(MaskField::MASK_TYPE_NUMBER)
-            ->setScale(2)
-            ->setRadix(',')
-            ->setThousandsSeparator('.')
-            ->setMapToRadix(['.'])
-            ->isPadFractionalZeros()
-            ->setAutofix()
-            ->setMaskMin(0)
-            ->setMaskMax(999999.99)
-            ->setColumns(4);
-        $maskPrepareDigits = FieldGenerator::mask('maskPrepareDigits')
-            ->setLabel('Paste cleanup → phone <small class="text-muted">+34…</small>')
-            ->setHelp('Strips spaces and non-digits before the mask. Paste <code>34600000000</code> or <code>+34 600-000-000</code>.')
-            ->setPattern('+34 000 000 000')
-            ->setPrepare([MaskField::PREPARE_STRIP_SPACES, MaskField::PREPARE_DIGITS_ONLY])
-            ->setColumns(4);
-        $maskDefinitions = FieldGenerator::mask('maskDefinitions')
-            ->setLabel('Custom hex slots <small class="text-muted">#A1B2C3</small>')
-            ->setHelp('Literal <code>#</code> + 6 custom hex slots. Lowercase → uppercase.')
-            ->setPattern('\\#hhhhhh')
-            ->setDefinitions(['h' => '[0-9A-Fa-f]'])
-            ->isUppercase()
-            ->setMaskPlaceholder('_')
-            ->isLazy(false)
-            ->setColumns(4);
-
-        $sliderFieldsTab = FieldGenerator::tab('Slider');
-
-        $sliderPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
-        $slider = FieldGenerator::integer('slider')
-            ->setLabel('Default <small class="text-muted">3–8</small>')
-            ->isSlider()
-            ->setMin(3)
-            ->setMax(8)
-            ->setColumns(4);
-        $sliderFloat = FieldGenerator::float('sliderFloat')
-            ->setLabel('Float + pips <small class="text-muted">0–10 / 0.5</small>')
-            ->isSlider()
-            ->setMin(0)
-            ->setMax(10)
-            ->setStep(0.5)
-            ->sliderPips()
-            ->setColumns(4);
-        $sliderShowInput = FieldGenerator::integer('sliderShowInput')
-            ->setLabel('Show backing input')
-            ->isSlider()
-            ->setMin(0)
-            ->setMax(100)
-            ->sliderShowInput()
-            ->setColumns(4);
-
-        $sliderConnectPanel = FieldGenerator::panel('CONNECT')->setIcon('input-search');
-        $sliderConnectUpper = FieldGenerator::integer('sliderConnectUpper')
-            ->setLabel('Connect upper')
-            ->isSlider()
-            ->setMin(0)
-            ->setMax(100)
-            ->sliderConnectUpper()
-            ->setColumns(4);
-        $sliderNoTooltip = FieldGenerator::integer('sliderNoTooltip')
-            ->setLabel('No tooltips')
-            ->isSlider()
-            ->setMin(0)
-            ->setMax(100)
-            ->sliderShowTooltip(false)
-            ->setColumns(4);
-        $sliderRtl = FieldGenerator::integer('sliderRtl')
-            ->setLabel('RTL')
-            ->isSlider()
-            ->setMin(0)
-            ->setMax(100)
-            ->setSliderDirection(FloatField::SLIDER_DIRECTION_RTL)
-            ->setColumns(4);
-
-        $sliderLayoutPanel = FieldGenerator::panel('LAYOUT')->setIcon('input-search');
-        $sliderVertical = FieldGenerator::integer('sliderVertical')
-            ->setLabel('Vertical <small class="text-muted">200px</small>')
-            ->isSlider()
-            ->setMin(0)
-            ->setMax(100)
-            ->setSliderOrientation(FloatField::SLIDER_ORIENTATION_VERTICAL)
-            ->setSliderDirection(FloatField::SLIDER_DIRECTION_RTL)
-            ->setSliderHeight('200px')
-            ->setColumns(4);
-        $sliderSnap = FieldGenerator::float('sliderSnap')
-            ->setLabel('Snap <small class="text-muted">0 / 25 / 70 / 100</small>')
-            ->isSlider()
-            ->isSliderSnap([0, 25, 70, 100])
-            ->setColumns(4);
-        $sliderBehaviour = FieldGenerator::integer('sliderBehaviour')
-            ->setLabel('No tap <small class="text-muted">drag handle only</small>')
-            ->isSlider()
-            ->setMin(0)
-            ->setMax(100)
-            ->setSliderBehaviour('drag')
-            ->setColumns(4);
-
-        $signatureFieldsTab = FieldGenerator::tab('Signature');
-
-        $signaturePanel = FieldGenerator::panel('UI')->setIcon('input-search');
-        $signature = FieldGenerator::signature('signature')
-            ->setLabel('Default')
-            ->setColumns(4);
-        $signatureWithoutUndo = FieldGenerator::signature('signatureWithoutUndo')
-            ->setLabel('No undo')
-            ->showUndo(false)
-            ->setColumns(4);
-        $signatureWithoutClear = FieldGenerator::signature('signatureWithoutClear')
-            ->setLabel('No clear')
-            ->showClear(false)
-            ->setColumns(4);
-
-        $signatureStrokePanel = FieldGenerator::panel('STROKE')->setIcon('input-search');
-        $signaturePenColor = FieldGenerator::signature('signaturePenColor')
-            ->setLabel('Pen color <small class="text-muted">#276cb8</small>')
-            ->setPenColor('#276cb8')
-            ->setColumns(4);
-        $signatureThick = FieldGenerator::signature('signatureThick')
-            ->setLabel('Thick stroke <small class="text-muted">min 2 / max 8</small>')
-            ->setMinWidth(2)
-            ->setMaxWidth(8)
-            ->setDotSize(5)
-            ->setColumns(4);
-        $signatureBackground = FieldGenerator::signature('signatureBackground')
-            ->setLabel('Background <small class="text-muted">#f0f4f8</small>')
-            ->setBackgroundColor('#f0f4f8')
-            ->setPenColor('#1a1a2e')
-            ->setColumns(4);
-
-        $signatureExportPanel = FieldGenerator::panel('EXPORT')->setIcon('input-search');
-        $signatureJpeg = FieldGenerator::signature('signatureJpeg')
-            ->setLabel('JPEG export <small class="text-muted">q=0.7</small>')
-            ->setBackgroundColor('rgb(255,255,255)')
-            ->setFormat(SignatureField::FORMAT_JPEG)
-            ->setQuality(0.7)
-            ->showInput()
-            ->setColumns(6);
-        $signatureSvg = FieldGenerator::signature('signatureSvg')
-            ->setLabel('SVG export')
-            ->setFormat(SignatureField::FORMAT_SVG)
-            ->showInput()
-            ->setColumns(6);
-
-        $slugFieldsTab = FieldGenerator::tab('Slug');
-
-        $slugPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
-        $slugTarget = FieldGenerator::text('slugTarget')
-            ->setLabel('Target')
-            ->setColumns(6);
-        $slug = FieldGenerator::slug('slug')
-            ->setLabel('Slug')
-            ->setTarget('slugTarget')
-            ->setColumns(6);
-
-        $slugConfirmPanel = FieldGenerator::panel('CONFIRM')->setIcon('input-search');
-        $slug2 = FieldGenerator::slug('slug2')
-            ->setLabel('Slug with unlock confirmation')
-            ->setTarget('slugTarget')
-            ->setConfirmText('If the slug is not valid or contains special characters or spaces, it will not work.<br /><strong>Are you sure you want to overwrite?</strong>')
-            ->setColumns(6);
-
-        $slugOptionsPanel = FieldGenerator::panel('OPTIONS')->setIcon('input-search');
-        $slug3 = FieldGenerator::slug('slug3')
-            ->setLabel('Locale es + underscore')
-            ->setTarget('slugTarget')
-            ->setLocale('es')
-            ->setReplacement('_')
-            ->setColumns(4);
-        $slug4 = FieldGenerator::slug('slug4')
-            ->setLabel('Keep case, not strict')
-            ->setTarget('slugTarget')
-            ->isLower(false)
-            ->isStrict(false)
-            ->setColumns(4);
-        $slug5 = FieldGenerator::slug('slug5')
-            ->setLabel('Custom remove (keep dots)')
-            ->setTarget('slugTarget')
-            ->setRemove('[^A-Za-z0-9.\\s-]')
-            ->isStrict(false)
-            ->setColumns(4);
-
-        $collectionFieldsTab = FieldGenerator::tab('Collection');
-
-        $collectionPanel = FieldGenerator::panel('COLLECTION')->setIcon('input-search');
-        $array = FieldGenerator::array('array')
-            ->setLabel('Array')
-            ->setColumns(4);
-        $collection = FieldGenerator::collection('collection')
-            ->setLabel('Collection')
-            ->isExpanded(true)
-            ->setColumns(4);
-        $collectionFormType = FieldGenerator::collection('collectionFormType')
-            ->setLabel('Collection with a FormType')
-            ->setEntryType(DemoEntityType::class)
-            ->setColumns(4);
-
-        $mediaFieldsTab = FieldGenerator::tab('Media');
-
-        $mediaPanel = FieldGenerator::panel('MEDIA')->setIcon('input-search');
-        $media = FieldGenerator::media('media')
-            ->setLabel('Default')
-            ->setColumns(4);
-        $mediaImage = FieldGenerator::media('mediaImage')
-            ->setLabel('Image')
-            ->setConf('public_images')
-            ->setColumns(4);
-        $mediaImageUsers = FieldGenerator::media('mediaImageUsers')
-            ->setLabel('User image')
-            ->setConf('public_user_images')
-            ->setColumns(4);
-        $mediaWithoutFileManager = FieldGenerator::media('mediaWithoutFileManager')
-            ->setLabel('Force disable file manager')
-            ->displayFileManager(false)
-            ->setColumns(4);
-        $mediaWithCrop = FieldGenerator::media('mediaWithCrop')
-            ->setLabel('Enable crop')
-            ->allowCrop()
-            ->setColumns(4);
-
-        $filesPanel = FieldGenerator::panel('FILES')->setIcon('input-search');
-        $file = FieldGenerator::file('file')
-            ->setLabel('File')
-            ->setColumns(4);
-        $filePDF = FieldGenerator::file('filePDF')
-            ->setLabel('PDF')
-            ->setAccept('application/pdf')
-            ->setColumns(4);
-        $image = FieldGenerator::image('image')
-            ->setLabel('Image')
-            ->setAccept('image/*')
-            ->setColumns(4);
-
         $hierarchyFieldsTab = FieldGenerator::tab('Hierarchy');
 
         $hierarchyPanel = FieldGenerator::panel('HIERARCHY')->setIcon('input-search');
@@ -809,11 +547,271 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setHtmlAttribute('data-hf-save-value', 'true')
             ->setColumns(6);
 
-        yield $basicFieldsTab;
+        $mediaFieldsTab = FieldGenerator::tab('Media');
 
+        $mediaPanel = FieldGenerator::panel('MEDIA')->setIcon('input-search');
+        $media = FieldGenerator::media('media')
+            ->setLabel('Default')
+            ->setColumns(4);
+        $mediaImage = FieldGenerator::media('mediaImage')
+            ->setLabel('Image')
+            ->setConf('public_images')
+            ->setColumns(4);
+        $mediaImageUsers = FieldGenerator::media('mediaImageUsers')
+            ->setLabel('User image')
+            ->setConf('public_user_images')
+            ->setColumns(4);
+        $mediaWithoutFileManager = FieldGenerator::media('mediaWithoutFileManager')
+            ->setLabel('Force disable file manager')
+            ->displayFileManager(false)
+            ->setColumns(4);
+        $mediaWithCrop = FieldGenerator::media('mediaWithCrop')
+            ->setLabel('Enable crop')
+            ->allowCrop()
+            ->setColumns(4);
+
+        $maskFieldsTab = FieldGenerator::tab('Mask');
+
+        $maskPanel = FieldGenerator::panel('MASK')->setIcon('input-search');
+        $mask = FieldGenerator::mask('mask')
+            ->setLabel('Phone (default) <small class="text-muted">+34 600 000 000</small>')
+            ->setHelp('Pattern mask with fixed prefix. No <code>_</code> guide (IMask default <code>lazy</code>).')
+            ->setPattern('+34 000 000 000')
+            ->setColumns(4);
+        $mask2 = FieldGenerator::mask('mask2')
+            ->setLabel('Plate + uppercase + unmask <small class="text-muted">1234 BCD → 1234BCD</small>')
+            ->setHelp('Letters uppercased while typing. On submit the space is dropped from the saved value.')
+            ->setPattern('0000 aaa')
+            ->isUppercase()
+            ->isUnmask()
+            ->setColumns(4);
+        $mask3 = FieldGenerator::mask('mask3')
+            ->setLabel('PIN with visible guide <small class="text-muted">______</small>')
+            ->setHelp('<code>lazy</code> off + placeholder: empty slots always show <code>_</code>. New digits replace in place.')
+            ->setPattern('000000')
+            ->isOverwrite()
+            ->setMaskPlaceholder('_')
+            ->isLazy(false)
+            ->setColumns(4);
+        $maskEager = FieldGenerator::mask('maskEager')
+            ->setLabel('Date with auto separators <small class="text-muted">__/__/____</small>')
+            ->setHelp('Visible guide; <code>/</code> is inserted as you type (<code>eager: append</code>).')
+            ->setPattern('00/00/0000')
+            ->setEager(MaskField::MASK_EAGER_APPEND)
+            ->setMaskPlaceholder('_')
+            ->isLazy(false)
+            ->setColumns(4);
+        $maskSecure = FieldGenerator::mask('maskSecure')
+            ->setLabel('Secure display <small class="text-muted">######</small>')
+            ->setHelp('Digits are typed for real but shown as <code>#</code> (<code>displayChar</code>).')
+            ->setPattern('000000')
+            ->setDisplayChar('#')
+            ->isLazy(false)
+            ->setOverwrite(MaskField::MASK_OVERWRITE_SHIFT)
+            ->setColumns(4);
+        $maskNumber = FieldGenerator::mask('maskNumber')
+            ->setLabel('Amount (ES) <small class="text-muted">1.234,56</small>')
+            ->setHelp('Number mask: <code>.</code> thousands, <code>,</code> decimals, 2 places, range 0–999999.99.')
+            ->setMaskType(MaskField::MASK_TYPE_NUMBER)
+            ->setScale(2)
+            ->setRadix(',')
+            ->setThousandsSeparator('.')
+            ->setMapToRadix(['.'])
+            ->isPadFractionalZeros()
+            ->setAutofix()
+            ->setMaskMin(0)
+            ->setMaskMax(999999.99)
+            ->setColumns(4);
+        $maskPrepareDigits = FieldGenerator::mask('maskPrepareDigits')
+            ->setLabel('Paste cleanup → phone <small class="text-muted">+34…</small>')
+            ->setHelp('Strips spaces and non-digits before the mask. Paste <code>34600000000</code> or <code>+34 600-000-000</code>.')
+            ->setPattern('+34 000 000 000')
+            ->setPrepare([MaskField::PREPARE_STRIP_SPACES, MaskField::PREPARE_DIGITS_ONLY])
+            ->setColumns(4);
+        $maskDefinitions = FieldGenerator::mask('maskDefinitions')
+            ->setLabel('Custom hex slots <small class="text-muted">#A1B2C3</small>')
+            ->setHelp('Literal <code>#</code> + 6 custom hex slots. Lowercase → uppercase.')
+            ->setPattern('\\#hhhhhh')
+            ->setDefinitions(['h' => '[0-9A-Fa-f]'])
+            ->isUppercase()
+            ->setMaskPlaceholder('_')
+            ->isLazy(false)
+            ->setColumns(4);
+
+        $signatureFieldsTab = FieldGenerator::tab('Signature');
+
+        $signaturePanel = FieldGenerator::panel('UI')->setIcon('input-search');
+        $signature = FieldGenerator::signature('signature')
+            ->setLabel('Default')
+            ->setColumns(4);
+        $signatureWithoutUndo = FieldGenerator::signature('signatureWithoutUndo')
+            ->setLabel('No undo')
+            ->showUndo(false)
+            ->setColumns(4);
+        $signatureWithoutClear = FieldGenerator::signature('signatureWithoutClear')
+            ->setLabel('No clear')
+            ->showClear(false)
+            ->setColumns(4);
+
+        $signatureStrokePanel = FieldGenerator::panel('STROKE')->setIcon('input-search');
+        $signaturePenColor = FieldGenerator::signature('signaturePenColor')
+            ->setLabel('Pen color <small class="text-muted">#276cb8</small>')
+            ->setPenColor('#276cb8')
+            ->setColumns(4);
+        $signatureThick = FieldGenerator::signature('signatureThick')
+            ->setLabel('Thick stroke <small class="text-muted">min 2 / max 8</small>')
+            ->setMinWidth(2)
+            ->setMaxWidth(8)
+            ->setDotSize(5)
+            ->setColumns(4);
+        $signatureBackground = FieldGenerator::signature('signatureBackground')
+            ->setLabel('Background <small class="text-muted">#f0f4f8</small>')
+            ->setBackgroundColor('#f0f4f8')
+            ->setPenColor('#1a1a2e')
+            ->setColumns(4);
+
+        $signatureExportPanel = FieldGenerator::panel('EXPORT')->setIcon('input-search');
+        $signatureJpeg = FieldGenerator::signature('signatureJpeg')
+            ->setLabel('JPEG export <small class="text-muted">q=0.7</small>')
+            ->setBackgroundColor('rgb(255,255,255)')
+            ->setFormat(SignatureField::FORMAT_JPEG)
+            ->setQuality(0.7)
+            ->showInput()
+            ->setColumns(6);
+        $signatureSvg = FieldGenerator::signature('signatureSvg')
+            ->setLabel('SVG export')
+            ->setFormat(SignatureField::FORMAT_SVG)
+            ->showInput()
+            ->setColumns(6);
+
+        $sliderFieldsTab = FieldGenerator::tab('Slider');
+
+        $sliderPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
+        $slider = FieldGenerator::integer('slider')
+            ->setLabel('Default <small class="text-muted">3–8</small>')
+            ->isSlider()
+            ->setMin(3)
+            ->setMax(8)
+            ->setColumns(4);
+        $sliderFloat = FieldGenerator::float('sliderFloat')
+            ->setLabel('Float + pips <small class="text-muted">0–10 / 0.5</small>')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(10)
+            ->setStep(0.5)
+            ->sliderPips()
+            ->setColumns(4);
+        $sliderShowInput = FieldGenerator::integer('sliderShowInput')
+            ->setLabel('Show backing input')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->sliderShowInput()
+            ->setColumns(4);
+
+        $sliderConnectPanel = FieldGenerator::panel('CONNECT')->setIcon('input-search');
+        $sliderConnectUpper = FieldGenerator::integer('sliderConnectUpper')
+            ->setLabel('Connect upper')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->sliderConnectUpper()
+            ->setColumns(4);
+        $sliderNoTooltip = FieldGenerator::integer('sliderNoTooltip')
+            ->setLabel('No tooltips')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->sliderShowTooltip(false)
+            ->setColumns(4);
+        $sliderRtl = FieldGenerator::integer('sliderRtl')
+            ->setLabel('RTL')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->setSliderDirection(FloatField::SLIDER_DIRECTION_RTL)
+            ->setColumns(4);
+
+        $sliderLayoutPanel = FieldGenerator::panel('LAYOUT')->setIcon('input-search');
+        $sliderVertical = FieldGenerator::integer('sliderVertical')
+            ->setLabel('Vertical <small class="text-muted">200px</small>')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->setSliderOrientation(FloatField::SLIDER_ORIENTATION_VERTICAL)
+            ->setSliderDirection(FloatField::SLIDER_DIRECTION_RTL)
+            ->setSliderHeight('200px')
+            ->setColumns(4);
+        $sliderSnap = FieldGenerator::float('sliderSnap')
+            ->setLabel('Snap <small class="text-muted">0 / 25 / 70 / 100</small>')
+            ->isSlider()
+            ->isSliderSnap([0, 25, 70, 100])
+            ->setColumns(4);
+        $sliderBehaviour = FieldGenerator::integer('sliderBehaviour')
+            ->setLabel('No tap <small class="text-muted">drag handle only</small>')
+            ->isSlider()
+            ->setMin(0)
+            ->setMax(100)
+            ->setSliderBehaviour('drag')
+            ->setColumns(4);
+
+        $slugFieldsTab = FieldGenerator::tab('Slug');
+
+        $slugPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
+        $slugTarget = FieldGenerator::text('slugTarget')
+            ->setLabel('Target')
+            ->setColumns(6);
+        $slug = FieldGenerator::slug('slug')
+            ->setLabel('Slug')
+            ->setTarget('slugTarget')
+            ->setColumns(6);
+
+        $slugConfirmPanel = FieldGenerator::panel('CONFIRM')->setIcon('input-search');
+        $slug2 = FieldGenerator::slug('slug2')
+            ->setLabel('Slug with unlock confirmation')
+            ->setTarget('slugTarget')
+            ->setConfirmText('If the slug is not valid or contains special characters or spaces, it will not work.<br /><strong>Are you sure you want to overwrite?</strong>')
+            ->setColumns(6);
+
+        $slugOptionsPanel = FieldGenerator::panel('OPTIONS')->setIcon('input-search');
+        $slug3 = FieldGenerator::slug('slug3')
+            ->setLabel('Locale es + underscore')
+            ->setTarget('slugTarget')
+            ->setLocale('es')
+            ->setReplacement('_')
+            ->setColumns(4);
+        $slug4 = FieldGenerator::slug('slug4')
+            ->setLabel('Keep case, not strict')
+            ->setTarget('slugTarget')
+            ->isLower(false)
+            ->isStrict(false)
+            ->setColumns(4);
+        $slug5 = FieldGenerator::slug('slug5')
+            ->setLabel('Custom remove (keep dots)')
+            ->setTarget('slugTarget')
+            ->setRemove('[^A-Za-z0-9.\\s-]')
+            ->isStrict(false)
+            ->setColumns(4);
+
+        $texteditorFieldsTab = FieldGenerator::tab('Text editor');
+
+        $texteditorPanel = FieldGenerator::panel('TEXT EDITOR')->setIcon('input-search');
+        $texteditor = FieldGenerator::texteditor('texteditor')
+            ->setLabel('Default')
+            ->setColumns(4);
+        $texteditor2 = FieldGenerator::texteditor('texteditor2')
+            ->setLabel('Enable resize and disable spellcheck')
+            ->isResizeable()
+            ->isSpellcheck(false)
+            ->setColumns(4);
+        $texteditor3 = FieldGenerator::texteditor('texteditor3')
+            ->setLabel('Custom toolbar')
+            ->setToolbar('undo redo | bold italic underline | emoticons')
+            ->setColumns(4);
+
+        yield $basicFieldsTab;
         yield $idPanel;
         yield $id;
-
         yield $textPanel;
         yield $text;
         yield $textCustom;
@@ -823,11 +821,9 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $phone;
         yield $url;
         yield $password;
-
         yield $confirmPanel;
         yield $confirmPassword;
         yield $confirmEmail;
-
         yield $numbersPanel;
         yield $integer;
         yield $integerPositive;
@@ -837,30 +833,18 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $percent;
         yield $money;
         yield $moneyCustomCurrency;
-
         yield $checkboxPanel;
         yield $checkbox;
         yield $switch;
-
-        yield $textareaFieldsTab;
-
+        yield $filesPanel;
+        yield $file;
+        yield $filePDF;
+        yield $image;
         yield $textareaPanel;
         yield $textarea;
         yield $textarea2;
         yield $textarea3;
         yield $textarea4;
-
-        yield $texteditorPanel;
-        yield $texteditor;
-        yield $texteditor2;
-        yield $texteditor3;
-
-        yield $codeeditorPanel;
-        yield $codeeditor;
-        yield $codeeditor2;
-
-        yield $choiceFieldsTab;
-
         yield $choicePanel;
         yield $choice;
         yield $choice2;
@@ -869,66 +853,23 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $choice4;
         yield $choice5;
 
-        yield $dateFieldsTab;
+        yield $codeeditorFieldsTab;
+        yield $codeeditorPanel;
+        yield $codeeditor;
+        yield $codeeditor2;
 
-        yield $datePanel;
-        yield $date;
-        yield $datetime;
-        yield $time;
-
-        yield $dateDefaultValuesPanel;
-        yield $dateDefaultValue;
-        yield $datetimeDefaultValue;
-        yield $timeDefaultValue;
-
-        yield $dateMinMaxPanel;
-        yield $dateMinMax;
-        yield $datetimeMinMax;
-        yield $timeMinMax;
-
-        yield $dateEnableDisablePanel;
-        yield $dateEnable;
-        yield $dateDisable;
-
-        yield $dateMultiplePanel;
-        yield $dateMultiple;
-        yield $datetimeMultiple;
-        yield $dateMultipleRow;
-        yield $dateMultipleCustom;
-        yield $datetimeMultipleCustom;
-
-        yield $dateRangePanel;
-        yield $dateRange;
-        yield $datetimeRange;
-        yield $dateRangeCustom;
-
-        yield $dateInlinePanel;
-        yield $dateInline;
-        yield $datetimeInline;
-        yield $timeInline;
-
-        yield $dateCalendarUiPanel;
-        yield $dateCalendarUi;
-        yield $dateStatic;
-
-        yield $datePickerPanel;
-        yield $datePickerOpts;
-        yield $dateAltFormat;
-        yield $dateNative;
-
-        yield $dateClockPanel;
-        yield $datetimeClock;
-        yield $time12h;
-        yield $datetime12h;
+        yield $collectionFieldsTab;
+        yield $collectionPanel;
+        yield $array;
+        yield $collection;
+        yield $collectionFormType;
 
         yield $colorFieldsTab;
-
         yield $colorPanel;
         yield $color;
         yield $colorInline;
         yield $colorAlpha;
         yield $colorButtons;
-
         yield $colorPalettePanel;
         yield $colorPalette;
         yield $colorPaletteOnly;
@@ -938,85 +879,49 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $colorTogglePalette;
         yield $colorSelection;
 
-        yield $maskFieldsTab;
-
-        yield $maskPanel;
-        yield $mask;
-        yield $mask2;
-        yield $mask3;
-        yield $maskEager;
-        yield $maskSecure;
-        yield $maskNumber;
-        yield $maskPrepareDigits;
-        yield $maskDefinitions;
-
-        yield $sliderFieldsTab;
-
-        yield $sliderPanel;
-        yield $slider;
-        yield $sliderFloat;
-        yield $sliderShowInput;
-
-        yield $sliderConnectPanel;
-        yield $sliderConnectUpper;
-        yield $sliderNoTooltip;
-        yield $sliderRtl;
-
-        yield $sliderLayoutPanel;
-        yield $sliderVertical;
-        yield $sliderSnap;
-        yield $sliderBehaviour;
-
-        yield $signatureFieldsTab;
-
-        yield $signaturePanel;
-        yield $signature;
-        yield $signatureWithoutUndo;
-        yield $signatureWithoutClear;
-
-        yield $signatureStrokePanel;
-        yield $signaturePenColor;
-        yield $signatureThick;
-        yield $signatureBackground;
-
-        yield $signatureExportPanel;
-        yield $signatureJpeg;
-        yield $signatureSvg;
-
-        yield $slugFieldsTab;
-        yield $slugPanel;
-        yield $slugTarget;
-        yield $slug;
-        yield $slugConfirmPanel;
-        yield $slug2;
-        yield $slugOptionsPanel;
-        yield $slug3;
-        yield $slug4;
-        yield $slug5;
-
-        yield $collectionFieldsTab;
-
-        yield $collectionPanel;
-        yield $array;
-        yield $collection;
-        yield $collectionFormType;
-
-        yield $mediaFieldsTab;
-
-        yield $mediaPanel;
-        yield $media;
-        yield $mediaImage;
-        yield $mediaImageUsers;
-        yield $mediaWithoutFileManager;
-        yield $mediaWithCrop;
-
-        yield $filesPanel;
-        yield $file;
-        yield $filePDF;
-        yield $image;
+        yield $dateFieldsTab;
+        yield $datePanel;
+        yield $date;
+        yield $datetime;
+        yield $time;
+        yield $dateDefaultValuesPanel;
+        yield $dateDefaultValue;
+        yield $datetimeDefaultValue;
+        yield $timeDefaultValue;
+        yield $dateMinMaxPanel;
+        yield $dateMinMax;
+        yield $datetimeMinMax;
+        yield $timeMinMax;
+        yield $dateEnableDisablePanel;
+        yield $dateEnable;
+        yield $dateDisable;
+        yield $dateMultiplePanel;
+        yield $dateMultiple;
+        yield $datetimeMultiple;
+        yield $dateMultipleRow;
+        yield $dateMultipleCustom;
+        yield $datetimeMultipleCustom;
+        yield $dateRangePanel;
+        yield $dateRange;
+        yield $datetimeRange;
+        yield $dateRangeCustom;
+        yield $dateInlinePanel;
+        yield $dateInline;
+        yield $datetimeInline;
+        yield $timeInline;
+        yield $dateCalendarUiPanel;
+        yield $dateCalendarUi;
+        yield $dateStatic;
+        yield $datePickerPanel;
+        yield $datePickerOpts;
+        yield $dateAltFormat;
+        yield $dateNative;
+        yield $dateClockPanel;
+        yield $datetimeClock;
+        yield $time12h;
+        yield $datetime12h;
 
         yield $hierarchyFieldsTab;
-
         yield $hierarchyPanel;
         yield $hierarchySwitch;
         yield $hierarchySwitchChild;
@@ -1044,6 +949,69 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $hierarchyRow8;
         yield $hierarchySaveValue;
         yield $hierarchySaveValueChild;
+
+        yield $mediaFieldsTab;
+        yield $mediaPanel;
+        yield $media;
+        yield $mediaImage;
+        yield $mediaImageUsers;
+        yield $mediaWithoutFileManager;
+        yield $mediaWithCrop;
+
+        yield $maskFieldsTab;
+        yield $maskPanel;
+        yield $mask;
+        yield $mask2;
+        yield $mask3;
+        yield $maskEager;
+        yield $maskSecure;
+        yield $maskNumber;
+        yield $maskPrepareDigits;
+        yield $maskDefinitions;
+
+        yield $signatureFieldsTab;
+        yield $signaturePanel;
+        yield $signature;
+        yield $signatureWithoutUndo;
+        yield $signatureWithoutClear;
+        yield $signatureStrokePanel;
+        yield $signaturePenColor;
+        yield $signatureThick;
+        yield $signatureBackground;
+        yield $signatureExportPanel;
+        yield $signatureJpeg;
+        yield $signatureSvg;
+
+        yield $sliderFieldsTab;
+        yield $sliderPanel;
+        yield $slider;
+        yield $sliderFloat;
+        yield $sliderShowInput;
+        yield $sliderConnectPanel;
+        yield $sliderConnectUpper;
+        yield $sliderNoTooltip;
+        yield $sliderRtl;
+        yield $sliderLayoutPanel;
+        yield $sliderVertical;
+        yield $sliderSnap;
+        yield $sliderBehaviour;
+
+        yield $slugFieldsTab;
+        yield $slugPanel;
+        yield $slugTarget;
+        yield $slug;
+        yield $slugConfirmPanel;
+        yield $slug2;
+        yield $slugOptionsPanel;
+        yield $slug3;
+        yield $slug4;
+        yield $slug5;
+
+        yield $texteditorFieldsTab;
+        yield $texteditorPanel;
+        yield $texteditor;
+        yield $texteditor2;
+        yield $texteditor3;
 
     }
 }
