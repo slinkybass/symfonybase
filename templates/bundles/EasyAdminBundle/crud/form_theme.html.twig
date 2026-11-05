@@ -295,24 +295,30 @@
 {% endblock collection_entry_row %}
 
 {% block ea_slug_widget %}
-    {% set attr = attr|merge({
-        'data-target': target|split('|')|map(name => form.parent.children[name].vars.id)|json_encode,
-        'data-ea-slug-field': ''
-    }) %}
-    {% if attr['data-confirm-text'] is defined %}
-        {% set attr = attr|merge({
-            'data-confirm-text': attr['data-confirm-text']|trans
-        }) %}
-    {% endif %}
+    {% set plugin_on = attr['data-slug-field']|default('true') not in ['false', '0', false] %}
 
-    <div class="input-group">
+    {% if not plugin_on %}
         {{ block('form_widget') }}
-        <button type="button" class="btn btn-icon"
-                data-icon-locked="{{ component('ea:Icon', {name: 'lock'})|e('html') }}"
-                data-icon-unlocked="{{ component('ea:Icon', {name: 'lock-open'})|e('html') }}">
-            <twig:ea:Icon name="lock" />
-        </button>
-    </div>
+    {% else %}
+        {% set attr = attr|merge({
+            'data-slug-target': target|split('|')|map(name => form.parent.children[name].vars.id)|json_encode,
+        }) %}
+        {% if attr['data-slug-confirm-text'] is defined %}
+            {% set attr = attr|merge({
+                'data-slug-confirm-text': attr['data-slug-confirm-text']|trans
+            }) %}
+        {% endif %}
+
+        <div class="input-group">
+            {{ block('form_widget') }}
+            <button type="button" class="btn btn-icon" data-slug-lock
+                    data-slug-icon-locked="{{ component('ea:Icon', {name: 'lock'})|e('html') }}"
+                    data-slug-icon-unlocked="{{ component('ea:Icon', {name: 'lock-open'})|e('html') }}"
+                    aria-pressed="true">
+                <twig:ea:Icon name="lock" />
+            </button>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block ea_fileupload_widget %}

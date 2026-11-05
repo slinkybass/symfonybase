@@ -3,21 +3,20 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\SlugFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `SlugField` wrapper with `FieldTrait`. */
+/** EasyAdmin `SlugField` wrapper with slugify plugin options. */
 class SlugField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
-    private EasyField $innerField;
+    use SlugFieldTrait;
 
-    public const OPTION_PLUGIN = 'data-slug-field';
+    private EasyField $innerField;
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -34,27 +33,16 @@ class SlugField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load the slugify plugin (`data-slug-field`). `false` keeps a plain text input. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-slug')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
-
-        return $this;
+        return $this->enableMappedPlugin('form-type-slug', self::OPTION_PLUGIN, $enable);
     }
 
+    /** Source field name(s) whose values feed the slug (EasyAdmin `target` form option). */
     public function setTarget(string|array $target): self
     {
         $this->innerField->setTargetFieldName($target);
-
-        return $this;
-    }
-
-    public function setConfirmText(string $message): self
-    {
-        $this->innerField->setUnlockConfirmationMessage($message);
 
         return $this;
     }

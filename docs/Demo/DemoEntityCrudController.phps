@@ -129,20 +129,6 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Switch')
             ->setColumns(3);
 
-        $slugPanel = FieldGenerator::panel('SLUG')->setIcon('input-search');
-        $slugTarget = FieldGenerator::text('slugTarget')
-            ->setLabel('Target slug')
-            ->setColumns(4);
-        $slug = FieldGenerator::slug('slug')
-            ->setLabel('Slug result')
-            ->setTarget('slugTarget')
-            ->setColumns(4);
-        $slug2 = FieldGenerator::slug('slug2')
-            ->setLabel('Slug result with confirmation message')
-            ->setTarget('slugTarget')
-            ->setConfirmText('If the slug is not valid or contains special characters or spaces, it will not work.<br /><strong>Are you sure you want to overwrite?</strong>')
-            ->setColumns(4);
-
         $textareaFieldsTab = FieldGenerator::tab('Textarea');
 
         $textareaPanel = FieldGenerator::panel('TEXTAREA')->setIcon('input-search');
@@ -639,6 +625,44 @@ class DemoEntityCrudController extends AbstractCrudController
             ->showInput()
             ->setColumns(6);
 
+        $slugFieldsTab = FieldGenerator::tab('Slug');
+
+        $slugPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
+        $slugTarget = FieldGenerator::text('slugTarget')
+            ->setLabel('Target')
+            ->setColumns(6);
+        $slug = FieldGenerator::slug('slug')
+            ->setLabel('Slug')
+            ->setTarget('slugTarget')
+            ->setColumns(6);
+
+        $slugConfirmPanel = FieldGenerator::panel('CONFIRM')->setIcon('input-search');
+        $slug2 = FieldGenerator::slug('slug2')
+            ->setLabel('Slug with unlock confirmation')
+            ->setTarget('slugTarget')
+            ->setConfirmText('If the slug is not valid or contains special characters or spaces, it will not work.<br /><strong>Are you sure you want to overwrite?</strong>')
+            ->setColumns(6);
+
+        $slugOptionsPanel = FieldGenerator::panel('OPTIONS')->setIcon('input-search');
+        $slug3 = FieldGenerator::slug('slug3')
+            ->setLabel('Locale es + underscore')
+            ->setTarget('slugTarget')
+            ->setLocale('es')
+            ->setReplacement('_')
+            ->setColumns(4);
+        $slug4 = FieldGenerator::slug('slug4')
+            ->setLabel('Keep case, not strict')
+            ->setTarget('slugTarget')
+            ->isLower(false)
+            ->isStrict(false)
+            ->setColumns(4);
+        $slug5 = FieldGenerator::slug('slug5')
+            ->setLabel('Custom remove (keep dots)')
+            ->setTarget('slugTarget')
+            ->setRemove('[^A-Za-z0-9.\\s-]')
+            ->isStrict(false)
+            ->setColumns(4);
+
         $collectionFieldsTab = FieldGenerator::tab('Collection');
 
         $collectionPanel = FieldGenerator::panel('COLLECTION')->setIcon('input-search');
@@ -818,11 +842,6 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $checkbox;
         yield $switch;
 
-        yield $slugPanel;
-        yield $slugTarget;
-        yield $slug;
-        yield $slug2;
-
         yield $textareaFieldsTab;
 
         yield $textareaPanel;
@@ -963,6 +982,17 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $signatureExportPanel;
         yield $signatureJpeg;
         yield $signatureSvg;
+
+        yield $slugFieldsTab;
+        yield $slugPanel;
+        yield $slugTarget;
+        yield $slug;
+        yield $slugConfirmPanel;
+        yield $slug2;
+        yield $slugOptionsPanel;
+        yield $slug3;
+        yield $slug4;
+        yield $slug5;
 
         yield $collectionFieldsTab;
 

@@ -74,15 +74,6 @@ class DemoEntity
     #[ORM\Column(nullable: true)]
     private ?bool $switch = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slugTarget = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug2 = null;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $textarea = null;
 
@@ -319,6 +310,24 @@ class DemoEntity
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $signatureSvg = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slugTarget = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug3 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug4 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug5 = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $array = null;
@@ -641,42 +650,6 @@ class DemoEntity
     public function setSwitch(?bool $switch): static
     {
         $this->switch = $switch;
-
-        return $this;
-    }
-
-    public function getSlugTarget(): ?string
-    {
-        return $this->slugTarget;
-    }
-
-    public function setSlugTarget(?string $slugTarget): static
-    {
-        $this->slugTarget = $slugTarget;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getSlug2(): ?string
-    {
-        return $this->slug2;
-    }
-
-    public function setSlug2(?string $slug2): static
-    {
-        $this->slug2 = $slug2;
 
         return $this;
     }
@@ -1625,6 +1598,78 @@ class DemoEntity
     public function setSignatureSvg(?string $signatureSvg): static
     {
         $this->signatureSvg = $signatureSvg;
+
+        return $this;
+    }
+
+    public function getSlugTarget(): ?string
+    {
+        return $this->slugTarget;
+    }
+
+    public function setSlugTarget(?string $slugTarget): static
+    {
+        $this->slugTarget = $slugTarget;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getSlug2(): ?string
+    {
+        return $this->slug2;
+    }
+
+    public function setSlug2(?string $slug2): static
+    {
+        $this->slug2 = $slug2;
+
+        return $this;
+    }
+
+    public function getSlug3(): ?string
+    {
+        return $this->slug3;
+    }
+
+    public function setSlug3(?string $slug3): static
+    {
+        $this->slug3 = $slug3;
+
+        return $this;
+    }
+
+    public function getSlug4(): ?string
+    {
+        return $this->slug4;
+    }
+
+    public function setSlug4(?string $slug4): static
+    {
+        $this->slug4 = $slug4;
+
+        return $this;
+    }
+
+    public function getSlug5(): ?string
+    {
+        return $this->slug5;
+    }
+
+    public function setSlug5(?string $slug5): static
+    {
+        $this->slug5 = $slug5;
 
         return $this;
     }
