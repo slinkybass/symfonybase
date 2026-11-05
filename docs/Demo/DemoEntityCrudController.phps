@@ -120,13 +120,13 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setCurrency('USD')
             ->setColumns(3);
         $slider = FieldGenerator::integer('slider')
-            ->setLabel('Slider')
+            ->setLabel('Slider <small class="text-muted">3–8</small>')
             ->isSlider()
             ->setMin(3)
             ->setMax(8)
             ->setColumns(6);
         $sliderFloat = FieldGenerator::float('sliderFloat')
-            ->setLabel('Slider float with step 0.5 and pips and with min 0 and max 10')
+            ->setLabel('Float + pips <small class="text-muted">0–10 / step 0.5</small>')
             ->isSlider()
             ->setMin(0)
             ->setMax(10)
@@ -535,6 +535,52 @@ class DemoEntityCrudController extends AbstractCrudController
             ->isLazy(false)
             ->setColumns(4);
 
+        $signatureFieldsTab = FieldGenerator::tab('Signature');
+
+        $signaturePanel = FieldGenerator::panel('UI')->setIcon('input-search');
+        $signature = FieldGenerator::signature('signature')
+            ->setLabel('Default')
+            ->setColumns(4);
+        $signatureWithoutUndo = FieldGenerator::signature('signatureWithoutUndo')
+            ->setLabel('No undo')
+            ->showUndo(false)
+            ->setColumns(4);
+        $signatureWithoutClear = FieldGenerator::signature('signatureWithoutClear')
+            ->setLabel('No clear')
+            ->showClear(false)
+            ->setColumns(4);
+
+        $signatureStrokePanel = FieldGenerator::panel('STROKE')->setIcon('pencil');
+        $signaturePenColor = FieldGenerator::signature('signaturePenColor')
+            ->setLabel('Pen color <small class="text-muted">#276cb8</small>')
+            ->setPenColor('#276cb8')
+            ->setColumns(4);
+        $signatureThick = FieldGenerator::signature('signatureThick')
+            ->setLabel('Thick stroke <small class="text-muted">min 2 / max 8</small>')
+            ->setMinWidth(2)
+            ->setMaxWidth(8)
+            ->setDotSize(5)
+            ->setColumns(4);
+        $signatureBackground = FieldGenerator::signature('signatureBackground')
+            ->setLabel('Background <small class="text-muted">#f0f4f8</small>')
+            ->setBackgroundColor('#f0f4f8')
+            ->setPenColor('#1a1a2e')
+            ->setColumns(4);
+
+        $signatureExportPanel = FieldGenerator::panel('EXPORT')->setIcon('file-export');
+        $signatureJpeg = FieldGenerator::signature('signatureJpeg')
+            ->setLabel('JPEG export <small class="text-muted">q=0.7</small>')
+            ->setBackgroundColor('rgb(255,255,255)')
+            ->setFormat(SignatureField::FORMAT_JPEG)
+            ->setQuality(0.7)
+            ->showInput()
+            ->setColumns(6);
+        $signatureSvg = FieldGenerator::signature('signatureSvg')
+            ->setLabel('SVG export')
+            ->setFormat(SignatureField::FORMAT_SVG)
+            ->showInput()
+            ->setColumns(6);
+
         $collectionFieldsTab = FieldGenerator::tab('Collection');
 
         $collectionPanel = FieldGenerator::panel('COLLECTION')->setIcon('input-search');
@@ -679,52 +725,6 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Child text input')
             ->setHtmlAttribute('data-hf-child', 'hierarchySaveValue')
             ->setHtmlAttribute('data-hf-save-value', 'true')
-            ->setColumns(6);
-
-        $signatureFieldsTab = FieldGenerator::tab('Signature');
-
-        $signaturePanel = FieldGenerator::panel('UI')->setIcon('input-search');
-        $signature = FieldGenerator::signature('signature')
-            ->setLabel('Default')
-            ->setColumns(4);
-        $signatureWithoutUndo = FieldGenerator::signature('signatureWithoutUndo')
-            ->setLabel('No undo')
-            ->showUndo(false)
-            ->setColumns(4);
-        $signatureWithoutClear = FieldGenerator::signature('signatureWithoutClear')
-            ->setLabel('No clear')
-            ->showClear(false)
-            ->setColumns(4);
-
-        $signatureStrokePanel = FieldGenerator::panel('STROKE')->setIcon('pencil');
-        $signaturePenColor = FieldGenerator::signature('signaturePenColor')
-            ->setLabel('Pen color <small class="text-muted">#276cb8</small>')
-            ->setPenColor('#276cb8')
-            ->setColumns(4);
-        $signatureThick = FieldGenerator::signature('signatureThick')
-            ->setLabel('Thick stroke <small class="text-muted">min 2 / max 8</small>')
-            ->setMinWidth(2)
-            ->setMaxWidth(8)
-            ->setDotSize(5)
-            ->setColumns(4);
-        $signatureBackground = FieldGenerator::signature('signatureBackground')
-            ->setLabel('Background <small class="text-muted">#f0f4f8</small>')
-            ->setBackgroundColor('#f0f4f8')
-            ->setPenColor('#1a1a2e')
-            ->setColumns(4);
-
-        $signatureExportPanel = FieldGenerator::panel('EXPORT')->setIcon('file-export');
-        $signatureJpeg = FieldGenerator::signature('signatureJpeg')
-            ->setLabel('JPEG export <small class="text-muted">q=0.7</small>')
-            ->setBackgroundColor('rgb(255,255,255)')
-            ->setFormat(SignatureField::FORMAT_JPEG)
-            ->setQuality(0.7)
-            ->showInput()
-            ->setColumns(6);
-        $signatureSvg = FieldGenerator::signature('signatureSvg')
-            ->setLabel('SVG export')
-            ->setFormat(SignatureField::FORMAT_SVG)
-            ->showInput()
             ->setColumns(6);
 
         yield $basicFieldsTab;
@@ -875,6 +875,22 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $maskPrepareDigits;
         yield $maskDefinitions;
 
+        yield $signatureFieldsTab;
+
+        yield $signaturePanel;
+        yield $signature;
+        yield $signatureWithoutUndo;
+        yield $signatureWithoutClear;
+
+        yield $signatureStrokePanel;
+        yield $signaturePenColor;
+        yield $signatureThick;
+        yield $signatureBackground;
+
+        yield $signatureExportPanel;
+        yield $signatureJpeg;
+        yield $signatureSvg;
+
         yield $collectionFieldsTab;
 
         yield $collectionPanel;
@@ -926,20 +942,5 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $hierarchySaveValue;
         yield $hierarchySaveValueChild;
 
-        yield $signatureFieldsTab;
-
-        yield $signaturePanel;
-        yield $signature;
-        yield $signatureWithoutUndo;
-        yield $signatureWithoutClear;
-
-        yield $signatureStrokePanel;
-        yield $signaturePenColor;
-        yield $signatureThick;
-        yield $signatureBackground;
-
-        yield $signatureExportPanel;
-        yield $signatureJpeg;
-        yield $signatureSvg;
     }
 }

@@ -81,30 +81,6 @@ class DemoEntity
     private ?bool $switch = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask2 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask3 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskEager = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskSecure = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskNumber = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskPrepareDigits = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskDefinitions = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
     private ?string $slugTarget = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -275,6 +251,54 @@ class DemoEntity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $colorSelection = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mask = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mask2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mask3 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskEager = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskSecure = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskNumber = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskPrepareDigits = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $maskDefinitions = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signature = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureWithoutUndo = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureWithoutClear = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signaturePenColor = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureThick = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureBackground = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureJpeg = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $signatureSvg = null;
+
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $array = null;
 
@@ -361,30 +385,6 @@ class DemoEntity
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $hierarchySaveValueChild = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signature = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureWithoutUndo = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureWithoutClear = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signaturePenColor = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureThick = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureBackground = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureJpeg = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureSvg = null;
 
     public function __toString(): string
     {
@@ -644,102 +644,6 @@ class DemoEntity
     public function setSwitch(?bool $switch): static
     {
         $this->switch = $switch;
-
-        return $this;
-    }
-
-    public function getMask(): ?string
-    {
-        return $this->mask;
-    }
-
-    public function setMask(?string $mask): static
-    {
-        $this->mask = $mask;
-
-        return $this;
-    }
-
-    public function getMask2(): ?string
-    {
-        return $this->mask2;
-    }
-
-    public function setMask2(?string $mask2): static
-    {
-        $this->mask2 = $mask2;
-
-        return $this;
-    }
-
-    public function getMask3(): ?string
-    {
-        return $this->mask3;
-    }
-
-    public function setMask3(?string $mask3): static
-    {
-        $this->mask3 = $mask3;
-
-        return $this;
-    }
-
-    public function getMaskEager(): ?string
-    {
-        return $this->maskEager;
-    }
-
-    public function setMaskEager(?string $maskEager): static
-    {
-        $this->maskEager = $maskEager;
-
-        return $this;
-    }
-
-    public function getMaskSecure(): ?string
-    {
-        return $this->maskSecure;
-    }
-
-    public function setMaskSecure(?string $maskSecure): static
-    {
-        $this->maskSecure = $maskSecure;
-
-        return $this;
-    }
-
-    public function getMaskNumber(): ?string
-    {
-        return $this->maskNumber;
-    }
-
-    public function setMaskNumber(?string $maskNumber): static
-    {
-        $this->maskNumber = $maskNumber;
-
-        return $this;
-    }
-
-    public function getMaskPrepareDigits(): ?string
-    {
-        return $this->maskPrepareDigits;
-    }
-
-    public function setMaskPrepareDigits(?string $maskPrepareDigits): static
-    {
-        $this->maskPrepareDigits = $maskPrepareDigits;
-
-        return $this;
-    }
-
-    public function getMaskDefinitions(): ?string
-    {
-        return $this->maskDefinitions;
-    }
-
-    public function setMaskDefinitions(?string $maskDefinitions): static
-    {
-        $this->maskDefinitions = $maskDefinitions;
 
         return $this;
     }
@@ -1428,6 +1332,198 @@ class DemoEntity
         return $this;
     }
 
+    public function getMask(): ?string
+    {
+        return $this->mask;
+    }
+
+    public function setMask(?string $mask): static
+    {
+        $this->mask = $mask;
+
+        return $this;
+    }
+
+    public function getMask2(): ?string
+    {
+        return $this->mask2;
+    }
+
+    public function setMask2(?string $mask2): static
+    {
+        $this->mask2 = $mask2;
+
+        return $this;
+    }
+
+    public function getMask3(): ?string
+    {
+        return $this->mask3;
+    }
+
+    public function setMask3(?string $mask3): static
+    {
+        $this->mask3 = $mask3;
+
+        return $this;
+    }
+
+    public function getMaskEager(): ?string
+    {
+        return $this->maskEager;
+    }
+
+    public function setMaskEager(?string $maskEager): static
+    {
+        $this->maskEager = $maskEager;
+
+        return $this;
+    }
+
+    public function getMaskSecure(): ?string
+    {
+        return $this->maskSecure;
+    }
+
+    public function setMaskSecure(?string $maskSecure): static
+    {
+        $this->maskSecure = $maskSecure;
+
+        return $this;
+    }
+
+    public function getMaskNumber(): ?string
+    {
+        return $this->maskNumber;
+    }
+
+    public function setMaskNumber(?string $maskNumber): static
+    {
+        $this->maskNumber = $maskNumber;
+
+        return $this;
+    }
+
+    public function getMaskPrepareDigits(): ?string
+    {
+        return $this->maskPrepareDigits;
+    }
+
+    public function setMaskPrepareDigits(?string $maskPrepareDigits): static
+    {
+        $this->maskPrepareDigits = $maskPrepareDigits;
+
+        return $this;
+    }
+
+    public function getMaskDefinitions(): ?string
+    {
+        return $this->maskDefinitions;
+    }
+
+    public function setMaskDefinitions(?string $maskDefinitions): static
+    {
+        $this->maskDefinitions = $maskDefinitions;
+
+        return $this;
+    }
+
+    public function getSignature(): ?string
+    {
+        return $this->signature;
+    }
+
+    public function setSignature(?string $signature): static
+    {
+        $this->signature = $signature;
+
+        return $this;
+    }
+
+    public function getSignatureWithoutUndo(): ?string
+    {
+        return $this->signatureWithoutUndo;
+    }
+
+    public function setSignatureWithoutUndo(?string $signatureWithoutUndo): static
+    {
+        $this->signatureWithoutUndo = $signatureWithoutUndo;
+
+        return $this;
+    }
+
+    public function getSignatureWithoutClear(): ?string
+    {
+        return $this->signatureWithoutClear;
+    }
+
+    public function setSignatureWithoutClear(?string $signatureWithoutClear): static
+    {
+        $this->signatureWithoutClear = $signatureWithoutClear;
+
+        return $this;
+    }
+
+    public function getSignaturePenColor(): ?string
+    {
+        return $this->signaturePenColor;
+    }
+
+    public function setSignaturePenColor(?string $signaturePenColor): static
+    {
+        $this->signaturePenColor = $signaturePenColor;
+
+        return $this;
+    }
+
+    public function getSignatureThick(): ?string
+    {
+        return $this->signatureThick;
+    }
+
+    public function setSignatureThick(?string $signatureThick): static
+    {
+        $this->signatureThick = $signatureThick;
+
+        return $this;
+    }
+
+    public function getSignatureBackground(): ?string
+    {
+        return $this->signatureBackground;
+    }
+
+    public function setSignatureBackground(?string $signatureBackground): static
+    {
+        $this->signatureBackground = $signatureBackground;
+
+        return $this;
+    }
+
+    public function getSignatureJpeg(): ?string
+    {
+        return $this->signatureJpeg;
+    }
+
+    public function setSignatureJpeg(?string $signatureJpeg): static
+    {
+        $this->signatureJpeg = $signatureJpeg;
+
+        return $this;
+    }
+
+    public function getSignatureSvg(): ?string
+    {
+        return $this->signatureSvg;
+    }
+
+    public function setSignatureSvg(?string $signatureSvg): static
+    {
+        $this->signatureSvg = $signatureSvg;
+
+        return $this;
+    }
+
     public function getArray(): ?array
     {
         return $this->array;
@@ -1772,102 +1868,6 @@ class DemoEntity
     public function setHierarchySaveValueChild(?string $hierarchySaveValueChild): static
     {
         $this->hierarchySaveValueChild = $hierarchySaveValueChild;
-
-        return $this;
-    }
-
-    public function getSignature(): ?string
-    {
-        return $this->signature;
-    }
-
-    public function setSignature(?string $signature): static
-    {
-        $this->signature = $signature;
-
-        return $this;
-    }
-
-    public function getSignatureWithoutUndo(): ?string
-    {
-        return $this->signatureWithoutUndo;
-    }
-
-    public function setSignatureWithoutUndo(?string $signatureWithoutUndo): static
-    {
-        $this->signatureWithoutUndo = $signatureWithoutUndo;
-
-        return $this;
-    }
-
-    public function getSignatureWithoutClear(): ?string
-    {
-        return $this->signatureWithoutClear;
-    }
-
-    public function setSignatureWithoutClear(?string $signatureWithoutClear): static
-    {
-        $this->signatureWithoutClear = $signatureWithoutClear;
-
-        return $this;
-    }
-
-    public function getSignaturePenColor(): ?string
-    {
-        return $this->signaturePenColor;
-    }
-
-    public function setSignaturePenColor(?string $signaturePenColor): static
-    {
-        $this->signaturePenColor = $signaturePenColor;
-
-        return $this;
-    }
-
-    public function getSignatureThick(): ?string
-    {
-        return $this->signatureThick;
-    }
-
-    public function setSignatureThick(?string $signatureThick): static
-    {
-        $this->signatureThick = $signatureThick;
-
-        return $this;
-    }
-
-    public function getSignatureBackground(): ?string
-    {
-        return $this->signatureBackground;
-    }
-
-    public function setSignatureBackground(?string $signatureBackground): static
-    {
-        $this->signatureBackground = $signatureBackground;
-
-        return $this;
-    }
-
-    public function getSignatureJpeg(): ?string
-    {
-        return $this->signatureJpeg;
-    }
-
-    public function setSignatureJpeg(?string $signatureJpeg): static
-    {
-        $this->signatureJpeg = $signatureJpeg;
-
-        return $this;
-    }
-
-    public function getSignatureSvg(): ?string
-    {
-        return $this->signatureSvg;
-    }
-
-    public function setSignatureSvg(?string $signatureSvg): static
-    {
-        $this->signatureSvg = $signatureSvg;
 
         return $this;
     }
