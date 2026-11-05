@@ -524,7 +524,7 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $sliderFieldsTab = FieldGenerator::tab('Slider');
 
-        $sliderPanel = FieldGenerator::panel('BASIC')->setIcon('adjustments-horizontal');
+        $sliderPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
         $slider = FieldGenerator::integer('slider')
             ->setLabel('Default <small class="text-muted">3–8</small>')
             ->isSlider()
@@ -547,7 +547,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->sliderShowInput()
             ->setColumns(4);
 
-        $sliderConnectPanel = FieldGenerator::panel('CONNECT')->setIcon('adjustments-horizontal');
+        $sliderConnectPanel = FieldGenerator::panel('CONNECT')->setIcon('input-search');
         $sliderConnectUpper = FieldGenerator::integer('sliderConnectUpper')
             ->setLabel('Connect upper')
             ->isSlider()
@@ -570,29 +570,27 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setSliderDirection(FloatField::SLIDER_DIRECTION_RTL)
             ->setColumns(4);
 
-        $sliderLayoutPanel = FieldGenerator::panel('LAYOUT')->setIcon('adjustments-vertical');
+        $sliderLayoutPanel = FieldGenerator::panel('LAYOUT')->setIcon('input-search');
         $sliderVertical = FieldGenerator::integer('sliderVertical')
             ->setLabel('Vertical <small class="text-muted">200px</small>')
             ->isSlider()
             ->setMin(0)
             ->setMax(100)
             ->setSliderOrientation(FloatField::SLIDER_ORIENTATION_VERTICAL)
+            ->setSliderDirection(FloatField::SLIDER_DIRECTION_RTL)
             ->setSliderHeight('200px')
             ->setColumns(4);
         $sliderSnap = FieldGenerator::float('sliderSnap')
-            ->setLabel('Snap <small class="text-muted">step 10</small>')
+            ->setLabel('Snap <small class="text-muted">0 / 25 / 70 / 100</small>')
             ->isSlider()
-            ->setMin(0)
-            ->setMax(100)
-            ->setStep(10)
-            ->isSliderSnap()
+            ->isSliderSnap([0, 25, 70, 100])
             ->setColumns(4);
         $sliderBehaviour = FieldGenerator::integer('sliderBehaviour')
-            ->setLabel('Behaviour <small class="text-muted">tap-drag</small>')
+            ->setLabel('No tap <small class="text-muted">drag handle only</small>')
             ->isSlider()
             ->setMin(0)
             ->setMax(100)
-            ->setSliderBehaviour('tap-drag')
+            ->setSliderBehaviour('drag')
             ->setColumns(4);
 
         $signatureFieldsTab = FieldGenerator::tab('Signature');
@@ -610,7 +608,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->showClear(false)
             ->setColumns(4);
 
-        $signatureStrokePanel = FieldGenerator::panel('STROKE')->setIcon('pencil');
+        $signatureStrokePanel = FieldGenerator::panel('STROKE')->setIcon('input-search');
         $signaturePenColor = FieldGenerator::signature('signaturePenColor')
             ->setLabel('Pen color <small class="text-muted">#276cb8</small>')
             ->setPenColor('#276cb8')
@@ -627,7 +625,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setPenColor('#1a1a2e')
             ->setColumns(4);
 
-        $signatureExportPanel = FieldGenerator::panel('EXPORT')->setIcon('file-export');
+        $signatureExportPanel = FieldGenerator::panel('EXPORT')->setIcon('input-search');
         $signatureJpeg = FieldGenerator::signature('signatureJpeg')
             ->setLabel('JPEG export <small class="text-muted">q=0.7</small>')
             ->setBackgroundColor('rgb(255,255,255)')
