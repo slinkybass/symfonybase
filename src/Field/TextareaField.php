@@ -9,20 +9,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `TextareaField` wrapper with `FieldTrait`. */
+/** EasyAdmin `TextareaField` wrapper with autogrow plugin options. */
 class TextareaField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+
     private EasyField $innerField;
 
     public const OPTION_PLUGIN = 'data-textarea-field';
-
-    public const OPTION_TEXTAREA_MAX_HEIGHT = 'data-textarea-max-height';
-
+    public const OPTION_MAX_HEIGHT = 'data-textarea-max-height';
     public const OPTION_RESIZEABLE = 'resizeable';
+
     public const DEFAULT_ROWS = 5;
+    public const DEFAULT_MAX_HEIGHT = '200px';
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -38,8 +39,10 @@ class TextareaField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->enablePlugin();
         $this->setRows(self::DEFAULT_ROWS);
+        $this->setMaxHeight(self::DEFAULT_MAX_HEIGHT);
     }
 
+    /** Load the autogrow plugin (`data-textarea-field`). `false` keeps a plain textarea. */
     public function enablePlugin(bool $enable = true): self
     {
         $this->dto->setAssets(new AssetsDto());
@@ -51,13 +54,18 @@ class TextareaField implements FieldInterface
         return $this;
     }
 
+    /** CSS max-height while autogrowing (`data-textarea-max-height`). Default `200px`. */
     public function setMaxHeight(string $maxHeight): self
     {
-        $this->setHtmlAttribute(self::OPTION_TEXTAREA_MAX_HEIGHT, $maxHeight);
+        $this->setHtmlAttribute(self::OPTION_MAX_HEIGHT, $maxHeight);
 
         return $this;
     }
 
+    /**
+     * Allow native CSS resize when the plugin is off (`resizeable` custom option → Twig).
+     * Ignored while autogrow is on (JS forces `resize: none`).
+     */
     public function isResizeable(bool $resizeable = true): self
     {
         $this->setCustomOption(self::OPTION_RESIZEABLE, $resizeable);
@@ -65,6 +73,7 @@ class TextareaField implements FieldInterface
         return $this;
     }
 
+    /** Visible rows (EasyAdmin `setNumOfRows`). */
     public function setRows(int $rows): self
     {
         $this->innerField->setNumOfRows($rows);

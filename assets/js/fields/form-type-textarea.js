@@ -1,48 +1,46 @@
 /**
- * Textarea autogrow field
+ * Textarea field
  *
  * Autor: slinkybass
- * Version: 3.1
+ * Version: 3.3
+ *
+ * Contract: data-textarea-field on the textarea; optional data-textarea-max-height
+ * (default 200px). Autogrow sets resize:none. Twig `resizeable` only applies when
+ * the plugin is off (`enablePlugin(false)`).
  */
 
-(function () {
-    document.addEventListener("DOMContentLoaded", () => {
-        formTypeTextarea();
-    });
-    document.addEventListener("ea.collection.item-added", () => {
-        formTypeTextarea();
-    });
+import { definePlugin, strAttr } from "./lib/plugin.js";
 
-    window.formTypeTextarea = function formTypeTextarea(selector = '[data-textarea-field="true"]') {
-        document.querySelectorAll(selector).forEach((e) => {
-            if (e.dataset.textareaInitialized !== undefined) {
-                autogrow(e);
-                return;
-            }
+const ATTR = {
+    PLUGIN: "data-textarea-field",
+    MAX_HEIGHT: "data-textarea-max-height",
+};
 
-            e.dataset.textareaInitialized = "";
-            e.addEventListener("input", () => autogrow(e));
-            autogrow(e);
-        });
+definePlugin("formTypeTextarea", {
+    attr: ATTR.PLUGIN,
+    datasetKey: "textareaInitialized",
+    setup(el) {
+        el.addEventListener("input", () => autogrow(el));
+        autogrow(el);
+    },
+});
 
-        function autogrow(field) {
-            const maxHeight = field.hasAttribute("data-textarea-max-height") ? field.getAttribute("data-textarea-max-height") : "200px";
+/** @param {HTMLElement} field */
+function autogrow(field) {
+    const maxHeight = strAttr(field, ATTR.MAX_HEIGHT, "200px");
 
-            field.style.overflow = "hidden";
-            field.style.resize = "none";
-            field.style.boxSizing = "border-box";
-            field.style.maxHeight = maxHeight;
-            field.style.height = "auto";
+    field.style.overflow = "hidden";
+    field.style.resize = "none";
+    field.style.boxSizing = "border-box";
+    field.style.maxHeight = maxHeight;
+    field.style.height = "auto";
 
-            // this check is needed because the <textarea> element can be inside a
-            // minimizable panel, causing its scrollHeight value to be 0
-            if (field.scrollHeight > 0) {
-                field.style.height = `${field.scrollHeight}px`;
-            }
+    // Minimizable panels can report scrollHeight 0 while collapsed.
+    if (field.scrollHeight > 0) {
+        field.style.height = `${field.scrollHeight}px`;
+    }
 
-            if (field.scrollHeight > field.clientHeight + 1) {
-                field.style.overflow = "auto";
-            }
-        }
-    };
-})();
+    if (field.scrollHeight > field.clientHeight + 1) {
+        field.style.overflow = "auto";
+    }
+}
