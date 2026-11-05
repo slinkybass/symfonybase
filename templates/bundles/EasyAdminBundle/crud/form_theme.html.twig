@@ -416,10 +416,15 @@
 {%- endblock percent_widget %}
 
 {% block password_widget %}
-    {% set field = form.vars.ea_vars.field ?? form_parent(form).vars.ea_vars.field %}
+    {% set plugin_on = attr['data-password-field']|default('true') not in ['false', '0', false] %}
+    {% set render_switch = plugin_on and (attr['data-password-switch']|default('true') not in ['false', '0', false]) %}
+    {% set render_generator = plugin_on and (attr['data-password-generator']|default('true') not in ['false', '0', false]) %}
+    {% set is_repeated = form.vars.name == 'first' or form.vars.name == 'second' %}
+    {% set group = is_repeated ? form.parent.vars.id : id %}
 
-    {% set render_switch = field ? field.customOptions.get('renderSwitch') ?? true : true %}
-    {% set render_generator = field ? field.customOptions.get('renderGenerator') ?? true : true %}
+    {% if plugin_on %}
+        {% set attr = attr|merge({ 'data-password-field': group }) %}
+    {% endif %}
 
     {% if form.vars.name == 'second' or (not render_switch and not render_generator) %}
         {{ parent() }}
@@ -429,18 +434,16 @@
                 <div class="input-group">
                     {{ parent() }}
                     {% if render_switch %}
-                        <button type="button" class="btn btn-icon btn-pass"
-                            data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}>
-                            <twig:ux:icon class="icon btn-pass-show" name="tabler:eye" />
-                            <twig:ux:icon class="icon btn-pass-hide d-none" name="tabler:eye-off" />
+                        <button type="button" class="btn btn-icon" data-password-toggle="{{ group }}">
+                            <twig:ux:icon class="icon" name="tabler:eye" />
+                            <twig:ux:icon class="icon d-none" name="tabler:eye-off" />
                         </button>
                     {% endif %}
                 </div>
             </div>
             {% if form.vars.name == 'first' and render_generator %}
                 <div class="col-auto">
-                    <button type="button" class="btn btn-icon btn-pass-generator"
-                        data-input="{{ id }}" {% if form.vars.name == 'first' %}data-input2="{{ id|replace({'first': 'second'}) }}"{% endif %}>
+                    <button type="button" class="btn btn-icon" data-password-generate="{{ group }}">
                         <twig:ux:icon class="icon" name="tabler:key" />
                     </button>
                 </div>

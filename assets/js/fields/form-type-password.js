@@ -1,238 +1,204 @@
 /**
- * Password Visibility & Generator Plugin
+ * Password field
  *
  * Autor: slinkybass
- * Version: 3.1
+ * Version: 3.3
  *
- * Description:
- * Manages password field visibility and provides secure password generation.
- *
- * Events:
- * - DOMContentLoaded: Initializes listeners on page load.
- * - ea.collection.item-added: Re-initializes for dynamically added elements (e.g., EasyAdmin collections).
- *
- * Core Functionality:
- * - The toggle button must have class `.btn-pass` and specify the target input(s)
- *   using `data-input="inputId"` and optionally `data-input2="inputId2"`.
- * - The toggle button can include elements with `.btn-pass-show` and `.btn-pass-hide`
- *   classes to indicate visible/hidden states.
- * - The password generator button must have class `.btn-pass-generator` and
- *   similarly use `data-input` and `data-input2` attributes.
- * - The `minlength` and `maxlength` attributes on inputs define password length range.
- *
- * HTML Examples:
- *
- * Basic password with show/hide toggle:
- * <input type="password" minlength="8" maxlength="12" id="password" />
- * <button type="button" class="btn-pass" data-input="password">
- *   <i class="btn-pass-show"></i>
- *   <i class="btn-pass-hide d-none"></i>
- * </button>
- *
- * Repeated password with password generator:
- * <input type="password" minlength="8" maxlength="12" id="password_first" />
- * <input type="password" minlength="8" maxlength="12" id="password_second" />
- * <button type="button" class="btn-pass-generator" data-input="password_first" data-input2="password_second">
- *   <i></i>
- * </button>
+ * Contract: data-password-field is the group id (theme replaces "true").
+ * Buttons join it with data-password-toggle / data-password-generate.
+ * A toggle's first .icon is "show", the second is "hide".
+ * Length comes from minlength/maxlength.
  */
 
-(function () {
-    document.addEventListener("DOMContentLoaded", () => {
-        formTypePassword();
-    });
+import { boolAttr, definePlugin } from "./lib/plugin.js";
 
-    document.addEventListener("ea.collection.item-added", () => {
-        formTypePassword();
-    });
+const FIELD = "data-password-field";
+const TOGGLE = "data-password-toggle";
+const GENERATE = "data-password-generate";
 
-    /**
-     * Initializes password show/hide and random password generation functionality.
-     *
-     * Called on DOMContentLoaded and ea.collection.item-added.
-     */
-    function formTypePassword() {
-        document.querySelectorAll(".btn-pass").forEach((btn) => {
-            if (btn.dataset.passwordToggleInitialized !== undefined) {
-                return;
-            }
+definePlugin("formTypePassword", {
+    attr: FIELD,
+    datasetKey: "passwordInitialized",
+    setup(el) {
+        bindPasswordGroup(el.getAttribute(FIELD));
+    },
+});
 
-            btn.dataset.passwordToggleInitialized = "";
-            btn.addEventListener("click", () => {
-                const inputSelector = btn.dataset.input;
-                const inputSelector2 = btn.dataset.input2;
-                const input = inputSelector ? document.getElementById(inputSelector) : null;
-                const input2 = inputSelector2 ? document.getElementById(inputSelector2) : null;
-
-                if (!input) {
-                    return;
-                }
-
-                const isPassword = input.type === "password";
-
-                switchVisibility(input, isPassword);
-                if (input2) {
-                    switchVisibility(input2, isPassword);
-                }
-            });
-        });
-
-        document.querySelectorAll(".btn-pass-generator").forEach((btn) => {
-            if (btn.dataset.passwordGeneratorInitialized !== undefined) {
-                return;
-            }
-
-            btn.dataset.passwordGeneratorInitialized = "";
-            btn.addEventListener("click", () => {
-                const inputSelector = btn.dataset.input;
-                const inputSelector2 = btn.dataset.input2;
-                const input = inputSelector ? document.getElementById(inputSelector) : null;
-                const input2 = inputSelector2 ? document.getElementById(inputSelector2) : null;
-
-                if (!input) {
-                    return;
-                }
-
-                const minLength1 = input.getAttribute("minlength");
-                const minLength2 = input2?.getAttribute("minlength");
-                const maxLength1 = input.getAttribute("maxlength");
-                const maxLength2 = input2?.getAttribute("maxlength");
-
-                const minLen = Math.max(Number.parseInt(String(minLength1 ?? ""), 10) || 0, Number.parseInt(String(minLength2 ?? ""), 10) || 0);
-                const maxLen = Math.max(Number.parseInt(String(maxLength1 ?? ""), 10) || 0, Number.parseInt(String(maxLength2 ?? ""), 10) || 0);
-                const minLength = minLen > 0 ? minLen : undefined;
-                const maxLength = maxLen > 0 ? maxLen : undefined;
-                let length;
-                if (minLength !== undefined && maxLength !== undefined && maxLength >= minLength) {
-                    length = randomInt(maxLength - minLength + 1) + minLength;
-                } else {
-                    length = minLength ?? maxLength ?? undefined;
-                }
-                const newPassword = generatePassword(length);
-
-                input.value = newPassword;
-                input.dispatchEvent(new Event("input", { bubbles: true }));
-                input.dispatchEvent(new Event("change", { bubbles: true }));
-                switchVisibility(input);
-
-                if (input2) {
-                    input2.value = newPassword;
-                    input2.dispatchEvent(new Event("input", { bubbles: true }));
-                    input2.dispatchEvent(new Event("change", { bubbles: true }));
-                    switchVisibility(input2);
-                }
-            });
-        });
+/** Bind every toggle and generator that shares this group. Safe to call again. */
+function bindPasswordGroup(group) {
+    if (!group || groupInputs(group).length === 0) {
+        return;
     }
 
-    /**
-     * Toggles the input field type between "text" and "password" and switches visibility icons.
-     *
-     * @param {HTMLInputElement} input - The password input field.
-     * @param {boolean} show - `true` to show, `false` to hide.
-     */
-    function switchVisibility(input, show = true) {
+    for (const button of [...groupButtons(TOGGLE, group), ...groupButtons(GENERATE, group)]) {
+        if (button.dataset.passwordActionInitialized !== undefined) {
+            continue;
+        }
+
+        const isToggle = button.hasAttribute(TOGGLE);
+        button.dataset.passwordActionInitialized = "";
+        button.addEventListener("click", () => {
+            const inputs = groupInputs(group);
+            if (inputs.length === 0) {
+                return;
+            }
+
+            if (!isToggle) {
+                const newPassword = generatePassword(passwordLength(inputs));
+                for (const input of inputs) {
+                    input.value = newPassword;
+                    input.dispatchEvent(new Event("input", { bubbles: true }));
+                    input.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+            }
+
+            const show = !isToggle || inputs[0].type === "password";
+            setVisible(inputs, groupButtons(TOGGLE, group), show);
+        });
+    }
+}
+
+/**
+ * @param {string} group
+ * @returns {HTMLInputElement[]}
+ */
+function groupInputs(group) {
+    return [...document.querySelectorAll(`input[${FIELD}="${CSS.escape(group)}"]`)].filter(
+        (input) => input instanceof HTMLInputElement && boolAttr(input, FIELD, false),
+    );
+}
+
+/**
+ * @param {string} attr
+ * @param {string} group
+ * @returns {Element[]}
+ */
+function groupButtons(attr, group) {
+    return [...document.querySelectorAll(`[${attr}="${CSS.escape(group)}"]`)];
+}
+
+/**
+ * @param {HTMLInputElement[]} inputs
+ * @returns {number|undefined}
+ */
+function passwordLength(inputs) {
+    const minLen = Math.max(...inputs.map((input) => attrLength(input, "minlength")));
+    const maxLen = Math.max(...inputs.map((input) => attrLength(input, "maxlength")));
+    const minLength = minLen > 0 ? minLen : undefined;
+    const maxLength = maxLen > 0 ? maxLen : undefined;
+
+    if (minLength !== undefined && maxLength !== undefined && maxLength >= minLength) {
+        return randomInt(maxLength - minLength + 1) + minLength;
+    }
+
+    return minLength ?? maxLength ?? undefined;
+}
+
+/**
+ * @param {HTMLInputElement|null} input
+ * @param {string} name
+ * @returns {number}
+ */
+function attrLength(input, name) {
+    if (!input) {
+        return 0;
+    }
+    return Number.parseInt(String(input.getAttribute(name) ?? ""), 10) || 0;
+}
+
+/**
+ * @param {HTMLInputElement[]} inputs
+ * @param {Element[]} toggles
+ * @param {boolean} show
+ */
+function setVisible(inputs, toggles, show) {
+    for (const input of inputs) {
         input.type = show ? "text" : "password";
-
-        if (!input.id) {
-            return;
-        }
-
-        const toggleButton = document.querySelector(`.btn-pass[data-input='${CSS.escape(input.id)}'], .btn-pass[data-input2='${CSS.escape(input.id)}']`);
-        if (!toggleButton) {
-            return;
-        }
-
-        const btnShow = toggleButton.querySelector(".btn-pass-show");
-        const btnHide = toggleButton.querySelector(".btn-pass-hide");
-
-        if (btnShow && btnHide) {
-            btnShow.classList.toggle("d-none", show);
-            btnHide.classList.toggle("d-none", !show);
-        }
     }
 
-    /**
-     * Generates a random password with uppercase, lowercase, digits, and special characters.
-     *
-     * @param {number} length - Desired password length.
-     * @returns {string} Generated password.
-     */
-    function generatePassword(length = 8) {
-        let targetLen = typeof length === "number" ? length : Number.parseInt(String(length), 10);
-        if (!Number.isFinite(targetLen) || targetLen < 1) {
-            targetLen = 8;
+    for (const toggle of toggles) {
+        const [showIcon, hideIcon] = toggle.querySelectorAll(".icon");
+        if (showIcon && hideIcon) {
+            showIcon.classList.toggle("d-none", show);
+            hideIcon.classList.toggle("d-none", !show);
         }
-        if (targetLen < 4) {
-            targetLen = 4;
-        }
+    }
+}
 
-        const uppercase = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-        const lowercase = "abcdefghijkmnpqrstuvwxyz";
-        const numbers = "23456789";
-        const specials = "!@#$%&_";
-        const all = uppercase + lowercase + numbers;
-
-        let password = "";
-        password += pickStr(specials, 1);
-        password += pickStr(lowercase, 1);
-        password += pickStr(uppercase, 1);
-        password += pickStr(numbers, 1);
-        if (targetLen > password.length) {
-            password += pickStr(all, targetLen - password.length);
-        }
-        return shuffleStr(password);
+/**
+ * Random password with uppercase, lowercase, digits, and one special.
+ *
+ * @param {number} [length]
+ * @returns {string}
+ */
+function generatePassword(length = 8) {
+    let targetLen = typeof length === "number" ? length : Number.parseInt(String(length), 10);
+    if (!Number.isFinite(targetLen) || targetLen < 1) {
+        targetLen = 8;
+    }
+    if (targetLen < 4) {
+        targetLen = 4;
     }
 
-    /**
-     * Selects `n` random characters from the string.
-     *
-     * @param {string} str - Source characters.
-     * @param {number} n - Number of characters to select.
-     * @returns {string} Selected characters.
-     */
-    function pickStr(str, n) {
-        let chars = "";
-        for (let i = 0; i < n; i++) {
-            chars += str.charAt(randomInt(str.length));
-        }
-        return chars;
-    }
+    const uppercase = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+    const lowercase = "abcdefghijkmnpqrstuvwxyz";
+    const numbers = "23456789";
+    const specials = "!@#$%&_";
+    const all = uppercase + lowercase + numbers;
 
-    /**
-     * Unbiased integer in [0, maxExclusive).
-     *
-     * @param {number} maxExclusive
-     * @returns {number}
-     */
-    function randomInt(maxExclusive) {
-        if (maxExclusive <= 1) {
-            return 0;
-        }
-        const buf = new Uint32Array(1);
-        const limit = Math.floor(0x100000000 / maxExclusive) * maxExclusive;
-        let x;
-        do {
-            crypto.getRandomValues(buf);
-            x = buf[0];
-        } while (x >= limit);
-        return x % maxExclusive;
+    let password = "";
+    password += pickStr(specials, 1);
+    password += pickStr(lowercase, 1);
+    password += pickStr(uppercase, 1);
+    password += pickStr(numbers, 1);
+    if (targetLen > password.length) {
+        password += pickStr(all, targetLen - password.length);
     }
+    return shuffleStr(password);
+}
 
-    /**
-     * Randomly shuffles the characters of the string.
-     *
-     * @param {string} str - The string to shuffle.
-     * @returns {string} The shuffled string.
-     */
-    function shuffleStr(str) {
-        const array = [...str];
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = randomInt(i + 1);
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array.join("");
+/**
+ * @param {string} str
+ * @param {number} n
+ * @returns {string}
+ */
+function pickStr(str, n) {
+    let chars = "";
+    for (let i = 0; i < n; i++) {
+        chars += str.charAt(randomInt(str.length));
     }
+    return chars;
+}
 
-    window.formTypePassword = formTypePassword;
-})();
+/**
+ * Unbiased integer in [0, maxExclusive).
+ *
+ * @param {number} maxExclusive
+ * @returns {number}
+ */
+function randomInt(maxExclusive) {
+    if (maxExclusive <= 1) {
+        return 0;
+    }
+    const buf = new Uint32Array(1);
+    const limit = Math.floor(0x100000000 / maxExclusive) * maxExclusive;
+    let x;
+    do {
+        crypto.getRandomValues(buf);
+        x = buf[0];
+    } while (x >= limit);
+    return x % maxExclusive;
+}
+
+/**
+ * @param {string} str
+ * @returns {string}
+ */
+function shuffleStr(str) {
+    const array = [...str];
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = randomInt(i + 1);
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array.join("");
+}

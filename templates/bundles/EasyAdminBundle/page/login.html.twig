@@ -46,10 +46,10 @@
                                 {% endif %}
                             </label>
                             <div class="input-group">
-                                <input type="password" id="password" name="{{ password_parameter|default('_password') }}" class="form-control" placeholder="{{ _password_label }}" required>
-                                <button type="button" class="btn btn-icon btn-pass" data-input="password">
-                                    <twig:ux:icon class="icon btn-pass-show" name="tabler:eye" />
-                                    <twig:ux:icon class="icon btn-pass-hide d-none" name="tabler:eye-off" />
+                                <input type="password" id="password" name="{{ password_parameter|default('_password') }}" class="form-control" placeholder="{{ _password_label }}" required data-password-field="password">
+                                <button type="button" class="btn btn-icon" data-password-toggle="password">
+                                    <twig:ux:icon class="icon" name="tabler:eye" />
+                                    <twig:ux:icon class="icon d-none" name="tabler:eye-off" />
                                 </button>
                             </div>
                         </div>
