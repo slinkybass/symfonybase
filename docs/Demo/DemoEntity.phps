@@ -21,7 +21,7 @@ class DemoEntity
     private ?string $text = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $text2 = null;
+    private ?string $textRequired = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $textHelp = null;
@@ -57,7 +57,7 @@ class DemoEntity
     private ?float $floatPositive = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $floatStep05 = null;
+    private ?float $floatStepHalf = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $percent = null;
@@ -87,120 +87,117 @@ class DemoEntity
     private ?string $textarea = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $textarea2 = null;
+    private ?string $textareaBounds = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $textarea3 = null;
+    private ?string $textareaNoAutogrow = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $textarea4 = null;
+    private ?string $textareaStatic = null;
 
     #[ORM\Column(length: 255, nullable: true, enumType: UserGender::class)]
     private ?UserGender $choice = null;
 
     #[ORM\Column(length: 255, nullable: true, enumType: UserGender::class)]
-    private ?UserGender $choice2 = null;
+    private ?UserGender $choiceExpanded = null;
 
     #[ORM\Column(length: 255, nullable: true, enumType: UserGender::class)]
-    private ?UserGender $choice3 = null;
+    private ?UserGender $choiceExpandedRequired = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $choice4 = null;
+    private ?array $choiceMultiple = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $choice5 = null;
+    private ?array $choiceMultipleExpanded = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsDefault = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsNative = null;
+    private ?string $selectDefault = null;
 
     #[ORM\Column(nullable: true, enumType: UserGender::class)]
-    private ?UserGender $tsEnum = null;
+    private ?UserGender $selectEnum = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsRequired = null;
+    private ?string $selectRequired = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsCreate = null;
+    private ?string $selectCreate = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsCreateOnBlur = null;
+    private ?string $selectCreateOnBlur = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsHtml = null;
+    private ?string $selectHtml = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $tsMultiple = null;
+    private ?array $selectMultiple = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsMaxOptions = null;
+    private ?string $selectMaxOptions = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $tsMaxItems = null;
+    private ?array $selectMaxItems = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsSelectOnTab = null;
+    private ?string $selectOnTab = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsDiacritics = null;
+    private ?string $selectDiacritics = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsNoClear = null;
+    private ?string $selectNoClear = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $tsNoDropdown = null;
+    private ?string $selectNoDropdown = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $tsCloseAfterSelect = null;
+    private ?array $selectCloseAfterSelect = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $tsHideSelected = null;
+    private ?array $selectHideSelected = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $tsCheckbox = null;
+    private ?array $selectCheckbox = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $tsNoRemove = null;
+    private ?array $selectNoRemove = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $tsDuplicates = null;
+    private ?array $selectDuplicates = null;
 
     #[ORM\ManyToOne(targetEntity: Role::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?Role $tsRole = null;
+    private ?Role $selectRole = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?User $tsUser = null;
+    private ?User $selectUser = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $codeeditor = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor2 = null;
+    private ?string $codeeditorPhpGithub = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor3 = null;
+    private ?string $codeeditorPlaceholder = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor4 = null;
+    private ?string $codeeditorBounds = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor5 = null;
+    private ?string $codeeditorIndentSpaces = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor6 = null;
+    private ?string $codeeditorWrap = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor7 = null;
+    private ?string $codeeditorPrintMargin = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor8 = null;
+    private ?string $codeeditorMinimalUi = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $codeeditor9 = null;
+    private ?string $codeeditorReadonly = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $array = null;
@@ -224,7 +221,7 @@ class DemoEntity
     private ?string $color = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInline = null;
+    private ?string $colorFlat = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $colorAlpha = null;
@@ -239,10 +236,10 @@ class DemoEntity
     private ?string $colorPaletteOnly = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInlinePalette = null;
+    private ?string $colorFlatPalette = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $colorInlinePaletteOnly = null;
+    private ?string $colorFlatPaletteOnly = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $colorCustomPalette = null;
@@ -335,10 +332,10 @@ class DemoEntity
     private ?\DateTimeInterface $datetimeClock = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $time12h = null;
+    private ?\DateTimeInterface $timeHour12 = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $datetime12h = null;
+    private ?\DateTimeInterface $datetimeHour12 = null;
 
     #[ORM\Column]
     private ?bool $hierarchySwitch = null;
@@ -410,16 +407,16 @@ class DemoEntity
     private ?string $mediaWithCrop = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask = null;
+    private ?string $maskPhone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask2 = null;
+    private ?string $maskPlate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $mask3 = null;
+    private ?string $maskPin = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $maskEager = null;
+    private ?string $maskDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $maskSecure = null;
@@ -437,10 +434,10 @@ class DemoEntity
     private ?string $signature = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureWithoutUndo = null;
+    private ?string $signatureNoUndo = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $signatureWithoutClear = null;
+    private ?string $signatureNoClear = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $signaturePenColor = null;
@@ -491,67 +488,67 @@ class DemoEntity
     private ?string $slug = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug2 = null;
+    private ?string $slugConfirm = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug3 = null;
+    private ?string $slugLocaleEs = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug4 = null;
+    private ?string $slugKeepCase = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug5 = null;
+    private ?string $slugKeepDots = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $texteditor = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor2 = null;
+    private ?string $texteditorBasic = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor3 = null;
+    private ?string $texteditorPlaceholder = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor4 = null;
+    private ?string $texteditorFixedHeight = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor5 = null;
+    private ?string $texteditorAutoresize = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor6 = null;
+    private ?string $texteditorResizeBoth = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor7 = null;
+    private ?string $texteditorCustomToolbar = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor8 = null;
+    private ?string $texteditorStickyToolbar = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor9 = null;
+    private ?string $texteditorMenubar = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor10 = null;
+    private ?string $texteditorSelectionQuickbar = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor11 = null;
+    private ?string $texteditorInsertQuickbar = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor12 = null;
+    private ?string $texteditorPasteAsText = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor13 = null;
+    private ?string $texteditorContextMenu = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor14 = null;
+    private ?string $texteditorReadonly = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor15 = null;
+    private ?string $texteditorNoStatusbar = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor16 = null;
+    private ?string $texteditorNoElementPath = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $texteditor17 = null;
+    private ?string $texteditorReducedPlugins = null;
 
     public function getId(): ?int
     {
@@ -570,14 +567,14 @@ class DemoEntity
         return $this;
     }
 
-    public function getText2(): ?string
+    public function getTextRequired(): ?string
     {
-        return $this->text2;
+        return $this->textRequired;
     }
 
-    public function setText2(string $text2): static
+    public function setTextRequired(string $textRequired): static
     {
-        $this->text2 = $text2;
+        $this->textRequired = $textRequired;
 
         return $this;
     }
@@ -714,14 +711,14 @@ class DemoEntity
         return $this;
     }
 
-    public function getFloatStep05(): ?float
+    public function getFloatStepHalf(): ?float
     {
-        return $this->floatStep05;
+        return $this->floatStepHalf;
     }
 
-    public function setFloatStep05(?float $floatStep05): static
+    public function setFloatStepHalf(?float $floatStepHalf): static
     {
-        $this->floatStep05 = $floatStep05;
+        $this->floatStepHalf = $floatStepHalf;
 
         return $this;
     }
@@ -834,38 +831,38 @@ class DemoEntity
         return $this;
     }
 
-    public function getTextarea2(): ?string
+    public function getTextareaBounds(): ?string
     {
-        return $this->textarea2;
+        return $this->textareaBounds;
     }
 
-    public function setTextarea2(?string $textarea2): static
+    public function setTextareaBounds(?string $textareaBounds): static
     {
-        $this->textarea2 = $textarea2;
+        $this->textareaBounds = $textareaBounds;
 
         return $this;
     }
 
-    public function getTextarea3(): ?string
+    public function getTextareaNoAutogrow(): ?string
     {
-        return $this->textarea3;
+        return $this->textareaNoAutogrow;
     }
 
-    public function setTextarea3(?string $textarea3): static
+    public function setTextareaNoAutogrow(?string $textareaNoAutogrow): static
     {
-        $this->textarea3 = $textarea3;
+        $this->textareaNoAutogrow = $textareaNoAutogrow;
 
         return $this;
     }
 
-    public function getTextarea4(): ?string
+    public function getTextareaStatic(): ?string
     {
-        return $this->textarea4;
+        return $this->textareaStatic;
     }
 
-    public function setTextarea4(?string $textarea4): static
+    public function setTextareaStatic(?string $textareaStatic): static
     {
-        $this->textarea4 = $textarea4;
+        $this->textareaStatic = $textareaStatic;
 
         return $this;
     }
@@ -882,302 +879,290 @@ class DemoEntity
         return $this;
     }
 
-    public function getChoice2(): ?UserGender
+    public function getChoiceExpanded(): ?UserGender
     {
-        return $this->choice2;
+        return $this->choiceExpanded;
     }
 
-    public function setChoice2(?UserGender $choice2): static
+    public function setChoiceExpanded(?UserGender $choiceExpanded): static
     {
-        $this->choice2 = $choice2;
+        $this->choiceExpanded = $choiceExpanded;
 
         return $this;
     }
 
-    public function getChoice3(): ?UserGender
+    public function getChoiceExpandedRequired(): ?UserGender
     {
-        return $this->choice3;
+        return $this->choiceExpandedRequired;
     }
 
-    public function setChoice3(?UserGender $choice3): static
+    public function setChoiceExpandedRequired(?UserGender $choiceExpandedRequired): static
     {
-        $this->choice3 = $choice3;
+        $this->choiceExpandedRequired = $choiceExpandedRequired;
 
         return $this;
     }
 
-    public function getChoice4(): ?array
+    public function getChoiceMultiple(): ?array
     {
-        return $this->choice4;
+        return $this->choiceMultiple;
     }
 
-    public function setChoice4(?array $choice4): static
+    public function setChoiceMultiple(?array $choiceMultiple): static
     {
-        $this->choice4 = $choice4;
+        $this->choiceMultiple = $choiceMultiple;
 
         return $this;
     }
 
-    public function getChoice5(): ?array
+    public function getChoiceMultipleExpanded(): ?array
     {
-        return $this->choice5;
+        return $this->choiceMultipleExpanded;
     }
 
-    public function setChoice5(?array $choice5): static
+    public function setChoiceMultipleExpanded(?array $choiceMultipleExpanded): static
     {
-        $this->choice5 = $choice5;
+        $this->choiceMultipleExpanded = $choiceMultipleExpanded;
 
         return $this;
     }
 
-    public function getTsDefault(): ?string
+    public function getSelectDefault(): ?string
     {
-        return $this->tsDefault;
+        return $this->selectDefault;
     }
 
-    public function setTsDefault(?string $tsDefault): static
+    public function setSelectDefault(?string $selectDefault): static
     {
-        $this->tsDefault = $tsDefault;
+        $this->selectDefault = $selectDefault;
 
         return $this;
     }
 
-    public function getTsNative(): ?string
+    public function getSelectEnum(): ?UserGender
     {
-        return $this->tsNative;
+        return $this->selectEnum;
     }
 
-    public function setTsNative(?string $tsNative): static
+    public function setSelectEnum(?UserGender $selectEnum): static
     {
-        $this->tsNative = $tsNative;
+        $this->selectEnum = $selectEnum;
 
         return $this;
     }
 
-    public function getTsEnum(): ?UserGender
+    public function getSelectRequired(): ?string
     {
-        return $this->tsEnum;
+        return $this->selectRequired;
     }
 
-    public function setTsEnum(?UserGender $tsEnum): static
+    public function setSelectRequired(?string $selectRequired): static
     {
-        $this->tsEnum = $tsEnum;
+        $this->selectRequired = $selectRequired;
 
         return $this;
     }
 
-    public function getTsRequired(): ?string
+    public function getSelectCreate(): ?string
     {
-        return $this->tsRequired;
+        return $this->selectCreate;
     }
 
-    public function setTsRequired(?string $tsRequired): static
+    public function setSelectCreate(?string $selectCreate): static
     {
-        $this->tsRequired = $tsRequired;
+        $this->selectCreate = $selectCreate;
 
         return $this;
     }
 
-    public function getTsCreate(): ?string
+    public function getSelectCreateOnBlur(): ?string
     {
-        return $this->tsCreate;
+        return $this->selectCreateOnBlur;
     }
 
-    public function setTsCreate(?string $tsCreate): static
+    public function setSelectCreateOnBlur(?string $selectCreateOnBlur): static
     {
-        $this->tsCreate = $tsCreate;
+        $this->selectCreateOnBlur = $selectCreateOnBlur;
 
         return $this;
     }
 
-    public function getTsCreateOnBlur(): ?string
+    public function getSelectHtml(): ?string
     {
-        return $this->tsCreateOnBlur;
+        return $this->selectHtml;
     }
 
-    public function setTsCreateOnBlur(?string $tsCreateOnBlur): static
+    public function setSelectHtml(?string $selectHtml): static
     {
-        $this->tsCreateOnBlur = $tsCreateOnBlur;
+        $this->selectHtml = $selectHtml;
 
         return $this;
     }
 
-    public function getTsHtml(): ?string
+    public function getSelectMultiple(): ?array
     {
-        return $this->tsHtml;
+        return $this->selectMultiple;
     }
 
-    public function setTsHtml(?string $tsHtml): static
+    public function setSelectMultiple(?array $selectMultiple): static
     {
-        $this->tsHtml = $tsHtml;
+        $this->selectMultiple = $selectMultiple;
 
         return $this;
     }
 
-    public function getTsMultiple(): ?array
+    public function getSelectMaxOptions(): ?string
     {
-        return $this->tsMultiple;
+        return $this->selectMaxOptions;
     }
 
-    public function setTsMultiple(?array $tsMultiple): static
+    public function setSelectMaxOptions(?string $selectMaxOptions): static
     {
-        $this->tsMultiple = $tsMultiple;
+        $this->selectMaxOptions = $selectMaxOptions;
 
         return $this;
     }
 
-    public function getTsMaxOptions(): ?string
+    public function getSelectMaxItems(): ?array
     {
-        return $this->tsMaxOptions;
+        return $this->selectMaxItems;
     }
 
-    public function setTsMaxOptions(?string $tsMaxOptions): static
+    public function setSelectMaxItems(?array $selectMaxItems): static
     {
-        $this->tsMaxOptions = $tsMaxOptions;
+        $this->selectMaxItems = $selectMaxItems;
 
         return $this;
     }
 
-    public function getTsMaxItems(): ?array
+    public function getSelectOnTab(): ?string
     {
-        return $this->tsMaxItems;
+        return $this->selectOnTab;
     }
 
-    public function setTsMaxItems(?array $tsMaxItems): static
+    public function setSelectOnTab(?string $selectOnTab): static
     {
-        $this->tsMaxItems = $tsMaxItems;
+        $this->selectOnTab = $selectOnTab;
 
         return $this;
     }
 
-    public function getTsSelectOnTab(): ?string
+    public function getSelectDiacritics(): ?string
     {
-        return $this->tsSelectOnTab;
+        return $this->selectDiacritics;
     }
 
-    public function setTsSelectOnTab(?string $tsSelectOnTab): static
+    public function setSelectDiacritics(?string $selectDiacritics): static
     {
-        $this->tsSelectOnTab = $tsSelectOnTab;
+        $this->selectDiacritics = $selectDiacritics;
 
         return $this;
     }
 
-    public function getTsDiacritics(): ?string
+    public function getSelectNoClear(): ?string
     {
-        return $this->tsDiacritics;
+        return $this->selectNoClear;
     }
 
-    public function setTsDiacritics(?string $tsDiacritics): static
+    public function setSelectNoClear(?string $selectNoClear): static
     {
-        $this->tsDiacritics = $tsDiacritics;
+        $this->selectNoClear = $selectNoClear;
 
         return $this;
     }
 
-    public function getTsNoClear(): ?string
+    public function getSelectNoDropdown(): ?string
     {
-        return $this->tsNoClear;
+        return $this->selectNoDropdown;
     }
 
-    public function setTsNoClear(?string $tsNoClear): static
+    public function setSelectNoDropdown(?string $selectNoDropdown): static
     {
-        $this->tsNoClear = $tsNoClear;
+        $this->selectNoDropdown = $selectNoDropdown;
 
         return $this;
     }
 
-    public function getTsNoDropdown(): ?string
+    public function getSelectCloseAfterSelect(): ?array
     {
-        return $this->tsNoDropdown;
+        return $this->selectCloseAfterSelect;
     }
 
-    public function setTsNoDropdown(?string $tsNoDropdown): static
+    public function setSelectCloseAfterSelect(?array $selectCloseAfterSelect): static
     {
-        $this->tsNoDropdown = $tsNoDropdown;
+        $this->selectCloseAfterSelect = $selectCloseAfterSelect;
 
         return $this;
     }
 
-    public function getTsCloseAfterSelect(): ?array
+    public function getSelectHideSelected(): ?array
     {
-        return $this->tsCloseAfterSelect;
+        return $this->selectHideSelected;
     }
 
-    public function setTsCloseAfterSelect(?array $tsCloseAfterSelect): static
+    public function setSelectHideSelected(?array $selectHideSelected): static
     {
-        $this->tsCloseAfterSelect = $tsCloseAfterSelect;
+        $this->selectHideSelected = $selectHideSelected;
 
         return $this;
     }
 
-    public function getTsHideSelected(): ?array
+    public function getSelectCheckbox(): ?array
     {
-        return $this->tsHideSelected;
+        return $this->selectCheckbox;
     }
 
-    public function setTsHideSelected(?array $tsHideSelected): static
+    public function setSelectCheckbox(?array $selectCheckbox): static
     {
-        $this->tsHideSelected = $tsHideSelected;
+        $this->selectCheckbox = $selectCheckbox;
 
         return $this;
     }
 
-    public function getTsCheckbox(): ?array
+    public function getSelectNoRemove(): ?array
     {
-        return $this->tsCheckbox;
+        return $this->selectNoRemove;
     }
 
-    public function setTsCheckbox(?array $tsCheckbox): static
+    public function setSelectNoRemove(?array $selectNoRemove): static
     {
-        $this->tsCheckbox = $tsCheckbox;
+        $this->selectNoRemove = $selectNoRemove;
 
         return $this;
     }
 
-    public function getTsNoRemove(): ?array
+    public function getSelectDuplicates(): ?array
     {
-        return $this->tsNoRemove;
+        return $this->selectDuplicates;
     }
 
-    public function setTsNoRemove(?array $tsNoRemove): static
+    public function setSelectDuplicates(?array $selectDuplicates): static
     {
-        $this->tsNoRemove = $tsNoRemove;
+        $this->selectDuplicates = $selectDuplicates;
 
         return $this;
     }
 
-    public function getTsDuplicates(): ?array
+    public function getSelectRole(): ?Role
     {
-        return $this->tsDuplicates;
+        return $this->selectRole;
     }
 
-    public function setTsDuplicates(?array $tsDuplicates): static
+    public function setSelectRole(?Role $selectRole): static
     {
-        $this->tsDuplicates = $tsDuplicates;
+        $this->selectRole = $selectRole;
 
         return $this;
     }
 
-    public function getTsRole(): ?Role
+    public function getSelectUser(): ?User
     {
-        return $this->tsRole;
+        return $this->selectUser;
     }
 
-    public function setTsRole(?Role $tsRole): static
+    public function setSelectUser(?User $selectUser): static
     {
-        $this->tsRole = $tsRole;
-
-        return $this;
-    }
-
-    public function getTsUser(): ?User
-    {
-        return $this->tsUser;
-    }
-
-    public function setTsUser(?User $tsUser): static
-    {
-        $this->tsUser = $tsUser;
+        $this->selectUser = $selectUser;
 
         return $this;
     }
@@ -1194,98 +1179,98 @@ class DemoEntity
         return $this;
     }
 
-    public function getCodeeditor2(): ?string
+    public function getCodeeditorPhpGithub(): ?string
     {
-        return $this->codeeditor2;
+        return $this->codeeditorPhpGithub;
     }
 
-    public function setCodeeditor2(?string $codeeditor2): static
+    public function setCodeeditorPhpGithub(?string $codeeditorPhpGithub): static
     {
-        $this->codeeditor2 = $codeeditor2;
+        $this->codeeditorPhpGithub = $codeeditorPhpGithub;
 
         return $this;
     }
 
-    public function getCodeeditor3(): ?string
+    public function getCodeeditorPlaceholder(): ?string
     {
-        return $this->codeeditor3;
+        return $this->codeeditorPlaceholder;
     }
 
-    public function setCodeeditor3(?string $codeeditor3): static
+    public function setCodeeditorPlaceholder(?string $codeeditorPlaceholder): static
     {
-        $this->codeeditor3 = $codeeditor3;
+        $this->codeeditorPlaceholder = $codeeditorPlaceholder;
 
         return $this;
     }
 
-    public function getCodeeditor4(): ?string
+    public function getCodeeditorBounds(): ?string
     {
-        return $this->codeeditor4;
+        return $this->codeeditorBounds;
     }
 
-    public function setCodeeditor4(?string $codeeditor4): static
+    public function setCodeeditorBounds(?string $codeeditorBounds): static
     {
-        $this->codeeditor4 = $codeeditor4;
+        $this->codeeditorBounds = $codeeditorBounds;
 
         return $this;
     }
 
-    public function getCodeeditor5(): ?string
+    public function getCodeeditorIndentSpaces(): ?string
     {
-        return $this->codeeditor5;
+        return $this->codeeditorIndentSpaces;
     }
 
-    public function setCodeeditor5(?string $codeeditor5): static
+    public function setCodeeditorIndentSpaces(?string $codeeditorIndentSpaces): static
     {
-        $this->codeeditor5 = $codeeditor5;
+        $this->codeeditorIndentSpaces = $codeeditorIndentSpaces;
 
         return $this;
     }
 
-    public function getCodeeditor6(): ?string
+    public function getCodeeditorWrap(): ?string
     {
-        return $this->codeeditor6;
+        return $this->codeeditorWrap;
     }
 
-    public function setCodeeditor6(?string $codeeditor6): static
+    public function setCodeeditorWrap(?string $codeeditorWrap): static
     {
-        $this->codeeditor6 = $codeeditor6;
+        $this->codeeditorWrap = $codeeditorWrap;
 
         return $this;
     }
 
-    public function getCodeeditor7(): ?string
+    public function getCodeeditorPrintMargin(): ?string
     {
-        return $this->codeeditor7;
+        return $this->codeeditorPrintMargin;
     }
 
-    public function setCodeeditor7(?string $codeeditor7): static
+    public function setCodeeditorPrintMargin(?string $codeeditorPrintMargin): static
     {
-        $this->codeeditor7 = $codeeditor7;
+        $this->codeeditorPrintMargin = $codeeditorPrintMargin;
 
         return $this;
     }
 
-    public function getCodeeditor8(): ?string
+    public function getCodeeditorMinimalUi(): ?string
     {
-        return $this->codeeditor8;
+        return $this->codeeditorMinimalUi;
     }
 
-    public function setCodeeditor8(?string $codeeditor8): static
+    public function setCodeeditorMinimalUi(?string $codeeditorMinimalUi): static
     {
-        $this->codeeditor8 = $codeeditor8;
+        $this->codeeditorMinimalUi = $codeeditorMinimalUi;
 
         return $this;
     }
 
-    public function getCodeeditor9(): ?string
+    public function getCodeeditorReadonly(): ?string
     {
-        return $this->codeeditor9;
+        return $this->codeeditorReadonly;
     }
 
-    public function setCodeeditor9(?string $codeeditor9): static
+    public function setCodeeditorReadonly(?string $codeeditorReadonly): static
     {
-        $this->codeeditor9 = $codeeditor9;
+        $this->codeeditorReadonly = $codeeditorReadonly;
 
         return $this;
     }
@@ -1374,14 +1359,14 @@ class DemoEntity
         return $this;
     }
 
-    public function getColorInline(): ?string
+    public function getColorFlat(): ?string
     {
-        return $this->colorInline;
+        return $this->colorFlat;
     }
 
-    public function setColorInline(?string $colorInline): static
+    public function setColorFlat(?string $colorFlat): static
     {
-        $this->colorInline = $colorInline;
+        $this->colorFlat = $colorFlat;
 
         return $this;
     }
@@ -1434,26 +1419,26 @@ class DemoEntity
         return $this;
     }
 
-    public function getColorInlinePalette(): ?string
+    public function getColorFlatPalette(): ?string
     {
-        return $this->colorInlinePalette;
+        return $this->colorFlatPalette;
     }
 
-    public function setColorInlinePalette(?string $colorInlinePalette): static
+    public function setColorFlatPalette(?string $colorFlatPalette): static
     {
-        $this->colorInlinePalette = $colorInlinePalette;
+        $this->colorFlatPalette = $colorFlatPalette;
 
         return $this;
     }
 
-    public function getColorInlinePaletteOnly(): ?string
+    public function getColorFlatPaletteOnly(): ?string
     {
-        return $this->colorInlinePaletteOnly;
+        return $this->colorFlatPaletteOnly;
     }
 
-    public function setColorInlinePaletteOnly(?string $colorInlinePaletteOnly): static
+    public function setColorFlatPaletteOnly(?string $colorFlatPaletteOnly): static
     {
-        $this->colorInlinePaletteOnly = $colorInlinePaletteOnly;
+        $this->colorFlatPaletteOnly = $colorFlatPaletteOnly;
 
         return $this;
     }
@@ -1818,26 +1803,26 @@ class DemoEntity
         return $this;
     }
 
-    public function getTime12h(): ?\DateTimeInterface
+    public function getTimeHour12(): ?\DateTimeInterface
     {
-        return $this->time12h;
+        return $this->timeHour12;
     }
 
-    public function setTime12h(?\DateTimeInterface $time12h): static
+    public function setTimeHour12(?\DateTimeInterface $timeHour12): static
     {
-        $this->time12h = $time12h;
+        $this->timeHour12 = $timeHour12;
 
         return $this;
     }
 
-    public function getDatetime12h(): ?\DateTimeInterface
+    public function getDatetimeHour12(): ?\DateTimeInterface
     {
-        return $this->datetime12h;
+        return $this->datetimeHour12;
     }
 
-    public function setDatetime12h(?\DateTimeInterface $datetime12h): static
+    public function setDatetimeHour12(?\DateTimeInterface $datetimeHour12): static
     {
-        $this->datetime12h = $datetime12h;
+        $this->datetimeHour12 = $datetimeHour12;
 
         return $this;
     }
@@ -2118,50 +2103,50 @@ class DemoEntity
         return $this;
     }
 
-    public function getMask(): ?string
+    public function getMaskPhone(): ?string
     {
-        return $this->mask;
+        return $this->maskPhone;
     }
 
-    public function setMask(?string $mask): static
+    public function setMaskPhone(?string $maskPhone): static
     {
-        $this->mask = $mask;
+        $this->maskPhone = $maskPhone;
 
         return $this;
     }
 
-    public function getMask2(): ?string
+    public function getMaskPlate(): ?string
     {
-        return $this->mask2;
+        return $this->maskPlate;
     }
 
-    public function setMask2(?string $mask2): static
+    public function setMaskPlate(?string $maskPlate): static
     {
-        $this->mask2 = $mask2;
+        $this->maskPlate = $maskPlate;
 
         return $this;
     }
 
-    public function getMask3(): ?string
+    public function getMaskPin(): ?string
     {
-        return $this->mask3;
+        return $this->maskPin;
     }
 
-    public function setMask3(?string $mask3): static
+    public function setMaskPin(?string $maskPin): static
     {
-        $this->mask3 = $mask3;
+        $this->maskPin = $maskPin;
 
         return $this;
     }
 
-    public function getMaskEager(): ?string
+    public function getMaskDate(): ?string
     {
-        return $this->maskEager;
+        return $this->maskDate;
     }
 
-    public function setMaskEager(?string $maskEager): static
+    public function setMaskDate(?string $maskDate): static
     {
-        $this->maskEager = $maskEager;
+        $this->maskDate = $maskDate;
 
         return $this;
     }
@@ -2226,26 +2211,26 @@ class DemoEntity
         return $this;
     }
 
-    public function getSignatureWithoutUndo(): ?string
+    public function getSignatureNoUndo(): ?string
     {
-        return $this->signatureWithoutUndo;
+        return $this->signatureNoUndo;
     }
 
-    public function setSignatureWithoutUndo(?string $signatureWithoutUndo): static
+    public function setSignatureNoUndo(?string $signatureNoUndo): static
     {
-        $this->signatureWithoutUndo = $signatureWithoutUndo;
+        $this->signatureNoUndo = $signatureNoUndo;
 
         return $this;
     }
 
-    public function getSignatureWithoutClear(): ?string
+    public function getSignatureNoClear(): ?string
     {
-        return $this->signatureWithoutClear;
+        return $this->signatureNoClear;
     }
 
-    public function setSignatureWithoutClear(?string $signatureWithoutClear): static
+    public function setSignatureNoClear(?string $signatureNoClear): static
     {
-        $this->signatureWithoutClear = $signatureWithoutClear;
+        $this->signatureNoClear = $signatureNoClear;
 
         return $this;
     }
@@ -2442,50 +2427,50 @@ class DemoEntity
         return $this;
     }
 
-    public function getSlug2(): ?string
+    public function getSlugConfirm(): ?string
     {
-        return $this->slug2;
+        return $this->slugConfirm;
     }
 
-    public function setSlug2(?string $slug2): static
+    public function setSlugConfirm(?string $slugConfirm): static
     {
-        $this->slug2 = $slug2;
+        $this->slugConfirm = $slugConfirm;
 
         return $this;
     }
 
-    public function getSlug3(): ?string
+    public function getSlugLocaleEs(): ?string
     {
-        return $this->slug3;
+        return $this->slugLocaleEs;
     }
 
-    public function setSlug3(?string $slug3): static
+    public function setSlugLocaleEs(?string $slugLocaleEs): static
     {
-        $this->slug3 = $slug3;
+        $this->slugLocaleEs = $slugLocaleEs;
 
         return $this;
     }
 
-    public function getSlug4(): ?string
+    public function getSlugKeepCase(): ?string
     {
-        return $this->slug4;
+        return $this->slugKeepCase;
     }
 
-    public function setSlug4(?string $slug4): static
+    public function setSlugKeepCase(?string $slugKeepCase): static
     {
-        $this->slug4 = $slug4;
+        $this->slugKeepCase = $slugKeepCase;
 
         return $this;
     }
 
-    public function getSlug5(): ?string
+    public function getSlugKeepDots(): ?string
     {
-        return $this->slug5;
+        return $this->slugKeepDots;
     }
 
-    public function setSlug5(?string $slug5): static
+    public function setSlugKeepDots(?string $slugKeepDots): static
     {
-        $this->slug5 = $slug5;
+        $this->slugKeepDots = $slugKeepDots;
 
         return $this;
     }
@@ -2502,194 +2487,194 @@ class DemoEntity
         return $this;
     }
 
-    public function getTexteditor2(): ?string
+    public function getTexteditorBasic(): ?string
     {
-        return $this->texteditor2;
+        return $this->texteditorBasic;
     }
 
-    public function setTexteditor2(?string $texteditor2): static
+    public function setTexteditorBasic(?string $texteditorBasic): static
     {
-        $this->texteditor2 = $texteditor2;
+        $this->texteditorBasic = $texteditorBasic;
 
         return $this;
     }
 
-    public function getTexteditor3(): ?string
+    public function getTexteditorPlaceholder(): ?string
     {
-        return $this->texteditor3;
+        return $this->texteditorPlaceholder;
     }
 
-    public function setTexteditor3(?string $texteditor3): static
+    public function setTexteditorPlaceholder(?string $texteditorPlaceholder): static
     {
-        $this->texteditor3 = $texteditor3;
+        $this->texteditorPlaceholder = $texteditorPlaceholder;
 
         return $this;
     }
 
-    public function getTexteditor4(): ?string
+    public function getTexteditorFixedHeight(): ?string
     {
-        return $this->texteditor4;
+        return $this->texteditorFixedHeight;
     }
 
-    public function setTexteditor4(?string $texteditor4): static
+    public function setTexteditorFixedHeight(?string $texteditorFixedHeight): static
     {
-        $this->texteditor4 = $texteditor4;
+        $this->texteditorFixedHeight = $texteditorFixedHeight;
 
         return $this;
     }
 
-    public function getTexteditor5(): ?string
+    public function getTexteditorAutoresize(): ?string
     {
-        return $this->texteditor5;
+        return $this->texteditorAutoresize;
     }
 
-    public function setTexteditor5(?string $texteditor5): static
+    public function setTexteditorAutoresize(?string $texteditorAutoresize): static
     {
-        $this->texteditor5 = $texteditor5;
+        $this->texteditorAutoresize = $texteditorAutoresize;
 
         return $this;
     }
 
-    public function getTexteditor6(): ?string
+    public function getTexteditorResizeBoth(): ?string
     {
-        return $this->texteditor6;
+        return $this->texteditorResizeBoth;
     }
 
-    public function setTexteditor6(?string $texteditor6): static
+    public function setTexteditorResizeBoth(?string $texteditorResizeBoth): static
     {
-        $this->texteditor6 = $texteditor6;
+        $this->texteditorResizeBoth = $texteditorResizeBoth;
 
         return $this;
     }
 
-    public function getTexteditor7(): ?string
+    public function getTexteditorCustomToolbar(): ?string
     {
-        return $this->texteditor7;
+        return $this->texteditorCustomToolbar;
     }
 
-    public function setTexteditor7(?string $texteditor7): static
+    public function setTexteditorCustomToolbar(?string $texteditorCustomToolbar): static
     {
-        $this->texteditor7 = $texteditor7;
+        $this->texteditorCustomToolbar = $texteditorCustomToolbar;
 
         return $this;
     }
 
-    public function getTexteditor8(): ?string
+    public function getTexteditorStickyToolbar(): ?string
     {
-        return $this->texteditor8;
+        return $this->texteditorStickyToolbar;
     }
 
-    public function setTexteditor8(?string $texteditor8): static
+    public function setTexteditorStickyToolbar(?string $texteditorStickyToolbar): static
     {
-        $this->texteditor8 = $texteditor8;
+        $this->texteditorStickyToolbar = $texteditorStickyToolbar;
 
         return $this;
     }
 
-    public function getTexteditor9(): ?string
+    public function getTexteditorMenubar(): ?string
     {
-        return $this->texteditor9;
+        return $this->texteditorMenubar;
     }
 
-    public function setTexteditor9(?string $texteditor9): static
+    public function setTexteditorMenubar(?string $texteditorMenubar): static
     {
-        $this->texteditor9 = $texteditor9;
+        $this->texteditorMenubar = $texteditorMenubar;
 
         return $this;
     }
 
-    public function getTexteditor10(): ?string
+    public function getTexteditorSelectionQuickbar(): ?string
     {
-        return $this->texteditor10;
+        return $this->texteditorSelectionQuickbar;
     }
 
-    public function setTexteditor10(?string $texteditor10): static
+    public function setTexteditorSelectionQuickbar(?string $texteditorSelectionQuickbar): static
     {
-        $this->texteditor10 = $texteditor10;
+        $this->texteditorSelectionQuickbar = $texteditorSelectionQuickbar;
 
         return $this;
     }
 
-    public function getTexteditor11(): ?string
+    public function getTexteditorInsertQuickbar(): ?string
     {
-        return $this->texteditor11;
+        return $this->texteditorInsertQuickbar;
     }
 
-    public function setTexteditor11(?string $texteditor11): static
+    public function setTexteditorInsertQuickbar(?string $texteditorInsertQuickbar): static
     {
-        $this->texteditor11 = $texteditor11;
+        $this->texteditorInsertQuickbar = $texteditorInsertQuickbar;
 
         return $this;
     }
 
-    public function getTexteditor12(): ?string
+    public function getTexteditorPasteAsText(): ?string
     {
-        return $this->texteditor12;
+        return $this->texteditorPasteAsText;
     }
 
-    public function setTexteditor12(?string $texteditor12): static
+    public function setTexteditorPasteAsText(?string $texteditorPasteAsText): static
     {
-        $this->texteditor12 = $texteditor12;
+        $this->texteditorPasteAsText = $texteditorPasteAsText;
 
         return $this;
     }
 
-    public function getTexteditor13(): ?string
+    public function getTexteditorContextMenu(): ?string
     {
-        return $this->texteditor13;
+        return $this->texteditorContextMenu;
     }
 
-    public function setTexteditor13(?string $texteditor13): static
+    public function setTexteditorContextMenu(?string $texteditorContextMenu): static
     {
-        $this->texteditor13 = $texteditor13;
+        $this->texteditorContextMenu = $texteditorContextMenu;
 
         return $this;
     }
 
-    public function getTexteditor14(): ?string
+    public function getTexteditorReadonly(): ?string
     {
-        return $this->texteditor14;
+        return $this->texteditorReadonly;
     }
 
-    public function setTexteditor14(?string $texteditor14): static
+    public function setTexteditorReadonly(?string $texteditorReadonly): static
     {
-        $this->texteditor14 = $texteditor14;
+        $this->texteditorReadonly = $texteditorReadonly;
 
         return $this;
     }
 
-    public function getTexteditor15(): ?string
+    public function getTexteditorNoStatusbar(): ?string
     {
-        return $this->texteditor15;
+        return $this->texteditorNoStatusbar;
     }
 
-    public function setTexteditor15(?string $texteditor15): static
+    public function setTexteditorNoStatusbar(?string $texteditorNoStatusbar): static
     {
-        $this->texteditor15 = $texteditor15;
+        $this->texteditorNoStatusbar = $texteditorNoStatusbar;
 
         return $this;
     }
 
-    public function getTexteditor16(): ?string
+    public function getTexteditorNoElementPath(): ?string
     {
-        return $this->texteditor16;
+        return $this->texteditorNoElementPath;
     }
 
-    public function setTexteditor16(?string $texteditor16): static
+    public function setTexteditorNoElementPath(?string $texteditorNoElementPath): static
     {
-        $this->texteditor16 = $texteditor16;
+        $this->texteditorNoElementPath = $texteditorNoElementPath;
 
         return $this;
     }
 
-    public function getTexteditor17(): ?string
+    public function getTexteditorReducedPlugins(): ?string
     {
-        return $this->texteditor17;
+        return $this->texteditorReducedPlugins;
     }
 
-    public function setTexteditor17(?string $texteditor17): static
+    public function setTexteditorReducedPlugins(?string $texteditorReducedPlugins): static
     {
-        $this->texteditor17 = $texteditor17;
+        $this->texteditorReducedPlugins = $texteditorReducedPlugins;
 
         return $this;
     }

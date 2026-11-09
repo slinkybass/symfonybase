@@ -5,7 +5,6 @@ namespace App\Controller\Admin\Cruds;
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\DemoEntity;
 use App\Entity\Enum\UserGender;
-use App\Field\AssociationField;
 use App\Field\CodeEditorField;
 use App\Field\ColorField;
 use App\Field\DateField;
@@ -50,9 +49,9 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $basicFieldsTab = FieldGenerator::tab('Basic');
 
-        $idPanel = FieldGenerator::panel('ID')->setIcon('input-search')->setHelp('This field is not editable');
+        $idPanel = FieldGenerator::panel('ID')->setIcon('input-search');
         $id = FieldGenerator::id('id')
-            ->setLabel('Default')
+            ->setLabel('Default <small class="text-muted">disabled</small>')
             ->isDisabled()
             ->setColumns(3);
 
@@ -60,14 +59,14 @@ class DemoEntityCrudController extends AbstractCrudController
         $text = FieldGenerator::text('text')
             ->setLabel('Default')
             ->setColumns(3);
-        $textCustom = FieldGenerator::text('text2')
-            ->setLabel('Required, min and max length, placeholder...')
+        $textRequired = FieldGenerator::text('textRequired')
+            ->setLabel('Required <small class="text-muted">min 3 / max 10</small>')
             ->setMinLength(3)
             ->setMaxLength(10)
             ->setPlaceholder('This is a placeholder')
             ->setColumns(3);
         $textHelp = FieldGenerator::text('textHelp')
-            ->setLabel('Text field with help text')
+            ->setLabel('With help')
             ->setHelp('Help text can contain any <b>HTML</b> content')
             ->setColumns(3);
         $textRow = FieldGenerator::row();
@@ -81,36 +80,36 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('URL')
             ->setColumns(3);
         $password = FieldGenerator::password('password')
-            ->setLabel('Single Password')
+            ->setLabel('Password')
             ->setColumns(3);
 
         $confirmPanel = FieldGenerator::panel('CONFIRM FIELDS')->setIcon('input-search');
         $confirmPassword = FieldGenerator::password('confirmPassword')
-            ->setLabel('Password')
+            ->setLabel('Repeated password')
             ->isRepeated()
             ->setColumns(6);
         $confirmEmail = FieldGenerator::repeat('confirmEmail')
-            ->setLabel('Email')
+            ->setLabel('Repeated email')
             ->setType(EmailType::class)
             ->setColumns(6);
 
         $numbersPanel = FieldGenerator::panel('NUMBERS')->setIcon('input-search');
-        $integer = FieldGenerator::integer('integerNumber')
+        $integerNumber = FieldGenerator::integer('integerNumber')
             ->setLabel('Integer')
             ->setColumns(3);
         $integerPositive = FieldGenerator::integer('integerPositive')
-            ->setLabel('Integer positive')
+            ->setLabel('Positive <small class="text-muted">setMin(0)</small>')
             ->setMin(0)
             ->setColumns(3);
-        $float = FieldGenerator::float('floatNumber')
+        $floatNumber = FieldGenerator::float('floatNumber')
             ->setLabel('Float')
             ->setColumns(3);
         $floatPositive = FieldGenerator::float('floatPositive')
-            ->setLabel('Float positive')
+            ->setLabel('Positive <small class="text-muted">setMin(0)</small>')
             ->setMin(0)
             ->setColumns(3);
-        $floatStep05 = FieldGenerator::float('floatStep05')
-            ->setLabel('Float with step 0.5')
+        $floatStepHalf = FieldGenerator::float('floatStepHalf')
+            ->setLabel('Step 0.5 <small class="text-muted">setStep</small>')
             ->setStep(0.5)
             ->setColumns(3);
         $percent = FieldGenerator::percent('percent')
@@ -120,7 +119,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Money')
             ->setColumns(3);
         $moneyCustomCurrency = FieldGenerator::money('moneyCustomCurrency')
-            ->setLabel('Money with custom currency')
+            ->setLabel('Custom currency <small class="text-muted">USD</small>')
             ->setCurrency('USD')
             ->setColumns(3);
 
@@ -137,54 +136,56 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('File')
             ->setColumns(4);
         $filePDF = FieldGenerator::file('filePDF')
-            ->setLabel('PDF')
+            ->setLabel('PDF <small class="text-muted">setAccept</small>')
             ->setAccept('application/pdf')
             ->setColumns(4);
         $image = FieldGenerator::image('image')
-            ->setLabel('Image')
+            ->setLabel('Image <small class="text-muted">image/*</small>')
             ->setAccept('image/*')
             ->setColumns(4);
 
         $textareaPanel = FieldGenerator::panel('TEXTAREA')->setIcon('input-search');
         $textarea = FieldGenerator::textarea('textarea')
-            ->setLabel('Default with autogrow')
+            ->setLabel('Default <small class="text-muted">autogrow</small>')
             ->setColumns(3);
-        $textarea2 = FieldGenerator::textarea('textarea2')
-            ->setLabel('Autogrow with custom rows and max height')
+        $textareaBounds = FieldGenerator::textarea('textareaBounds')
+            ->setLabel('Bounds <small class="text-muted">rows 2 / max 80px</small>')
             ->setRows(2)
             ->setMaxHeight('80px')
             ->setColumns(3);
-        $textarea3 = FieldGenerator::textarea('textarea3')
-            ->setLabel('Disable autogrow')
+        $textareaNoAutogrow = FieldGenerator::textarea('textareaNoAutogrow')
+            ->setLabel('No autogrow <small class="text-muted">enablePlugin(false)</small>')
             ->enablePlugin(false)
             ->setColumns(3);
-        $textarea4 = FieldGenerator::textarea('textarea4')
-            ->setLabel('Disable autogrow and resize')
+        $textareaStatic = FieldGenerator::textarea('textareaStatic')
+            ->setLabel('Static <small class="text-muted">no autogrow / no resize</small>')
             ->enablePlugin(false)
             ->isResizeable(false)
             ->setColumns(3);
 
         $choicePanel = FieldGenerator::panel('CHOICE')->setIcon('input-search');
         $choice = FieldGenerator::enum('choice')
-            ->setLabel('Single choice')
+            ->setLabel('Single <small class="text-muted">native</small>')
+            ->enablePlugin(false)
             ->setColumns(4);
-        $choice2 = FieldGenerator::enum('choice2')
-            ->setLabel('Single choice expanded optional')
+        $choiceExpanded = FieldGenerator::enum('choiceExpanded')
+            ->setLabel('Expanded')
             ->isExpanded()
             ->setColumns(4);
-        $choice3 = FieldGenerator::enum('choice3')
-            ->setLabel('Single choice expanded required')
+        $choiceExpandedRequired = FieldGenerator::enum('choiceExpandedRequired')
+            ->setLabel('Expanded required')
             ->isExpanded()
             ->isRequired()
             ->setColumns(4);
         $choiceRow = FieldGenerator::row();
-        $choice4 = FieldGenerator::choice('choice4')
-            ->setLabel('Multiple choice')
+        $choiceMultiple = FieldGenerator::choice('choiceMultiple')
+            ->setLabel('Multiple <small class="text-muted">native</small>')
             ->setChoices(UserGender::choices())
             ->isMultiple()
+            ->enablePlugin(false)
             ->setColumns(4);
-        $choice5 = FieldGenerator::choice('choice5')
-            ->setLabel('Multiple choice expanded')
+        $choiceMultipleExpanded = FieldGenerator::choice('choiceMultipleExpanded')
+            ->setLabel('Multiple expanded')
             ->setChoices(UserGender::choices())
             ->isExpanded()
             ->isMultiple()
@@ -196,45 +197,45 @@ class DemoEntityCrudController extends AbstractCrudController
         $codeeditor = FieldGenerator::codeeditor('codeeditor')
             ->setLabel('Default')
             ->setColumns(4);
-        $codeeditor2 = FieldGenerator::codeeditor('codeeditor2')
-            ->setLabel('PHP + GitHub <small class="text-muted">light/dark</small>')
+        $codeeditorPhpGithub = FieldGenerator::codeeditor('codeeditorPhpGithub')
+            ->setLabel('PHP + GitHub <small class="text-muted">light/dark themes</small>')
             ->setTheme(CodeEditorField::CODEEDITOR_THEME_GITHUB)
             ->setDarkTheme(CodeEditorField::CODEEDITOR_THEME_GITHUB_DARK)
             ->setLanguage(CodeEditorField::CODEEDITOR_LANGUAGE_PHP)
             ->setColumns(4);
-        $codeeditor3 = FieldGenerator::codeeditor('codeeditor3')
+        $codeeditorPlaceholder = FieldGenerator::codeeditor('codeeditorPlaceholder')
             ->setLabel('Placeholder')
             ->setPlaceholder('// type some code…')
             ->setColumns(4);
 
         $codeeditorSizePanel = FieldGenerator::panel('SIZE')->setIcon('input-search');
-        $codeeditor4 = FieldGenerator::codeeditor('codeeditor4')
-            ->setLabel('Bounds + font <small class="text-muted">min 10 / max 50 / 16px / Courier New</small>')
+        $codeeditorBounds = FieldGenerator::codeeditor('codeeditorBounds')
+            ->setLabel('Bounds + font <small class="text-muted">10–50 lines / 16px</small>')
             ->setMinLines(10)
             ->setMaxLines(50)
             ->setFontSize(16)
             ->setFontFamily('"Courier New", Courier, monospace')
             ->setColumns(6);
-        $codeeditor5 = FieldGenerator::codeeditor('codeeditor5')
-            ->setLabel('Indent with spaces <small class="text-muted">2 spaces</small>')
+        $codeeditorIndentSpaces = FieldGenerator::codeeditor('codeeditorIndentSpaces')
+            ->setLabel('Spaces indent <small class="text-muted">tabSize 2</small>')
             ->isIndentedWithTabs(false)
             ->setTabSize(2)
             ->setColumns(6);
 
         $codeeditorDisplayPanel = FieldGenerator::panel('DISPLAY')->setIcon('input-search');
-        $codeeditor6 = FieldGenerator::codeeditor('codeeditor6')
-            ->setLabel('Wrap + no line numbers <small class="text-muted">gutter kept</small>')
+        $codeeditorWrap = FieldGenerator::codeeditor('codeeditorWrap')
+            ->setLabel('Wrap <small class="text-muted">no line numbers</small>')
             ->isWrap()
             ->showLineNumbers(false)
             ->setColumns(4);
-        $codeeditor7 = FieldGenerator::codeeditor('codeeditor7')
-            ->setLabel('Print margin 50 + invisibles')
+        $codeeditorPrintMargin = FieldGenerator::codeeditor('codeeditorPrintMargin')
+            ->setLabel('Print margin <small class="text-muted">50 + invisibles</small>')
             ->showPrintMargin()
             ->setPrintMarginColumn(50)
             ->showInvisibles()
             ->setColumns(4);
-        $codeeditor8 = FieldGenerator::codeeditor('codeeditor8')
-            ->setLabel('Disable selected-word, worker, gutter, active line and indent guides')
+        $codeeditorMinimalUi = FieldGenerator::codeeditor('codeeditorMinimalUi')
+            ->setLabel('Minimal UI <small class="text-muted">no gutter / worker / guides</small>')
             ->isHighlightSelectedWord(false)
             ->isUseWorker(false)
             ->showGutter(false)
@@ -243,7 +244,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(4);
 
         $codeeditorStatePanel = FieldGenerator::panel('STATE')->setIcon('input-search');
-        $codeeditor9 = FieldGenerator::codeeditor('codeeditor9')
+        $codeeditorReadonly = FieldGenerator::codeeditor('codeeditorReadonly')
             ->setLabel('Readonly')
             ->isReadonly()
             ->setColumns(12);
@@ -261,27 +262,27 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $collectionOptionsPanel = FieldGenerator::panel('OPTIONS')->setIcon('input-search');
         $collectionNoAdd = FieldGenerator::collection('collectionNoAdd')
-            ->setLabel('No add')
+            ->setLabel('No add <small class="text-muted">allowAdd(false)</small>')
             ->allowAdd(false)
             ->setColumns(4);
         if ($entity && !$entity->getCollectionNoAdd()) {
             $collectionNoAdd->setData(['Alpha', 'Beta']);
         }
         $collectionNoDelete = FieldGenerator::collection('collectionNoDelete')
-            ->setLabel('No delete')
+            ->setLabel('No delete <small class="text-muted">allowDelete(false)</small>')
             ->allowDelete(false)
             ->setColumns(4);
         if ($entity && !$entity->getCollectionNoDelete()) {
             $collectionNoDelete->setData(['One', 'Two']);
         }
         $collectionLabels = FieldGenerator::collection('collectionLabels')
-            ->setLabel('Labels')
+            ->setLabel('Entry labels <small class="text-muted">showEntryLabel</small>')
             ->showEntryLabel()
             ->setColumns(4);
 
         $collectionPluginsPanel = FieldGenerator::panel('HIERARCHY + PLUGINS')->setIcon('input-search');
         $collectionPlugins = FieldGenerator::collection('collectionPlugins')
-            ->setLabel('Per-row hierarchy <small class="text-muted">data-hf-* + date/color/mask; scoped &amp; uniquified</small>')
+            ->setLabel('Hierarchy + plugins <small class="text-muted">data-hf-* / date / color / mask</small>')
             ->setEntryType(DemoEntityType::class)
             ->isEntryComplex()
             ->isExpanded()
@@ -305,9 +306,9 @@ class DemoEntityCrudController extends AbstractCrudController
             ]);
         }
 
-        $optionsFieldsTab = FieldGenerator::tab('Options');
+        $selectFieldsTab = FieldGenerator::tab('Select');
 
-        $tsChoices = [
+        $selectChoices = [
             'Apple' => 'apple',
             'Banana' => 'banana',
             'Cherry' => 'cherry',
@@ -321,7 +322,7 @@ class DemoEntityCrudController extends AbstractCrudController
             'Mango' => 'mango',
             'Nectarine' => 'nectarine',
         ];
-        $tsDiacriticChoices = [
+        $selectDiacriticChoices = [
             'Café' => 'cafe',
             'Niño' => 'nino',
             'Año' => 'ano',
@@ -330,38 +331,33 @@ class DemoEntityCrudController extends AbstractCrudController
             'Pingüino' => 'pinguino',
         ];
 
-        $tsBasicPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
-        $tsDefault = FieldGenerator::choice('tsDefault')
+        $selectBasicPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
+        $selectDefault = FieldGenerator::choice('selectDefault')
             ->setLabel('Default')
-            ->setChoices($tsChoices)
-            ->setColumns(3);
-        $tsNative = FieldGenerator::choice('tsNative')
-            ->setLabel('Native <small class="text-muted">enablePlugin(false)</small>')
-            ->setChoices($tsChoices)
-            ->enablePlugin(false)
-            ->setColumns(3);
-        $tsEnum = FieldGenerator::enum('tsEnum')
+            ->setChoices($selectChoices)
+            ->setColumns(4);
+        $selectEnum = FieldGenerator::enum('selectEnum')
             ->setLabel('Enum <small class="text-muted">UserGender</small>')
-            ->setColumns(3);
-        $tsRequired = FieldGenerator::choice('tsRequired')
+            ->setColumns(4);
+        $selectRequired = FieldGenerator::choice('selectRequired')
             ->setLabel('Required <small class="text-muted">no clear by default</small>')
-            ->setChoices($tsChoices)
+            ->setChoices($selectChoices)
             ->isRequired()
-            ->setColumns(3);
+            ->setColumns(4);
 
-        $tsCreatePanel = FieldGenerator::panel('CREATE')->setIcon('input-search');
-        $tsCreate = FieldGenerator::choice('tsCreate')
+        $selectCreatePanel = FieldGenerator::panel('CREATE')->setIcon('input-search');
+        $selectCreate = FieldGenerator::choice('selectCreate')
             ->setLabel('Allow create <small class="text-muted">setAllowItemCreate</small>')
-            ->setChoices($tsChoices)
+            ->setChoices($selectChoices)
             ->setAllowItemCreate()
             ->setColumns(4);
-        $tsCreateOnBlur = FieldGenerator::choice('tsCreateOnBlur')
-            ->setLabel('Create on blur <small class="text-muted">+ createOnBlur</small>')
-            ->setChoices($tsChoices)
+        $selectCreateOnBlur = FieldGenerator::choice('selectCreateOnBlur')
+            ->setLabel('Create on blur <small class="text-muted">isCreateOnBlur</small>')
+            ->setChoices($selectChoices)
             ->setAllowItemCreate()
             ->isCreateOnBlur()
             ->setColumns(4);
-        $tsHtml = FieldGenerator::choice('tsHtml')
+        $selectHtml = FieldGenerator::choice('selectHtml')
             ->setLabel('HTML labels <small class="text-muted">renderAsHtml</small>')
             ->setChoices([
                 '<b>Bold</b> option' => 'bold',
@@ -371,91 +367,93 @@ class DemoEntityCrudController extends AbstractCrudController
             ->renderAsHtml()
             ->setColumns(4);
 
-        $tsLimitsPanel = FieldGenerator::panel('LIMITS')->setIcon('input-search');
-        $tsMultiple = FieldGenerator::choice('tsMultiple')
+        $selectLimitsPanel = FieldGenerator::panel('LIMITS')->setIcon('input-search');
+        $selectMultiple = FieldGenerator::choice('selectMultiple')
             ->setLabel('Multiple <small class="text-muted">isMultiple</small>')
-            ->setChoices($tsChoices)
+            ->setChoices($selectChoices)
             ->isMultiple()
             ->setColumns(4);
-        $tsMaxOptions = FieldGenerator::choice('tsMaxOptions')
-            ->setLabel('Max options 3 <small class="text-muted">setMaxOptions</small>')
-            ->setChoices($tsChoices)
+        $selectMaxOptions = FieldGenerator::choice('selectMaxOptions')
+            ->setLabel('Max options <small class="text-muted">setMaxOptions(3)</small>')
+            ->setChoices($selectChoices)
             ->setMaxOptions(3)
             ->setColumns(4);
-        $tsMaxItems = FieldGenerator::choice('tsMaxItems')
-            ->setLabel('Max items 2 <small class="text-muted">setMaxItems</small>')
-            ->setChoices($tsChoices)
+        $selectMaxItems = FieldGenerator::choice('selectMaxItems')
+            ->setLabel('Max items <small class="text-muted">setMaxItems(2)</small>')
+            ->setChoices($selectChoices)
             ->isMultiple()
             ->setMaxItems(2)
             ->setColumns(4);
 
-        $tsBehaviorPanel = FieldGenerator::panel('BEHAVIOR')->setIcon('input-search');
-        $tsSelectOnTab = FieldGenerator::choice('tsSelectOnTab')
-            ->setLabel('Select on Tab')
-            ->setChoices($tsDiacriticChoices)
+        $selectBehaviorPanel = FieldGenerator::panel('BEHAVIOR')->setIcon('input-search');
+        $selectOnTab = FieldGenerator::choice('selectOnTab')
+            ->setLabel('Select on Tab <small class="text-muted">isSelectOnTab</small>')
+            ->setChoices($selectDiacriticChoices)
             ->isSelectOnTab()
             ->setColumns(3);
-        $tsDiacritics = FieldGenerator::choice('tsDiacritics')
-            ->setLabel('Diacritics <small class="text-muted">type "cafe" without diacritics</small>')
-            ->setChoices($tsDiacriticChoices)
+        $selectDiacritics = FieldGenerator::choice('selectDiacritics')
+            ->setLabel('Diacritics off <small class="text-muted">isDiacritics(false)</small>')
+            ->setHelp('Type <code>cafe</code> to match <em>Café</em> when diacritics are disabled.')
+            ->setChoices($selectDiacriticChoices)
             ->isDiacritics(false)
             ->setColumns(3);
-        $tsNoClear = FieldGenerator::choice('tsNoClear')
-            ->setLabel('No clear button')
-            ->setChoices($tsDiacriticChoices)
+        $selectNoClear = FieldGenerator::choice('selectNoClear')
+            ->setLabel('No clear <small class="text-muted">showClearButton(false)</small>')
+            ->setChoices($selectDiacriticChoices)
             ->showClearButton(false)
             ->setColumns(3);
-        $tsNoDropdown = FieldGenerator::choice('tsNoDropdown')
-            ->setLabel('No dropdown input')
-            ->setChoices($tsDiacriticChoices)
+        $selectNoDropdown = FieldGenerator::choice('selectNoDropdown')
+            ->setLabel('No dropdown input <small class="text-muted">showDropdownInput(false)</small>')
+            ->setChoices($selectDiacriticChoices)
             ->showDropdownInput(false)
             ->setColumns(3);
 
-        $tsMultipleExtrasPanel = FieldGenerator::panel('MULTIPLE EXTRAS')->setIcon('input-search');
-        $tsCloseAfterSelect = FieldGenerator::choice('tsCloseAfterSelect')
-            ->setLabel('Close after select <small class="text-muted">multiple + isCloseAfterSelect</small>')
-            ->setChoices($tsChoices)
+        $selectMultipleExtrasPanel = FieldGenerator::panel('MULTIPLE EXTRAS')->setIcon('input-search');
+        $selectCloseAfterSelect = FieldGenerator::choice('selectCloseAfterSelect')
+            ->setLabel('Close after select <small class="text-muted">isCloseAfterSelect</small>')
+            ->setChoices($selectChoices)
             ->isMultiple()
             ->isCloseAfterSelect()
             ->setColumns(4);
-        $tsHideSelected = FieldGenerator::choice('tsHideSelected')
-            ->setLabel('Show selected <small class="text-muted">multi default hides them; isHideSelected(false)</small>')
-            ->setChoices($tsChoices)
+        $selectHideSelected = FieldGenerator::choice('selectHideSelected')
+            ->setLabel('Show selected <small class="text-muted">isHideSelected(false)</small>')
+            ->setChoices($selectChoices)
             ->isMultiple()
             ->isHideSelected(false)
             ->setColumns(4);
-        $tsCheckbox = FieldGenerator::choice('tsCheckbox')
-            ->setLabel('Checkbox options')
-            ->setChoices($tsChoices)
+        $selectCheckbox = FieldGenerator::choice('selectCheckbox')
+            ->setLabel('Checkbox options <small class="text-muted">showCheckboxOptions</small>')
+            ->setChoices($selectChoices)
             ->isMultiple()
             ->showCheckboxOptions()
             ->setColumns(4);
-        $tsNoRemove = FieldGenerator::choice('tsNoRemove')
-            ->setLabel('No remove button')
-            ->setChoices($tsChoices)
+        $selectNoRemove = FieldGenerator::choice('selectNoRemove')
+            ->setLabel('No remove <small class="text-muted">showRemoveButton(false)</small>')
+            ->setChoices($selectChoices)
             ->isMultiple()
             ->showRemoveButton(false)
             ->setColumns(6);
-        $tsDuplicates = FieldGenerator::choice('tsDuplicates')
-            ->setLabel('Duplicates + Show selected <small class="text-muted">semicolon delimiter</small>')
-            ->setChoices($tsChoices)
+        $selectDuplicates = FieldGenerator::choice('selectDuplicates')
+            ->setLabel('Duplicates <small class="text-muted">delimiter ;</small>')
+            ->setChoices($selectChoices)
             ->isMultiple()
             ->isHideSelected(false)
             ->isDuplicates()
             ->setDelimiter(';')
             ->setColumns(6);
 
-        $tsAssociationPanel = FieldGenerator::panel('ASSOCIATION')->setIcon('input-search');
-        $tsRole = FieldGenerator::association('tsRole')
-            ->setLabel('Role <small class="text-muted">setPreload(false) + isOpenOnFocus(false); type to search</small>')
+        $selectAssociationPanel = FieldGenerator::panel('ASSOCIATION')->setIcon('input-search');
+        $selectRole = FieldGenerator::association('selectRole')
+            ->setLabel('Role <small class="text-muted">no preload</small>')
+            ->setHelp('Type to search. Dropdown opens when results arrive.')
             ->setCrudController(RoleCrudController::class)
             ->autocomplete()
             ->setPreload(false)
             ->showDropdownInput(false)
             ->isOpenOnFocus(false)
             ->setColumns(6);
-        $tsUser = FieldGenerator::user('tsUser')
-            ->setLabel('User <small class="text-muted">preload on focus (remote default); active+verified</small>')
+        $selectUser = FieldGenerator::user('selectUser')
+            ->setLabel('User <small class="text-muted">preload on focus</small>')
             ->setCrudController(UserCrudController::class)
             ->autocomplete()
             ->showDropdownInput(false)
@@ -467,17 +465,17 @@ class DemoEntityCrudController extends AbstractCrudController
         $color = FieldGenerator::color('color')
             ->setLabel('Default')
             ->setColumns(3);
-        $colorInline = FieldGenerator::color('colorInline')
-            ->setLabel('Flat')
+        $colorFlat = FieldGenerator::color('colorFlat')
+            ->setLabel('Flat <small class="text-muted">COLOR_TYPE_FLAT</small>')
             ->setType(ColorField::COLOR_TYPE_FLAT)
             ->setColumns(3);
         $colorAlpha = FieldGenerator::color('colorAlpha')
-            ->setLabel('RGBA')
+            ->setLabel('Alpha <small class="text-muted">RGBA</small>')
             ->showAlpha()
             ->setPreferredFormat(ColorField::COLOR_FORMAT_RGB)
             ->setColumns(3);
         $colorButtons = FieldGenerator::color('colorButtons')
-            ->setLabel('Buttons + initial + allow empty')
+            ->setLabel('Buttons <small class="text-muted">initial + allow empty</small>')
             ->showButtons()
             ->showInitial()
             ->isAllowEmpty()
@@ -487,25 +485,25 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $colorPalettePanel = FieldGenerator::panel('PALETTE')->setIcon('input-search');
         $colorPalette = FieldGenerator::color('colorPalette')
-            ->setLabel('Palette')
+            ->setLabel('Palette <small class="text-muted">showPalette</small>')
             ->showPalette()
             ->setColumns(6);
         $colorPaletteOnly = FieldGenerator::color('colorPaletteOnly')
-            ->setLabel('Palette only')
+            ->setLabel('Palette only <small class="text-muted">isPaletteOnly</small>')
             ->isPaletteOnly()
             ->setColumns(6);
-        $colorInlinePalette = FieldGenerator::color('colorInlinePalette')
+        $colorFlatPalette = FieldGenerator::color('colorFlatPalette')
             ->setLabel('Flat + palette')
             ->setType(ColorField::COLOR_TYPE_FLAT)
             ->showPalette()
             ->setColumns(6);
-        $colorInlinePaletteOnly = FieldGenerator::color('colorInlinePaletteOnly')
+        $colorFlatPaletteOnly = FieldGenerator::color('colorFlatPaletteOnly')
             ->setLabel('Flat + palette only')
             ->setType(ColorField::COLOR_TYPE_FLAT)
             ->isPaletteOnly()
             ->setColumns(6);
         $colorCustomPalette = FieldGenerator::color('colorCustomPalette')
-            ->setLabel('Custom palette (hide after select)')
+            ->setLabel('Custom palette <small class="text-muted">hideAfterPaletteSelect</small>')
             ->isPaletteOnly()
             ->hideAfterPaletteSelect()
             ->setPalette([
@@ -514,7 +512,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ])
             ->setColumns(4);
         $colorTogglePalette = FieldGenerator::color('colorTogglePalette')
-            ->setLabel('Toggle palette only (more / less)')
+            ->setLabel('Toggle palette <small class="text-muted">more / less</small>')
             ->isPaletteOnly()
             ->isTogglePaletteOnly()
             ->setTogglePaletteMoreText('more')
@@ -525,7 +523,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ])
             ->setColumns(4);
         $colorSelection = FieldGenerator::color('colorSelection')
-            ->setLabel('Selection palette (localStorage)')
+            ->setLabel('Selection palette <small class="text-muted">localStorage</small>')
             ->showPalette()
             ->showSelectionPalette()
             ->setLocalStorageKey('demo.spectrum.selection')
@@ -551,19 +549,19 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $dateDefaultValuesPanel = FieldGenerator::panel('DEFAULT VALUES')->setIcon('input-search');
         $dateDefaultValue = FieldGenerator::date('dateDefaultValue')
-            ->setLabel('Default date value')
+            ->setLabel('Default value')
             ->setColumns(4);
         if ($entity && !$entity->getDateDefaultValue()) {
             $dateDefaultValue->setData(new \DateTime('tomorrow'));
         }
         $datetimeDefaultValue = FieldGenerator::datetime('datetimeDefaultValue')
-            ->setLabel('Default datetime value')
+            ->setLabel('Default value')
             ->setColumns(4);
         if ($entity && !$entity->getDatetimeDefaultValue()) {
             $datetimeDefaultValue->setData(new \DateTime('1992-03-07 16:20'));
         }
         $timeDefaultValue = FieldGenerator::time('timeDefaultValue')
-            ->setLabel('Default time value')
+            ->setLabel('Default value')
             ->setColumns(4);
         if ($entity && !$entity->getTimeDefaultValue()) {
             $timeDefaultValue->setData(new \DateTime('21:38'));
@@ -571,62 +569,62 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $dateMinMaxPanel = FieldGenerator::panel('MIN/MAX')->setIcon('input-search');
         $dateMinMax = FieldGenerator::date('dateMinMax')
-            ->setLabel('Min and max date')
+            ->setLabel('Min / max')
             ->setMin('2024-01-15')
             ->setMax('2024-01-21')
             ->setColumns(4);
         $datetimeMinMax = FieldGenerator::datetime('datetimeMinMax')
-            ->setLabel('Min and max datetime')
+            ->setLabel('Min / max')
             ->setMin('1992-03-07 06:00')
             ->setMax('1992-03-15 10:00')
             ->setColumns(4);
         $timeMinMax = FieldGenerator::time('timeMinMax')
-            ->setLabel('Min and max time')
+            ->setLabel('Min / max')
             ->setMin('06:00')
             ->setMax('10:00')
             ->setColumns(4);
 
         $dateEnableDisablePanel = FieldGenerator::panel('ENABLE/DISABLE DATES')->setIcon('input-search');
         $dateEnable = FieldGenerator::date('dateEnable')
-            ->setLabel('Enabled dates')
+            ->setLabel('Enabled dates <small class="text-muted">setEnabledDates</small>')
             ->setEnabledDates(['1992-03-07', '1992-03-15'])
             ->setColumns(6);
         $dateDisable = FieldGenerator::date('dateDisable')
-            ->setLabel('Disabled dates')
+            ->setLabel('Disabled dates <small class="text-muted">setDisabledDates</small>')
             ->setDisabledDates([new \DateTime('tomorrow'), new \DateTime('yesterday')])
             ->setColumns(6);
 
         $dateMultiplePanel = FieldGenerator::panel('MULTIPLE')->setIcon('input-search');
         $dateMultiple = FieldGenerator::dateMultiple('dateMultiple')
-            ->setLabel('Multiple dates (conjunction " | ")')
+            ->setLabel('Multiple <small class="text-muted">conjunction " | "</small>')
             ->setConjunction(' | ')
             ->setColumns(6);
         $datetimeMultiple = FieldGenerator::datetimeMultiple('datetimeMultiple')
-            ->setLabel('Multiple datetimes')
+            ->setLabel('Multiple')
             ->setColumns(6);
         $dateMultipleRow = FieldGenerator::row();
         $dateMultipleCustom = FieldGenerator::dateMultiple('dateMultipleCustom')
-            ->setLabel('Multiple dates with enabled dates')
+            ->setLabel('Multiple + enabled dates')
             ->setEnabledDates(['1992-03-07', '1992-03-09', '1992-03-12', '1992-03-15'])
             ->setColumns(6);
         $datetimeMultipleCustom = FieldGenerator::datetimeMultiple('datetimeMultipleCustom')
-            ->setLabel('Multiple datetimes with min and max datetime')
+            ->setLabel('Multiple + min / max')
             ->setMin('1992-03-07 06:00')
             ->setMax('1992-03-15 10:00')
             ->setColumns(6);
 
         $dateRangePanel = FieldGenerator::panel('RANGE')->setIcon('input-search');
         $dateRange = FieldGenerator::dateMultiple('dateRange')
-            ->setLabel('Range dates')
+            ->setLabel('Range')
             ->isRange()
             ->setRangeSeparator(DateMultipleField::DATE_RANGE_SEPARATOR_DEFAULT)
             ->setColumns(4);
         $datetimeRange = FieldGenerator::datetimeMultiple('datetimeRange')
-            ->setLabel('Range datetimes')
+            ->setLabel('Range')
             ->isRange()
             ->setColumns(4);
         $dateRangeCustom = FieldGenerator::dateMultiple('dateRangeCustom')
-            ->setLabel('Range dates with min, max and disabled dates')
+            ->setLabel('Range + min / max / disabled')
             ->isRange()
             ->setMin('1992-03-09')
             ->setMax('1992-03-15')
@@ -635,52 +633,52 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $dateInlinePanel = FieldGenerator::panel('INLINE')->setIcon('input-search');
         $dateInline = FieldGenerator::date('dateInline')
-            ->setLabel('Inline date')
+            ->setLabel('Inline')
             ->isInline()
             ->setColumns(4);
         $datetimeInline = FieldGenerator::datetime('datetimeInline')
-            ->setLabel('Inline datetime')
+            ->setLabel('Inline')
             ->isInline()
             ->setColumns(4);
         $timeInline = FieldGenerator::time('timeInline')
-            ->setLabel('Inline time')
+            ->setLabel('Inline')
             ->isInline()
             ->setColumns(4);
 
         $dateCalendarUiPanel = FieldGenerator::panel('CALENDAR UI')->setIcon('input-search');
         $dateCalendarUi = FieldGenerator::date('dateCalendarUi')
-            ->setLabel('2 months and custom arrows')
+            ->setLabel('Two months <small class="text-muted">custom arrows</small>')
             ->setShowMonths(2)
             ->setPrevArrow('Prev')
             ->setNextArrow('Next')
             ->setColumns(6);
         $dateStatic = FieldGenerator::date('dateStatic')
-            ->setLabel('Week numbers and shorthand month')
+            ->setLabel('Week numbers <small class="text-muted">shorthand month</small>')
             ->isShorthandCurrentMonth()
             ->isWeekNumbers()
             ->setColumns(6);
 
         $datePickerPanel = FieldGenerator::panel('PICKER')->setIcon('input-search');
         $datePickerOpts = FieldGenerator::date('datePickerOpts')
-            ->setLabel('Above, no animation and stay open on select')
+            ->setLabel('Above <small class="text-muted">no animation / stay open</small>')
             ->setPosition(DateField::DATE_POSITION_ABOVE)
             ->isAnimate(false)
             ->isCloseOnSelect(false)
             ->setColumns(4);
         $dateAltFormat = FieldGenerator::date('dateAltFormat')
-            ->setLabel('Alt input (Moment LL)')
+            ->setLabel('Alt input <small class="text-muted">Moment LL</small>')
             ->isAltInput()
             ->setDateFormat('YYYY-MM-DD')
             ->setDateAltFormat('LL')
             ->setColumns(4);
         $dateNative = FieldGenerator::date('dateNative')
-            ->setLabel('Native selects')
+            ->setLabel('Native selects <small class="text-muted">renderAsChoice</small>')
             ->renderAsChoice()
             ->setColumns(4);
 
         $dateClockPanel = FieldGenerator::panel('CLOCK')->setIcon('input-search');
         $datetimeClock = FieldGenerator::datetime('datetimeClock')
-            ->setLabel('Seconds, 15-min steps, default time, 08:30–16:30')
+            ->setLabel('Clock options <small class="text-muted">seconds / 15 min / 08:30–16:30</small>')
             ->isEnableSeconds()
             ->setMinuteIncrement(15)
             ->setDefaultHour(8)
@@ -689,13 +687,13 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setMinTime('08:30')
             ->setMaxTime('16:30')
             ->setColumns(4);
-        $time12h = FieldGenerator::time('time12h')
-            ->setLabel('12-hour clock with seconds')
+        $timeHour12 = FieldGenerator::time('timeHour12')
+            ->setLabel('12-hour <small class="text-muted">with seconds</small>')
             ->isTime24hr(false)
             ->isEnableSeconds()
             ->setColumns(4);
-        $datetime12h = FieldGenerator::datetime('datetime12h')
-            ->setLabel('Datetime 12-hour')
+        $datetimeHour12 = FieldGenerator::datetime('datetimeHour12')
+            ->setLabel('12-hour')
             ->isTime24hr(false)
             ->setColumns(4);
 
@@ -703,31 +701,31 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $hierarchyPanel = FieldGenerator::panel('HIERARCHY')->setIcon('input-search');
         $hierarchySwitch = FieldGenerator::switch('hierarchySwitch')
-            ->setLabel('Only on checked')
+            ->setLabel('On checked <small class="text-muted">data-hf-parent</small>')
             ->setHtmlAttribute('data-hf-parent', 'hierarchySwitch')
             ->setColumns(6);
         $hierarchySwitchChild = FieldGenerator::text('hierarchySwitchChild')
-            ->setLabel('Child text input')
+            ->setLabel('Child')
             ->setHtmlAttribute('data-hf-child', 'hierarchySwitch')
             ->setColumns(6);
         $hierarchyRow1 = FieldGenerator::row();
         $hierarchySwitchChecked = FieldGenerator::switch('hierarchySwitchChecked')
-            ->setLabel('Only on checked but checked by default')
+            ->setLabel('On checked <small class="text-muted">checked by default</small>')
             ->isChecked()
             ->setHtmlAttribute('data-hf-parent', 'hierarchySwitchChecked')
             ->setColumns(6);
         $hierarchySwitchCheckedChild = FieldGenerator::date('hierarchySwitchCheckedChild')
-            ->setLabel('Child date input')
+            ->setLabel('Child date')
             ->isRequired()
             ->setHtmlAttribute('data-hf-child', 'hierarchySwitchChecked')
             ->setColumns(6);
         $hierarchyRow2 = FieldGenerator::row();
         $hierarchySwitchShow = FieldGenerator::switch('hierarchySwitchShow')
-            ->setLabel('Show mode (locked when parent off; keep-value so text is not cleared)')
+            ->setLabel('Show mode <small class="text-muted">data-hf-show + keep-value</small>')
             ->setHtmlAttribute('data-hf-parent', 'hierarchySwitchShow')
             ->setColumns(6);
         $hierarchySwitchShowChild = FieldGenerator::text('hierarchySwitchShowChild')
-            ->setLabel('Child text input')
+            ->setLabel('Child')
             ->setHtmlAttribute('data-hf-child', 'hierarchySwitchShow')
             ->setHtmlAttribute('data-hf-show', 'true')
             ->setHtmlAttribute('data-hf-keep-value', 'true')
@@ -735,61 +733,62 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(6);
         $hierarchyRow3 = FieldGenerator::row();
         $hierarchySwitchDefaultValue = FieldGenerator::switch('hierarchySwitchDefaultValue')
-            ->setLabel('Default value on show')
+            ->setLabel('Default on show <small class="text-muted">data-hf-default-value</small>')
             ->setHtmlAttribute('data-hf-parent', 'hierarchySwitchDefaultValue')
             ->setColumns(6);
         $hierarchySwitchDefaultValueChild = FieldGenerator::text('hierarchySwitchDefaultValueChild')
-            ->setLabel('Child text input')
+            ->setLabel('Child')
             ->setHtmlAttribute('data-hf-child', 'hierarchySwitchDefaultValue')
             ->setHtmlAttribute('data-hf-default-value', 'This is the default value')
             ->setColumns(6);
         $hierarchyRow4 = FieldGenerator::row();
         $hierarchySwitchInvertValue = FieldGenerator::switch('hierarchySwitchInvertValue')
-            ->setLabel('Only on unchecked (data-hf-negate)')
+            ->setLabel('On unchecked <small class="text-muted">data-hf-negate</small>')
             ->isChecked()
             ->setHtmlAttribute('data-hf-parent', 'hierarchySwitchInvertValue')
             ->setColumns(6);
         $hierarchySwitchInvertValueChild = FieldGenerator::text('hierarchySwitchInvertValueChild')
-            ->setLabel('Child text input')
+            ->setLabel('Child')
             ->setHtmlAttribute('data-hf-child', 'hierarchySwitchInvertValue')
             ->setHtmlAttribute('data-hf-negate', 'true')
             ->setColumns(6);
         $hierarchyRow5 = FieldGenerator::row();
         $hierarchyText = FieldGenerator::text('hierarchyText')
-            ->setLabel('Fill to show the child')
+            ->setLabel('Non-empty parent')
             ->setHtmlAttribute('data-hf-parent', 'hierarchyText')
             ->setColumns(6);
         $hierarchyTextChild = FieldGenerator::text('hierarchyTextChild')
-            ->setLabel('Child text input')
+            ->setLabel('Child')
             ->setHtmlAttribute('data-hf-child', 'hierarchyText')
             ->setColumns(6);
         $hierarchyRow6 = FieldGenerator::row();
         $hierarchyTextCustomValue = FieldGenerator::text('hierarchyTextCustomValue')
-            ->setLabel('Fill with "ShOw Me"')
+            ->setLabel('Match value <small class="text-muted">data-hf-parent-value</small>')
+            ->setHelp('Type exactly <code>ShOw Me</code> to show the child.')
             ->setHtmlAttribute('data-hf-parent', 'hierarchyTextCustomValue')
             ->setColumns(6);
         $hierarchyTextCustomValueChild = FieldGenerator::text('hierarchyTextCustomValueChild')
-            ->setLabel('Child text input')
+            ->setLabel('Child')
             ->setHtmlAttribute('data-hf-child', 'hierarchyTextCustomValue')
             ->setHtmlAttribute('data-hf-parent-value', 'ShOw Me')
             ->setColumns(6);
         $hierarchyRow7 = FieldGenerator::row();
         $hierarchyKeepValue = FieldGenerator::switch('hierarchyKeepValue')
-            ->setLabel('keep-value: text stays when parent is unchecked')
+            ->setLabel('Keep value <small class="text-muted">data-hf-keep-value</small>')
             ->setHtmlAttribute('data-hf-parent', 'hierarchyKeepValue')
             ->setColumns(6);
         $hierarchyKeepValueChild = FieldGenerator::text('hierarchyKeepValueChild')
-            ->setLabel('Child text input')
+            ->setLabel('Child')
             ->setHtmlAttribute('data-hf-child', 'hierarchyKeepValue')
             ->setHtmlAttribute('data-hf-keep-value', 'true')
             ->setColumns(6);
         $hierarchyRow8 = FieldGenerator::row();
         $hierarchySaveValue = FieldGenerator::switch('hierarchySaveValue')
-            ->setLabel('save-value: cleared while hidden, restored when shown again')
+            ->setLabel('Save value <small class="text-muted">data-hf-save-value</small>')
             ->setHtmlAttribute('data-hf-parent', 'hierarchySaveValue')
             ->setColumns(6);
         $hierarchySaveValueChild = FieldGenerator::text('hierarchySaveValueChild')
-            ->setLabel('Child text input')
+            ->setLabel('Child')
             ->setHtmlAttribute('data-hf-child', 'hierarchySaveValue')
             ->setHtmlAttribute('data-hf-save-value', 'true')
             ->setColumns(6);
@@ -801,48 +800,48 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setLabel('Default')
             ->setColumns(4);
         $mediaImage = FieldGenerator::media('mediaImage')
-            ->setLabel('Image')
+            ->setLabel('Image <small class="text-muted">public_images</small>')
             ->setConf('public_images')
             ->setColumns(4);
         $mediaImageUsers = FieldGenerator::media('mediaImageUsers')
-            ->setLabel('User image')
+            ->setLabel('User image <small class="text-muted">public_user_images</small>')
             ->setConf('public_user_images')
             ->setColumns(4);
         $mediaWithoutFileManager = FieldGenerator::media('mediaWithoutFileManager')
-            ->setLabel('Force disable file manager')
+            ->setLabel('No file manager <small class="text-muted">displayFileManager(false)</small>')
             ->displayFileManager(false)
             ->setColumns(4);
         $mediaWithCrop = FieldGenerator::media('mediaWithCrop')
-            ->setLabel('Enable crop')
+            ->setLabel('Crop <small class="text-muted">allowCrop</small>')
             ->allowCrop()
             ->setColumns(4);
 
         $maskFieldsTab = FieldGenerator::tab('Mask');
 
         $maskPanel = FieldGenerator::panel('MASK')->setIcon('input-search');
-        $mask = FieldGenerator::mask('mask')
-            ->setLabel('Phone (default) <small class="text-muted">+34 600 000 000</small>')
-            ->setHelp('Pattern mask with fixed prefix. No <code>_</code> guide (IMask default <code>lazy</code>).')
+        $maskPhone = FieldGenerator::mask('maskPhone')
+            ->setLabel('Phone <small class="text-muted">+34 600 000 000</small>')
+            ->setHelp('Fixed prefix. No <code>_</code> guide (default lazy).')
             ->setPattern('+34 000 000 000')
             ->setColumns(4);
-        $mask2 = FieldGenerator::mask('mask2')
-            ->setLabel('Plate + uppercase + unmask <small class="text-muted">1234 BCD → 1234BCD</small>')
-            ->setHelp('Letters uppercased while typing. On submit the space is dropped from the saved value.')
+        $maskPlate = FieldGenerator::mask('maskPlate')
+            ->setLabel('Plate <small class="text-muted">uppercase + unmask</small>')
+            ->setHelp('Type a plate; on submit the space is dropped from the saved value.')
             ->setPattern('0000 aaa')
             ->isUppercase()
             ->isUnmask()
             ->setColumns(4);
-        $mask3 = FieldGenerator::mask('mask3')
-            ->setLabel('PIN with visible guide <small class="text-muted">______</small>')
-            ->setHelp('<code>lazy</code> off + placeholder: empty slots always show <code>_</code>. New digits replace in place.')
+        $maskPin = FieldGenerator::mask('maskPin')
+            ->setLabel('PIN <small class="text-muted">visible guide</small>')
+            ->setHelp('Empty slots show <code>_</code>. New digits replace in place.')
             ->setPattern('000000')
             ->isOverwrite()
             ->setMaskPlaceholder('_')
             ->isLazy(false)
             ->setColumns(4);
-        $maskEager = FieldGenerator::mask('maskEager')
-            ->setLabel('Date with auto separators <small class="text-muted">__/__/____</small>')
-            ->setHelp('Visible guide; <code>/</code> is inserted as you type (<code>eager: append</code>).')
+        $maskDate = FieldGenerator::mask('maskDate')
+            ->setLabel('Date <small class="text-muted">eager separators</small>')
+            ->setHelp('<code>/</code> is inserted as you type (<code>eager: append</code>).')
             ->setPattern('00/00/0000')
             ->setEager(MaskField::MASK_EAGER_APPEND)
             ->setMaskPlaceholder('_')
@@ -850,15 +849,15 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(4);
         $maskSecure = FieldGenerator::mask('maskSecure')
             ->setLabel('Secure display <small class="text-muted">######</small>')
-            ->setHelp('Digits are typed for real but shown as <code>#</code> (<code>displayChar</code>).')
+            ->setHelp('Digits are real but shown as <code>#</code> (<code>displayChar</code>).')
             ->setPattern('000000')
             ->setDisplayChar('#')
             ->isLazy(false)
             ->setOverwrite(MaskField::MASK_OVERWRITE_SHIFT)
             ->setColumns(4);
         $maskNumber = FieldGenerator::mask('maskNumber')
-            ->setLabel('Amount (ES) <small class="text-muted">1.234,56</small>')
-            ->setHelp('Number mask: <code>.</code> thousands, <code>,</code> decimals, 2 places, range 0–999999.99.')
+            ->setLabel('Amount ES <small class="text-muted">1.234,56</small>')
+            ->setHelp('Thousands <code>.</code>, decimals <code>,</code>, range 0–999999.99.')
             ->setMaskType(MaskField::MASK_TYPE_NUMBER)
             ->setScale(2)
             ->setRadix(',')
@@ -870,14 +869,14 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setMaskMax(999999.99)
             ->setColumns(4);
         $maskPrepareDigits = FieldGenerator::mask('maskPrepareDigits')
-            ->setLabel('Paste cleanup → phone <small class="text-muted">+34…</small>')
-            ->setHelp('Strips spaces and non-digits before the mask. Paste <code>34600000000</code> or <code>+34 600-000-000</code>.')
+            ->setLabel('Paste cleanup <small class="text-muted">phone</small>')
+            ->setHelp('Paste <code>34600000000</code> or <code>+34 600-000-000</code>.')
             ->setPattern('+34 000 000 000')
             ->setPrepare([MaskField::PREPARE_STRIP_SPACES, MaskField::PREPARE_DIGITS_ONLY])
             ->setColumns(4);
         $maskDefinitions = FieldGenerator::mask('maskDefinitions')
-            ->setLabel('Custom hex slots <small class="text-muted">#A1B2C3</small>')
-            ->setHelp('Literal <code>#</code> + 6 custom hex slots. Lowercase → uppercase.')
+            ->setLabel('Custom slots <small class="text-muted">#hhhhhh</small>')
+            ->setHelp('Literal <code>#</code> + 6 hex slots. Lowercase → uppercase.')
             ->setPattern('\\#hhhhhh')
             ->setDefinitions(['h' => '[0-9A-Fa-f]'])
             ->isUppercase()
@@ -891,12 +890,12 @@ class DemoEntityCrudController extends AbstractCrudController
         $signature = FieldGenerator::signature('signature')
             ->setLabel('Default')
             ->setColumns(4);
-        $signatureWithoutUndo = FieldGenerator::signature('signatureWithoutUndo')
-            ->setLabel('No undo')
+        $signatureNoUndo = FieldGenerator::signature('signatureNoUndo')
+            ->setLabel('No undo <small class="text-muted">showUndo(false)</small>')
             ->showUndo(false)
             ->setColumns(4);
-        $signatureWithoutClear = FieldGenerator::signature('signatureWithoutClear')
-            ->setLabel('No clear')
+        $signatureNoClear = FieldGenerator::signature('signatureNoClear')
+            ->setLabel('No clear <small class="text-muted">showClear(false)</small>')
             ->showClear(false)
             ->setColumns(4);
 
@@ -919,14 +918,14 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $signatureExportPanel = FieldGenerator::panel('EXPORT')->setIcon('input-search');
         $signatureJpeg = FieldGenerator::signature('signatureJpeg')
-            ->setLabel('JPEG export <small class="text-muted">q=0.7</small>')
+            ->setLabel('JPEG <small class="text-muted">q=0.7</small>')
             ->setBackgroundColor('rgb(255,255,255)')
             ->setFormat(SignatureField::FORMAT_JPEG)
             ->setQuality(0.7)
             ->showInput()
             ->setColumns(6);
         $signatureSvg = FieldGenerator::signature('signatureSvg')
-            ->setLabel('SVG export')
+            ->setLabel('SVG')
             ->setFormat(SignatureField::FORMAT_SVG)
             ->showInput()
             ->setColumns(6);
@@ -949,7 +948,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->sliderPips()
             ->setColumns(4);
         $sliderShowInput = FieldGenerator::integer('sliderShowInput')
-            ->setLabel('Show backing input')
+            ->setLabel('Show input <small class="text-muted">sliderShowInput</small>')
             ->isSlider()
             ->setMin(0)
             ->setMax(100)
@@ -958,14 +957,14 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $sliderConnectPanel = FieldGenerator::panel('CONNECT')->setIcon('input-search');
         $sliderConnectUpper = FieldGenerator::integer('sliderConnectUpper')
-            ->setLabel('Connect upper')
+            ->setLabel('Connect upper <small class="text-muted">sliderConnectUpper</small>')
             ->isSlider()
             ->setMin(0)
             ->setMax(100)
             ->sliderConnectUpper()
             ->setColumns(4);
         $sliderNoTooltip = FieldGenerator::integer('sliderNoTooltip')
-            ->setLabel('No tooltips')
+            ->setLabel('No tooltips <small class="text-muted">sliderShowTooltip(false)</small>')
             ->isSlider()
             ->setMin(0)
             ->setMax(100)
@@ -995,7 +994,7 @@ class DemoEntityCrudController extends AbstractCrudController
             ->isSliderSnap([0, 25, 70, 100])
             ->setColumns(4);
         $sliderBehaviour = FieldGenerator::integer('sliderBehaviour')
-            ->setLabel('No tap <small class="text-muted">drag handle only</small>')
+            ->setLabel('No tap <small class="text-muted">drag only</small>')
             ->isSlider()
             ->setMin(0)
             ->setMax(100)
@@ -1014,27 +1013,27 @@ class DemoEntityCrudController extends AbstractCrudController
             ->setColumns(6);
 
         $slugConfirmPanel = FieldGenerator::panel('CONFIRM')->setIcon('input-search');
-        $slug2 = FieldGenerator::slug('slug2')
-            ->setLabel('Slug with unlock confirmation')
+        $slugConfirm = FieldGenerator::slug('slugConfirm')
+            ->setLabel('Unlock confirm <small class="text-muted">setConfirmText</small>')
             ->setTarget('slugTarget')
             ->setConfirmText('If the slug is not valid or contains special characters or spaces, it will not work.<br /><strong>Are you sure you want to overwrite?</strong>')
             ->setColumns(6);
 
         $slugOptionsPanel = FieldGenerator::panel('OPTIONS')->setIcon('input-search');
-        $slug3 = FieldGenerator::slug('slug3')
-            ->setLabel('Locale es + underscore')
+        $slugLocaleEs = FieldGenerator::slug('slugLocaleEs')
+            ->setLabel('Locale es <small class="text-muted">underscore</small>')
             ->setTarget('slugTarget')
             ->setLocale('es')
             ->setReplacement('_')
             ->setColumns(4);
-        $slug4 = FieldGenerator::slug('slug4')
-            ->setLabel('Keep case, not strict')
+        $slugKeepCase = FieldGenerator::slug('slugKeepCase')
+            ->setLabel('Keep case <small class="text-muted">not strict</small>')
             ->setTarget('slugTarget')
             ->isLower(false)
             ->isStrict(false)
             ->setColumns(4);
-        $slug5 = FieldGenerator::slug('slug5')
-            ->setLabel('Custom remove (keep dots)')
+        $slugKeepDots = FieldGenerator::slug('slugKeepDots')
+            ->setLabel('Keep dots <small class="text-muted">setRemove</small>')
             ->setTarget('slugTarget')
             ->setRemove('[^A-Za-z0-9.\\s-]')
             ->isStrict(false)
@@ -1046,84 +1045,84 @@ class DemoEntityCrudController extends AbstractCrudController
         $texteditor = FieldGenerator::texteditor('texteditor')
             ->setLabel('Default <small class="text-muted">full</small>')
             ->setColumns(4);
-        $texteditor2 = FieldGenerator::texteditor('texteditor2')
-            ->setLabel('Basic preset <small class="text-muted">safe public HTML</small>')
+        $texteditorBasic = FieldGenerator::texteditor('texteditorBasic')
+            ->setLabel('Basic preset <small class="text-muted">PRESET_BASIC</small>')
             ->setPreset(TextEditorField::PRESET_BASIC)
             ->setColumns(4);
-        $texteditor3 = FieldGenerator::texteditor('texteditor3')
+        $texteditorPlaceholder = FieldGenerator::texteditor('texteditorPlaceholder')
             ->setLabel('Placeholder')
             ->setPlaceholder('Write something…')
             ->setColumns(4);
         $texteditorSizePanel = FieldGenerator::panel('SIZE')->setIcon('input-search');
-        $texteditor4 = FieldGenerator::texteditor('texteditor4')
+        $texteditorFixedHeight = FieldGenerator::texteditor('texteditorFixedHeight')
             ->setLabel('Fixed height <small class="text-muted">250px</small>')
             ->setHeight(250)
             ->setColumns(4);
-        $texteditor5 = FieldGenerator::texteditor('texteditor5')
-            ->setLabel('Autoresize bounds <small class="text-muted">min 150 / max 250</small>')
+        $texteditorAutoresize = FieldGenerator::texteditor('texteditorAutoresize')
+            ->setLabel('Autoresize <small class="text-muted">min 150 / max 250</small>')
             ->setMinHeight(150)
             ->setMaxHeight(250)
             ->isResizeable()
             ->setColumns(4);
-        $texteditor6 = FieldGenerator::texteditor('texteditor6')
-            ->setLabel('Resize both axes')
+        $texteditorResizeBoth = FieldGenerator::texteditor('texteditorResizeBoth')
+            ->setLabel('Resize both <small class="text-muted">RESIZE_BOTH</small>')
             ->setResize(TextEditorField::RESIZE_BOTH)
             ->setColumns(4);
 
         $texteditorToolbarPanel = FieldGenerator::panel('TOOLBAR')->setIcon('input-search');
-        $texteditor7 = FieldGenerator::texteditor('texteditor7')
-            ->setLabel('Custom toolbar')
+        $texteditorCustomToolbar = FieldGenerator::texteditor('texteditorCustomToolbar')
+            ->setLabel('Custom toolbar <small class="text-muted">setToolbar</small>')
             ->setToolbar('undo redo | bold italic underline | bullist numlist | link | emoticons')
             ->setColumns(4);
-        $texteditor8 = FieldGenerator::texteditor('texteditor8')
-            ->setLabel('Wrap + sticky toolbar')
+        $texteditorStickyToolbar = FieldGenerator::texteditor('texteditorStickyToolbar')
+            ->setLabel('Sticky toolbar <small class="text-muted">wrap mode</small>')
             ->setToolbarMode(TextEditorField::TOOLBAR_MODE_WRAP)
             ->isToolbarSticky()
             ->setMinHeight(500)
             ->setColumns(4);
-        $texteditor9 = FieldGenerator::texteditor('texteditor9')
+        $texteditorMenubar = FieldGenerator::texteditor('texteditorMenubar')
             ->setLabel('Menubar <small class="text-muted">file edit insert</small>')
             ->setMenubar('file edit insert')
             ->setMinHeight(250)
             ->setColumns(4);
 
         $texteditorQuickbarsPanel = FieldGenerator::panel('MENUBAR & QUICKBARS')->setIcon('input-search');
-        $texteditor10 = FieldGenerator::texteditor('texteditor10')
-            ->setLabel('Selection quickbar')
+        $texteditorSelectionQuickbar = FieldGenerator::texteditor('texteditorSelectionQuickbar')
+            ->setLabel('Selection quickbar <small class="text-muted">setQuickbarsSelectionToolbar</small>')
             ->setQuickbarsSelectionToolbar('bold italic underline | quicklink')
             ->setColumns(6);
-        $texteditor11 = FieldGenerator::texteditor('texteditor11')
-            ->setLabel('Insert quickbar')
+        $texteditorInsertQuickbar = FieldGenerator::texteditor('texteditorInsertQuickbar')
+            ->setLabel('Insert quickbar <small class="text-muted">setQuickbarsInsertToolbar</small>')
             ->setQuickbarsInsertToolbar('quickimage quicktable')
             ->setColumns(6);
 
         $texteditorBehaviorPanel = FieldGenerator::panel('BEHAVIOR')->setIcon('input-search');
-        $texteditor12 = FieldGenerator::texteditor('texteditor12')
-            ->setLabel('Paste as text + no spellcheck')
+        $texteditorPasteAsText = FieldGenerator::texteditor('texteditorPasteAsText')
+            ->setLabel('Paste as text <small class="text-muted">no spellcheck</small>')
             ->isPasteAsText()
             ->isSpellcheck(false)
             ->setColumns(4);
-        $texteditor13 = FieldGenerator::texteditor('texteditor13')
-            ->setLabel('Context menu + convert URLs')
+        $texteditorContextMenu = FieldGenerator::texteditor('texteditorContextMenu')
+            ->setLabel('Context menu <small class="text-muted">convert URLs</small>')
             ->setContextMenu('link image table')
             ->isConvertUrls()
             ->setColumns(4);
-        $texteditor14 = FieldGenerator::texteditor('texteditor14')
+        $texteditorReadonly = FieldGenerator::texteditor('texteditorReadonly')
             ->setLabel('Readonly')
             ->isReadonly()
             ->setColumns(4);
 
         $texteditorChromePanel = FieldGenerator::panel('STATE & PLUGINS')->setIcon('input-search');
-        $texteditor15 = FieldGenerator::texteditor('texteditor15')
+        $texteditorNoStatusbar = FieldGenerator::texteditor('texteditorNoStatusbar')
             ->setLabel('No statusbar')
             ->showStatusbar(false)
             ->setColumns(4);
-        $texteditor16 = FieldGenerator::texteditor('texteditor16')
+        $texteditorNoElementPath = FieldGenerator::texteditor('texteditorNoElementPath')
             ->setLabel('No element path <small class="text-muted">statusbar kept</small>')
             ->showElementPath(false)
             ->setColumns(4);
-        $texteditor17 = FieldGenerator::texteditor('texteditor17')
-            ->setLabel('Reduced plugins + content style')
+        $texteditorReducedPlugins = FieldGenerator::texteditor('texteditorReducedPlugins')
+            ->setLabel('Reduced plugins <small class="text-muted">+ content style</small>')
             ->setPlugins(['lists', 'link', 'autoresize'])
             ->setContentStyle('body { font-family: "Courier New", monospace !important; }')
             ->setColumns(4);
@@ -1132,7 +1131,7 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $id;
         yield $textPanel;
         yield $text;
-        yield $textCustom;
+        yield $textRequired;
         yield $textHelp;
         yield $textRow;
         yield $email;
@@ -1143,11 +1142,11 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $confirmPassword;
         yield $confirmEmail;
         yield $numbersPanel;
-        yield $integer;
+        yield $integerNumber;
         yield $integerPositive;
-        yield $float;
+        yield $floatNumber;
         yield $floatPositive;
-        yield $floatStep05;
+        yield $floatStepHalf;
         yield $percent;
         yield $money;
         yield $moneyCustomCurrency;
@@ -1160,31 +1159,31 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $image;
         yield $textareaPanel;
         yield $textarea;
-        yield $textarea2;
-        yield $textarea3;
-        yield $textarea4;
+        yield $textareaBounds;
+        yield $textareaNoAutogrow;
+        yield $textareaStatic;
         yield $choicePanel;
         yield $choice;
-        yield $choice2;
-        yield $choice3;
+        yield $choiceExpanded;
+        yield $choiceExpandedRequired;
         yield $choiceRow;
-        yield $choice4;
-        yield $choice5;
+        yield $choiceMultiple;
+        yield $choiceMultipleExpanded;
 
         yield $codeeditorFieldsTab;
         yield $codeeditorPanel;
         yield $codeeditor;
-        yield $codeeditor2;
-        yield $codeeditor3;
+        yield $codeeditorPhpGithub;
+        yield $codeeditorPlaceholder;
         yield $codeeditorSizePanel;
-        yield $codeeditor4;
-        yield $codeeditor5;
+        yield $codeeditorBounds;
+        yield $codeeditorIndentSpaces;
         yield $codeeditorDisplayPanel;
-        yield $codeeditor6;
-        yield $codeeditor7;
-        yield $codeeditor8;
+        yield $codeeditorWrap;
+        yield $codeeditorPrintMargin;
+        yield $codeeditorMinimalUi;
         yield $codeeditorStatePanel;
-        yield $codeeditor9;
+        yield $codeeditorReadonly;
 
         yield $collectionFieldsTab;
         yield $collectionPanel;
@@ -1197,46 +1196,45 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $collectionPluginsPanel;
         yield $collectionPlugins;
 
-        yield $optionsFieldsTab;
-        yield $tsBasicPanel;
-        yield $tsDefault;
-        yield $tsNative;
-        yield $tsEnum;
-        yield $tsRequired;
-        yield $tsCreatePanel;
-        yield $tsCreate;
-        yield $tsCreateOnBlur;
-        yield $tsHtml;
-        yield $tsLimitsPanel;
-        yield $tsMultiple;
-        yield $tsMaxOptions;
-        yield $tsMaxItems;
-        yield $tsBehaviorPanel;
-        yield $tsSelectOnTab;
-        yield $tsDiacritics;
-        yield $tsNoClear;
-        yield $tsNoDropdown;
-        yield $tsMultipleExtrasPanel;
-        yield $tsCloseAfterSelect;
-        yield $tsHideSelected;
-        yield $tsCheckbox;
-        yield $tsNoRemove;
-        yield $tsDuplicates;
-        yield $tsAssociationPanel;
-        yield $tsRole;
-        yield $tsUser;
+        yield $selectFieldsTab;
+        yield $selectBasicPanel;
+        yield $selectDefault;
+        yield $selectEnum;
+        yield $selectRequired;
+        yield $selectCreatePanel;
+        yield $selectCreate;
+        yield $selectCreateOnBlur;
+        yield $selectHtml;
+        yield $selectLimitsPanel;
+        yield $selectMultiple;
+        yield $selectMaxOptions;
+        yield $selectMaxItems;
+        yield $selectBehaviorPanel;
+        yield $selectOnTab;
+        yield $selectDiacritics;
+        yield $selectNoClear;
+        yield $selectNoDropdown;
+        yield $selectMultipleExtrasPanel;
+        yield $selectCloseAfterSelect;
+        yield $selectHideSelected;
+        yield $selectCheckbox;
+        yield $selectNoRemove;
+        yield $selectDuplicates;
+        yield $selectAssociationPanel;
+        yield $selectRole;
+        yield $selectUser;
 
         yield $colorFieldsTab;
         yield $colorPanel;
         yield $color;
-        yield $colorInline;
+        yield $colorFlat;
         yield $colorAlpha;
         yield $colorButtons;
         yield $colorPalettePanel;
         yield $colorPalette;
         yield $colorPaletteOnly;
-        yield $colorInlinePalette;
-        yield $colorInlinePaletteOnly;
+        yield $colorFlatPalette;
+        yield $colorFlatPaletteOnly;
         yield $colorCustomPalette;
         yield $colorTogglePalette;
         yield $colorSelection;
@@ -1280,8 +1278,8 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $dateNative;
         yield $dateClockPanel;
         yield $datetimeClock;
-        yield $time12h;
-        yield $datetime12h;
+        yield $timeHour12;
+        yield $datetimeHour12;
 
         yield $hierarchyFieldsTab;
         yield $hierarchyPanel;
@@ -1322,10 +1320,10 @@ class DemoEntityCrudController extends AbstractCrudController
 
         yield $maskFieldsTab;
         yield $maskPanel;
-        yield $mask;
-        yield $mask2;
-        yield $mask3;
-        yield $maskEager;
+        yield $maskPhone;
+        yield $maskPlate;
+        yield $maskPin;
+        yield $maskDate;
         yield $maskSecure;
         yield $maskNumber;
         yield $maskPrepareDigits;
@@ -1334,8 +1332,8 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $signatureFieldsTab;
         yield $signaturePanel;
         yield $signature;
-        yield $signatureWithoutUndo;
-        yield $signatureWithoutClear;
+        yield $signatureNoUndo;
+        yield $signatureNoClear;
         yield $signatureStrokePanel;
         yield $signaturePenColor;
         yield $signatureThick;
@@ -1363,35 +1361,35 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $slugTarget;
         yield $slug;
         yield $slugConfirmPanel;
-        yield $slug2;
+        yield $slugConfirm;
         yield $slugOptionsPanel;
-        yield $slug3;
-        yield $slug4;
-        yield $slug5;
+        yield $slugLocaleEs;
+        yield $slugKeepCase;
+        yield $slugKeepDots;
 
         yield $texteditorFieldsTab;
         yield $texteditorPanel;
         yield $texteditor;
-        yield $texteditor2;
-        yield $texteditor3;
+        yield $texteditorBasic;
+        yield $texteditorPlaceholder;
         yield $texteditorSizePanel;
-        yield $texteditor4;
-        yield $texteditor5;
-        yield $texteditor6;
+        yield $texteditorFixedHeight;
+        yield $texteditorAutoresize;
+        yield $texteditorResizeBoth;
         yield $texteditorToolbarPanel;
-        yield $texteditor7;
-        yield $texteditor8;
-        yield $texteditor9;
+        yield $texteditorCustomToolbar;
+        yield $texteditorStickyToolbar;
+        yield $texteditorMenubar;
         yield $texteditorQuickbarsPanel;
-        yield $texteditor10;
-        yield $texteditor11;
+        yield $texteditorSelectionQuickbar;
+        yield $texteditorInsertQuickbar;
         yield $texteditorBehaviorPanel;
-        yield $texteditor12;
-        yield $texteditor13;
-        yield $texteditor14;
+        yield $texteditorPasteAsText;
+        yield $texteditorContextMenu;
+        yield $texteditorReadonly;
         yield $texteditorChromePanel;
-        yield $texteditor15;
-        yield $texteditor16;
-        yield $texteditor17;
+        yield $texteditorNoStatusbar;
+        yield $texteditorNoElementPath;
+        yield $texteditorReducedPlugins;
     }
 }
