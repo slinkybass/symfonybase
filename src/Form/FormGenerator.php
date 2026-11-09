@@ -94,7 +94,7 @@ class FormGenerator
 
     /**
      * Maps EasyAdmin `ChoiceField` custom options onto Symfony `ChoiceType` options.
-     * (In CRUD, `ChoiceConfigurator` does this; FormGenerator runs outside that pipeline.)
+     * (In CRUD, `ChoiceConfigurator` does this; FormGenerator runs outside that pipeline.).
      *
      * @param array<string, mixed> $options
      *
