@@ -2,7 +2,7 @@
  * Textarea field
  *
  * Autor: slinkybass
- * Version: 3.3
+ * Version: 4.0
  *
  * Contract: data-textarea-field on the textarea; optional data-textarea-max-height
  * (default 200px). Autogrow sets resize:none. Twig `resizeable` only applies when

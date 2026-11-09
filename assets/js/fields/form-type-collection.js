@@ -3,7 +3,7 @@
  * `vendor/easycorp/easyadmin-bundle/assets/js/field-collection.js`.
  *
  * Autor: slinkybass
- * Version: 2.0
+ * Version: 4.0
  *
  * Why a fork (not stock EA JS):
  * - Tabler form theme keeps a single `.ea-form-collection-items` wrapper; empty-state

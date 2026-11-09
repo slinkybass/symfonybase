@@ -2,7 +2,7 @@
  * Password field
  *
  * Autor: slinkybass
- * Version: 3.3
+ * Version: 4.0
  *
  * Contract: data-password-field is the group id (theme replaces "true").
  * Buttons join it with data-password-toggle / data-password-generate.

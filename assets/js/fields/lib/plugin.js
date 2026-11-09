@@ -2,7 +2,7 @@
  * Shared bootstrap for `assets/js/fields/form-type-*.js`.
  *
  * Autor: slinkybass
- * Version: 1.1
+ * Version: 1.0
  *
  * Not a field. Each plugin stays one entrypoint file; this module is infra.
  * `form-type-collection.js` (EA fork) uses `bindPlugin` only.

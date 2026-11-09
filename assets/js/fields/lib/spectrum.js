@@ -2,7 +2,7 @@
  * Spectrum helpers for the color plugin.
  *
  * Autor: slinkybass
- * Version: 1.1
+ * Version: 1.0
  *
  * HTML contract. Bool: omitted → default; "false"|"0" → false; else true.
  * Attr present → overrides default. showPalette is forced on when palette-only.

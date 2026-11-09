@@ -2,7 +2,7 @@
  * Flatpickr datetime field
  *
  * Autor: slinkybass
- * Version: 3.3
+ * Version: 4.0
  *
  * Contract: lib/flatpickr.js. Posted value: data-date-format (default YYYY-MM-DDTHH:mm[:ss]).
  */

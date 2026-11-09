@@ -2,7 +2,7 @@
  * TinyMCE texteditor field
  *
  * Autor: slinkybass
- * Version: 3.3
+ * Version: 4.0
  *
  * Contract: lib/tinymce.js.
  */
