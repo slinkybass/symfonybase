@@ -274,8 +274,11 @@
     {% endfor %}
 {% endblock ea_filters_widget %}
 
+{# Same shape as EA stock (`empty collection-empty` + label/empty); badge comes from our Tabler `label/empty` override. JS swaps `.collection-empty` on first add. #}
 {% block empty_collection %}
-    <div class="collection-empty mb-3"></div>
+    <div class="empty collection-empty mb-3">
+        {{ include(ea().templatePath('label/empty')) }}
+    </div>
 {% endblock empty_collection %}
 
 {% block collection_entry_row %}
@@ -299,18 +302,19 @@
             {% endif %}
         {% else %}
             <div class="accordion-item">
-                <div class="accordion-header">
+                {# h2 + collapse-marker: same contract as EA stock (a11y / CSS hook); icons & delete stay Tabler. #}
+                <h2 class="accordion-header">
                     <button class="accordion-button {{ render_expanded ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#{{ id }}-contents">
-                        <twig:ea:Icon name="chevron-right" />
+                        <twig:ea:Icon name="chevron-right" class="form-collection-item-collapse-marker" />
                         {{ value|ea_as_string(to_string_method)|default('#' ~ form.vars.name) }}
                     </button>
                     {% if allows_deleting_items and not disabled %}
                         {{ delete_item_button }}
                     {% endif %}
-                </div>
+                </h2>
                 <div id="{{ id }}-contents" class="accordion-collapse collapse {{ render_expanded ? 'show' }}">
                     <div class="accordion-body">
-                        {# form_widget_compound adds .row for non-collection compounds so col-* line up #}
+                        {# No extra .row: form_widget_compound already adds .row for Tabler cols #}
                         {{ form_widget(form) }}
                     </div>
                 </div>
@@ -439,9 +443,8 @@
         {% endif %}
     </div>
 
-    {% if isEmptyCollection or form.vars.prototype is defined %}
-        {% set attr = attr|merge({'data-empty-collection': block('empty_collection') }) %}
-    {% endif %}
+    {# EA stock also merges data-empty-collection here but never renders `attr` in this block;
+       the live copy is set on the compound widget in form_widget_compound. #}
 
     {% if allow_add|default(false) and not disabled %}
         <button type="button" class="btn btn-secondary field-collection-add-button">
