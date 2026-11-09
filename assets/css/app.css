@@ -881,3 +881,19 @@ div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-act
 .tox .tox-dialog-wrap__backdrop {
     background-color: color-mix(in oklab, light-dark(var(--tblr-gray-800), var(--tblr-black)) 32%, transparent) !important;
 }
+
+/* -----------------------------------------------------------------------------
+   Ace (CodeEditor)
+   ----------------------------------------------------------------------------- */
+
+.ace-editor.ace_editor {
+    border: var(--tblr-border-width) solid var(--tblr-border-color-translucent) !important;
+    border-radius: var(--tblr-border-radius) !important;
+    overflow: hidden;
+}
+.ace-editor.ace_editor.ace_focus,
+.ace-editor.ace_editor:focus-within {
+    --tblr-focus-ring-offset: -1px;
+    outline: var(--tblr-focus-ring, var(--tblr-focus-ring-width) solid var(--tblr-focus-ring-color));
+    outline-offset: var(--tblr-focus-ring-offset);
+}

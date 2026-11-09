@@ -526,3 +526,8 @@
 {%- block checkbox_switch_input -%}
     <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {%- endblock checkbox_switch_input %}
+
+{# Ace via App\Field\CodeEditorField — skip EasyAdmin CodeMirror data-* hooks. #}
+{% block ea_code_editor_widget %}
+    {{ form_widget(form) }}
+{% endblock ea_code_editor_widget %}

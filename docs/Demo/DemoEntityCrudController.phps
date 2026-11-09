@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Cruds;
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\DemoEntity;
 use App\Entity\Enum\UserGender;
+use App\Field\CodeEditorField;
 use App\Field\ColorField;
 use App\Field\DateField;
 use App\Field\DateMultipleField;
@@ -190,15 +191,61 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $codeeditorFieldsTab = FieldGenerator::tab('Code editor');
 
-        $codeeditorPanel = FieldGenerator::panel('CODE EDITOR')->setIcon('input-search');
+        $codeeditorPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
         $codeeditor = FieldGenerator::codeeditor('codeeditor')
             ->setLabel('Default')
-            ->setColumns(6);
+            ->setColumns(4);
         $codeeditor2 = FieldGenerator::codeeditor('codeeditor2')
-            ->setLabel('With custom language (PHP) and theme (GitHub)')
-            ->setTheme('github')
-            ->setLanguage('php')
+            ->setLabel('PHP + GitHub <small class="text-muted">light/dark</small>')
+            ->setTheme(CodeEditorField::CODEEDITOR_THEME_GITHUB)
+            ->setDarkTheme(CodeEditorField::CODEEDITOR_THEME_GITHUB_DARK)
+            ->setLanguage(CodeEditorField::CODEEDITOR_LANGUAGE_PHP)
+            ->setColumns(4);
+        $codeeditor3 = FieldGenerator::codeeditor('codeeditor3')
+            ->setLabel('Placeholder')
+            ->setPlaceholder('// type some code…')
+            ->setColumns(4);
+
+        $codeeditorSizePanel = FieldGenerator::panel('SIZE')->setIcon('input-search');
+        $codeeditor4 = FieldGenerator::codeeditor('codeeditor4')
+            ->setLabel('Bounds + font <small class="text-muted">min 10 / max 50 / 16px / Courier New</small>')
+            ->setMinLines(10)
+            ->setMaxLines(50)
+            ->setFontSize(16)
+            ->setFontFamily('"Courier New", Courier, monospace')
             ->setColumns(6);
+        $codeeditor5 = FieldGenerator::codeeditor('codeeditor5')
+            ->setLabel('Indent with spaces <small class="text-muted">2 spaces</small>')
+            ->isIndentedWithTabs(false)
+            ->setTabSize(2)
+            ->setColumns(6);
+
+        $codeeditorDisplayPanel = FieldGenerator::panel('DISPLAY')->setIcon('input-search');
+        $codeeditor6 = FieldGenerator::codeeditor('codeeditor6')
+            ->setLabel('Wrap + no line numbers <small class="text-muted">gutter kept</small>')
+            ->isWrap()
+            ->showLineNumbers(false)
+            ->setColumns(4);
+        $codeeditor7 = FieldGenerator::codeeditor('codeeditor7')
+            ->setLabel('Print margin 50 + invisibles')
+            ->showPrintMargin()
+            ->setPrintMarginColumn(50)
+            ->showInvisibles()
+            ->setColumns(4);
+        $codeeditor8 = FieldGenerator::codeeditor('codeeditor8')
+            ->setLabel('Disable selected-word, worker, gutter, active line and indent guides')
+            ->isHighlightSelectedWord(false)
+            ->isUseWorker(false)
+            ->showGutter(false)
+            ->isHighlightActiveLine(false)
+            ->showIndentGuides(false)
+            ->setColumns(4);
+
+        $codeeditorStatePanel = FieldGenerator::panel('STATE')->setIcon('input-search');
+        $codeeditor9 = FieldGenerator::codeeditor('codeeditor9')
+            ->setLabel('Readonly')
+            ->isReadonly()
+            ->setColumns(12);
 
         $collectionFieldsTab = FieldGenerator::tab('Collection');
 
@@ -929,6 +976,16 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $codeeditorPanel;
         yield $codeeditor;
         yield $codeeditor2;
+        yield $codeeditor3;
+        yield $codeeditorSizePanel;
+        yield $codeeditor4;
+        yield $codeeditor5;
+        yield $codeeditorDisplayPanel;
+        yield $codeeditor6;
+        yield $codeeditor7;
+        yield $codeeditor8;
+        yield $codeeditorStatePanel;
+        yield $codeeditor9;
 
         yield $collectionFieldsTab;
         yield $collectionPanel;

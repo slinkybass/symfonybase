@@ -117,6 +117,27 @@ class DemoEntity
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $codeeditor2 = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor3 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor4 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor5 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor6 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor7 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor8 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $codeeditor9 = null;
+
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $array = null;
 
@@ -856,6 +877,90 @@ class DemoEntity
     public function setCodeeditor2(?string $codeeditor2): static
     {
         $this->codeeditor2 = $codeeditor2;
+
+        return $this;
+    }
+
+    public function getCodeeditor3(): ?string
+    {
+        return $this->codeeditor3;
+    }
+
+    public function setCodeeditor3(?string $codeeditor3): static
+    {
+        $this->codeeditor3 = $codeeditor3;
+
+        return $this;
+    }
+
+    public function getCodeeditor4(): ?string
+    {
+        return $this->codeeditor4;
+    }
+
+    public function setCodeeditor4(?string $codeeditor4): static
+    {
+        $this->codeeditor4 = $codeeditor4;
+
+        return $this;
+    }
+
+    public function getCodeeditor5(): ?string
+    {
+        return $this->codeeditor5;
+    }
+
+    public function setCodeeditor5(?string $codeeditor5): static
+    {
+        $this->codeeditor5 = $codeeditor5;
+
+        return $this;
+    }
+
+    public function getCodeeditor6(): ?string
+    {
+        return $this->codeeditor6;
+    }
+
+    public function setCodeeditor6(?string $codeeditor6): static
+    {
+        $this->codeeditor6 = $codeeditor6;
+
+        return $this;
+    }
+
+    public function getCodeeditor7(): ?string
+    {
+        return $this->codeeditor7;
+    }
+
+    public function setCodeeditor7(?string $codeeditor7): static
+    {
+        $this->codeeditor7 = $codeeditor7;
+
+        return $this;
+    }
+
+    public function getCodeeditor8(): ?string
+    {
+        return $this->codeeditor8;
+    }
+
+    public function setCodeeditor8(?string $codeeditor8): static
+    {
+        $this->codeeditor8 = $codeeditor8;
+
+        return $this;
+    }
+
+    public function getCodeeditor9(): ?string
+    {
+        return $this->codeeditor9;
+    }
+
+    public function setCodeeditor9(?string $codeeditor9): static
+    {
+        $this->codeeditor9 = $codeeditor9;
 
         return $this;
     }
