@@ -102,7 +102,8 @@
 {% endblock ea_form_tabpane_group_close_row %}
 
 {% block repeated_row %}
-    {% set field = form.vars.ea_vars.field %}
+    {# Same as EasyAdmin, plus an inner .row so password/repeated children can split col-md-6. #}
+    {% set field = form.vars.ea_vars.field|default(null) %}
 
     <div class="{{ field.columns ?? field.defaultColumns ?? '' }}">
         <div class="row">
@@ -117,46 +118,67 @@
 
 {% block form_row %}
     {% set row_attr = row_attr|merge({
-        class: row_attr.class|default('') ~ ' form-group'
+        class: row_attr.class|default('') ~ ' form-group',
     }) %}
-    {% set isRepeated = form.parent.vars.ea_vars.field and form.parent.vars.ea_vars.field.formType == "Symfony\\Component\\Form\\Extension\\Core\\Type\\RepeatedType" %}
-    {% set field = isRepeated ? form.parent.vars.ea_vars.field : form.vars.ea_vars.field %}
-    {# Parent repeated_row already applies field.columns. Children split that slot in half. #}
-    {% set column_class = isRepeated ? 'col-md-6' : (field.columns ?? field.defaultColumns ?? '') %}
+    {# 'field' is null for Symfony forms not created with EasyAdmin fields (e.g. FormGenerator). #}
+    {% set parent_ea_field = form.parent.vars.ea_vars.field|default(null) %}
+    {% set ea_field = form.vars.ea_vars.field|default(null) %}
+    {% set isRepeated = parent_ea_field and parent_ea_field.formType == "Symfony\\Component\\Form\\Extension\\Core\\Type\\RepeatedType" %}
+    {% set field = isRepeated ? parent_ea_field : ea_field %}
+    {# Parent repeated_row already applies field.columns; children split that slot in half.
+       FormGenerator passes columns via row_attr data-ea-columns. #}
+    {% if isRepeated %}
+        {% set column_class = 'col-md-6' %}
+    {% elseif field is not null %}
+        {% set column_class = field.columns ?? field.defaultColumns ?? '' %}
+    {% else %}
+        {% set column_class = row_attr['data-ea-columns']|default('') %}
+    {% endif %}
 
     <div class="{{ column_class }}">
-        {%- set row_class = row_class|default(row_attr.class) -%}
+        {%- set row_class = row_class|default(row_attr.class|default('mb-3')) -%}
         <div {% with {attr: row_attr|merge({class: (row_class ~ ((not compound or force_error|default(false)) and not valid ? ' has-error'))|trim})} %}{{ block('attributes') }}{% endwith %}>
             {{- form_label(form) -}}
             <div class="form-widget mb-3">
-                {% set has_prepend_html = field.prepend_html|default(null) is not null %}
-                {% set has_append_html = field.append_html|default(null) is not null %}
-                {% set has_input_groups = has_prepend_html or has_append_html %}
-                {% set has_help = field.help ?? form.vars.help ?? false %}
+                {# EasyAdmin API: ea_addons from prepend()/append() + money/percent symbols.
+                   Tabler markup: Bootstrap input-group instead of ea-input-group. #}
+                {% set ea_addons = ea_addons|default({prepend: [], append: []}) %}
+                {% set has_addons = ea_addons.prepend is not empty or ea_addons.append is not empty %}
+                {% set field_help = field.help ?? null %}
+                {% set has_help = field_help ?? form.vars.help ?? false %}
 
                 {% if has_help %}
                     <div class="row g-2">
                         <div class="col">
                 {% endif %}
-                {% if has_input_groups %}<div class="input-group">{% endif %}
-                    {% if has_prepend_html %}
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">{{ field.prepend_html|raw }}</span>
-                        </div>
-                    {% endif %}
 
+                {% if has_addons %}
+                    <div class="input-group input-group-flat{{ disabled ? ' disabled' }}">
+                        {% for addon in ea_addons.prepend %}
+                            <span class="input-group-text">
+                                {%- if addon.icon %}<twig:ea:Icon name="{{ addon.icon }}" />{% endif %}{% if addon.html %}{{ addon.html|trans|raw }}{% elseif addon.text %}{{ addon.text }}{% endif -%}
+                            </span>
+                        {% endfor %}
+                        {{ form_widget(form) }}
+                        {% for addon in ea_addons.append %}
+                            <span class="input-group-text">
+                                {%- if addon.icon %}<twig:ea:Icon name="{{ addon.icon }}" />{% endif %}{% if addon.html %}{{ addon.html|trans|raw }}{% elseif addon.text %}{{ addon.text }}{% endif -%}
+                            </span>
+                        {% endfor %}
+                    </div>
+                {% else %}
                     {{ form_widget(form) }}
-
-                    {% if has_append_html %}
-                        <span class="input-group-text">{{ field.append_html|raw }}</span>
-                    {% endif %}
-                {% if has_input_groups %}</div>{% endif %}
+                {% endif %}
 
                 {% if has_help %}
                         </div>
                         <div class="col-auto align-self-center">
-                            {% set helpMsg = field.help ?? form.vars.help %}
-                            <span class="form-help" title="{{ helpMsg|trans(label_translation_parameters, translation_domain)|raw }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true">?</span>
+                            {% if field_help %}
+                                {% set helpMsg = field_help|trans(label_translation_parameters, translation_domain) %}
+                            {% else %}
+                                {% set helpMsg = form.vars.help|trans(form.vars.help_translation_parameters, form.vars.translation_domain) %}
+                            {% endif %}
+                            <span class="form-help" title="{{ helpMsg|raw }}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true">?</span>
                         </div>
                     </div>
                 {% endif %}
@@ -166,12 +188,11 @@
         </div>
     </div>
 
-    {# if a field doesn't define its columns explicitly, insert a fill element to make the field take the entire row space #}
-    {% if not isRepeated and field.columns|default(null) is null %}
+    {# EasyAdmin: flex-fill when columns were not set explicitly. FormGenerator: when data-ea-columns is empty. #}
+    {% if not isRepeated and (field is not null ? field.columns|default(null) is null : column_class is empty) %}
         <div class="flex-fill"></div>
     {% endif %}
 {% endblock form_row %}
-
 {% block form_label -%}
     {% if label is same as(false) -%}
         {# don't display anything, not even an empty <label> element; if you want to not display
@@ -284,15 +305,41 @@
                 </div>
                 <div id="{{ id }}-contents" class="accordion-collapse collapse {{ render_expanded ? 'show' }}">
                     <div class="accordion-body">
-                        <div class="row">
-                            {{ form_widget(form) }}
-                        </div>
+                        {# form_widget_compound adds .row for non-collection compounds so col-* line up #}
+                        {{ form_widget(form) }}
                     </div>
                 </div>
             </div>
         {% endif %}
     </div>
 {% endblock collection_entry_row %}
+
+{# EasyAdmin wraps compound widgets; Bootstrap cols need to be direct .row children.
+   Collections keep EA's double wrapper (JS targets [data-empty-collection] inside).
+   Nested FormTypes (e.g. DemoEntityType entries) use a single .form-widget-compound.row. #}
+{% block form_widget_compound %}
+    {% if 'collection' in block_prefixes %}
+        <div class="form-widget-compound">
+            {% set isEmptyCollection = value is null or (value is iterable and value is empty) %}
+            {% if isEmptyCollection %}
+                {{ block('empty_collection') }}
+            {% endif %}
+            {% if isEmptyCollection or form.vars.prototype is defined %}
+                {% set attr = attr|merge({'data-empty-collection': block('empty_collection')}) %}
+            {% endif %}
+            <div {{ block('widget_container_attributes') }}>
+                {{- block('form_rows') -}}
+                {{- form_rest(form) -}}
+            </div>
+        </div>
+    {% else %}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-widget-compound row')|trim}) %}
+        <div {{ block('widget_container_attributes') }}>
+            {{- block('form_rows') -}}
+            {{- form_rest(form) -}}
+        </div>
+    {% endif %}
+{% endblock form_widget_compound %}
 
 {% block ea_slug_widget %}
     {% set plugin_on = attr['data-slug-field']|default('true') not in ['false', '0', false] %}
@@ -309,7 +356,11 @@
             }) %}
         {% endif %}
 
-        <div class="input-group">
+        {# form_row already wraps prepend()/append() in .input-group; don't nest another group. #}
+        {% set ea_addons = ea_addons|default({prepend: [], append: []}) %}
+        {% set is_inside_addon_group = ea_addons.prepend is not empty or ea_addons.append is not empty %}
+
+        {% set slug_widget %}
             {{ block('form_widget') }}
             <button type="button" class="btn btn-icon" data-slug-lock
                     data-slug-icon-locked="{{ component('ea:Icon', {name: 'lock'})|e('html') }}"
@@ -317,7 +368,13 @@
                     aria-pressed="true">
                 <twig:ea:Icon name="lock" />
             </button>
-        </div>
+        {% endset %}
+
+        {% if is_inside_addon_group %}
+            {{ slug_widget }}
+        {% else %}
+            <div class="input-group">{{ slug_widget }}</div>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
@@ -388,39 +445,18 @@
     {% endif %}
 {% endblock collection_widget %}
 
+{# Currency/% symbols come from ea_addons in form_row (EasyAdmin). Keep Tabler input classes only. #}
 {% block money_widget -%}
     {%- set type = type|default('number') -%}
-    {%- set prepend = not (money_pattern starts with '{{') -%}
-    {%- set append = not (money_pattern ends with '}}') -%}
-    {%- if prepend or append -%}
-        <div class="input-group input-group-flat{{ group_class|default('') }}">
-            {%- if prepend -%}
-                <span class="input-group-text">{{ money_pattern|form_encode_currency }}</span>
-            {%- endif -%}
-            {%- set attr = attr|merge({class: (attr.class|default('') ~ 'text-end pe-2 no-spinners')|trim}) -%}
-            {{- block('form_widget_simple') -}}
-            {%- if append -%}
-                <span class="input-group-text">{{ money_pattern|form_encode_currency }}</span>
-            {%- endif -%}
-        </div>
-    {%- else -%}
-        {{- block('form_widget_simple') -}}
-    {%- endif -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' text-end pe-2 no-spinners')|trim}) -%}
+    {{- block('form_widget_simple') -}}
 {%- endblock money_widget %}
 
 {% block percent_widget -%}
     {%- set type = type|default('number') -%}
-    {%- if symbol -%}
-        <div class="input-group input-group-flat">
-            {%- set attr = attr|merge({class: (attr.class|default('') ~ 'text-end pe-2 no-spinners')|trim}) -%}
-            {{- block('form_widget_simple') -}}
-            <span class="input-group-text">{{ symbol|default('%') }}</span>
-        </div>
-    {%- else -%}
-        {{- block('form_widget_simple') -}}
-    {%- endif -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' text-end pe-2 no-spinners')|trim}) -%}
+    {{- block('form_widget_simple') -}}
 {%- endblock percent_widget %}
-
 {% block password_widget %}
     {% set plugin_on = attr['data-password-field']|default('true') not in ['false', '0', false] %}
     {% set render_switch = plugin_on and (attr['data-password-switch']|default('true') not in ['false', '0', false]) %}

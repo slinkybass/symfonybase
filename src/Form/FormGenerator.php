@@ -33,11 +33,25 @@ class FormGenerator
             $fieldDto = $field->getAsDto();
             $options = $fieldDto->getFormTypeOptions();
             $options['label'] = $fieldDto->getLabel();
+            // EasyAdmin CommonPostConfigurator sets this; FormGenerator is outside that pipeline.
+            $options['label_html'] ??= true;
+
+            $htmlAttributes = $fieldDto->getHtmlAttributes();
+            if ([] !== $htmlAttributes) {
+                $options['attr'] = array_merge($options['attr'] ?? [], $htmlAttributes);
+            }
+
+            // EasyAdmin reads columns from FieldDto; outside CRUD pass them for the form theme.
+            $columns = $fieldDto->getColumns() ?? $fieldDto->getDefaultColumns();
+            if ($columns) {
+                $options['row_attr']['data-ea-columns'] = $columns;
+            }
 
             if ($entityClass) {
                 $options = $this->resolveDoctrineOptions($options, $fieldDto->getProperty(), $entityClass);
             }
 
+            $options = $this->resolveChoiceOptions($options, $field);
             $options = $this->resolveAutocomplete($options, $field);
 
             $builder->add($fieldDto->getProperty(), $fieldDto->getFormType(), $options);
@@ -79,10 +93,44 @@ class FormGenerator
     }
 
     /**
+     * Maps EasyAdmin `ChoiceField` custom options onto Symfony `ChoiceType` options.
+     * (In CRUD, `ChoiceConfigurator` does this; FormGenerator runs outside that pipeline.)
+     *
+     * @param array<string, mixed> $options
+     *
+     * @return array<string, mixed>
+     */
+    private function resolveChoiceOptions(array $options, object $field): array
+    {
+        $fieldDto = $field->getAsDto();
+        if (EasyChoiceField::class !== $fieldDto->getFieldFqcn()) {
+            return $options;
+        }
+
+        $choices = $fieldDto->getCustomOption(EasyChoiceField::OPTION_CHOICES);
+        if (\is_callable($choices)) {
+            $choices = $choices(null, $fieldDto);
+        }
+        if (\is_array($choices)) {
+            $options['choices'] ??= $choices;
+        }
+
+        $options['multiple'] ??= true === $fieldDto->getCustomOption(EasyChoiceField::OPTION_ALLOW_MULTIPLE_CHOICES);
+        $options['expanded'] ??= true === $fieldDto->getCustomOption(EasyChoiceField::OPTION_RENDER_EXPANDED);
+        $options['placeholder'] ??= '';
+
+        $preferred = $fieldDto->getCustomOption(EasyChoiceField::OPTION_PREFERRED_CHOICES);
+        if (null !== $preferred) {
+            $options['preferred_choices'] ??= $preferred;
+        }
+
+        return $options;
+    }
+
+    /**
      * Adds the ea-autocomplete attribute when the field uses TomSelect outside of EasyAdmin context.
      *
-     * @param array  $options the current form type options
-     * @param object $field   the field definition
+     * @param array<string, mixed> $options
      *
      * @return array<string, mixed>
      */
