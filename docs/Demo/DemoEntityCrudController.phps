@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Cruds;
 use App\Controller\Admin\AbstractCrudController;
 use App\Entity\DemoEntity;
 use App\Entity\Enum\UserGender;
+use App\Field\AssociationField;
 use App\Field\CodeEditorField;
 use App\Field\ColorField;
 use App\Field\DateField;
@@ -303,6 +304,162 @@ class DemoEntityCrudController extends AbstractCrudController
                 ],
             ]);
         }
+
+        $optionsFieldsTab = FieldGenerator::tab('Options');
+
+        $tsChoices = [
+            'Apple' => 'apple',
+            'Banana' => 'banana',
+            'Cherry' => 'cherry',
+            'Date' => 'date',
+            'Elderberry' => 'elderberry',
+            'Fig' => 'fig',
+            'Grape' => 'grape',
+            'Honeydew' => 'honeydew',
+            'Kiwi' => 'kiwi',
+            'Lemon' => 'lemon',
+            'Mango' => 'mango',
+            'Nectarine' => 'nectarine',
+        ];
+        $tsDiacriticChoices = [
+            'Café' => 'cafe',
+            'Niño' => 'nino',
+            'Año' => 'ano',
+            'México' => 'mexico',
+            'España' => 'espana',
+            'Pingüino' => 'pinguino',
+        ];
+
+        $tsBasicPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
+        $tsDefault = FieldGenerator::choice('tsDefault')
+            ->setLabel('Default')
+            ->setChoices($tsChoices)
+            ->setColumns(3);
+        $tsNative = FieldGenerator::choice('tsNative')
+            ->setLabel('Native <small class="text-muted">enablePlugin(false)</small>')
+            ->setChoices($tsChoices)
+            ->enablePlugin(false)
+            ->setColumns(3);
+        $tsEnum = FieldGenerator::enum('tsEnum')
+            ->setLabel('Enum <small class="text-muted">UserGender</small>')
+            ->setColumns(3);
+        $tsRequired = FieldGenerator::choice('tsRequired')
+            ->setLabel('Required <small class="text-muted">no clear by default</small>')
+            ->setChoices($tsChoices)
+            ->isRequired()
+            ->setColumns(3);
+
+        $tsCreatePanel = FieldGenerator::panel('CREATE')->setIcon('input-search');
+        $tsCreate = FieldGenerator::choice('tsCreate')
+            ->setLabel('Allow create <small class="text-muted">setAllowItemCreate</small>')
+            ->setChoices($tsChoices)
+            ->setAllowItemCreate()
+            ->setColumns(4);
+        $tsCreateOnBlur = FieldGenerator::choice('tsCreateOnBlur')
+            ->setLabel('Create on blur <small class="text-muted">+ createOnBlur</small>')
+            ->setChoices($tsChoices)
+            ->setAllowItemCreate()
+            ->isCreateOnBlur()
+            ->setColumns(4);
+        $tsHtml = FieldGenerator::choice('tsHtml')
+            ->setLabel('HTML labels <small class="text-muted">renderAsHtml</small>')
+            ->setChoices([
+                '<b>Bold</b> option' => 'bold',
+                '<em>Italic</em> option' => 'italic',
+                '<span class="badge badge-primary text-primary-fg">Badge</span>' => 'badge',
+            ])
+            ->renderAsHtml()
+            ->setColumns(4);
+
+        $tsLimitsPanel = FieldGenerator::panel('LIMITS')->setIcon('input-search');
+        $tsMultiple = FieldGenerator::choice('tsMultiple')
+            ->setLabel('Multiple <small class="text-muted">isMultiple</small>')
+            ->setChoices($tsChoices)
+            ->isMultiple()
+            ->setColumns(4);
+        $tsMaxOptions = FieldGenerator::choice('tsMaxOptions')
+            ->setLabel('Max options 3 <small class="text-muted">setMaxOptions</small>')
+            ->setChoices($tsChoices)
+            ->setMaxOptions(3)
+            ->setColumns(4);
+        $tsMaxItems = FieldGenerator::choice('tsMaxItems')
+            ->setLabel('Max items 2 <small class="text-muted">setMaxItems</small>')
+            ->setChoices($tsChoices)
+            ->isMultiple()
+            ->setMaxItems(2)
+            ->setColumns(4);
+
+        $tsBehaviorPanel = FieldGenerator::panel('BEHAVIOR')->setIcon('input-search');
+        $tsSelectOnTab = FieldGenerator::choice('tsSelectOnTab')
+            ->setLabel('Select on Tab')
+            ->setChoices($tsDiacriticChoices)
+            ->isSelectOnTab()
+            ->setColumns(3);
+        $tsDiacritics = FieldGenerator::choice('tsDiacritics')
+            ->setLabel('Diacritics <small class="text-muted">type "cafe" without diacritics</small>')
+            ->setChoices($tsDiacriticChoices)
+            ->isDiacritics(false)
+            ->setColumns(3);
+        $tsNoClear = FieldGenerator::choice('tsNoClear')
+            ->setLabel('No clear button')
+            ->setChoices($tsDiacriticChoices)
+            ->showClearButton(false)
+            ->setColumns(3);
+        $tsNoDropdown = FieldGenerator::choice('tsNoDropdown')
+            ->setLabel('No dropdown input')
+            ->setChoices($tsDiacriticChoices)
+            ->showDropdownInput(false)
+            ->setColumns(3);
+
+        $tsMultipleExtrasPanel = FieldGenerator::panel('MULTIPLE EXTRAS')->setIcon('input-search');
+        $tsCloseAfterSelect = FieldGenerator::choice('tsCloseAfterSelect')
+            ->setLabel('Close after select <small class="text-muted">multiple + isCloseAfterSelect</small>')
+            ->setChoices($tsChoices)
+            ->isMultiple()
+            ->isCloseAfterSelect()
+            ->setColumns(4);
+        $tsHideSelected = FieldGenerator::choice('tsHideSelected')
+            ->setLabel('Show selected <small class="text-muted">multi default hides them; isHideSelected(false)</small>')
+            ->setChoices($tsChoices)
+            ->isMultiple()
+            ->isHideSelected(false)
+            ->setColumns(4);
+        $tsCheckbox = FieldGenerator::choice('tsCheckbox')
+            ->setLabel('Checkbox options')
+            ->setChoices($tsChoices)
+            ->isMultiple()
+            ->showCheckboxOptions()
+            ->setColumns(4);
+        $tsNoRemove = FieldGenerator::choice('tsNoRemove')
+            ->setLabel('No remove button')
+            ->setChoices($tsChoices)
+            ->isMultiple()
+            ->showRemoveButton(false)
+            ->setColumns(6);
+        $tsDuplicates = FieldGenerator::choice('tsDuplicates')
+            ->setLabel('Duplicates + Show selected <small class="text-muted">semicolon delimiter</small>')
+            ->setChoices($tsChoices)
+            ->isMultiple()
+            ->isHideSelected(false)
+            ->isDuplicates()
+            ->setDelimiter(';')
+            ->setColumns(6);
+
+        $tsAssociationPanel = FieldGenerator::panel('ASSOCIATION')->setIcon('input-search');
+        $tsRole = FieldGenerator::association('tsRole')
+            ->setLabel('Role <small class="text-muted">setPreload(false) + isOpenOnFocus(false); type to search</small>')
+            ->setCrudController(RoleCrudController::class)
+            ->autocomplete()
+            ->setPreload(false)
+            ->showDropdownInput(false)
+            ->isOpenOnFocus(false)
+            ->setColumns(6);
+        $tsUser = FieldGenerator::user('tsUser')
+            ->setLabel('User <small class="text-muted">preload on focus (remote default); active+verified</small>')
+            ->setCrudController(UserCrudController::class)
+            ->autocomplete()
+            ->showDropdownInput(false)
+            ->setColumns(6);
 
         $colorFieldsTab = FieldGenerator::tab('Color');
 
@@ -1040,6 +1197,35 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $collectionPluginsPanel;
         yield $collectionPlugins;
 
+        yield $optionsFieldsTab;
+        yield $tsBasicPanel;
+        yield $tsDefault;
+        yield $tsNative;
+        yield $tsEnum;
+        yield $tsRequired;
+        yield $tsCreatePanel;
+        yield $tsCreate;
+        yield $tsCreateOnBlur;
+        yield $tsHtml;
+        yield $tsLimitsPanel;
+        yield $tsMultiple;
+        yield $tsMaxOptions;
+        yield $tsMaxItems;
+        yield $tsBehaviorPanel;
+        yield $tsSelectOnTab;
+        yield $tsDiacritics;
+        yield $tsNoClear;
+        yield $tsNoDropdown;
+        yield $tsMultipleExtrasPanel;
+        yield $tsCloseAfterSelect;
+        yield $tsHideSelected;
+        yield $tsCheckbox;
+        yield $tsNoRemove;
+        yield $tsDuplicates;
+        yield $tsAssociationPanel;
+        yield $tsRole;
+        yield $tsUser;
+
         yield $colorFieldsTab;
         yield $colorPanel;
         yield $color;
@@ -1207,6 +1393,5 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $texteditor15;
         yield $texteditor16;
         yield $texteditor17;
-
     }
 }

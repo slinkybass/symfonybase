@@ -1,4 +1,47 @@
+/**
+ * TomSelect autocomplete (EasyAdmin fork + `data-autocomplete-*` from TomSelectFieldTrait).
+ *
+ * Autor: slinkybass
+ * Version: 1.0
+ */
+
 import TomSelect from "tom-select";
+import { appLocale, boolAttr, intAttr, strAttr } from "../lib/plugin.js";
+import tomselectEs from "../i18n/tomselect.es.js";
+
+const ATTR = {
+    maxItems: "data-autocomplete-max-items",
+    maxOptions: "data-autocomplete-max-options",
+    persist: "data-autocomplete-persist",
+    preload: "data-autocomplete-preload",
+    openOnFocus: "data-autocomplete-open-on-focus",
+    closeAfterSelect: "data-autocomplete-close-after-select",
+    hideSelected: "data-autocomplete-hide-selected",
+    duplicates: "data-autocomplete-duplicates",
+    createOnBlur: "data-autocomplete-create-on-blur",
+    addPrecedence: "data-autocomplete-add-precedence",
+    selectOnTab: "data-autocomplete-select-on-tab",
+    diacritics: "data-autocomplete-diacritics",
+    delimiter: "data-autocomplete-delimiter",
+    loadThrottle: "data-autocomplete-load-throttle",
+    searchConjunction: "data-autocomplete-search-conjunction",
+    clearButton: "data-autocomplete-clear-button",
+    removeButton: "data-autocomplete-remove-button",
+    dropdownInput: "data-autocomplete-dropdown-input",
+    checkboxOptions: "data-autocomplete-checkbox-options",
+};
+
+/** @type {Record<string, typeof tomselectEs>} */
+const LOCALES = {
+    es: tomselectEs,
+};
+
+const I18N_DEFAULTS = {
+    optionCreate: "Add",
+    noResults: "No results found",
+    noMoreResults: "No more results",
+    loadingMoreResults: "Loading more results…",
+};
 
 export default class Autocomplete {
     create(element) {
@@ -25,10 +68,18 @@ export default class Autocomplete {
         return this.#createAutocomplete(element);
     }
 
+    #i18n(key) {
+        const pack = LOCALES[appLocale()] ?? {};
+        return pack[key] ?? I18N_DEFAULTS[key] ?? key;
+    }
+
     #getCommonConfig(element) {
+        const optionCreateLabel = this.#i18n("optionCreate");
         const config = {
             render: {
-                no_results: (data, escape) => `<div class="no-results">${element.getAttribute("data-ea-i18n-no-results-found")}</div>`,
+                no_results: (data, escape) => `<div class="no-results">${this.#i18n("noResults")}</div>`,
+                option_create: (data, escape) =>
+                    `<div class="create">${optionCreateLabel} <strong>${escape(data.input)}</strong>&hellip;</div>`,
             },
             plugins: {
                 dropdown_input: {},
@@ -52,6 +103,90 @@ export default class Autocomplete {
         }
 
         return config;
+    }
+
+    /**
+     * Apply TomSelectFieldTrait `data-autocomplete-*` overrides (after EA defaults).
+     */
+    #applyMappedOptions(element, config) {
+        config.plugins ??= {};
+
+        this.#assignNullableInt(element, ATTR.maxItems, config, "maxItems");
+        this.#assignNullableInt(element, ATTR.maxOptions, config, "maxOptions");
+
+        this.#assignBool(element, ATTR.persist, config, "persist");
+        this.#assignBool(element, ATTR.openOnFocus, config, "openOnFocus");
+        this.#assignBool(element, ATTR.closeAfterSelect, config, "closeAfterSelect");
+        this.#assignBool(element, ATTR.hideSelected, config, "hideSelected");
+        this.#assignBool(element, ATTR.duplicates, config, "duplicates");
+        this.#assignBool(element, ATTR.createOnBlur, config, "createOnBlur");
+        this.#assignBool(element, ATTR.addPrecedence, config, "addPrecedence");
+        this.#assignBool(element, ATTR.selectOnTab, config, "selectOnTab");
+        this.#assignBool(element, ATTR.diacritics, config, "diacritics");
+
+        if (element.hasAttribute(ATTR.delimiter)) {
+            config.delimiter = strAttr(element, ATTR.delimiter, ",");
+        }
+
+        if (element.hasAttribute(ATTR.loadThrottle)) {
+            config.loadThrottle = intAttr(element, ATTR.loadThrottle, 300, 0);
+        }
+
+        if (element.hasAttribute(ATTR.searchConjunction)) {
+            config.searchConjunction = strAttr(element, ATTR.searchConjunction, "and");
+        }
+
+        if (element.hasAttribute(ATTR.preload)) {
+            const raw = strAttr(element, ATTR.preload, "false");
+            if (raw === "focus") {
+                config.preload = "focus";
+            } else {
+                config.preload = boolAttr(element, ATTR.preload, false);
+            }
+        }
+
+        this.#assignPluginFlag(element, ATTR.clearButton, config, "clear_button", { title: "" });
+        this.#assignPluginFlag(element, ATTR.removeButton, config, "remove_button", { title: "" });
+        this.#assignPluginFlag(element, ATTR.dropdownInput, config, "dropdown_input", {});
+        // form-check-input → Tabler/Bootstrap checkbox (accent uses app primary, not native blue)
+        this.#assignPluginFlag(element, ATTR.checkboxOptions, config, "checkbox_options", {
+            className: "form-check-input",
+        });
+
+        return config;
+    }
+
+    #assignBool(element, attr, config, key) {
+        if (!element.hasAttribute(attr)) {
+            return;
+        }
+        config[key] = boolAttr(element, attr, false);
+    }
+
+    #assignNullableInt(element, attr, config, key) {
+        if (!element.hasAttribute(attr)) {
+            return;
+        }
+        const raw = strAttr(element, attr, "");
+        if (raw === "" || raw === "null") {
+            config[key] = null;
+            return;
+        }
+        const parsed = Number.parseInt(raw, 10);
+        if (Number.isFinite(parsed)) {
+            config[key] = parsed;
+        }
+    }
+
+    #assignPluginFlag(element, attr, config, pluginName, pluginOptions) {
+        if (!element.hasAttribute(attr)) {
+            return;
+        }
+        if (boolAttr(element, attr, false)) {
+            config.plugins[pluginName] = pluginOptions;
+        } else {
+            delete config.plugins[pluginName];
+        }
     }
 
     #createAutocomplete(element) {
@@ -138,9 +273,11 @@ export default class Autocomplete {
             render: {
                 option: (item, escape) => `<div>${renderOptionsAsHtml ? item.entityAsString : escape(item.entityAsString)}</div>`,
                 item: (item, escape) => `<div>${renderOptionsAsHtml ? item.entityAsString : escape(item.entityAsString)}</div>`,
-                loading_more: (data, escape) => `<div class="loading-more-results">${element.getAttribute("data-ea-i18n-loading-more-results")}</div>`,
-                no_more_results: (data, escape) => `<div class="no-more-results">${element.getAttribute("data-ea-i18n-no-more-results")}</div>`,
-                no_results: (data, escape) => `<div class="no-results">${element.getAttribute("data-ea-i18n-no-results-found")}</div>`,
+                loading_more: (data, escape) => `<div class="loading-more-results">${this.#i18n("loadingMoreResults")}</div>`,
+                no_more_results: (data, escape) => `<div class="no-more-results">${this.#i18n("noMoreResults")}</div>`,
+                no_results: (data, escape) => `<div class="no-results">${this.#i18n("noResults")}</div>`,
+                option_create: (data, escape) =>
+                    `<div class="create">${this.#i18n("optionCreate")} <strong>${escape(data.input)}</strong>&hellip;</div>`,
             },
         });
 
@@ -156,6 +293,8 @@ export default class Autocomplete {
     }
 
     #initializeTomSelect(element, config) {
+        config = this.#applyMappedOptions(element, config);
+
         element.dispatchEvent(new CustomEvent("ea.autocomplete.pre-connect", { detail: { config, prefix: "autocomplete" }, bubbles: true }));
 
         const tomSelect = new TomSelect(element, config);

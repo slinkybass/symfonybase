@@ -3,9 +3,11 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
+use App\Field\Trait\TomSelectFieldTrait;
 use App\Repository\Filter\User as UserFilter;
 use App\Twig\Components\User as UserComponent;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField as EasyAssociationField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
@@ -16,6 +18,8 @@ class UserField implements FieldInterface
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use TomSelectFieldTrait;
+
     private AssociationField $innerField;
 
     public const OPTION_VARIANT_DETAIL = 'variant_detail';
@@ -45,6 +49,9 @@ class UserField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
+        // initField stamps App\AssociationField; AssociationConfigurator needs EasyAdmin's FQCN.
+        $this->dto->setFieldFqcn(EasyAssociationField::class);
+        $this->enablePlugin();
         $this->setTemplatePath('field/user.html.twig');
         $this->setVariantDetail(self::DEFAULT_VARIANT_DETAIL);
         $this->setAvatarSize(self::DEFAULT_AVATAR_SIZE);
@@ -52,6 +59,20 @@ class UserField implements FieldInterface
         $this->setSublabel(self::DEFAULT_SUBLABEL);
         $this->onlyVerified(self::DEFAULT_ONLY_VERIFIED);
         $this->onlyActive(self::DEFAULT_ONLY_ACTIVE);
+    }
+
+    public function setCrudController(string $crudController): self
+    {
+        $this->innerField->setCrudController($crudController);
+
+        return $this;
+    }
+
+    public function autocomplete(bool $enable = true, ?callable $callback = null, ?string $template = null, bool $renderAsHtml = false): self
+    {
+        $this->innerField->autocomplete($enable, $callback, $template, $renderAsHtml);
+
+        return $this;
     }
 
     public function setQueryBuilder(\Closure $queryBuilderCallable): self
@@ -128,9 +149,8 @@ class UserField implements FieldInterface
         $onlyVerified = (bool) $this->dto->getCustomOption(self::OPTION_ONLY_VERIFIED);
         $onlyActive = (bool) $this->dto->getCustomOption(self::OPTION_ONLY_ACTIVE);
 
-        $this->innerField->setQueryBuilder(function ($er) use ($onlyVerified, $onlyActive) {
-            $qb = $er->createQueryBuilder('u');
-
+        // AssociationConfigurator passes an existing QueryBuilder (alias `entity`), not the repository.
+        $this->innerField->setQueryBuilder(function ($qb) use ($onlyVerified, $onlyActive) {
             if ($onlyVerified) {
                 (new UserFilter\IsVerifiedFilter())->apply($qb);
             }

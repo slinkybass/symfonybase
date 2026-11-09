@@ -3,16 +3,19 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
+use App\Field\Trait\TomSelectFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `AssociationField` wrapper with `FieldTrait` and TomSelect-friendly defaults. */
+/** EasyAdmin `AssociationField` wrapper with `FieldTrait` and TomSelect options (`TomSelectFieldTrait`). */
 class AssociationField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use TomSelectFieldTrait;
+
     private EasyField $innerField;
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
@@ -30,16 +33,16 @@ class AssociationField implements FieldInterface
         $this->enablePlugin();
     }
 
-    public function enablePlugin(bool $enable = true): self
+    public function setCrudController(string $crudController): self
     {
-        $this->innerField->renderAsNativeWidget(!$enable);
+        $this->innerField->setCrudController($crudController);
 
         return $this;
     }
 
-    public function setCrudController(string $crudController): self
+    public function autocomplete(bool $enable = true, ?callable $callback = null, ?string $template = null, bool $renderAsHtml = false): self
     {
-        $this->innerField->setCrudController($crudController);
+        $this->innerField->autocomplete($enable, $callback, $template, $renderAsHtml);
 
         return $this;
     }

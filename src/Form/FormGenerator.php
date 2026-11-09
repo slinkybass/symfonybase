@@ -143,6 +143,13 @@ class FormGenerator
             $options['attr']['data-ea-widget'] = 'ea-autocomplete';
         }
 
+        // ChoiceConfigurator / AssociationConfigurator do this in CRUD; FormGenerator is outside that pipeline.
+        $escapeHtml = $fieldDto->getCustomOption(EasyChoiceField::OPTION_ESCAPE_HTML_CONTENTS);
+        if (null !== $escapeHtml && !isset($options['attr']['data-ea-autocomplete-render-items-as-html'])) {
+            $options['attr'] ??= [];
+            $options['attr']['data-ea-autocomplete-render-items-as-html'] = true === $escapeHtml ? 'false' : 'true';
+        }
+
         return $options;
     }
 }

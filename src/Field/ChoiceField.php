@@ -3,16 +3,19 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
+use App\Field\Trait\TomSelectFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `ChoiceField` wrapper with `FieldTrait` and autocomplete-oriented defaults. */
+/** EasyAdmin `ChoiceField` wrapper with `FieldTrait` and TomSelect options (`TomSelectFieldTrait`). */
 class ChoiceField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use TomSelectFieldTrait;
+
     private EasyField $innerField;
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
@@ -28,13 +31,6 @@ class ChoiceField implements FieldInterface
     {
         $this->applyDefaultsTrait();
         $this->enablePlugin();
-    }
-
-    public function enablePlugin(bool $enable = true): self
-    {
-        $this->innerField->renderAsNativeWidget(!$enable);
-
-        return $this;
     }
 
     public function isMultiple(bool $multiple = true): self

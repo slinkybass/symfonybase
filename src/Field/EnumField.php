@@ -3,17 +3,20 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
+use App\Field\Trait\TomSelectFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** PHP enums on top of EasyAdmin `ChoiceField` using `EnumType` with `FieldTrait`. */
+/** PHP enums on top of EasyAdmin `ChoiceField` using `EnumType` with TomSelect options. */
 class EnumField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use TomSelectFieldTrait;
+
     private EasyField $innerField;
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
@@ -31,13 +34,6 @@ class EnumField implements FieldInterface
         $this->enablePlugin();
         $this->setFormType(EnumType::class);
         $this->setFormTypeOption('choice_label', fn ($e) => $e->translationKey());
-    }
-
-    public function enablePlugin(bool $enable = true): self
-    {
-        $this->innerField->renderAsNativeWidget(!$enable);
-
-        return $this;
     }
 
     public function isMultiple(bool $multiple = true): self

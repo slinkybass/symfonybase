@@ -111,6 +111,71 @@ class DemoEntity
     private ?array $choice5 = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsDefault = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsNative = null;
+
+    #[ORM\Column(nullable: true, enumType: UserGender::class)]
+    private ?UserGender $tsEnum = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsRequired = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsCreate = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsCreateOnBlur = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsHtml = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $tsMultiple = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsMaxOptions = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $tsMaxItems = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsSelectOnTab = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsDiacritics = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsNoClear = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $tsNoDropdown = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $tsCloseAfterSelect = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $tsHideSelected = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $tsCheckbox = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $tsNoRemove = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $tsDuplicates = null;
+
+    #[ORM\ManyToOne(targetEntity: Role::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Role $tsRole = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?User $tsUser = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $codeeditor = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -861,6 +926,258 @@ class DemoEntity
     public function setChoice5(?array $choice5): static
     {
         $this->choice5 = $choice5;
+
+        return $this;
+    }
+
+    public function getTsDefault(): ?string
+    {
+        return $this->tsDefault;
+    }
+
+    public function setTsDefault(?string $tsDefault): static
+    {
+        $this->tsDefault = $tsDefault;
+
+        return $this;
+    }
+
+    public function getTsNative(): ?string
+    {
+        return $this->tsNative;
+    }
+
+    public function setTsNative(?string $tsNative): static
+    {
+        $this->tsNative = $tsNative;
+
+        return $this;
+    }
+
+    public function getTsEnum(): ?UserGender
+    {
+        return $this->tsEnum;
+    }
+
+    public function setTsEnum(?UserGender $tsEnum): static
+    {
+        $this->tsEnum = $tsEnum;
+
+        return $this;
+    }
+
+    public function getTsRequired(): ?string
+    {
+        return $this->tsRequired;
+    }
+
+    public function setTsRequired(?string $tsRequired): static
+    {
+        $this->tsRequired = $tsRequired;
+
+        return $this;
+    }
+
+    public function getTsCreate(): ?string
+    {
+        return $this->tsCreate;
+    }
+
+    public function setTsCreate(?string $tsCreate): static
+    {
+        $this->tsCreate = $tsCreate;
+
+        return $this;
+    }
+
+    public function getTsCreateOnBlur(): ?string
+    {
+        return $this->tsCreateOnBlur;
+    }
+
+    public function setTsCreateOnBlur(?string $tsCreateOnBlur): static
+    {
+        $this->tsCreateOnBlur = $tsCreateOnBlur;
+
+        return $this;
+    }
+
+    public function getTsHtml(): ?string
+    {
+        return $this->tsHtml;
+    }
+
+    public function setTsHtml(?string $tsHtml): static
+    {
+        $this->tsHtml = $tsHtml;
+
+        return $this;
+    }
+
+    public function getTsMultiple(): ?array
+    {
+        return $this->tsMultiple;
+    }
+
+    public function setTsMultiple(?array $tsMultiple): static
+    {
+        $this->tsMultiple = $tsMultiple;
+
+        return $this;
+    }
+
+    public function getTsMaxOptions(): ?string
+    {
+        return $this->tsMaxOptions;
+    }
+
+    public function setTsMaxOptions(?string $tsMaxOptions): static
+    {
+        $this->tsMaxOptions = $tsMaxOptions;
+
+        return $this;
+    }
+
+    public function getTsMaxItems(): ?array
+    {
+        return $this->tsMaxItems;
+    }
+
+    public function setTsMaxItems(?array $tsMaxItems): static
+    {
+        $this->tsMaxItems = $tsMaxItems;
+
+        return $this;
+    }
+
+    public function getTsSelectOnTab(): ?string
+    {
+        return $this->tsSelectOnTab;
+    }
+
+    public function setTsSelectOnTab(?string $tsSelectOnTab): static
+    {
+        $this->tsSelectOnTab = $tsSelectOnTab;
+
+        return $this;
+    }
+
+    public function getTsDiacritics(): ?string
+    {
+        return $this->tsDiacritics;
+    }
+
+    public function setTsDiacritics(?string $tsDiacritics): static
+    {
+        $this->tsDiacritics = $tsDiacritics;
+
+        return $this;
+    }
+
+    public function getTsNoClear(): ?string
+    {
+        return $this->tsNoClear;
+    }
+
+    public function setTsNoClear(?string $tsNoClear): static
+    {
+        $this->tsNoClear = $tsNoClear;
+
+        return $this;
+    }
+
+    public function getTsNoDropdown(): ?string
+    {
+        return $this->tsNoDropdown;
+    }
+
+    public function setTsNoDropdown(?string $tsNoDropdown): static
+    {
+        $this->tsNoDropdown = $tsNoDropdown;
+
+        return $this;
+    }
+
+    public function getTsCloseAfterSelect(): ?array
+    {
+        return $this->tsCloseAfterSelect;
+    }
+
+    public function setTsCloseAfterSelect(?array $tsCloseAfterSelect): static
+    {
+        $this->tsCloseAfterSelect = $tsCloseAfterSelect;
+
+        return $this;
+    }
+
+    public function getTsHideSelected(): ?array
+    {
+        return $this->tsHideSelected;
+    }
+
+    public function setTsHideSelected(?array $tsHideSelected): static
+    {
+        $this->tsHideSelected = $tsHideSelected;
+
+        return $this;
+    }
+
+    public function getTsCheckbox(): ?array
+    {
+        return $this->tsCheckbox;
+    }
+
+    public function setTsCheckbox(?array $tsCheckbox): static
+    {
+        $this->tsCheckbox = $tsCheckbox;
+
+        return $this;
+    }
+
+    public function getTsNoRemove(): ?array
+    {
+        return $this->tsNoRemove;
+    }
+
+    public function setTsNoRemove(?array $tsNoRemove): static
+    {
+        $this->tsNoRemove = $tsNoRemove;
+
+        return $this;
+    }
+
+    public function getTsDuplicates(): ?array
+    {
+        return $this->tsDuplicates;
+    }
+
+    public function setTsDuplicates(?array $tsDuplicates): static
+    {
+        $this->tsDuplicates = $tsDuplicates;
+
+        return $this;
+    }
+
+    public function getTsRole(): ?Role
+    {
+        return $this->tsRole;
+    }
+
+    public function setTsRole(?Role $tsRole): static
+    {
+        $this->tsRole = $tsRole;
+
+        return $this;
+    }
+
+    public function getTsUser(): ?User
+    {
+        return $this->tsUser;
+    }
+
+    public function setTsUser(?User $tsUser): static
+    {
+        $this->tsUser = $tsUser;
 
         return $this;
     }

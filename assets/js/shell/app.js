@@ -40,7 +40,11 @@ function setMomentLocale() {
 
 function createAutoCompleteFields() {
     const autocomplete = new Autocomplete();
-    document.querySelectorAll('[data-ea-widget="ea-autocomplete"], [data-autocomplete-field="true"]').forEach((autocompleteElement) => {
+    document.querySelectorAll('[data-ea-widget="ea-autocomplete"], [data-autocomplete-field]').forEach((autocompleteElement) => {
+        const flag = autocompleteElement.getAttribute("data-autocomplete-field");
+        if (flag === "false" || flag === "0") {
+            return;
+        }
         autocomplete.create(autocompleteElement);
     });
 }
