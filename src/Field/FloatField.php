@@ -44,6 +44,7 @@ class FloatField implements FieldInterface
         $this->setFormTypeOption(self::OPTION_HTML5, self::DEFAULT_HTML5);
     }
 
+    /** Highest allowed value (`max`). */
     public function setMax(int|float|null $max): self
     {
         $this->setHtmlAttribute(self::OPTION_MAX, $max);
@@ -51,6 +52,7 @@ class FloatField implements FieldInterface
         return $this;
     }
 
+    /** Lowest allowed value (`min`). */
     public function setMin(int|float|null $min): self
     {
         $this->setHtmlAttribute(self::OPTION_MIN, $min);
@@ -58,6 +60,7 @@ class FloatField implements FieldInterface
         return $this;
     }
 
+    /** Increment of the number input (`step`). Default `0.1`. */
     public function setStep(int|float|null $step): self
     {
         $this->setHtmlAttribute(self::OPTION_STEP, $step);
@@ -65,6 +68,7 @@ class FloatField implements FieldInterface
         return $this;
     }
 
+    /** Decimal places stored and shown. Default `2`. */
     public function setDecimals(int $decimals): self
     {
         $this->innerField->setNumDecimals($decimals);
@@ -72,6 +76,7 @@ class FloatField implements FieldInterface
         return $this;
     }
 
+    /** ICU rounding mode (`NumberFormatter::ROUND_*`). */
     public function setRoundingMode(int $mode): self
     {
         $this->innerField->setRoundingMode($mode);
@@ -79,6 +84,7 @@ class FloatField implements FieldInterface
         return $this;
     }
 
+    /** Keep the value as a string so decimal precision is preserved. */
     public function storedAsString(bool $asString = true): self
     {
         $this->innerField->setStoredAsString($asString);
@@ -86,6 +92,7 @@ class FloatField implements FieldInterface
         return $this;
     }
 
+    /** sprintf pattern used on index and detail (e.g. `%.2f`). */
     public function setNumberFormat(string $numberFormat): self
     {
         $this->innerField->setNumberFormat($numberFormat);
@@ -93,6 +100,7 @@ class FloatField implements FieldInterface
         return $this;
     }
 
+    /** Thousands separator on index and detail. */
     public function setThousandsSeparator(string $separator): self
     {
         $this->innerField->setThousandsSeparator($separator);
@@ -100,6 +108,7 @@ class FloatField implements FieldInterface
         return $this;
     }
 
+    /** Decimal separator on index and detail. */
     public function setDecimalSeparator(string $separator): self
     {
         $this->innerField->setDecimalSeparator($separator);

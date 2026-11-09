@@ -8,7 +8,7 @@ namespace App\Field\Trait;
  * Placeholder / readonly use `FieldTrait::setPlaceholder()` and `isReadonly()`
  * (`placeholder` / `readonly` HTML attrs).
  *
- * Presets (`setPreset`): named bundles (e.g. `basic`) applied before per-option
+ * Presets (`setPreset`): named bundles (`PRESET_*`) applied before per-option
  * attrs — explicit `setToolbar()` / `setPlugins()` still win.
  *
  * Not mapped: setup/init callbacks; file_picker_callback; images_upload_*;
@@ -59,8 +59,8 @@ trait TinyMceFieldTrait
     }
 
     /**
-     * Named TinyMCE option bundle (`data-texteditor-preset`).
-     * `basic` = safe public content (undo/b/i/u/lists/link/emoticons/charmap/preview;
+     * Named TinyMCE option bundle. Pass a `PRESET_*` constant.
+     * `PRESET_BASIC` = safe public content (undo/b/i/u/lists/link/emoticons/charmap/preview;
      * paste_as_text; no fonts/colors/blocks; autoresize min≈5 rows / max 200px).
      * Per-option setters override the preset.
      *
@@ -80,7 +80,7 @@ trait TinyMceFieldTrait
     }
 
     /**
-     * Editor chrome resize (`resize`). Use {@see self::RESIZE_BOTH} for both axes.
+     * Editor chrome resize. Pass `true`, `false`, or `RESIZE_BOTH`.
      *
      * @param bool|self::RESIZE_BOTH $resize
      */
@@ -192,7 +192,7 @@ trait TinyMceFieldTrait
     }
 
     /**
-     * Toolbar overflow mode (`toolbar_mode`).
+     * Toolbar overflow. Pass a `TOOLBAR_MODE_*` constant.
      *
      * @param self::TOOLBAR_MODE_* $mode
      */

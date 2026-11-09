@@ -31,6 +31,7 @@ class PercentField implements FieldInterface
         $this->storedAsFractional(self::DEFAULT_STORED_AS_FRACTIONAL);
     }
 
+    /** Decimal places shown. */
     public function setDecimals(int $decimals): self
     {
         $this->innerField->setNumDecimals($decimals);
@@ -38,6 +39,7 @@ class PercentField implements FieldInterface
         return $this;
     }
 
+    /** Store a fraction (`0.15` = 15%). Default stores the percent number (`15` = 15%). */
     public function storedAsFractional(bool $isFractional = true): self
     {
         $this->innerField->setStoredAsFractional($isFractional);
@@ -45,6 +47,7 @@ class PercentField implements FieldInterface
         return $this;
     }
 
+    /** Symbol shown beside the value. Default `%`. Pass `null` to hide it. */
     public function setSymbol(?string $symbol): self
     {
         $this->innerField->setSymbol($symbol);
@@ -52,6 +55,7 @@ class PercentField implements FieldInterface
         return $this;
     }
 
+    /** ICU rounding mode (`NumberFormatter::ROUND_*`). */
     public function setRoundingMode(int $mode): self
     {
         $this->innerField->setRoundingMode($mode);

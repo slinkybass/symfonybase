@@ -36,11 +36,13 @@ class PasswordField implements FieldInterface
         $this->isRepeated(false);
     }
 
+    /** Whether the field asks for the password twice (`RepeatedType`). */
     public function checkIsRepeated(): bool
     {
         return $this->getAsDto()->getFormType() == RepeatedType::class;
     }
 
+    /** Ask for the password twice. `false` keeps a single password input. */
     public function isRepeated(bool $repeated = true): self
     {
         if ($repeated) {
@@ -77,6 +79,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** Label of the field, applied to both inputs when the password is repeated. */
     public function setLabel(?string $label): self
     {
         if ($this->checkIsRepeated()) {
@@ -89,6 +92,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** Label of the first input when the password is repeated. */
     public function setFirstLabel(?string $label): self
     {
         if ($this->checkIsRepeated()) {
@@ -100,6 +104,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** Label of the confirmation input when the password is repeated. */
     public function setSecondLabel(?string $label): self
     {
         if ($this->checkIsRepeated()) {
@@ -111,6 +116,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** HTML `maxlength` of the first input when the password is repeated. */
     public function setFirstMaxLength(?int $length): self
     {
         if ($this->checkIsRepeated()) {
@@ -122,6 +128,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** HTML `maxlength` of the confirmation input when the password is repeated. */
     public function setSecondMaxLength(?int $length): self
     {
         if ($this->checkIsRepeated()) {
@@ -133,6 +140,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** HTML `minlength` of the first input when the password is repeated. */
     public function setFirstMinLength(?int $length): self
     {
         if ($this->checkIsRepeated()) {
@@ -144,6 +152,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** HTML `minlength` of the confirmation input when the password is repeated. */
     public function setSecondMinLength(?int $length): self
     {
         if ($this->checkIsRepeated()) {
@@ -155,6 +164,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** Placeholder on the input, or on both inputs when the password is repeated. */
     public function setPlaceholder(?string $placeholder): self
     {
         if ($this->checkIsRepeated()) {
@@ -167,6 +177,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** Placeholder of the first input when the password is repeated. */
     public function setFirstPlaceholder(?string $placeholder): self
     {
         if ($this->checkIsRepeated()) {
@@ -178,6 +189,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** Placeholder of the confirmation input when the password is repeated. */
     public function setSecondPlaceholder(?string $placeholder): self
     {
         if ($this->checkIsRepeated()) {
@@ -189,6 +201,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** HTML `maxlength` on the input, or on both inputs when the password is repeated. */
     public function setMaxLength(?int $maxLength): self
     {
         if ($this->checkIsRepeated()) {
@@ -201,6 +214,7 @@ class PasswordField implements FieldInterface
         return $this;
     }
 
+    /** HTML `minlength` on the input, or on both inputs when the password is repeated. */
     public function setMinLength(?int $minLength): self
     {
         if ($this->checkIsRepeated()) {

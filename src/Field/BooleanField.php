@@ -33,6 +33,7 @@ class BooleanField implements FieldInterface
         $this->isSwitch(self::DEFAULT_SWITCH);
     }
 
+    /** Pre-check the widget (`checked`). The stored value still comes from the entity. */
     public function isChecked(bool $checked = true): self
     {
         $this->setHtmlAttribute(self::OPTION_CHECKED, $checked);
@@ -40,6 +41,7 @@ class BooleanField implements FieldInterface
         return $this;
     }
 
+    /** Render a toggle switch. `false` keeps a checkbox. */
     public function isSwitch(bool $enabled = true): self
     {
         $this->innerField->renderAsSwitch($enabled);
@@ -47,6 +49,7 @@ class BooleanField implements FieldInterface
         return $this;
     }
 
+    /** On index, hide the value when it is true. */
     public function isHiddenOnTrue(bool $hidden = true): self
     {
         $this->innerField->hideValueWhenTrue($hidden);
@@ -54,6 +57,7 @@ class BooleanField implements FieldInterface
         return $this;
     }
 
+    /** On index, hide the value when it is false. */
     public function isHiddenOnFalse(bool $hidden = true): self
     {
         $this->innerField->hideValueWhenFalse($hidden);

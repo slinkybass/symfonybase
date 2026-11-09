@@ -29,6 +29,7 @@ class UrlField implements FieldInterface
         $this->applyDefaultsTrait();
     }
 
+    /** Scheme prepended when the value has none (e.g. `https`). */
     public function setDefaultProtocol(string $protocol): self
     {
         $this->innerField->setDefaultProtocol($protocol);

@@ -61,6 +61,7 @@ class UserField implements FieldInterface
         $this->onlyActive(self::DEFAULT_ONLY_ACTIVE);
     }
 
+    /** CRUD controller of the user entity, used for links and autocomplete. */
     public function setCrudController(string $crudController): self
     {
         $this->innerField->setCrudController($crudController);
@@ -68,6 +69,11 @@ class UserField implements FieldInterface
         return $this;
     }
 
+    /**
+     * Load users over AJAX instead of rendering every user.
+     *
+     * @param callable|null $callback Optional result mapper `(User $user): array`
+     */
     public function autocomplete(bool $enable = true, ?callable $callback = null, ?string $template = null, bool $renderAsHtml = false): self
     {
         $this->innerField->autocomplete($enable, $callback, $template, $renderAsHtml);
@@ -75,6 +81,7 @@ class UserField implements FieldInterface
         return $this;
     }
 
+    /** Filter or sort the users. Replaces the active/verified filters from `onlyActive()` and `onlyVerified()`. */
     public function setQueryBuilder(\Closure $queryBuilderCallable): self
     {
         $this->innerField->setQueryBuilder($queryBuilderCallable);
@@ -82,6 +89,11 @@ class UserField implements FieldInterface
         return $this;
     }
 
+    /**
+     * Detail layout. Pass `User::VARIANT_CARD` (default) or `User::VARIANT_BADGE`.
+     *
+     * @param UserComponent::VARIANT_* $variant
+     */
     public function setVariantDetail(string $variant): self
     {
         $this->setCustomOption(self::OPTION_VARIANT_DETAIL, $this->normalizeVariant($variant, self::DEFAULT_VARIANT_DETAIL));
@@ -89,6 +101,7 @@ class UserField implements FieldInterface
         return $this;
     }
 
+    /** Avatar size on detail (`sm`, `md`, `lg`). Default `md`. */
     public function setAvatarSize(string $size): self
     {
         $this->setCustomOption(self::OPTION_AVATAR_SIZE, $this->normalizeValue($size, self::DEFAULT_AVATAR_SIZE));
@@ -96,6 +109,7 @@ class UserField implements FieldInterface
         return $this;
     }
 
+    /** Avatar size when several users are stacked. Default `sm`. */
     public function setStackedAvatarSize(string $size): self
     {
         $this->setCustomOption(self::OPTION_STACKED_AVATAR_SIZE, $this->normalizeValue($size, self::DEFAULT_STACKED_AVATAR_SIZE));
@@ -103,6 +117,7 @@ class UserField implements FieldInterface
         return $this;
     }
 
+    /** Secondary line under the user name. `null` hides it. */
     public function setSublabel(?string $sublabel): self
     {
         $this->setCustomOption(self::OPTION_SUBLABEL, $sublabel);
@@ -110,6 +125,7 @@ class UserField implements FieldInterface
         return $this;
     }
 
+    /** Limit the picker to verified users. Default on. */
     public function onlyVerified(bool $only = true): self
     {
         $this->setCustomOption(self::OPTION_ONLY_VERIFIED, $only);
@@ -118,6 +134,7 @@ class UserField implements FieldInterface
         return $this;
     }
 
+    /** Limit the picker to active users. Default on. */
     public function onlyActive(bool $only = true): self
     {
         $this->setCustomOption(self::OPTION_ONLY_ACTIVE, $only);

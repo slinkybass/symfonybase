@@ -196,7 +196,7 @@ trait TomSelectFieldTrait
     }
 
     /**
-     * How multiple search terms combine (`searchConjunction`).
+     * How multiple search terms combine. Pass `SEARCH_AND` or `SEARCH_OR`.
      *
      * @param self::SEARCH_* $conjunction
      */

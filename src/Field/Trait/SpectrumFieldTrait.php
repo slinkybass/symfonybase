@@ -52,6 +52,7 @@ trait SpectrumFieldTrait
     public const COLOR_FORMAT_HEX3 = 'hex3';
     public const COLOR_FORMAT_HSL = 'hsl';
     public const COLOR_FORMAT_RGB = 'rgb';
+    public const COLOR_FORMAT_HSV = 'hsv';
     public const COLOR_FORMAT_NAME = 'name';
 
     /** theme */
@@ -65,7 +66,7 @@ trait SpectrumFieldTrait
     }
 
     /**
-     * Spectrum UI mode.
+     * Spectrum UI mode. Pass a `COLOR_TYPE_*` constant.
      *
      * @param self::COLOR_TYPE_* $type
      */
@@ -85,9 +86,9 @@ trait SpectrumFieldTrait
     }
 
     /**
-     * Preferred output / display format.
+     * Output format. Pass a `COLOR_FORMAT_*` constant.
      *
-     * @param self::COLOR_FORMAT_*|string $preferredFormat
+     * @param self::COLOR_FORMAT_* $preferredFormat
      */
     public function setPreferredFormat(string $preferredFormat): self
     {
@@ -215,9 +216,9 @@ trait SpectrumFieldTrait
     }
 
     /**
-     * Spectrum theme class (`sp-light` / `sp-dark`).
+     * Spectrum theme. Pass `COLOR_THEME_LIGHT` or `COLOR_THEME_DARK`.
      *
-     * @param self::COLOR_THEME_*|string $theme
+     * @param self::COLOR_THEME_* $theme
      */
     public function setTheme(string $theme): self
     {

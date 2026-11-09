@@ -289,8 +289,10 @@ trait AceFieldTrait
     }
 
     /**
-     * Ace theme for light app mode (`theme`). Without {@see setDarkTheme()}, stays fixed.
-     * Omitting both follows default chrome / twilight with `data-bs-theme`.
+     * Ace theme for light mode. Pass a `CODEEDITOR_THEME_*` constant.
+     * Without {@see setDarkTheme()}, the theme stays fixed; omitting both follows `CODEEDITOR_THEME_CHROME` / `CODEEDITOR_THEME_TWILIGHT` with `data-bs-theme`.
+     *
+     * @param self::CODEEDITOR_THEME_* $theme
      */
     public function setTheme(string $theme): self
     {
@@ -300,8 +302,10 @@ trait AceFieldTrait
     }
 
     /**
-     * Ace theme for dark app mode (`dark-theme`). Pair with {@see setTheme()} to sync
-     * on `data-bs-theme` (e.g. github + github_dark).
+     * Ace theme for dark mode. Pass a `CODEEDITOR_THEME_*` constant.
+     * Pair with {@see setTheme()} so it follows `data-bs-theme`.
+     *
+     * @param self::CODEEDITOR_THEME_* $theme
      */
     public function setDarkTheme(string $theme): self
     {
@@ -310,7 +314,11 @@ trait AceFieldTrait
         return $this;
     }
 
-    /** Ace mode id without `ace/mode/` prefix (`mode`). Default `javascript`. */
+    /**
+     * Ace language mode. Pass a `CODEEDITOR_LANGUAGE_*` constant. Default `CODEEDITOR_LANGUAGE_JAVASCRIPT`.
+     *
+     * @param self::CODEEDITOR_LANGUAGE_* $language
+     */
     public function setLanguage(string $language): self
     {
         $this->setHtmlAttribute(self::OPTION_LANGUAGE, $language);

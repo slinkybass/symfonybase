@@ -85,9 +85,9 @@ trait IMaskFieldTrait
     }
 
     /**
-     * Mask kind. `number` uses IMask `Number`; pattern/regex use `setPattern()`.
+     * Mask kind. Pass `MASK_TYPE_NUMBER` or `MASK_TYPE_PATTERN` (`setPattern()` / `isRegex()`).
      *
-     * @param self::MASK_TYPE_*|string $type
+     * @param self::MASK_TYPE_* $type
      */
     public function setMaskType(string $type): self
     {
@@ -136,9 +136,9 @@ trait IMaskFieldTrait
     }
 
     /**
-     * IMask `overwrite` (`true` / `false` / `shift`).
+     * IMask `overwrite`. Pass `true`, `false`, or `MASK_OVERWRITE_SHIFT`.
      *
-     * @param bool|self::MASK_OVERWRITE_*|string $overwrite
+     * @param bool|self::MASK_OVERWRITE_* $overwrite
      */
     public function setOverwrite(bool|string $overwrite = true): self
     {
@@ -154,9 +154,9 @@ trait IMaskFieldTrait
     }
 
     /**
-     * IMask `eager` (`true` / `false` / `append` / `remove`).
+     * IMask `eager`. Pass `true`, `false`, `MASK_EAGER_APPEND`, or `MASK_EAGER_REMOVE`.
      *
-     * @param bool|self::MASK_EAGER_*|string $eager
+     * @param bool|self::MASK_EAGER_* $eager
      */
     public function setEager(bool|string $eager = true): self
     {
@@ -172,9 +172,9 @@ trait IMaskFieldTrait
     }
 
     /**
-     * IMask `autofix` (`true` / `false` / `pad`).
+     * IMask `autofix`. Pass `true`, `false`, or `MASK_AUTOFIX_PAD`.
      *
-     * @param bool|self::MASK_AUTOFIX_*|string $autofix
+     * @param bool|self::MASK_AUTOFIX_* $autofix
      */
     public function setAutofix(bool|string $autofix = true): self
     {
@@ -186,7 +186,7 @@ trait IMaskFieldTrait
     /**
      * Named prepare presets (CSV). Applied before the mask accepts input.
      *
-     * @param self::PREPARE_*|string|list<self::PREPARE_*|string> $prepare
+     * @param self::PREPARE_*|list<self::PREPARE_*> $prepare
      */
     public function setPrepare(string|array $prepare): self
     {
@@ -212,7 +212,7 @@ trait IMaskFieldTrait
     /**
      * Named commit presets (CSV). Run when leaving the field.
      *
-     * @param self::COMMIT_*|string|list<self::COMMIT_*|string> $commit
+     * @param self::COMMIT_*|list<self::COMMIT_*> $commit
      */
     public function setCommit(string|array $commit): self
     {

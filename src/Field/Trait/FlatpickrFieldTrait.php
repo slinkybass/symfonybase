@@ -159,7 +159,7 @@ trait FlatpickrFieldTrait
     }
 
     /**
-     * Picker position relative to the input.
+     * Picker position relative to the input. Pass a `DATE_POSITION_*` constant.
      *
      * @param self::DATE_POSITION_* $position
      */

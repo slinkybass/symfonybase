@@ -18,11 +18,13 @@ class FormField implements FieldInterface
     private EasyField $innerField;
 
     /**
-     * @return never use `fieldset`, `row`, `col`, or `tab` instead
+     * Unusable. Layout fields are created with `fieldset()`, `row()`, `col()`, or `tab()`.
      */
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): never
     {
         EasyField::new($propertyName, $label);
+
+        throw new \LogicException('Use fieldset(), row(), col(), or tab() instead of FormField::new().');
     }
 
     public static function panel($label = false, ?string $icon = null): self
@@ -71,6 +73,7 @@ class FormField implements FieldInterface
         $this->applyDefaultsTrait();
     }
 
+    /** Icon on the tab or panel (Font Awesome class, e.g. `fa fa-user`). */
     public function setIcon(string $icon): self
     {
         $this->innerField->setIcon($icon);
@@ -78,6 +81,7 @@ class FormField implements FieldInterface
         return $this;
     }
 
+    /** Allow the panel to be collapsed. */
     public function isCollapsible(bool $collapsible = true): self
     {
         $this->innerField->collapsible($collapsible);
@@ -85,6 +89,7 @@ class FormField implements FieldInterface
         return $this;
     }
 
+    /** Render the panel collapsed until the user opens it. */
     public function isCollapsed(bool $collapsed = true): self
     {
         $this->innerField->renderCollapsed($collapsed);

@@ -80,7 +80,7 @@ class DateTimeField implements FieldInterface
     }
 
     /**
-     * EasyAdmin index/detail date+time display format, not the picker. Also accepts ICU patterns.
+     * EasyAdmin index/detail date+time display format, not the picker. Pass `DISPLAY_FORMAT_*` constants, or ICU patterns.
      *
      * @param self::DISPLAY_FORMAT_*|string $dateFormat
      * @param self::DISPLAY_FORMAT_*|string $timeFormat

@@ -34,13 +34,19 @@ class RepeatField implements FieldInterface
         $this->setFormType(RepeatedType::class);
     }
 
-    public function setType($type): self
+    /**
+     * Symfony form type rendered in each of the two inputs (e.g. `PasswordType::class`).
+     *
+     * @param class-string $type
+     */
+    public function setType(string $type): self
     {
         $this->setFormTypeOption('type', $type);
 
         return $this;
     }
 
+    /** Label of the field and of both inputs. */
     public function setLabel(?string $label): self
     {
         $this->innerField->setLabel($label);
@@ -50,6 +56,7 @@ class RepeatField implements FieldInterface
         return $this;
     }
 
+    /** Label of the first input. */
     public function setFirstLabel(?string $label): self
     {
         $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.label', $label);
@@ -57,6 +64,7 @@ class RepeatField implements FieldInterface
         return $this;
     }
 
+    /** Label of the confirmation input. */
     public function setSecondLabel(?string $label): self
     {
         $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.label', $label);
@@ -64,6 +72,7 @@ class RepeatField implements FieldInterface
         return $this;
     }
 
+    /** Placeholder on both inputs. */
     public function setPlaceholder(?string $placeholder): self
     {
         $this->setFirstPlaceholder($placeholder);
@@ -72,6 +81,7 @@ class RepeatField implements FieldInterface
         return $this;
     }
 
+    /** Placeholder of the first input. */
     public function setFirstPlaceholder(?string $placeholder): self
     {
         $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.self::OPTION_PLACEHOLDER, $placeholder);
@@ -79,6 +89,7 @@ class RepeatField implements FieldInterface
         return $this;
     }
 
+    /** Placeholder of the confirmation input. */
     public function setSecondPlaceholder(?string $placeholder): self
     {
         $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.attr.'.self::OPTION_PLACEHOLDER, $placeholder);
@@ -86,6 +97,7 @@ class RepeatField implements FieldInterface
         return $this;
     }
 
+    /** HTML `maxlength` on both inputs. */
     public function setMaxLength(?int $maxLength): self
     {
         $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.self::OPTION_MAX_LENGTH, $maxLength);
@@ -94,6 +106,7 @@ class RepeatField implements FieldInterface
         return $this;
     }
 
+    /** HTML `minlength` on both inputs. */
     public function setMinLength(?int $minLength): self
     {
         $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.self::OPTION_MIN_LENGTH, $minLength);

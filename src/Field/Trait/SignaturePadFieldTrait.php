@@ -146,7 +146,7 @@ trait SignaturePadFieldTrait
     }
 
     /**
-     * `toDataURL` MIME type (`data-signature-format`).
+     * Exported image type. Pass a `FORMAT_*` constant (`FORMAT_PNG`, `FORMAT_JPEG`, `FORMAT_SVG`).
      *
      * @param self::FORMAT_* $format
      */

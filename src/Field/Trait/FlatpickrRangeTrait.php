@@ -20,7 +20,7 @@ trait FlatpickrRangeTrait
     public const DATE_RANGE_SEPARATOR_DEFAULT = DateMultipleType::SEPARATOR;
 
     /**
-     * Flatpickr mode.
+     * Picker mode. Pass `DATE_MODE_SINGLE`, `DATE_MODE_MULTIPLE`, or `DATE_MODE_RANGE`.
      *
      * @param self::DATE_MODE_* $mode
      */

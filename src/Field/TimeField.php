@@ -73,7 +73,7 @@ class TimeField implements FieldInterface
     }
 
     /**
-     * EasyAdmin index/detail time display format, not the picker. Also accepts an ICU pattern.
+     * EasyAdmin index/detail time display format, not the picker. Pass a `DISPLAY_FORMAT_*` constant, or an ICU pattern.
      *
      * @param self::DISPLAY_FORMAT_*|string $timeFormat
      */

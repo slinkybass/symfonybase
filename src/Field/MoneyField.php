@@ -33,6 +33,7 @@ class MoneyField implements FieldInterface
         $this->storedAsCents(self::DEFAULT_STORED_AS_CENTS);
     }
 
+    /** ISO 4217 currency code. Default `EUR`. */
     public function setCurrency(string $currency): self
     {
         $this->innerField->setCurrency($currency);
@@ -40,6 +41,7 @@ class MoneyField implements FieldInterface
         return $this;
     }
 
+    /** Entity property that holds this row's currency code. */
     public function setCurrencyPropertyPath(string $currency): self
     {
         $this->innerField->setCurrencyPropertyPath($currency);
@@ -47,6 +49,7 @@ class MoneyField implements FieldInterface
         return $this;
     }
 
+    /** Decimal places shown. */
     public function setDecimals(int $decimals): self
     {
         $this->innerField->setNumDecimals($decimals);
@@ -54,6 +57,7 @@ class MoneyField implements FieldInterface
         return $this;
     }
 
+    /** Store integer minor units (`199` = 1.99). Default stores the major unit (`1.99`). */
     public function storedAsCents(bool $asCents = true): self
     {
         $this->innerField->setStoredAsCents($asCents);

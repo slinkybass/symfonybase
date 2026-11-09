@@ -36,6 +36,8 @@ class ChoiceField implements FieldInterface
     }
 
     /**
+     * Options as `[label => value]`, or a callable that returns that array.
+     *
      * @param array<mixed>|callable $choices
      */
     public function setChoices($choices): self
@@ -46,6 +48,8 @@ class ChoiceField implements FieldInterface
     }
 
     /**
+     * Options whose labels are translation keys or `TranslatableInterface` objects.
+     *
      * @param array<string|TranslatableInterface>|callable $choices
      */
     public function setTransChoices($choices): self

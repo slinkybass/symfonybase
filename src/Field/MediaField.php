@@ -66,6 +66,7 @@ class MediaField implements FieldInterface
         $this->setSizeDetail(self::DEFAULT_SIZE_DETAIL);
     }
 
+    /** Artgris file-manager config key (default `public_all`). */
     public function setConf(string $conf): self
     {
         $this->setFormTypeOption(self::OPTION_CONF, $conf);
@@ -73,6 +74,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Show the button that opens the file manager. Default on. */
     public function displayFileManager(bool $display = true): self
     {
         $this->setFormTypeOption(self::OPTION_DISPLAY_FILE_MANAGER, $display);
@@ -80,6 +82,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Show the button that clears the selected file. */
     public function displayClearButton(bool $display = true): self
     {
         $this->setFormTypeOption(self::OPTION_DISPLAY_CLEAR_BUTTON, $display);
@@ -87,6 +90,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Show the folder tree in the file manager. Default off. */
     public function displayTree(bool $display = true): self
     {
         $this->setFormTypeOption(self::OPTION_DISPLAY_TREE, $display);
@@ -94,6 +98,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Allow cropping the selected image. Default off. */
     public function allowCrop(bool $allow = true): self
     {
         $this->setFormTypeOption(self::OPTION_ALLOW_CROP, $allow);
@@ -101,6 +106,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Show the crop coordinates. Also turns cropping on. */
     public function displayCropData(bool $display = true): self
     {
         $this->allowCrop();
@@ -109,6 +115,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Allow flipping the image in the cropper. Also turns cropping on. */
     public function allowFlip(bool $allow = true): self
     {
         $this->allowCrop();
@@ -117,6 +124,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Allow rotating the image in the cropper. Also turns cropping on. */
     public function allowRotation(bool $allow = true): self
     {
         $this->allowCrop();
@@ -125,6 +133,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Lock the crop aspect ratio. `false` (default) leaves the crop free. Also turns cropping on. */
     public function setRatio(bool $ratio = self::DEFAULT_RATIO): self
     {
         $this->allowCrop();
@@ -133,6 +142,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Allow zooming the preview. Default on. */
     public function allowZoom(bool $allow = true): self
     {
         $this->setCustomOption(self::OPTION_ALLOW_ZOOM, $allow);
@@ -140,6 +150,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Thumbnail size on the index (`sm`, `md`, `lg`, `xl`). Default `md`. */
     public function setSizeIndex(string $size = self::DEFAULT_SIZE_INDEX): self
     {
         $this->setCustomOption(self::OPTION_SIZE_INDEX, $size);
@@ -147,6 +158,7 @@ class MediaField implements FieldInterface
         return $this;
     }
 
+    /** Preview size on detail (`sm`, `md`, `lg`, `xl`). Default `xl`. */
     public function setSizeDetail(string $size = self::DEFAULT_SIZE_DETAIL): self
     {
         $this->setCustomOption(self::OPTION_SIZE_DETAIL, $size);

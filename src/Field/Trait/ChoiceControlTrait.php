@@ -10,6 +10,7 @@ namespace App\Field\Trait;
  */
 trait ChoiceControlTrait
 {
+    /** Allow more than one selected value. */
     public function isMultiple(bool $multiple = true): self
     {
         $this->innerField->allowMultipleChoices($multiple);
@@ -26,6 +27,7 @@ trait ChoiceControlTrait
         return $this;
     }
 
+    /** Show the selected values as badges on index and detail. */
     public function renderAsBadges(bool $badges = true): self
     {
         $this->innerField->renderAsBadges($badges);

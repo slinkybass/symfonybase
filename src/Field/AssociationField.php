@@ -33,6 +33,7 @@ class AssociationField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** CRUD controller of the related entity, used for links and autocomplete. */
     public function setCrudController(string $crudController): self
     {
         $this->innerField->setCrudController($crudController);
@@ -40,6 +41,11 @@ class AssociationField implements FieldInterface
         return $this;
     }
 
+    /**
+     * Load options over AJAX instead of rendering every related entity.
+     *
+     * @param callable|null $callback Optional result mapper `(Entity $entity): array`
+     */
     public function autocomplete(bool $enable = true, ?callable $callback = null, ?string $template = null, bool $renderAsHtml = false): self
     {
         $this->innerField->autocomplete($enable, $callback, $template, $renderAsHtml);
@@ -47,6 +53,7 @@ class AssociationField implements FieldInterface
         return $this;
     }
 
+    /** Filter or sort the options. The closure receives the association QueryBuilder (alias `entity`). */
     public function setQueryBuilder(\Closure $queryBuilderCallable): self
     {
         $this->innerField->setQueryBuilder($queryBuilderCallable);
@@ -54,6 +61,7 @@ class AssociationField implements FieldInterface
         return $this;
     }
 
+    /** Edit the related entity inline on this form instead of showing a select. */
     public function renderAsEmbeddedForm(?string $crudController = null, ?string $pageNameNew = null, ?string $pageNameEdit = null): self
     {
         $this->innerField->renderAsEmbeddedForm($crudController, $pageNameNew, $pageNameEdit);
@@ -61,6 +69,7 @@ class AssociationField implements FieldInterface
         return $this;
     }
 
+    /** Property used to order the options. */
     public function setSortProperty(string $property): self
     {
         $this->innerField->setSortProperty($property);

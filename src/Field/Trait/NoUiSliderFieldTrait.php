@@ -59,7 +59,7 @@ trait NoUiSliderFieldTrait
     }
 
     /**
-     * Connect bar (`connect`).
+     * Colored part of the track. Pass `true`, `false`, a list of bools, `SLIDER_CONNECT_UPPER`, or `SLIDER_CONNECT_LOWER`.
      *
      * @param self::SLIDER_CONNECT_*|bool|list<bool> $connect
      */
@@ -73,11 +73,13 @@ trait NoUiSliderFieldTrait
         return $this;
     }
 
+    /** Fill the track from the handle up to the maximum. */
     public function sliderConnectUpper(): self
     {
         return $this->setSliderConnect(self::SLIDER_CONNECT_UPPER);
     }
 
+    /** Fill the track from the minimum up to the handle. */
     public function sliderConnectLower(): self
     {
         return $this->setSliderConnect(self::SLIDER_CONNECT_LOWER);
@@ -98,6 +100,9 @@ trait NoUiSliderFieldTrait
     }
 
     /**
+     * Track axis. Pass `SLIDER_ORIENTATION_HORIZONTAL` (default) or `SLIDER_ORIENTATION_VERTICAL`.
+     * Pair a vertical slider with `setSliderHeight()`.
+     *
      * @param self::SLIDER_ORIENTATION_* $orientation
      */
     public function setSliderOrientation(string $orientation): self
@@ -108,6 +113,8 @@ trait NoUiSliderFieldTrait
     }
 
     /**
+     * Track direction. Pass `SLIDER_DIRECTION_LTR` (default) or `SLIDER_DIRECTION_RTL`.
+     *
      * @param self::SLIDER_DIRECTION_* $direction
      */
     public function setSliderDirection(string $direction): self
@@ -129,11 +136,13 @@ trait NoUiSliderFieldTrait
         return $this;
     }
 
+    /** Animate the handle when the value changes. */
     public function isSliderAnimate(bool $animate = true): self
     {
         return $this->setDataAttr(self::OPTION_SLIDER_ANIMATE, $animate);
     }
 
+    /** Handle animation length in milliseconds. */
     public function setSliderAnimationDuration(int $ms): self
     {
         $this->setHtmlAttribute(self::OPTION_SLIDER_ANIMATION_DURATION, (string) $ms);
@@ -141,11 +150,13 @@ trait NoUiSliderFieldTrait
         return $this;
     }
 
+    /** Move the handle with the keyboard. */
     public function isSliderKeyboardSupport(bool $enable = true): self
     {
         return $this->setDataAttr(self::OPTION_SLIDER_KEYBOARD_SUPPORT, $enable);
     }
 
+    /** How many steps Page Up and Page Down move. */
     public function setSliderKeyboardPageMultiplier(float|int $multiplier): self
     {
         $this->setHtmlAttribute(self::OPTION_SLIDER_KEYBOARD_PAGE_MULTIPLIER, (string) $multiplier);
@@ -153,6 +164,7 @@ trait NoUiSliderFieldTrait
         return $this;
     }
 
+    /** How many steps the arrow keys move. */
     public function setSliderKeyboardMultiplier(float|int $multiplier): self
     {
         $this->setHtmlAttribute(self::OPTION_SLIDER_KEYBOARD_MULTIPLIER, (string) $multiplier);
@@ -160,6 +172,7 @@ trait NoUiSliderFieldTrait
         return $this;
     }
 
+    /** Step used by the keyboard when the slider has no `step`. */
     public function setSliderKeyboardDefaultStep(float|int $step): self
     {
         $this->setHtmlAttribute(self::OPTION_SLIDER_KEYBOARD_DEFAULT_STEP, (string) $step);
@@ -184,6 +197,8 @@ trait NoUiSliderFieldTrait
     }
 
     /**
+     * Empty space at the ends of the track the handle cannot enter. An array is `[start, end]`.
+     *
      * @param float|int|list<float|int> $padding
      */
     public function setSliderPadding(float|int|array $padding): self

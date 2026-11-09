@@ -69,7 +69,7 @@ trait FlatpickrCalendarTrait
     }
 
     /**
-     * Month header control.
+     * Month header control. Pass `MONTH_SELECTOR_DROPDOWN` or `MONTH_SELECTOR_STATIC`.
      *
      * @param self::MONTH_SELECTOR_* $type
      */

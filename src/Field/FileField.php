@@ -53,6 +53,7 @@ class FileField implements FieldInterface
         return $this;
     }
 
+    /** Public subdirectory for uploads: files are written to `public/{dir}` and served from `/{dir}`. Default `media`. */
     public function setDir(string $dir): self
     {
         $this->innerField->setBasePath($dir);
@@ -61,6 +62,7 @@ class FileField implements FieldInterface
         return $this;
     }
 
+    /** Public path prefix used to build the file URL. */
     public function setBasePath(string $path): self
     {
         $this->innerField->setBasePath($path);
@@ -68,6 +70,7 @@ class FileField implements FieldInterface
         return $this;
     }
 
+    /** Filesystem directory where uploaded files are written. */
     public function setUploadDir(string $dir): self
     {
         $this->innerField->setUploadDir($dir);
@@ -76,6 +79,8 @@ class FileField implements FieldInterface
     }
 
     /**
+     * Stored file name. A string may use `[slug]`, `[contenthash]`, `[extension]`; a closure receives the upload.
+     *
      * @param string|\Closure $pattern
      */
     public function setUploadedFileNamePattern($pattern): self
@@ -86,6 +91,8 @@ class FileField implements FieldInterface
     }
 
     /**
+     * Validator constraints applied to the uploaded file.
+     *
      * @param Constraint|array<Constraint> $constraints
      */
     public function setFileConstraints($constraints): self

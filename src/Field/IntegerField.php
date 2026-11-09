@@ -32,6 +32,7 @@ class IntegerField implements FieldInterface
         $this->applyDefaultsTrait();
     }
 
+    /** Highest allowed value (`max`). */
     public function setMax(int|float|null $max): self
     {
         $this->setHtmlAttribute(FloatField::OPTION_MAX, $max);
@@ -39,6 +40,7 @@ class IntegerField implements FieldInterface
         return $this;
     }
 
+    /** Lowest allowed value (`min`). */
     public function setMin(int|float|null $min): self
     {
         $this->setHtmlAttribute(FloatField::OPTION_MIN, $min);
@@ -46,6 +48,7 @@ class IntegerField implements FieldInterface
         return $this;
     }
 
+    /** sprintf pattern used on index and detail (e.g. `%d`). */
     public function setNumberFormat(string $numberFormat): self
     {
         $this->innerField->setNumberFormat($numberFormat);
@@ -53,6 +56,7 @@ class IntegerField implements FieldInterface
         return $this;
     }
 
+    /** Thousands separator on index and detail. */
     public function setThousandsSeparator(string $separator): self
     {
         $this->innerField->setThousandsSeparator($separator);
