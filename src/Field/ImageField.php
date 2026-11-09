@@ -3,9 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -30,8 +28,7 @@ class ImageField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->dto->setAssets(new AssetsDto());
-        $this->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms());
+        $this->enableMappedPlugin('form-type-file', null, true);
         $this->setDir('media');
     }
 

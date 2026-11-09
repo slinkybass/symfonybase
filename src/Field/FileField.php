@@ -3,9 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField as EasyField;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\File;
@@ -36,8 +34,7 @@ class FileField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->dto->setAssets(new AssetsDto());
-        $this->addAssetMapperEntries(Asset::new('form-type-file')->onlyOnForms());
+        $this->enableMappedPlugin('form-type-file', null, true);
         $this->setDir(self::DEFAULT_DIR);
         $this->setTemplatePath(self::DEFAULT_TEMPLATE_PATH);
         $this->setCustomOption(self::OPTION_FILE_CONSTRAINTS, [new File()]);

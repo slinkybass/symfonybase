@@ -60,7 +60,7 @@ class FloatField implements FieldInterface
 
     public function setStep(int|float|null $step): self
     {
-        $this->innerField->setHtmlAttribute(self::OPTION_STEP, $step);
+        $this->setHtmlAttribute(self::OPTION_STEP, $step);
 
         return $this;
     }
