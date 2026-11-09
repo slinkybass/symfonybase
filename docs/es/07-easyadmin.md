@@ -1,6 +1,6 @@
 # Capa EasyAdmin
 
-El área de administración es una extensión ligera de [EasyAdmin 4](https://symfony.com/bundles/EasyAdminBundle/current/index.html). Las personalizaciones residen en `src/Controller/Admin/` y las sobreescrituras de plantillas en `templates/bundles/EasyAdminBundle/`.
+El área de administración es una extensión ligera de [EasyAdmin 5](https://symfony.com/bundles/EasyAdminBundle/current/index.html). Las personalizaciones residen en `src/Controller/Admin/` y las sobreescrituras de plantillas en `templates/bundles/EasyAdminBundle/`.
 
 ## DashboardController
 

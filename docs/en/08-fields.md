@@ -11,7 +11,7 @@ These wrappers are used both from EasyAdmin CRUD controllers and from plain Symf
 
 ## `FieldTrait`
 
-`src/Field/FieldTrait.php`. Trait composed by every wrapper. Internally uses EasyAdmin's `FieldTrait` and adds:
+`src/Field/Trait/FieldTrait.php`. Trait composed by every wrapper. Internally uses EasyAdmin's `FieldTrait` and adds:
 
 - `initField($innerField)` — copies the inner field DTO onto `$this->dto`, stamps the FQCN, and runs `applyDefaults()` (each subclass inserts its own customizations after `applyDefaultsTrait()`).
 - Default column span: `DEFAULT_COLUMNS = 12`.
@@ -78,7 +78,7 @@ All classes live under `App\Field`. Each one wraps the matching EasyAdmin type (
 
 ## Asset wiring per field
 
-Most field wrappers auto-register a JavaScript entry point with `addAssetMapperEntries(Asset::new('form-type-...')->onlyOnForms())`. Those plugins live under `assets/js/fields/form-type-*.js` (see [assets](13-assets.md)); general form helpers live under `assets/js/fields/helpers/`. The EasyAdmin asset graph then loads each `form-type-*` script only on screens where the field is rendered.
+Most field wrappers register a JavaScript entry through `FieldTrait::enableMappedPlugin()` (`Asset::new('form-type-...')->onlyOnForms()`). Those plugins live under `assets/js/fields/form-type-*.js` (see [assets](13-assets.md)); general form helpers live under `assets/js/fields/helpers/`, and UI locale packs under `assets/js/fields/i18n/`. The EasyAdmin asset graph then loads each `form-type-*` script only on screens where the field is rendered.
 
 ## Templates
 

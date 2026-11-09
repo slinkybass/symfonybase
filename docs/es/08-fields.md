@@ -11,7 +11,7 @@ Estos wrappers se usan tanto desde los CRUD controllers de EasyAdmin como desde 
 
 ## `FieldTrait`
 
-`src/Field/FieldTrait.php`. Trait que compone cada wrapper. Usa internamente el `FieldTrait` de EasyAdmin y añade:
+`src/Field/Trait/FieldTrait.php`. Trait que compone cada wrapper. Usa internamente el `FieldTrait` de EasyAdmin y añade:
 
 - `initField($innerField)` — copia el DTO del campo interno sobre `$this->dto`, estampa el FQCN y ejecuta `applyDefaults()` (cada subclase inserta sus propias personalizaciones tras `applyDefaultsTrait()`).
 - Span de columna por defecto: `DEFAULT_COLUMNS = 12`.
@@ -78,7 +78,7 @@ Todas las clases residen bajo `App\Field`. Cada una envuelve el tipo EasyAdmin c
 
 ## Registro de assets por campo
 
-La mayoría de los wrappers de campo registran automáticamente un punto de entrada JavaScript con `addAssetMapperEntries(Asset::new('form-type-...')->onlyOnForms())`. La implementación frontend de esos plugins vive en `assets/js/fields/form-type-*.js` (ver [assets](13-assets.md)); los helpers generales de formulario están en `assets/js/fields/helpers/`. El grafo de assets de EasyAdmin carga cada `form-type-*` únicamente en las pantallas donde se renderiza el campo.
+La mayoría de los wrappers de campo registran el punto de entrada JavaScript mediante `FieldTrait::enableMappedPlugin()` (`Asset::new('form-type-...')->onlyOnForms()`). La implementación frontend de esos plugins vive en `assets/js/fields/form-type-*.js` (ver [assets](13-assets.md)); los helpers generales de formulario están en `assets/js/fields/helpers/` y los packs de locale de la UI en `assets/js/fields/i18n/`. El grafo de assets de EasyAdmin carga cada `form-type-*` únicamente en las pantallas donde se renderiza el campo.
 
 ## Plantillas
 

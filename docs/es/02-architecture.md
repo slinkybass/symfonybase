@@ -39,7 +39,7 @@ Cada subcarpeta tiene su propia página de documentación (ver [README](README.m
 
 `config/bundles.php`, `config/services.yaml` y `config/packages/*.yaml` siguen los valores por defecto de Symfony. Personalizaciones destacadas:
 
-- `services.yaml` declara el parámetro `locales` y los argumentos explícitos para `LocaleSubscriber` / `MediaSubscriber`.
+- `services.yaml` declara el parámetro `locales`. `LocaleSubscriber` y `MediaSubscriber` leen parámetros del contenedor con `#[Autowire]` (`%locales%`, `%artgris_file_manager%`).
 - `security.yaml` declara un único firewall `main`, el `app_user_provider` basado en `User.email` y `switch_user: { role: ROLE_ADMIN }`.
 - `doctrine.yaml` establece la estrategia de nomenclatura `underscore_number_aware` y mapea `App\Entity` desde atributos.
 - `translation.yaml` define `default_locale: es` y `fallbacks: [es]`.

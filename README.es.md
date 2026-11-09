@@ -2,12 +2,12 @@
 
 # Symfony Base
 
-**Un kit de inicio reutilizable con Symfony 8.1 + EasyAdmin 4 para construir aplicaciones orientadas a la administración.**
+**Un kit de inicio reutilizable con Symfony 8.1 + EasyAdmin 5 para construir aplicaciones orientadas a la administración.**
 
-[![PHP](https://img.shields.io/badge/PHP-%5E8.4-777BB4?logo=php&logoColor=FFFFFF)](https://www.php.net)
+[![PHP](https://img.shields.io/badge/PHP-%5E8.5-777BB4?logo=php&logoColor=FFFFFF)](https://www.php.net)
 [![Symfony](https://img.shields.io/badge/Symfony-8.1-000000?logo=symfony&logoColor=FFFFFF)](https://symfony.com)
-[![Doctrine ORM](https://img.shields.io/badge/Doctrine_ORM-3.6-FC6A31?logo=doctrine&logoColor=FFFFFF)](https://www.doctrine-project.org)
-[![EasyAdmin](https://img.shields.io/badge/EasyAdmin-4-blue)](https://github.com/EasyCorp/EasyAdminBundle)
+[![Doctrine ORM](https://img.shields.io/badge/Doctrine_ORM-3.7-FC6A31?logo=doctrine&logoColor=FFFFFF)](https://www.doctrine-project.org)
+[![EasyAdmin](https://img.shields.io/badge/EasyAdmin-%5E5.6-blue)](https://github.com/EasyCorp/EasyAdminBundle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](https://opensource.org/licenses/MIT)
 
 </div>
@@ -84,13 +84,13 @@ Todo está construido sobre componentes oficiales de Symfony y EasyAdmin, de mod
 
 | Capa              | Tecnología                                                                 |
 | ----------------- | -------------------------------------------------------------------------- |
-| **Entorno**       | PHP **^8.4**                                                               |
+| **Entorno**       | PHP **^8.5**                                                               |
 | **Framework**     | Symfony **8.1** (Framework, Security, Mailer, Form, Translator, UX)        |
-| **Base de datos** | Doctrine ORM **3.6** · DBAL **4.4** · Migrations **3.9**                   |
-| **Admin**         | EasyAdmin **4** · Arkounay UX Media / UX Collection · Artgris File Manager |
+| **Base de datos** | Doctrine ORM **3.7** · DBAL **4.5** · Migrations **3.9**                   |
+| **Admin**         | EasyAdmin **^5.6** · Arkounay UX Media / UX Collection · Artgris File Manager |
 | **Auth**          | SymfonyCasts Reset Password & Verify Email                                 |
 | **Frontend**      | Asset Mapper · Stimulus · Turbo · Tabler · Bootstrap 5                     |
-| **Herramientas**  | PHPUnit 12 · PHP-CS-Fixer (`@Symfony`) · Symfony Maker                     |
+| **Herramientas**  | PHPUnit 13 · PHP-CS-Fixer (`@Symfony`) · Symfony Maker                     |
 
 Las versiones exactas están fijadas en [`composer.json`](composer.json), [`composer.lock`](composer.lock) e [`importmap.php`](importmap.php).
 
@@ -185,7 +185,7 @@ La documentación técnica está [organizada por idioma](docs/README.md).
 
 - **Estilo** — Conjunto de reglas `@Symfony` de PHP-CS-Fixer con `yoda_style = false`. Consulta [`.php-cs-fixer.dist.php`](.php-cs-fixer.dist.php).
 - **Idioma** — Predeterminado `es`. Consulta [`config/packages/translation.yaml`](config/packages/translation.yaml).
-- **Tests** — PHPUnit 12; configuración en [`phpunit.dist.xml`](phpunit.dist.xml).
+- **Tests** — PHPUnit 13; configuración en [`phpunit.dist.xml`](phpunit.dist.xml).
 
 ## Licencia
 

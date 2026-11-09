@@ -69,7 +69,7 @@ assets/
 | `settings-form`   | `assets/js/base/settings-form.js`    | Cargado por `SettingsCrudController::configureAssets`.                         |
 | `form-type-*`     | `assets/js/fields/form-type-*.js`    | Adjuntado automáticamente por el wrapper `App\Field\*` correspondiente.        |
 
-Las entradas de campos siguen la convención de EasyAdmin: cada clase `App\Field\*` registra su plugin con `addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())`, de modo que el bundle inyecta el script únicamente en las pantallas que renderizan el campo.
+Las entradas de campos siguen la convención de EasyAdmin: cada plugin llama a `FieldTrait::enableMappedPlugin()`, que carga `Asset::new('form-type-password')->onlyOnForms()`, de modo que el bundle inyecta el script únicamente en las pantallas que renderizan el campo.
 
 ## Capas de JavaScript
 
@@ -97,5 +97,5 @@ EasyAdmin carga `app` y `admin` mediante `DashboardController::configureAssets()
 
 1. Crea el módulo JS en `assets/js/fields/form-type-foo.js`.
 2. Registra la entrada en `importmap.php` (`'form-type-foo' => [...]`).
-3. Desde el wrapper `App\Field\Foo` correspondiente, añádela al grafo de assets: `$this->addAssetMapperEntries(Asset::new('form-type-foo')->onlyOnForms())`.
+3. Desde el wrapper `App\Field\Foo` correspondiente (o su trait de plugin), regístrala con `enableMappedPlugin('form-type-foo', 'data-foo-field', true)`.
 4. Usa el atributo HTML `data-foo-field` para delimitar el bootstrap del DOM.

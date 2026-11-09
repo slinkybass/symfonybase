@@ -69,7 +69,7 @@ assets/
 | `settings-form`   | `assets/js/base/settings-form.js`   | Loaded by `SettingsCrudController::configureAssets`.            |
 | `form-type-*`     | `assets/js/fields/form-type-*.js`   | Auto-attached by the corresponding `App\Field\*` wrapper.       |
 
-The fields entries follow the EasyAdmin convention: each `App\Field\*` class registers its plugin with `addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms())`, so the bundle injects the script only on screens that render the field.
+The fields entries follow the EasyAdmin convention: each plugin calls `FieldTrait::enableMappedPlugin()`, which loads `Asset::new('form-type-password')->onlyOnForms()`, so the bundle injects the script only on screens that render the field.
 
 ## JavaScript layering
 
@@ -97,5 +97,5 @@ EasyAdmin pulls `app` and `admin` via `DashboardController::configureAssets()`; 
 
 1. Create the JS module under `assets/js/fields/form-type-foo.js`.
 2. Register the entry in `importmap.php` (`'form-type-foo' => [...]`).
-3. From the corresponding `App\Field\Foo` wrapper, add it to the asset graph: `$this->addAssetMapperEntries(Asset::new('form-type-foo')->onlyOnForms())`.
+3. From the corresponding `App\Field\Foo` wrapper (or its plugin trait), register it with `enableMappedPlugin('form-type-foo', 'data-foo-field', true)`.
 4. Use a `data-foo-field` HTML attribute to scope the DOM bootstrap.

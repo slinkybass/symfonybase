@@ -14,7 +14,9 @@ alwaysApply: true
 
 ## Stack
 
-**PHP:** `composer.json` exige **^8.4**
+**PHP:** `composer.json` exige **^8.5**
+
+**EasyAdmin:** `easycorp/easyadmin-bundle` **^5.6**
 
 **Backend:** versiones exactas en `composer.lock`
 
@@ -31,7 +33,7 @@ alwaysApply: true
 - **`assets/js/app.js`**, **`admin.js`**, **`public.js`:** entrypoints delgados (CSS/libs globales + arranque en `DOMContentLoaded`); registrados en `importmap.php`.
 - **`assets/js/shell/`:** lógica del entrypoint / EasyAdmin / formularios (objetos `App`, `Admin`, `Public`).
 - **`assets/js/base/`:** features de la plataforma (color-scheme, artgris-manager, settings-form); no es sitio para JS de producto.
-- **`assets/js/fields/`:** plugins `form-type-*` (+ `lib/`); auto-registrados desde `App\Field\*`. Helpers generales en `fields/helpers/` (autocomplete, hierarchy-fields).
+- **`assets/js/fields/`:** plugins `form-type-*` (+ `lib/`, `i18n/`); el PHP los registra con `FieldTrait::enableMappedPlugin()`. Helpers generales en `fields/helpers/` (autocomplete, hierarchy-fields). Packs de locale de la UI en `fields/i18n/`.
 - **`assets/js/project/`:** JS del producto al clonar la base (vacío en el starter).
 - **`assets/controllers/`:** solo controladores **Stimulus** (`controllers.json` + `stimulus_bootstrap.js`).
 - Entre módulos propios: preferir **`import` ES**; reservar **`window.*`** para lo que exijan plantillas o terceros (`Swal`, `moment`, etc.). EasyAdmin carga `app` y `admin` vía `DashboardController::configureAssets()`.
@@ -51,8 +53,8 @@ src/
 ├── Command/                    # Consola: demo, usuarios, permisos (UpdatePermissionsCommand, CreateUsersCommand, DemoCommand)
 ├── Controller/
 │   ├── Admin/
-│   │   ├── Cruds/              # Un *CrudController por entidad expuesta en EA (U
-│   │   ├── AbstractCrudController.php   # EasyAdmin base: $em + translator + ConfigService + RolePermissions por constructor; adminUrl()/request() vía containere, Config, Settings, Admin…)
+│   │   ├── Cruds/              # Un *CrudController por entidad expuesta en EA
+│   │   ├── AbstractCrudController.php   # EasyAdmin base: $em + translator + ConfigService + RolePermissions por constructor; adminUrl()/request() vía container; Config, Settings, Admin…
 │   │   └── DashboardController.php
 │   ├── AdminController.php     # Punto de entrada admin (no CRUD de entidad)
 │   ├── AuthController.php      # Login, registro, verify-email, reset-password (SymfonyCasts traits + repos/filtros)
@@ -61,7 +63,7 @@ src/
 ├── Entity/                     # Modelo persistido: User, Role, Config, ResetPasswordRequest; Enum/UserGender
 ├── EventListener/              # Doctrine entity listener: invalidación cache config (ConfigCacheListener)
 ├── EventSubscriber/            # Locale (40), Media/Artgris dirs (30), Access por listas de rutas + constantes privacy/cookies (7), InactiveUser (5), UserLogin (security.interactive_login)
-├── Field/                      # Campos tipo EasyAdmin custom (subclases de Field, traits, FieldGenerator) usados desde CrudControllers
+├── Field/                      # Wrappers EasyAdmin + FieldGenerator; traits de plugin en Field/Trait/ (FieldTrait)
 ├── Form/                       # FormGenerator (formularios fuera de EA), tipos de auth/registro/password, RegistrationForm…
 ├── Model/
 │   └── AppConfig.php           # DTO mutable de configuración resuelta (no es entidad Doctrine); ids, no proxies, en lo cacheado
@@ -70,7 +72,11 @@ src/
 │   ├── AbstractRepository.php  # API común: filter, filterOne, filterFirst, filterCount, filterExists, filterPaginated, applyFilters
 │   └── *Repository.php         # UserRepository (+ PasswordUpgraderInterface), RoleRepository, ConfigRepository, ResetPasswordRequestRepository
 ├── Security/
-│   └── VirtualPermission.php   # Constante DENY usada como “permiso” imposible en acciones EasyAdmin denegadas
+│   ├── AdminUserTrait.php      # user(): User en controladores bajo ^/admin
+│   ├── Permission.php          # Ids y registros EXTRA_PERMISSIONS, EXTRA_CRUD_ACTIONS, DISABLED_CRUD_ACTIONS
+│   ├── VirtualPermission.php   # Centinela DENY para ocultar en EasyAdmin sin permiso persistido
+│   └── Voter/
+│       └── PermissionVoter.php # isGranted() / setPermission() contra RolePermissions
 ├── Service/
 │   ├── ConfigService.php       # Ensambla AppConfig (defaults + fila Config + rutas AssetMapper para logo/favicon) y cachea
 │   ├── MailService.php         # Envío de correo
@@ -121,7 +127,7 @@ Normas y patrones del código, por ámbito (una sola lectura; evita repetir lo m
 
 - CRUDs bajo `Controller/Admin/Cruds/*`; base **`AbstractCrudController`:** primer argumento del constructor **`EntityManagerInterface $em`** (propiedad pública; los CRUD hijos con constructor propio llaman `parent::__construct($em, …)`). **`RolePermissions`** + **`VirtualPermission::DENY`**, themes UxCollection/UxMedia, `setDefaultSort(['id' => 'DESC'])`.
 - **`adminUrl()`** y **`request()`** siguen obteniendo servicios con **`$this->container->get(…)`** (patrón residual del bundle); **`entity()`** usa `request_stack` del contenedor y **`$this->em`** para resolver la entidad por id de request cuando hace falta.
-- **`RolePermissions`:** claves `crud_<entidad>` y `crud_<entidad>_<acción>` desde `*CrudController.php` y `Action::NEW|DETAIL|EDIT|DELETE`, más listas `DISABLED_CRUD_PERMISSIONS`, `EXTRA_CRUD_ACTION_PERMISSIONS`, `EXTRA_PERMISSIONS`.
+- **`RolePermissions`:** claves `crud_<entidad>` y `crud_<entidad>_<acción>` desde `*CrudController.php` y `Action::NEW|DETAIL|EDIT|DELETE`, más las listas de `Permission`: `DISABLED_CRUD_ACTIONS`, `EXTRA_CRUD_ACTIONS`, `EXTRA_PERMISSIONS`.
 - No acortar visibilidad de acciones CRUD sin pasar por ese modelo (rompe el árbol `crud_*`).
 
 ### HTTP subscribers & access

@@ -2,12 +2,12 @@
 
 # Symfony Base
 
-**A reusable Symfony 8.1 + EasyAdmin 4 starter kit for building admin-driven applications.**
+**A reusable Symfony 8.1 + EasyAdmin 5 starter kit for building admin-driven applications.**
 
-[![PHP](https://img.shields.io/badge/PHP-%5E8.4-777BB4?logo=php&logoColor=FFFFFF)](https://www.php.net)
+[![PHP](https://img.shields.io/badge/PHP-%5E8.5-777BB4?logo=php&logoColor=FFFFFF)](https://www.php.net)
 [![Symfony](https://img.shields.io/badge/Symfony-8.1-000000?logo=symfony&logoColor=FFFFFF)](https://symfony.com)
-[![Doctrine ORM](https://img.shields.io/badge/Doctrine_ORM-3.6-FC6A31?logo=doctrine&logoColor=FFFFFF)](https://www.doctrine-project.org)
-[![EasyAdmin](https://img.shields.io/badge/EasyAdmin-4-blue)](https://github.com/EasyCorp/EasyAdminBundle)
+[![Doctrine ORM](https://img.shields.io/badge/Doctrine_ORM-3.7-FC6A31?logo=doctrine&logoColor=FFFFFF)](https://www.doctrine-project.org)
+[![EasyAdmin](https://img.shields.io/badge/EasyAdmin-%5E5.6-blue)](https://github.com/EasyCorp/EasyAdminBundle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](https://opensource.org/licenses/MIT)
 
 </div>
@@ -84,13 +84,13 @@ Everything is built on official Symfony and EasyAdmin components, so upgrades fo
 
 | Layer         | Stack                                                                      |
 | ------------- | -------------------------------------------------------------------------- |
-| **Runtime**   | PHP **^8.4**                                                               |
+| **Runtime**   | PHP **^8.5**                                                               |
 | **Framework** | Symfony **8.1** (Framework, Security, Mailer, Form, Translator, UX)        |
-| **Database**  | Doctrine ORM **3.6** · DBAL **4.4** · Migrations **3.9**                   |
-| **Admin**     | EasyAdmin **4** · Arkounay UX Media / UX Collection · Artgris File Manager |
+| **Database**  | Doctrine ORM **3.7** · DBAL **4.5** · Migrations **3.9**                   |
+| **Admin**     | EasyAdmin **^5.6** · Arkounay UX Media / UX Collection · Artgris File Manager |
 | **Auth**      | SymfonyCasts Reset Password & Verify Email                                 |
 | **Frontend**  | Asset Mapper · Stimulus · Turbo · Tabler · Bootstrap 5                     |
-| **Tooling**   | PHPUnit 12 · PHP-CS-Fixer (`@Symfony`) · Symfony Maker                     |
+| **Tooling**   | PHPUnit 13 · PHP-CS-Fixer (`@Symfony`) · Symfony Maker                     |
 
 Exact versions are pinned in [`composer.json`](composer.json), [`composer.lock`](composer.lock), and [`importmap.php`](importmap.php).
 
@@ -185,7 +185,7 @@ Technical documentation organized [by locale](docs/README.md).
 
 - **Style** — PHP-CS-Fixer ruleset `@Symfony` with `yoda_style = false`. See [`.php-cs-fixer.dist.php`](.php-cs-fixer.dist.php).
 - **Locale** — default `es`. See [`config/packages/translation.yaml`](config/packages/translation.yaml).
-- **Tests** — PHPUnit 12; configuration in [`phpunit.dist.xml`](phpunit.dist.xml).
+- **Tests** — PHPUnit 13; configuration in [`phpunit.dist.xml`](phpunit.dist.xml).
 
 ## License
 

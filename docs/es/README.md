@@ -1,6 +1,6 @@
 # Symfony Base — Documentación
 
-Starter reutilizable construido sobre **Symfony 8.1** y **EasyAdmin 4** que incluye extensiones para configuración, permisos, campos personalizados, filtros de repositorio y layouts de administración y área pública.
+Starter reutilizable construido sobre **Symfony 8.1** y **EasyAdmin 5** que incluye extensiones para configuración, permisos, campos personalizados, filtros de repositorio y layouts de administración y área pública.
 
 Otros idiomas: ver el [hub de documentación](../README.md).
 

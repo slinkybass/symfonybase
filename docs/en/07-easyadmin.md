@@ -1,6 +1,6 @@
 # EasyAdmin layer
 
-The admin area is a thin extension of [EasyAdmin 4](https://symfony.com/bundles/EasyAdminBundle/current/index.html). The customizations live in `src/Controller/Admin/` and template overrides in `templates/bundles/EasyAdminBundle/`.
+The admin area is a thin extension of [EasyAdmin 5](https://symfony.com/bundles/EasyAdminBundle/current/index.html). The customizations live in `src/Controller/Admin/` and template overrides in `templates/bundles/EasyAdminBundle/`.
 
 ## DashboardController
 

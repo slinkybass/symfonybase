@@ -39,7 +39,7 @@ Each subfolder has its own dedicated documentation page (see [README](README.md)
 
 `config/bundles.php`, `config/services.yaml` and `config/packages/*.yaml` follow Symfony defaults. Notable customizations:
 
-- `services.yaml` declares the `locales` parameter and explicit arguments for `LocaleSubscriber` / `MediaSubscriber`.
+- `services.yaml` declares the `locales` parameter. `LocaleSubscriber` and `MediaSubscriber` read container parameters with `#[Autowire]` (`%locales%`, `%artgris_file_manager%`).
 - `security.yaml` declares one `main` firewall, `app_user_provider` based on `User.email`, and `switch_user: { role: ROLE_ADMIN }`.
 - `doctrine.yaml` sets the `underscore_number_aware` naming strategy and maps `App\Entity` from attributes.
 - `translation.yaml` sets `default_locale: es` and `fallbacks: [es]`.
