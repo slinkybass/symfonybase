@@ -2,19 +2,24 @@
 
 namespace App\Field;
 
+use App\Field\Trait\CollectionFieldTrait;
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `CollectionField` wrapper with `FieldTrait`. */
+/**
+ * EasyAdmin `CollectionField` wrapper.
+ *
+ * JS: patched fork via {@see CollectionFieldTrait::enablePlugin()} (not stock EA).
+ */
 class CollectionField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use CollectionFieldTrait;
+
     private EasyField $innerField;
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
@@ -29,8 +34,7 @@ class CollectionField implements FieldInterface
     private function applyDefaults(): void
     {
         $this->applyDefaultsTrait();
-        $this->dto->setAssets(new AssetsDto());
-        $this->addAssetMapperEntries(Asset::new('form-type-collection')->onlyOnForms());
+        $this->enablePlugin();
     }
 
     public function allowAdd(bool $allow = true): self
