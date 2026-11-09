@@ -2,11 +2,12 @@
  * Shared bootstrap for `assets/js/fields/form-type-*.js`.
  *
  * Autor: slinkybass
- * Version: 1.0
+ * Version: 1.1
  *
  * Not a field. Each plugin stays one entrypoint file; this module is infra.
+ * `form-type-collection.js` (EA fork) uses `bindPlugin` only.
  *
- * Conventions for upcoming plugins:
+ * Conventions:
  * - Flag: data-{name}-field present and not "false"/"0" (PHP json_encode(true) → "true")
  * - Guard: data-{name}-initialized (via dataset key, e.g. dateInitialized)
  * - Bool attrs: omitted → fallback; "false" | "0" → false; any other value → true
@@ -41,6 +42,7 @@ export function floatAttr(el, name, fallback) {
     return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+/** DOMContentLoaded + ea.collection.item-added. */
 export function bindPlugin(init, { onReady } = {}) {
     document.addEventListener("DOMContentLoaded", () => {
         if (typeof onReady === "function") {
@@ -50,16 +52,6 @@ export function bindPlugin(init, { onReady } = {}) {
     });
     document.addEventListener("ea.collection.item-added", () => {
         init();
-    });
-}
-
-export function eachUninitialized(selector, datasetKey, callback) {
-    document.querySelectorAll(selector).forEach((el) => {
-        if (el.dataset[datasetKey] !== undefined) {
-            return;
-        }
-        el.dataset[datasetKey] = "";
-        callback(el);
     });
 }
 

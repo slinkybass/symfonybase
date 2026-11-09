@@ -21,6 +21,8 @@
  * `app.js` (TomSelect autocomplete).
  */
 
+import { bindPlugin } from "./lib/plugin.js";
+
 const eaCollectionHandler = () => {
     document.querySelectorAll("button.field-collection-add-button").forEach((addButton) => {
         const collection = addButton.closest("[data-ea-collection-field]");
@@ -59,8 +61,7 @@ const eaCollectionHandler = () => {
     });
 };
 
-document.addEventListener("DOMContentLoaded", eaCollectionHandler);
-document.addEventListener("ea.collection.item-added", eaCollectionHandler);
+bindPlugin(eaCollectionHandler);
 
 const EaCollectionProperty = {
     handleAddButton: (addButton, collection) => {
