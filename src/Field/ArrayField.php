@@ -11,7 +11,9 @@ use Symfony\Contracts\Translation\TranslatableInterface;
 /**
  * EasyAdmin `ArrayField` wrapper.
  *
- * Same collection fork as {@see CollectionField} (`form-type-collection`).
+ * Same collection fork and shared options as {@see CollectionField}
+ * ({@see CollectionFieldTrait}: `enablePlugin`, `allowAdd`, `allowDelete`, …).
+ * Entry-type / CRUD-form options are Collection-oriented; prefer {@see CollectionField} for those.
  */
 class ArrayField implements FieldInterface
 {
