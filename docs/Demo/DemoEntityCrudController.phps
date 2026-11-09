@@ -12,6 +12,7 @@ use App\Field\FieldGenerator;
 use App\Field\FloatField;
 use App\Field\MaskField;
 use App\Field\SignatureField;
+use App\Field\TextEditorField;
 use App\Form\Type\DemoEntityType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -795,20 +796,91 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $texteditorFieldsTab = FieldGenerator::tab('Text editor');
 
-        $texteditorPanel = FieldGenerator::panel('TEXT EDITOR')->setIcon('input-search');
+        $texteditorPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
         $texteditor = FieldGenerator::texteditor('texteditor')
-            ->setLabel('Default')
+            ->setLabel('Default <small class="text-muted">full</small>')
             ->setColumns(4);
         $texteditor2 = FieldGenerator::texteditor('texteditor2')
-            ->setLabel('Enable resize and disable spellcheck')
-            ->isResizeable()
-            ->isSpellcheck(false)
+            ->setLabel('Basic preset <small class="text-muted">safe public HTML</small>')
+            ->setPreset(TextEditorField::PRESET_BASIC)
             ->setColumns(4);
         $texteditor3 = FieldGenerator::texteditor('texteditor3')
-            ->setLabel('Custom toolbar')
-            ->setToolbar('undo redo | bold italic underline | emoticons')
+            ->setLabel('Placeholder')
+            ->setPlaceholder('Write something…')
+            ->setColumns(4);
+        $texteditorSizePanel = FieldGenerator::panel('SIZE')->setIcon('input-search');
+        $texteditor4 = FieldGenerator::texteditor('texteditor4')
+            ->setLabel('Fixed height <small class="text-muted">250px</small>')
+            ->setHeight(250)
+            ->setColumns(4);
+        $texteditor5 = FieldGenerator::texteditor('texteditor5')
+            ->setLabel('Autoresize bounds <small class="text-muted">min 150 / max 250</small>')
+            ->setMinHeight(150)
+            ->setMaxHeight(250)
+            ->isResizeable()
+            ->setColumns(4);
+        $texteditor6 = FieldGenerator::texteditor('texteditor6')
+            ->setLabel('Resize both axes')
+            ->setResize(TextEditorField::RESIZE_BOTH)
             ->setColumns(4);
 
+        $texteditorToolbarPanel = FieldGenerator::panel('TOOLBAR')->setIcon('input-search');
+        $texteditor7 = FieldGenerator::texteditor('texteditor7')
+            ->setLabel('Custom toolbar')
+            ->setToolbar('undo redo | bold italic underline | bullist numlist | link | emoticons')
+            ->setColumns(4);
+        $texteditor8 = FieldGenerator::texteditor('texteditor8')
+            ->setLabel('Wrap + sticky toolbar')
+            ->setToolbarMode(TextEditorField::TOOLBAR_MODE_WRAP)
+            ->isToolbarSticky()
+            ->setMinHeight(500)
+            ->setColumns(4);
+        $texteditor9 = FieldGenerator::texteditor('texteditor9')
+            ->setLabel('Menubar <small class="text-muted">file edit insert</small>')
+            ->setMenubar('file edit insert')
+            ->setMinHeight(250)
+            ->setColumns(4);
+
+        $texteditorQuickbarsPanel = FieldGenerator::panel('MENUBAR & QUICKBARS')->setIcon('input-search');
+        $texteditor10 = FieldGenerator::texteditor('texteditor10')
+            ->setLabel('Selection quickbar')
+            ->setQuickbarsSelectionToolbar('bold italic underline | quicklink')
+            ->setColumns(6);
+        $texteditor11 = FieldGenerator::texteditor('texteditor11')
+            ->setLabel('Insert quickbar')
+            ->setQuickbarsInsertToolbar('quickimage quicktable')
+            ->setColumns(6);
+
+        $texteditorBehaviorPanel = FieldGenerator::panel('BEHAVIOR')->setIcon('input-search');
+        $texteditor12 = FieldGenerator::texteditor('texteditor12')
+            ->setLabel('Paste as text + no spellcheck')
+            ->isPasteAsText()
+            ->isSpellcheck(false)
+            ->setColumns(4);
+        $texteditor13 = FieldGenerator::texteditor('texteditor13')
+            ->setLabel('Context menu + convert URLs')
+            ->setContextMenu('link image table')
+            ->isConvertUrls()
+            ->setColumns(4);
+        $texteditor14 = FieldGenerator::texteditor('texteditor14')
+            ->setLabel('Readonly')
+            ->isReadonly()
+            ->setColumns(4);
+
+        $texteditorChromePanel = FieldGenerator::panel('STATE & PLUGINS')->setIcon('input-search');
+        $texteditor15 = FieldGenerator::texteditor('texteditor15')
+            ->setLabel('No statusbar')
+            ->showStatusbar(false)
+            ->setColumns(4);
+        $texteditor16 = FieldGenerator::texteditor('texteditor16')
+            ->setLabel('No element path <small class="text-muted">statusbar kept</small>')
+            ->showElementPath(false)
+            ->setColumns(4);
+        $texteditor17 = FieldGenerator::texteditor('texteditor17')
+            ->setLabel('Reduced plugins + content style')
+            ->setPlugins(['lists', 'link', 'autoresize'])
+            ->setContentStyle('body { font-family: "Courier New", monospace !important; }')
+            ->setColumns(4);
         yield $basicFieldsTab;
         yield $idPanel;
         yield $id;
@@ -1012,6 +1084,25 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $texteditor;
         yield $texteditor2;
         yield $texteditor3;
+        yield $texteditorSizePanel;
+        yield $texteditor4;
+        yield $texteditor5;
+        yield $texteditor6;
+        yield $texteditorToolbarPanel;
+        yield $texteditor7;
+        yield $texteditor8;
+        yield $texteditor9;
+        yield $texteditorQuickbarsPanel;
+        yield $texteditor10;
+        yield $texteditor11;
+        yield $texteditorBehaviorPanel;
+        yield $texteditor12;
+        yield $texteditor13;
+        yield $texteditor14;
+        yield $texteditorChromePanel;
+        yield $texteditor15;
+        yield $texteditor16;
+        yield $texteditor17;
 
     }
 }

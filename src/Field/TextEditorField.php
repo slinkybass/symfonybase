@@ -3,25 +3,20 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use App\Field\Trait\TextEditorFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `TextEditorField` wrapper with `FieldTrait`. */
+/** EasyAdmin `TextEditorField` wrapper with TinyMCE plugin options. */
 class TextEditorField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use TextEditorFieldTrait;
+
     private EasyField $innerField;
-
-    public const OPTION_PLUGIN = 'data-texteditor-field';
-
-    public const OPTION_TEXTEDITOR_RESIZE = 'data-texteditor-resize';
-    public const OPTION_TEXTEDITOR_SPELLCHECK = 'data-texteditor-spellcheck';
-    public const OPTION_TEXTEDITOR_TOOLBAR = 'data-texteditor-toolbar';
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -38,35 +33,9 @@ class TextEditorField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load TinyMCE (`data-texteditor-field`). `false` keeps a plain textarea. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-texteditor')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
-
-        return $this;
-    }
-
-    public function isResizeable(bool $resizeable = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_RESIZE, json_encode($resizeable));
-
-        return $this;
-    }
-
-    public function isSpellcheck(bool $spellcheck = true): self
-    {
-        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_SPELLCHECK, json_encode($spellcheck));
-
-        return $this;
-    }
-
-    public function setToolbar(string $toolbar): self
-    {
-        $this->setHtmlAttribute(self::OPTION_TEXTEDITOR_TOOLBAR, $toolbar);
-
-        return $this;
+        return $this->enableMappedPlugin('form-type-texteditor', self::OPTION_PLUGIN, $enable);
     }
 }

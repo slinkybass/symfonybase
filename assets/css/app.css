@@ -701,6 +701,9 @@ div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-act
     border: var(--tblr-border-width) solid var(--tblr-border-color-translucent) !important;
     border-radius: var(--tblr-border-radius-lg) !important;
 }
+.tox-promotion {
+    display: none !important;
+}
 .tox .tox-toolbar__primary,
 .tox.tox-tinymce-aux .tox-toolbar__overflow,
 .tox .tox-statusbar,
@@ -712,6 +715,9 @@ div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-act
 .tox .tox-pop__dialog {
     background-color: var(--tblr-bg-surface) !important;
 }
+.tox .tox-toolbar,
+.tox .tox-toolbar__overflow,
+.tox .tox-toolbar__primary,
 .tox.tox-tinymce-aux .tox-toolbar__overflow {
     background-image: none !important;
 }
@@ -720,11 +726,13 @@ div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-act
 .tox .tox-swatches__picker-btn:hover,
 .tox .tox-collection--grid .tox-collection__item--active:not(.tox-collection__item--state-disabled) {
     background-color: var(--tblr-primary-lt) !important;
+    color: var(--tblr-primary) !important;
 }
 .tox .tox-collection--list .tox-collection__item--enabled:not(.tox-collection__item--state-disabled),
 .tox .tox-collection--toolbar .tox-collection__item--enabled:not(.tox-collection__item--state-disabled),
 .tox .tox-insert-table-picker .tox-insert-table-picker__selected {
     background-color: var(--tblr-primary) !important;
+    color: var(--tblr-primary-fg) !important;
 }
 .tox .tox-collection--list .tox-collection__item .tox-collection__item-label > * {
     background-color: transparent !important;

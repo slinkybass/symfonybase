@@ -417,6 +417,48 @@ class DemoEntity
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $texteditor3 = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor4 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor5 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor6 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor7 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor8 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor9 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor10 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor11 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor12 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor13 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor14 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor15 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor16 = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $texteditor17 = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -2014,6 +2056,174 @@ class DemoEntity
     public function setTexteditor3(?string $texteditor3): static
     {
         $this->texteditor3 = $texteditor3;
+
+        return $this;
+    }
+
+    public function getTexteditor4(): ?string
+    {
+        return $this->texteditor4;
+    }
+
+    public function setTexteditor4(?string $texteditor4): static
+    {
+        $this->texteditor4 = $texteditor4;
+
+        return $this;
+    }
+
+    public function getTexteditor5(): ?string
+    {
+        return $this->texteditor5;
+    }
+
+    public function setTexteditor5(?string $texteditor5): static
+    {
+        $this->texteditor5 = $texteditor5;
+
+        return $this;
+    }
+
+    public function getTexteditor6(): ?string
+    {
+        return $this->texteditor6;
+    }
+
+    public function setTexteditor6(?string $texteditor6): static
+    {
+        $this->texteditor6 = $texteditor6;
+
+        return $this;
+    }
+
+    public function getTexteditor7(): ?string
+    {
+        return $this->texteditor7;
+    }
+
+    public function setTexteditor7(?string $texteditor7): static
+    {
+        $this->texteditor7 = $texteditor7;
+
+        return $this;
+    }
+
+    public function getTexteditor8(): ?string
+    {
+        return $this->texteditor8;
+    }
+
+    public function setTexteditor8(?string $texteditor8): static
+    {
+        $this->texteditor8 = $texteditor8;
+
+        return $this;
+    }
+
+    public function getTexteditor9(): ?string
+    {
+        return $this->texteditor9;
+    }
+
+    public function setTexteditor9(?string $texteditor9): static
+    {
+        $this->texteditor9 = $texteditor9;
+
+        return $this;
+    }
+
+    public function getTexteditor10(): ?string
+    {
+        return $this->texteditor10;
+    }
+
+    public function setTexteditor10(?string $texteditor10): static
+    {
+        $this->texteditor10 = $texteditor10;
+
+        return $this;
+    }
+
+    public function getTexteditor11(): ?string
+    {
+        return $this->texteditor11;
+    }
+
+    public function setTexteditor11(?string $texteditor11): static
+    {
+        $this->texteditor11 = $texteditor11;
+
+        return $this;
+    }
+
+    public function getTexteditor12(): ?string
+    {
+        return $this->texteditor12;
+    }
+
+    public function setTexteditor12(?string $texteditor12): static
+    {
+        $this->texteditor12 = $texteditor12;
+
+        return $this;
+    }
+
+    public function getTexteditor13(): ?string
+    {
+        return $this->texteditor13;
+    }
+
+    public function setTexteditor13(?string $texteditor13): static
+    {
+        $this->texteditor13 = $texteditor13;
+
+        return $this;
+    }
+
+    public function getTexteditor14(): ?string
+    {
+        return $this->texteditor14;
+    }
+
+    public function setTexteditor14(?string $texteditor14): static
+    {
+        $this->texteditor14 = $texteditor14;
+
+        return $this;
+    }
+
+    public function getTexteditor15(): ?string
+    {
+        return $this->texteditor15;
+    }
+
+    public function setTexteditor15(?string $texteditor15): static
+    {
+        $this->texteditor15 = $texteditor15;
+
+        return $this;
+    }
+
+    public function getTexteditor16(): ?string
+    {
+        return $this->texteditor16;
+    }
+
+    public function setTexteditor16(?string $texteditor16): static
+    {
+        $this->texteditor16 = $texteditor16;
+
+        return $this;
+    }
+
+    public function getTexteditor17(): ?string
+    {
+        return $this->texteditor17;
+    }
+
+    public function setTexteditor17(?string $texteditor17): static
+    {
+        $this->texteditor17 = $texteditor17;
 
         return $this;
     }

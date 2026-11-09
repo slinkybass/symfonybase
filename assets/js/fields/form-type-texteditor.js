@@ -1,180 +1,22 @@
 /**
- * TinyMCE field
+ * TinyMCE texteditor field
  *
  * Autor: slinkybass
- * Version: 3.1
+ * Version: 3.3
+ *
+ * Contract: lib/tinymce.js.
  */
 
-import tinymce from "tinymce";
-import "tinymce/models/dom/model";
-import "tinymce/themes/silver";
-import "tinymce/icons/default";
-import "tinymce/skins/ui/oxide/skin.min.css";
-import "tinymce/skins/ui/oxide-dark/skin.min.css";
+import { definePlugin } from "./lib/plugin.js";
+import { ATTR, bindThemeSync, createEditor, editorDefaults, editorOptsFromElement } from "./lib/tinymce.js";
 
-import "tinymce-i18n/langs/es.js";
-
-import "tinymce/plugins/accordion";
-import "tinymce/plugins/advlist";
-import "tinymce/plugins/anchor";
-import "tinymce/plugins/autolink";
-import "tinymce/plugins/autoresize";
-import "tinymce/plugins/autosave";
-import "tinymce/plugins/charmap";
-import "tinymce/plugins/code";
-import "tinymce/plugins/codesample";
-import "tinymce/plugins/directionality";
-import "tinymce/plugins/emoticons";
-import "tinymce/plugins/emoticons/js/emojis";
-import "tinymce/plugins/fullscreen";
-import "tinymce/plugins/image";
-import "tinymce/plugins/importcss";
-import "tinymce/plugins/insertdatetime";
-import "tinymce/plugins/link";
-import "tinymce/plugins/lists";
-import "tinymce/plugins/media";
-import "tinymce/plugins/nonbreaking";
-import "tinymce/plugins/pagebreak";
-import "tinymce/plugins/preview";
-import "tinymce/plugins/quickbars";
-import "tinymce/plugins/save";
-import "tinymce/plugins/searchreplace";
-import "tinymce/plugins/table";
-import "tinymce/plugins/visualblocks";
-import "tinymce/plugins/visualchars";
-import "tinymce/plugins/wordcount";
-
-function isDarkTheme() {
-    return document.documentElement.getAttribute("data-bs-theme") === "dark";
-}
-
-function resolvedTablerColor(property, variable) {
-    const probe = document.createElement("span");
-    probe.style[property] = `var(${variable})`;
-    document.documentElement.appendChild(probe);
-    const value = getComputedStyle(probe)[property];
-    probe.remove();
-
-    return value;
-}
-
-function tablerContentColors() {
-    return {
-        background: resolvedTablerColor("backgroundColor", "--tblr-bg-surface"),
-        color: resolvedTablerColor("color", "--tblr-body-color"),
-    };
-}
-
-function editorContentStyle() {
-    const { background, color } = tablerContentColors();
-
-    return `body { background-color: ${background}; color: ${color}; }`;
-}
-
-function applyEditorContentTheme(editor) {
-    const body = editor.getBody?.();
-    if (!body) {
-        return;
-    }
-
-    const { background, color } = tablerContentColors();
-    body.style.backgroundColor = background;
-    body.style.color = color;
-}
-
-function syncTinyMceSkin() {
-    const dark = isDarkTheme();
-    document.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
-        const href = link.href;
-        if (href.includes("/skins/ui/oxide-dark/")) {
-            link.disabled = !dark;
-        } else if (href.includes("/skins/ui/oxide/")) {
-            link.disabled = dark;
-        }
-    });
-
-    tinymce.get().forEach(applyEditorContentTheme);
-}
-
-syncTinyMceSkin();
-new MutationObserver(syncTinyMceSkin).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-bs-theme"],
+definePlugin("formTypeTextEditor", {
+    attr: ATTR.PLUGIN,
+    datasetKey: "texteditorInitialized",
+    onReady() {
+        bindThemeSync();
+    },
+    setup(el) {
+        createEditor(el, editorOptsFromElement(el, editorDefaults()));
+    },
 });
-
-(function () {
-    document.addEventListener("DOMContentLoaded", () => {
-        formTypeTextEditor();
-    });
-    document.addEventListener("ea.collection.item-added", () => {
-        formTypeTextEditor();
-    });
-
-    window.formTypeTextEditor = function formTypeTextEditor(selector = '[data-texteditor-field="true"]') {
-        document.querySelectorAll(selector).forEach((e) => {
-            if (e.dataset.texteditorInitialized !== undefined) {
-                return;
-            }
-
-            e.dataset.texteditorInitialized = "";
-
-            const resize = e.hasAttribute("data-texteditor-resize") ? e.getAttribute("data-texteditor-resize") !== "false" : false;
-            const spellcheck = e.hasAttribute("data-texteditor-spellcheck") ? e.getAttribute("data-texteditor-spellcheck") !== "false" : true;
-            const defaultToolbar =
-                "undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen";
-            const toolbar = e.hasAttribute("data-texteditor-toolbar") ? e.getAttribute("data-texteditor-toolbar") : defaultToolbar;
-
-            tinymce.init({
-                plugins: [
-                    "accordion",
-                    "advlist",
-                    "anchor",
-                    "autolink",
-                    "autoresize",
-                    "autosave",
-                    "charmap",
-                    "code",
-                    "codesample",
-                    "directionality",
-                    "emoticons",
-                    "fullscreen",
-                    "image",
-                    "importcss",
-                    "insertdatetime",
-                    "link",
-                    "lists",
-                    "media",
-                    "nonbreaking",
-                    "pagebreak",
-                    "preview",
-                    "quickbars",
-                    "save",
-                    "searchreplace",
-                    "table",
-                    "visualblocks",
-                    "visualchars",
-                    "wordcount",
-                ],
-                target: e,
-                language: typeof moment !== "undefined" && typeof moment.locale === "function" ? moment.locale() : "es",
-                resize,
-                browser_spellcheck: spellcheck,
-                toolbar,
-                menubar: false,
-                contextmenu: false,
-                quickbars_selection_toolbar: false,
-                quickbars_insert_toolbar: false,
-                autoresize_bottom_margin: 0,
-                skin: false,
-                content_css: false,
-                content_style: editorContentStyle(),
-                setup: (editor) => {
-                    editor.on("init", () => applyEditorContentTheme(editor));
-                },
-                branding: false,
-                convert_urls: false,
-                license_key: "gpl",
-            });
-        });
-    };
-})();
