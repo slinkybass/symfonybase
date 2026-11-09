@@ -78,8 +78,7 @@ export default class Autocomplete {
         const config = {
             render: {
                 no_results: (data, escape) => `<div class="no-results">${this.#i18n("noResults")}</div>`,
-                option_create: (data, escape) =>
-                    `<div class="create">${optionCreateLabel} <strong>${escape(data.input)}</strong>&hellip;</div>`,
+                option_create: (data, escape) => `<div class="create">${optionCreateLabel} <strong>${escape(data.input)}</strong>&hellip;</div>`,
             },
             plugins: {
                 dropdown_input: {},
@@ -276,8 +275,7 @@ export default class Autocomplete {
                 loading_more: (data, escape) => `<div class="loading-more-results">${this.#i18n("loadingMoreResults")}</div>`,
                 no_more_results: (data, escape) => `<div class="no-more-results">${this.#i18n("noMoreResults")}</div>`,
                 no_results: (data, escape) => `<div class="no-results">${this.#i18n("noResults")}</div>`,
-                option_create: (data, escape) =>
-                    `<div class="create">${this.#i18n("optionCreate")} <strong>${escape(data.input)}</strong>&hellip;</div>`,
+                option_create: (data, escape) => `<div class="create">${this.#i18n("optionCreate")} <strong>${escape(data.input)}</strong>&hellip;</div>`,
             },
         });
 

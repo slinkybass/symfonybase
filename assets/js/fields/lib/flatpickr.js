@@ -158,15 +158,7 @@ const FLATPICKR_TO_MOMENT = {
     "Y-m-dTH:i:S": "YYYY-MM-DDTHH:mm:ss",
 };
 
-const PARSE_FALLBACKS = [
-    "YYYY-MM-DDTHH:mm:ss",
-    "YYYY-MM-DDTHH:mm",
-    "YYYY-MM-DD HH:mm:ss",
-    "YYYY-MM-DD HH:mm",
-    "YYYY-MM-DD",
-    "HH:mm:ss",
-    "HH:mm",
-];
+const PARSE_FALLBACKS = ["YYYY-MM-DDTHH:mm:ss", "YYYY-MM-DDTHH:mm", "YYYY-MM-DD HH:mm:ss", "YYYY-MM-DD HH:mm", "YYYY-MM-DD", "HH:mm:ss", "HH:mm"];
 
 function toMomentFormat(format) {
     if (!format) {
@@ -438,8 +430,7 @@ export function datetimePickerDefaults(el) {
     const enableSeconds = boolAttr(el, ATTR.ENABLE_SECONDS, false);
     return basePickerDefaults("datetime", {
         dateFormat: "YYYY-MM-DDTHH:mm" + (enableSeconds ? ":ss" : ""),
-        altFormat:
-            moment.localeData().longDateFormat("L") + " " + moment.localeData().longDateFormat("LT" + (enableSeconds ? "S" : "")),
+        altFormat: moment.localeData().longDateFormat("L") + " " + moment.localeData().longDateFormat("LT" + (enableSeconds ? "S" : "")),
         enableTime: true,
         noCalendar: false,
         time_24hr: true,

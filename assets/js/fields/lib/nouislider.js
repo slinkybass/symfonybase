@@ -158,9 +158,7 @@ function pipsFromElement(el) {
  * @returns {Record<string, number>}
  */
 function snapRangeFromValues(values) {
-    const nums = [...new Set(values.map((v) => Number(v)).filter((v) => Number.isFinite(v)))].sort(
-        (a, b) => a - b,
-    );
+    const nums = [...new Set(values.map((v) => Number(v)).filter((v) => Number.isFinite(v)))].sort((a, b) => a - b);
     if (nums.length === 0) {
         return { min: 0, max: 100 };
     }

@@ -166,8 +166,7 @@ export function createSlugger(field, opts = slugOptsFromElement(field)) {
         currentSlug = field.value;
     }
 
-    const lockButton =
-        field.parentNode?.querySelector(`[${ATTR.LOCK}]`) ?? field.parentNode?.querySelector("button");
+    const lockButton = field.parentNode?.querySelector(`[${ATTR.LOCK}]`) ?? field.parentNode?.querySelector("button");
     if (!lockButton) {
         return { updateValue, lock, unlock };
     }

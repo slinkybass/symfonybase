@@ -417,11 +417,7 @@ function cropDataURL(dataUrl, format = FORMAT_PNG, quality, background = null) {
             }
             newCtx.drawImage(canvas, minX, minY, width, height, padding, padding, width, height);
 
-            resolve(
-                format === FORMAT_JPEG
-                    ? newCanvas.toDataURL(FORMAT_JPEG, quality)
-                    : newCanvas.toDataURL(FORMAT_PNG),
-            );
+            resolve(format === FORMAT_JPEG ? newCanvas.toDataURL(FORMAT_JPEG, quality) : newCanvas.toDataURL(FORMAT_PNG));
         };
         img.onerror = reject;
         img.src = dataUrl;

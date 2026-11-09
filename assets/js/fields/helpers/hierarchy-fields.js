@@ -329,9 +329,7 @@
             return;
         }
 
-        const othersShown = Array.from(container.querySelectorAll("[data-hf-child]")).some(
-            (el) => el !== child && !readFlag(el, "data-hf-show") && el.dataset.hfState !== "hidden"
-        );
+        const othersShown = Array.from(container.querySelectorAll("[data-hf-child]")).some((el) => el !== child && !readFlag(el, "data-hf-show") && el.dataset.hfState !== "hidden");
         if (!othersShown) {
             container.classList.add("d-none");
         }

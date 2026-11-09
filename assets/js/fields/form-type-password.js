@@ -63,9 +63,7 @@ function bindPasswordGroup(group) {
  * @returns {HTMLInputElement[]}
  */
 function groupInputs(group) {
-    return [...document.querySelectorAll(`input[${FIELD}="${CSS.escape(group)}"]`)].filter(
-        (input) => input instanceof HTMLInputElement && boolAttr(input, FIELD, false),
-    );
+    return [...document.querySelectorAll(`input[${FIELD}="${CSS.escape(group)}"]`)].filter((input) => input instanceof HTMLInputElement && boolAttr(input, FIELD, false));
 }
 
 /**

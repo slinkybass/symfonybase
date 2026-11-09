@@ -199,8 +199,7 @@ export function createEditor(el, opts = editorOptsFromElement(el)) {
     }
 
     const customTheme = typeof opts.theme === "string" && opts.theme !== "" ? opts.theme : null;
-    const customDarkTheme =
-        typeof opts.darkTheme === "string" && opts.darkTheme !== "" ? opts.darkTheme : null;
+    const customDarkTheme = typeof opts.darkTheme === "string" && opts.darkTheme !== "" ? opts.darkTheme : null;
     const lightTheme = customTheme || THEME_LIGHT;
     const darkTheme = customDarkTheme || (customTheme ? customTheme : THEME_DARK);
     const followsAppTheme = !customTheme || Boolean(customDarkTheme);

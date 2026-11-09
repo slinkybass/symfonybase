@@ -129,39 +129,9 @@ export const PRESETS = {
     },
 };
 
-export const DEFAULT_PLUGINS = [
-    "accordion",
-    "advlist",
-    "anchor",
-    "autolink",
-    "autoresize",
-    "autosave",
-    "charmap",
-    "code",
-    "codesample",
-    "directionality",
-    "emoticons",
-    "fullscreen",
-    "image",
-    "importcss",
-    "insertdatetime",
-    "link",
-    "lists",
-    "media",
-    "nonbreaking",
-    "pagebreak",
-    "preview",
-    "quickbars",
-    "save",
-    "searchreplace",
-    "table",
-    "visualblocks",
-    "visualchars",
-    "wordcount",
-];
+export const DEFAULT_PLUGINS = ["accordion", "advlist", "anchor", "autolink", "autoresize", "autosave", "charmap", "code", "codesample", "directionality", "emoticons", "fullscreen", "image", "importcss", "insertdatetime", "link", "lists", "media", "nonbreaking", "pagebreak", "preview", "quickbars", "save", "searchreplace", "table", "visualblocks", "visualchars", "wordcount"];
 
-export const DEFAULT_TOOLBAR =
-    "undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen";
+export const DEFAULT_TOOLBAR = "undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen";
 
 export const TOOLBAR_MODE_FLOATING = "floating";
 export const TOOLBAR_MODE_SLIDING = "sliding";
@@ -282,9 +252,7 @@ export function editorOptsFromElement(el, defaults = editorDefaults()) {
         opts.quickbars_insert_toolbar = raw === "false" || raw === "0" ? false : raw;
     }
 
-    const extraContentStyle = el.hasAttribute(ATTR.CONTENT_STYLE)
-        ? strAttr(el, ATTR.CONTENT_STYLE, "")
-        : "";
+    const extraContentStyle = el.hasAttribute(ATTR.CONTENT_STYLE) ? strAttr(el, ATTR.CONTENT_STYLE, "") : "";
     opts.content_style = [editorContentStyle(), extraContentStyle].filter(Boolean).join(" ");
 
     return opts;
@@ -424,13 +392,7 @@ function editorContentStyle() {
     // content_css is disabled for Tabler theming; resolve CSS vars in the parent
     // document and inject computed values (iframe cannot see --tblr-* otherwise).
     // Placeholder ::before is normally shipped in the content skin.
-    return [
-        `body { background-color: ${background}; color: ${color}; font-family: ${fontFamily}; position: relative; }`,
-        `.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {`,
-        `content: attr(data-mce-placeholder); position: absolute; opacity: 0.5;`,
-        `pointer-events: none; color: ${color};`,
-        `}`,
-    ].join(" ");
+    return [`body { background-color: ${background}; color: ${color}; font-family: ${fontFamily}; position: relative; }`, `.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {`, `content: attr(data-mce-placeholder); position: absolute; opacity: 0.5;`, `pointer-events: none; color: ${color};`, `}`].join(" ");
 }
 
 function applyEditorContentTheme(editor) {

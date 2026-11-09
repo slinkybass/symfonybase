@@ -84,9 +84,7 @@ const EaCollectionProperty = {
             // (stock EA injects another `.ea-form-collection-items` wrapper).
             const emptyCollectionBadge = this.parentElement?.querySelector(".collection-empty") ?? null;
             if (null !== emptyCollectionBadge) {
-                emptyCollectionBadge.outerHTML = isArrayCollection
-                    ? ""
-                    : '<div class="accordion"><div class="form-widget-compound"><div data-empty-collection></div></div></div>';
+                emptyCollectionBadge.outerHTML = isArrayCollection ? "" : '<div class="accordion"><div class="form-widget-compound"><div data-empty-collection></div></div></div>';
             }
 
             const placeholderEscaped = formTypeNamePlaceholder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -98,9 +96,7 @@ const EaCollectionProperty = {
             // PATCH (hierarchy): uniquify hf group names so rows do not share parents/children.
             newItemHtml = patchHierarchyGroupIds(newItemHtml, numItems);
 
-            const newItemInsertionSelector = isArrayCollection
-                ? ".ea-form-collection-items"
-                : ".ea-form-collection-items .accordion > .form-widget-compound [data-empty-collection]";
+            const newItemInsertionSelector = isArrayCollection ? ".ea-form-collection-items" : ".ea-form-collection-items .accordion > .form-widget-compound [data-empty-collection]";
             const collectionItemsWrapper = collection.querySelector(newItemInsertionSelector);
 
             if (!collectionItemsWrapper) {
@@ -169,7 +165,5 @@ const EaCollectionProperty = {
  */
 function patchHierarchyGroupIds(html, index) {
     const suffix = `_${index}`;
-    return html
-        .replace(/data-hf-parent="([^"]*)"/g, (_m, group) => `data-hf-parent="${group}${suffix}"`)
-        .replace(/data-hf-child="([^"]*)"/g, (_m, group) => `data-hf-child="${group}${suffix}"`);
+    return html.replace(/data-hf-parent="([^"]*)"/g, (_m, group) => `data-hf-parent="${group}${suffix}"`).replace(/data-hf-child="([^"]*)"/g, (_m, group) => `data-hf-child="${group}${suffix}"`);
 }
