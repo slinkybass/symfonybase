@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'demoEntity')]
 class DemoEntity
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -145,7 +144,16 @@ class DemoEntity
     private ?array $collection = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $collectionFormType = null;
+    private ?array $collectionNoAdd = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $collectionNoDelete = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $collectionLabels = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $collectionPlugins = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $color = null;
@@ -989,14 +997,50 @@ class DemoEntity
         return $this;
     }
 
-    public function getCollectionFormType(): ?array
+    public function getCollectionNoAdd(): ?array
     {
-        return $this->collectionFormType;
+        return $this->collectionNoAdd;
     }
 
-    public function setCollectionFormType(?array $collectionFormType): static
+    public function setCollectionNoAdd(?array $collectionNoAdd): static
     {
-        $this->collectionFormType = $collectionFormType;
+        $this->collectionNoAdd = $collectionNoAdd;
+
+        return $this;
+    }
+
+    public function getCollectionNoDelete(): ?array
+    {
+        return $this->collectionNoDelete;
+    }
+
+    public function setCollectionNoDelete(?array $collectionNoDelete): static
+    {
+        $this->collectionNoDelete = $collectionNoDelete;
+
+        return $this;
+    }
+
+    public function getCollectionLabels(): ?array
+    {
+        return $this->collectionLabels;
+    }
+
+    public function setCollectionLabels(?array $collectionLabels): static
+    {
+        $this->collectionLabels = $collectionLabels;
+
+        return $this;
+    }
+
+    public function getCollectionPlugins(): ?array
+    {
+        return $this->collectionPlugins;
+    }
+
+    public function setCollectionPlugins(?array $collectionPlugins): static
+    {
+        $this->collectionPlugins = $collectionPlugins;
 
         return $this;
     }

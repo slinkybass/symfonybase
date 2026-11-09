@@ -249,18 +249,60 @@ class DemoEntityCrudController extends AbstractCrudController
 
         $collectionFieldsTab = FieldGenerator::tab('Collection');
 
-        $collectionPanel = FieldGenerator::panel('COLLECTION')->setIcon('input-search');
+        $collectionPanel = FieldGenerator::panel('BASIC')->setIcon('input-search');
         $array = FieldGenerator::array('array')
-            ->setLabel('Array')
-            ->setColumns(4);
+            ->setLabel('Array <small class="text-muted">simple strings</small>')
+            ->setColumns(6);
         $collection = FieldGenerator::collection('collection')
-            ->setLabel('Collection')
-            ->isExpanded(true)
+            ->setLabel('Default <small class="text-muted">expanded</small>')
+            ->isExpanded()
+            ->setColumns(6);
+
+        $collectionOptionsPanel = FieldGenerator::panel('OPTIONS')->setIcon('input-search');
+        $collectionNoAdd = FieldGenerator::collection('collectionNoAdd')
+            ->setLabel('No add')
+            ->allowAdd(false)
             ->setColumns(4);
-        $collectionFormType = FieldGenerator::collection('collectionFormType')
-            ->setLabel('Collection with a FormType')
+        if ($entity && !$entity->getCollectionNoAdd()) {
+            $collectionNoAdd->setData(['Alpha', 'Beta']);
+        }
+        $collectionNoDelete = FieldGenerator::collection('collectionNoDelete')
+            ->setLabel('No delete')
+            ->allowDelete(false)
+            ->setColumns(4);
+        if ($entity && !$entity->getCollectionNoDelete()) {
+            $collectionNoDelete->setData(['One', 'Two']);
+        }
+        $collectionLabels = FieldGenerator::collection('collectionLabels')
+            ->setLabel('Labels')
+            ->showEntryLabel()
+            ->setColumns(4);
+
+        $collectionPluginsPanel = FieldGenerator::panel('HIERARCHY + PLUGINS')->setIcon('input-search');
+        $collectionPlugins = FieldGenerator::collection('collectionPlugins')
+            ->setLabel('Per-row hierarchy <small class="text-muted">data-hf-* + date/color/mask; scoped &amp; uniquified</small>')
             ->setEntryType(DemoEntityType::class)
-            ->setColumns(4);
+            ->isEntryComplex()
+            ->isExpanded()
+            ->isRequired()
+            ->setEntryToStringMethod(static fn ($value) => \is_array($value) ? (string) ($value['title'] ?? '') : (string) $value)
+            ->setColumns(12);
+        if ($entity && !$entity->getCollectionPlugins()) {
+            $collectionPlugins->setData([
+                [
+                    'enabled' => true,
+                    'disabledNote' => '',
+                    'title' => 'Sample',
+                    'mode' => 'custom',
+                    'simpleNote' => '',
+                    'date' => new \DateTimeImmutable('tomorrow'),
+                    'color' => '#206bc4',
+                    'choice' => 'b',
+                    'phone' => '',
+                    'choiceDetail' => 'Because choice is B',
+                ],
+            ]);
+        }
 
         $colorFieldsTab = FieldGenerator::tab('Color');
 
@@ -991,7 +1033,12 @@ class DemoEntityCrudController extends AbstractCrudController
         yield $collectionPanel;
         yield $array;
         yield $collection;
-        yield $collectionFormType;
+        yield $collectionOptionsPanel;
+        yield $collectionNoAdd;
+        yield $collectionNoDelete;
+        yield $collectionLabels;
+        yield $collectionPluginsPanel;
+        yield $collectionPlugins;
 
         yield $colorFieldsTab;
         yield $colorPanel;
