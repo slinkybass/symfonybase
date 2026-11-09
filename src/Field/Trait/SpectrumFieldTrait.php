@@ -64,7 +64,6 @@ trait SpectrumFieldTrait
         return $this->enableMappedPlugin('form-type-color', self::OPTION_PLUGIN, $enable);
     }
 
-
     /**
      * Spectrum UI mode.
      *

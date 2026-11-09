@@ -58,7 +58,6 @@ trait TinyMceFieldTrait
         return $this->enableMappedPlugin('form-type-texteditor', self::OPTION_PLUGIN, $enable);
     }
 
-
     /**
      * Named TinyMCE option bundle (`data-texteditor-preset`).
      * `basic` = safe public content (undo/b/i/u/lists/link/emoticons/charmap/preview;

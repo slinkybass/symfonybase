@@ -67,7 +67,6 @@ trait IMaskFieldTrait
         return $this->enableMappedPlugin('form-type-mask', self::OPTION_PLUGIN, $enable);
     }
 
-
     /**
      * @param string|list<string> $presets
      *

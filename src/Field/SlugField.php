@@ -33,7 +33,6 @@ class SlugField implements FieldInterface
         $this->enablePlugin();
     }
 
-
     /** Source field name(s) whose values feed the slug (EasyAdmin `target` form option). */
     public function setTarget(string|array $target): self
     {

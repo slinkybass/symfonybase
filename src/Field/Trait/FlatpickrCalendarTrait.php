@@ -7,7 +7,7 @@ namespace App\Field\Trait;
  *
  * @mixin FlatpickrFieldTrait
  *
- * @method static string htmlDateList(?array $dates, string $format = 'Y-m-d')
+ * @method static string      htmlDateList(?array $dates, string $format = 'Y-m-d')
  * @method static string|null htmlValue(\DateTimeInterface|string|null $value, string $format)
  */
 trait FlatpickrCalendarTrait

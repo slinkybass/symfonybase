@@ -33,7 +33,6 @@ class ColorField implements FieldInterface
         $this->enablePlugin();
     }
 
-
     /** EasyAdmin index/detail color swatch. */
     public function showSample(bool $show = true): self
     {

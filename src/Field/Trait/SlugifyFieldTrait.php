@@ -24,7 +24,6 @@ trait SlugifyFieldTrait
         return $this->enableMappedPlugin('form-type-slug', self::OPTION_PLUGIN, $enable);
     }
 
-
     /** Unlock confirmation HTML (`data-slug-confirm-text`); Twig applies `|trans`. */
     public function setConfirmText(string $message): self
     {

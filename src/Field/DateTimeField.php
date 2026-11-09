@@ -59,7 +59,6 @@ class DateTimeField implements FieldInterface
         return 'Y-m-d H:i:s';
     }
 
-
     /** Last selectable instant (`max` attribute, `Y-m-d H:i:s`). */
     public function setMax(\DateTimeInterface|string|null $max): self
     {

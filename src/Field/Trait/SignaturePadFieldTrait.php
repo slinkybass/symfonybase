@@ -38,7 +38,6 @@ trait SignaturePadFieldTrait
         return $this->enableMappedPlugin('form-type-signature', self::OPTION_PLUGIN, $enable);
     }
 
-
     /** Keep the backing input visible (`data-signature-show-input`). */
     public function showInput(bool $show = true): self
     {
