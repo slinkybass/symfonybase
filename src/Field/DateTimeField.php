@@ -48,6 +48,12 @@ class DateTimeField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load Flatpickr. `false` keeps a native/choice widget. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin(self::PLUGIN_ENTRY, self::OPTION_PLUGIN, $enable);
+    }
+
     protected function defaultDateHtmlFormat(): string
     {
         return 'Y-m-d H:i:s';

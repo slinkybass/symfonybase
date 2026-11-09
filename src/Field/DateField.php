@@ -46,6 +46,11 @@ class DateField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load Flatpickr. `false` keeps a native/choice widget. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin(self::PLUGIN_ENTRY, self::OPTION_PLUGIN, $enable);
+    }
 
     /** Last selectable calendar day (`max` attribute, `Y-m-d`). */
     public function setMax(\DateTimeInterface|string|null $max): self

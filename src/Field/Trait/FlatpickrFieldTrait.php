@@ -38,14 +38,9 @@ trait FlatpickrFieldTrait
     public const DATE_POSITION_BELOW_RIGHT = 'below right';
 
     /**
-     * Load Flatpickr. Field classes must define `PLUGIN_ENTRY` and `OPTION_PLUGIN`.
-     * `false` keeps a native/choice widget (multiples may override for form-type switching).
+     * `enablePlugin()` lives on each field class: Date/Time/DateTime use
+     * `PLUGIN_ENTRY` + `OPTION_PLUGIN`; multiples switch form type/template.
      */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin(self::PLUGIN_ENTRY, self::OPTION_PLUGIN, $enable);
-    }
-
 
     /** Format a date/time for an HTML attribute, or return a string as-is. */
     public static function htmlValue(\DateTimeInterface|string|null $value, string $format): ?string

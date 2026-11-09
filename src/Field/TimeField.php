@@ -46,6 +46,11 @@ class TimeField implements FieldInterface
         $this->enablePlugin();
     }
 
+    /** Load Flatpickr. `false` keeps a native/choice widget. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin(self::PLUGIN_ENTRY, self::OPTION_PLUGIN, $enable);
+    }
 
     /** Latest selectable time. Writes `data-date-max-time`, not HTML `max`. */
     public function setMax(\DateTimeInterface|string|null $max): self
