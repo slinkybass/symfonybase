@@ -3,9 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -43,10 +41,8 @@ class PasswordField implements FieldInterface
     /** Load the password plugin (`data-password-field`). `false` keeps a plain password input. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-password')->onlyOnForms());
-        }
+        // Flag via setPasswordAttr so RepeatedType gets both inputs; assets only here.
+        $this->enableMappedPlugin('form-type-password', null, $enable);
 
         return $this->setPasswordAttr(self::OPTION_PLUGIN, json_encode($enable));
     }

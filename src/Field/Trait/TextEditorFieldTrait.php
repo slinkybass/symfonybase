@@ -2,9 +2,6 @@
 
 namespace App\Field\Trait;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
-
 /**
  * TinyMCE options for `TextEditorField` (`data-texteditor-*`).
  *
@@ -55,24 +52,6 @@ trait TextEditorFieldTrait
 
     public const DEFAULT_TOOLBAR = 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen';
 
-    protected function enableMappedPlugin(string $entry, string $flagAttr, bool $enable): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new($entry)->onlyOnForms());
-        }
-        $this->setHtmlAttribute($flagAttr, json_encode($enable));
-
-        return $this;
-    }
-
-    protected function setTextEditorBoolAttr(string $option, bool $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
     /**
      * Named TinyMCE option bundle (`data-texteditor-preset`).
      * `basic` = safe public content (undo/b/i/u/lists/link/emoticons/charmap/preview;
@@ -91,7 +70,7 @@ trait TextEditorFieldTrait
     /** Editor chrome resize handle (`resize`). `true`, `false`, or `both`. */
     public function isResizeable(bool $resizeable = true): self
     {
-        return $this->setTextEditorBoolAttr(self::OPTION_RESIZE, $resizeable);
+        return $this->setDataAttr(self::OPTION_RESIZE, $resizeable);
     }
 
     /**
@@ -102,7 +81,7 @@ trait TextEditorFieldTrait
     public function setResize(bool|string $resize): self
     {
         if (\is_bool($resize)) {
-            return $this->setTextEditorBoolAttr(self::OPTION_RESIZE, $resize);
+            return $this->setDataAttr(self::OPTION_RESIZE, $resize);
         }
         $this->setHtmlAttribute(self::OPTION_RESIZE, $resize);
 
@@ -112,7 +91,7 @@ trait TextEditorFieldTrait
     /** Browser spellcheck inside the editor (`browser_spellcheck`). Default `true`. */
     public function isSpellcheck(bool $spellcheck = true): self
     {
-        return $this->setTextEditorBoolAttr(self::OPTION_SPELLCHECK, $spellcheck);
+        return $this->setDataAttr(self::OPTION_SPELLCHECK, $spellcheck);
     }
 
     /** Toolbar string (`toolbar`). */
@@ -129,7 +108,7 @@ trait TextEditorFieldTrait
     public function setMenubar(bool|string $menubar): self
     {
         if (\is_bool($menubar)) {
-            return $this->setTextEditorBoolAttr(self::OPTION_MENUBAR, $menubar);
+            return $this->setDataAttr(self::OPTION_MENUBAR, $menubar);
         }
         $this->setHtmlAttribute(self::OPTION_MENUBAR, $menubar);
 
@@ -191,19 +170,19 @@ trait TextEditorFieldTrait
      */
     public function showBranding(bool $branding = true): self
     {
-        return $this->setTextEditorBoolAttr(self::OPTION_BRANDING, $branding);
+        return $this->setDataAttr(self::OPTION_BRANDING, $branding);
     }
 
     /** Element path in the status bar (`elementpath`). */
     public function showElementPath(bool $elementpath = true): self
     {
-        return $this->setTextEditorBoolAttr(self::OPTION_ELEMENTPATH, $elementpath);
+        return $this->setDataAttr(self::OPTION_ELEMENTPATH, $elementpath);
     }
 
     /** Status bar visibility (`statusbar`). */
     public function showStatusbar(bool $statusbar = true): self
     {
-        return $this->setTextEditorBoolAttr(self::OPTION_STATUSBAR, $statusbar);
+        return $this->setDataAttr(self::OPTION_STATUSBAR, $statusbar);
     }
 
     /**
@@ -221,7 +200,7 @@ trait TextEditorFieldTrait
     /** Sticky toolbar while scrolling (`toolbar_sticky`). */
     public function isToolbarSticky(bool $sticky = true): self
     {
-        return $this->setTextEditorBoolAttr(self::OPTION_TOOLBAR_STICKY, $sticky);
+        return $this->setDataAttr(self::OPTION_TOOLBAR_STICKY, $sticky);
     }
 
     /** Extra bottom margin for autoresize (`autoresize_bottom_margin`). */
@@ -235,13 +214,13 @@ trait TextEditorFieldTrait
     /** Convert URLs (`convert_urls`). Default `false`. */
     public function isConvertUrls(bool $convert = true): self
     {
-        return $this->setTextEditorBoolAttr(self::OPTION_CONVERT_URLS, $convert);
+        return $this->setDataAttr(self::OPTION_CONVERT_URLS, $convert);
     }
 
     /** Paste as plain text (`paste_as_text`). */
     public function isPasteAsText(bool $pasteAsText = true): self
     {
-        return $this->setTextEditorBoolAttr(self::OPTION_PASTE_AS_TEXT, $pasteAsText);
+        return $this->setDataAttr(self::OPTION_PASTE_AS_TEXT, $pasteAsText);
     }
 
     /**
@@ -250,7 +229,7 @@ trait TextEditorFieldTrait
     public function setContextMenu(bool|string $contextmenu): self
     {
         if (\is_bool($contextmenu)) {
-            return $this->setTextEditorBoolAttr(self::OPTION_CONTEXTMENU, $contextmenu);
+            return $this->setDataAttr(self::OPTION_CONTEXTMENU, $contextmenu);
         }
         $this->setHtmlAttribute(self::OPTION_CONTEXTMENU, $contextmenu);
 
@@ -264,7 +243,7 @@ trait TextEditorFieldTrait
     public function setQuickbarsSelectionToolbar(bool|string $toolbar): self
     {
         if (\is_bool($toolbar)) {
-            return $this->setTextEditorBoolAttr(self::OPTION_QUICKBARS_SELECTION_TOOLBAR, $toolbar);
+            return $this->setDataAttr(self::OPTION_QUICKBARS_SELECTION_TOOLBAR, $toolbar);
         }
         $this->setHtmlAttribute(self::OPTION_QUICKBARS_SELECTION_TOOLBAR, $toolbar);
 
@@ -278,7 +257,7 @@ trait TextEditorFieldTrait
     public function setQuickbarsInsertToolbar(bool|string $toolbar): self
     {
         if (\is_bool($toolbar)) {
-            return $this->setTextEditorBoolAttr(self::OPTION_QUICKBARS_INSERT_TOOLBAR, $toolbar);
+            return $this->setDataAttr(self::OPTION_QUICKBARS_INSERT_TOOLBAR, $toolbar);
         }
         $this->setHtmlAttribute(self::OPTION_QUICKBARS_INSERT_TOOLBAR, $toolbar);
 

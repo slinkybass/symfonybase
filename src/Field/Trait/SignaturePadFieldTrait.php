@@ -2,9 +2,6 @@
 
 namespace App\Field\Trait;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
-
 /**
  * SignaturePad options for `SignatureField` (`data-signature-*`).
  *
@@ -35,47 +32,22 @@ trait SignaturePadFieldTrait
     public const FORMAT_JPEG = 'image/jpeg';
     public const FORMAT_SVG = 'image/svg+xml';
 
-    protected function enableMappedPlugin(string $entry, string $flagAttr, bool $enable): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new($entry)->onlyOnForms());
-        }
-        $this->setHtmlAttribute($flagAttr, json_encode($enable));
-
-        return $this;
-    }
-
-    protected function setSignatureBoolAttr(string $option, bool $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
-    protected function setSignatureJsonAttr(string $option, mixed $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
     /** Keep the backing input visible (`data-signature-show-input`). */
     public function showInput(bool $show = true): self
     {
-        return $this->setSignatureBoolAttr(self::OPTION_SHOW_INPUT, $show);
+        return $this->setDataAttr(self::OPTION_SHOW_INPUT, $show);
     }
 
     /** Undo button (`data-signature-show-undo`). */
     public function showUndo(bool $show = true): self
     {
-        return $this->setSignatureBoolAttr(self::OPTION_SHOW_UNDO, $show);
+        return $this->setDataAttr(self::OPTION_SHOW_UNDO, $show);
     }
 
     /** Clear button (`data-signature-show-clear`). */
     public function showClear(bool $show = true): self
     {
-        return $this->setSignatureBoolAttr(self::OPTION_SHOW_CLEAR, $show);
+        return $this->setDataAttr(self::OPTION_SHOW_CLEAR, $show);
     }
 
     /** Stroke color (`penColor`). */
@@ -164,7 +136,7 @@ trait SignaturePadFieldTrait
      */
     public function setCanvasContextOptions(array $options): self
     {
-        return $this->setSignatureJsonAttr(self::OPTION_CANVAS_CONTEXT_OPTIONS, $options);
+        return $this->setDataAttr(self::OPTION_CANVAS_CONTEXT_OPTIONS, $options);
     }
 
     /**

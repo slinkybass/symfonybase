@@ -2,9 +2,6 @@
 
 namespace App\Field\Trait;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
-
 /**
  * Spectrum options for `ColorField` (`data-color-*`).
  *
@@ -61,31 +58,6 @@ trait SpectrumFieldTrait
     public const COLOR_THEME_LIGHT = 'sp-light';
     public const COLOR_THEME_DARK = 'sp-dark';
 
-    protected function enableMappedPlugin(string $entry, string $flagAttr, bool $enable): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new($entry)->onlyOnForms());
-        }
-        $this->setHtmlAttribute($flagAttr, json_encode($enable));
-
-        return $this;
-    }
-
-    protected function setColorBoolAttr(string $option, bool $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
-    protected function setColorJsonAttr(string $option, mixed $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
     /**
      * Spectrum UI mode.
      *
@@ -121,67 +93,67 @@ trait SpectrumFieldTrait
     /** Free-form color text input inside the picker. */
     public function showInput(bool $show = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_SHOW_INPUT, $show);
+        return $this->setDataAttr(self::OPTION_COLOR_SHOW_INPUT, $show);
     }
 
     /** Show the color that was set when the picker opened. */
     public function showInitial(bool $show = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_SHOW_INITIAL, $show);
+        return $this->setDataAttr(self::OPTION_COLOR_SHOW_INITIAL, $show);
     }
 
     /** Allow clearing the color (empty value). */
     public function isAllowEmpty(bool $allow = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_ALLOW_EMPTY, $allow);
+        return $this->setDataAttr(self::OPTION_COLOR_ALLOW_EMPTY, $allow);
     }
 
     /** Allow alpha / transparency. */
     public function showAlpha(bool $show = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_SHOW_ALPHA, $show);
+        return $this->setDataAttr(self::OPTION_COLOR_SHOW_ALPHA, $show);
     }
 
     /** Show Choose / Cancel buttons. */
     public function showButtons(bool $show = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_SHOW_BUTTONS, $show);
+        return $this->setDataAttr(self::OPTION_COLOR_SHOW_BUTTONS, $show);
     }
 
     /** Commit the color when clicking outside the picker. */
     public function isClickoutFiresChange(bool $enable = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_CLICKOUT_FIRES_CHANGE, $enable);
+        return $this->setDataAttr(self::OPTION_COLOR_CLICKOUT_FIRES_CHANGE, $enable);
     }
 
     /** Show the color palette panel. */
     public function showPalette(bool $show = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_SHOW_PALETTE, $show);
+        return $this->setDataAttr(self::OPTION_COLOR_SHOW_PALETTE, $show);
     }
 
     /** Restrict the picker to the palette only. */
     public function isPaletteOnly(bool $paletteOnly = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_PALETTE_ONLY, $paletteOnly);
+        return $this->setDataAttr(self::OPTION_COLOR_PALETTE_ONLY, $paletteOnly);
     }
 
     /** Close the picker after a palette swatch is chosen. */
     public function hideAfterPaletteSelect(bool $hide = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_HIDE_AFTER_PALETTE_SELECT, $hide);
+        return $this->setDataAttr(self::OPTION_COLOR_HIDE_AFTER_PALETTE_SELECT, $hide);
     }
 
     /** Show a toggle to expand beyond palette-only mode. */
     public function isTogglePaletteOnly(bool $enable = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_TOGGLE_PALETTE_ONLY, $enable);
+        return $this->setDataAttr(self::OPTION_COLOR_TOGGLE_PALETTE_ONLY, $enable);
     }
 
     /** Keep a selection palette of recently chosen colors. */
     public function showSelectionPalette(bool $show = true): self
     {
-        return $this->setColorBoolAttr(self::OPTION_COLOR_SHOW_SELECTION_PALETTE, $show);
+        return $this->setDataAttr(self::OPTION_COLOR_SHOW_SELECTION_PALETTE, $show);
     }
 
     /** Browser localStorage key shared across Spectrum instances. */
@@ -207,7 +179,7 @@ trait SpectrumFieldTrait
      */
     public function setPalette(?array $palette): self
     {
-        return $this->setColorJsonAttr(self::OPTION_COLOR_PALETTE, $palette ?? []);
+        return $this->setDataAttr(self::OPTION_COLOR_PALETTE, $palette ?? []);
     }
 
     /**
@@ -217,7 +189,7 @@ trait SpectrumFieldTrait
      */
     public function setSelectionPalette(?array $selectionPalette): self
     {
-        return $this->setColorJsonAttr(self::OPTION_COLOR_SELECTION_PALETTE, $selectionPalette ?? []);
+        return $this->setDataAttr(self::OPTION_COLOR_SELECTION_PALETTE, $selectionPalette ?? []);
     }
 
     /** Extra CSS class on the Spectrum container. */

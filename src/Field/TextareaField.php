@@ -3,9 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
@@ -45,13 +43,7 @@ class TextareaField implements FieldInterface
     /** Load the autogrow plugin (`data-textarea-field`). `false` keeps a plain textarea. */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new('form-type-textarea')->onlyOnForms());
-        }
-        $this->setHtmlAttribute(self::OPTION_PLUGIN, json_encode($enable));
-
-        return $this;
+        return $this->enableMappedPlugin('form-type-textarea', self::OPTION_PLUGIN, $enable);
     }
 
     /** CSS max-height while autogrowing (`data-textarea-max-height`). Default `200px`. */

@@ -2,9 +2,6 @@
 
 namespace App\Field\Trait;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
-
 /**
  * Ace options for `CodeEditorField` (`data-codeeditor-*`).
  *
@@ -285,24 +282,6 @@ trait CodeEditorFieldTrait
     public const CODEEDITOR_LANGUAGE_ZEEK = 'zeek';
     public const CODEEDITOR_LANGUAGE_ZIG = 'zig';
 
-    protected function enableMappedPlugin(string $entry, string $flagAttr, bool $enable): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new($entry)->onlyOnForms());
-        }
-        $this->setHtmlAttribute($flagAttr, json_encode($enable));
-
-        return $this;
-    }
-
-    protected function setCodeEditorBoolAttr(string $option, bool $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
     /**
      * Ace theme for light app mode (`theme`). Without {@see setDarkTheme()}, stays fixed.
      * Omitting both follows default chrome / twilight with `data-bs-theme`.
@@ -344,19 +323,19 @@ trait CodeEditorFieldTrait
     /** Indent with hard tabs (`useSoftTabs` inverted). Default `true`. */
     public function isIndentedWithTabs(bool $indent = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_INDENT_WITH_TABS, $indent);
+        return $this->setDataAttr(self::OPTION_INDENT_WITH_TABS, $indent);
     }
 
     /** Gutter line numbers (`showLineNumbers`). Default `true`. Independent of {@see showGutter()}. */
     public function showLineNumbers(bool $show = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_SHOW_LINE_NUMBERS, $show);
+        return $this->setDataAttr(self::OPTION_SHOW_LINE_NUMBERS, $show);
     }
 
     /** Left gutter strip (`showGutter`). Default `true`. Independent of {@see showLineNumbers()}. */
     public function showGutter(bool $show = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_SHOW_GUTTER, $show);
+        return $this->setDataAttr(self::OPTION_SHOW_GUTTER, $show);
     }
 
     /** Autoresize minimum visible lines (`minLines`). Default `5`. */
@@ -394,13 +373,13 @@ trait CodeEditorFieldTrait
     /** Soft wrap (`wrap`). */
     public function isWrap(bool $wrap = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_WRAP, $wrap);
+        return $this->setDataAttr(self::OPTION_WRAP, $wrap);
     }
 
     /** Print margin column guide (`showPrintMargin`). Default `false`. */
     public function showPrintMargin(bool $show = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_SHOW_PRINT_MARGIN, $show);
+        return $this->setDataAttr(self::OPTION_SHOW_PRINT_MARGIN, $show);
     }
 
     /** Print margin column index (`printMarginColumn`). Default `80`. */
@@ -414,36 +393,36 @@ trait CodeEditorFieldTrait
     /** Highlight the active line (`highlightActiveLine`). Default `true`. */
     public function isHighlightActiveLine(bool $highlight = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_HIGHLIGHT_ACTIVE_LINE, $highlight);
+        return $this->setDataAttr(self::OPTION_HIGHLIGHT_ACTIVE_LINE, $highlight);
     }
 
     /** Highlight all occurrences of the selected word (`highlightSelectedWord`). Default `true`. */
     public function isHighlightSelectedWord(bool $highlight = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_HIGHLIGHT_SELECTED_WORD, $highlight);
+        return $this->setDataAttr(self::OPTION_HIGHLIGHT_SELECTED_WORD, $highlight);
     }
 
     /** Show whitespace/invisibles (`showInvisibles`). */
     public function showInvisibles(bool $show = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_SHOW_INVISIBLES, $show);
+        return $this->setDataAttr(self::OPTION_SHOW_INVISIBLES, $show);
     }
 
     /** Indent guide lines (`displayIndentGuides`). Default `true`. */
     public function showIndentGuides(bool $show = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_DISPLAY_INDENT_GUIDES, $show);
+        return $this->setDataAttr(self::OPTION_DISPLAY_INDENT_GUIDES, $show);
     }
 
     /** Code-folding gutter widgets (`showFoldWidgets`). Default `true`. No effect if gutter is hidden. */
     public function showFoldWidgets(bool $show = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_SHOW_FOLD_WIDGETS, $show);
+        return $this->setDataAttr(self::OPTION_SHOW_FOLD_WIDGETS, $show);
     }
 
     /** Mode syntax worker (`useWorker`). Default `true`. */
     public function isUseWorker(bool $useWorker = true): self
     {
-        return $this->setCodeEditorBoolAttr(self::OPTION_USE_WORKER, $useWorker);
+        return $this->setDataAttr(self::OPTION_USE_WORKER, $useWorker);
     }
 }

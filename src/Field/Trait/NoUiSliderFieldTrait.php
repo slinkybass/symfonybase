@@ -2,9 +2,6 @@
 
 namespace App\Field\Trait;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
-
 /**
  * noUiSlider options for `FloatField` / `IntegerField` (`data-slider-*`).
  *
@@ -43,31 +40,6 @@ trait NoUiSliderFieldTrait
     public const SLIDER_DIRECTION_LTR = 'ltr';
     public const SLIDER_DIRECTION_RTL = 'rtl';
 
-    protected function enableMappedPlugin(string $entry, string $flagAttr, bool $enable): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new($entry)->onlyOnForms());
-        }
-        $this->setHtmlAttribute($flagAttr, json_encode($enable));
-
-        return $this;
-    }
-
-    protected function setSliderBoolAttr(string $option, bool $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
-    protected function setSliderJsonAttr(string $option, mixed $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
     /** Load noUiSlider (`data-slider-field`). */
     public function isSlider(bool $enable = true): self
     {
@@ -77,13 +49,13 @@ trait NoUiSliderFieldTrait
     /** Keep the backing number input visible. */
     public function sliderShowInput(bool $show = true): self
     {
-        return $this->setSliderBoolAttr(self::OPTION_SLIDER_SHOW_INPUT, $show);
+        return $this->setDataAttr(self::OPTION_SLIDER_SHOW_INPUT, $show);
     }
 
     /** Handle value tooltips. */
     public function sliderShowTooltip(bool $tooltip = true): self
     {
-        return $this->setSliderBoolAttr(self::OPTION_SLIDER_TOOLTIPS, $tooltip);
+        return $this->setDataAttr(self::OPTION_SLIDER_TOOLTIPS, $tooltip);
     }
 
     /**
@@ -94,7 +66,7 @@ trait NoUiSliderFieldTrait
     public function setSliderConnect(string|bool|array $connect): self
     {
         if (\is_bool($connect) || \is_array($connect)) {
-            return $this->setSliderJsonAttr(self::OPTION_SLIDER_CONNECT, $connect);
+            return $this->setDataAttr(self::OPTION_SLIDER_CONNECT, $connect);
         }
         $this->setHtmlAttribute(self::OPTION_SLIDER_CONNECT, $connect);
 
@@ -119,10 +91,10 @@ trait NoUiSliderFieldTrait
     public function sliderPips(bool|array $pips = true): self
     {
         if (\is_array($pips)) {
-            return $this->setSliderJsonAttr(self::OPTION_SLIDER_PIPS, $pips);
+            return $this->setDataAttr(self::OPTION_SLIDER_PIPS, $pips);
         }
 
-        return $this->setSliderBoolAttr(self::OPTION_SLIDER_PIPS, $pips);
+        return $this->setDataAttr(self::OPTION_SLIDER_PIPS, $pips);
     }
 
     /**
@@ -159,7 +131,7 @@ trait NoUiSliderFieldTrait
 
     public function isSliderAnimate(bool $animate = true): self
     {
-        return $this->setSliderBoolAttr(self::OPTION_SLIDER_ANIMATE, $animate);
+        return $this->setDataAttr(self::OPTION_SLIDER_ANIMATE, $animate);
     }
 
     public function setSliderAnimationDuration(int $ms): self
@@ -171,7 +143,7 @@ trait NoUiSliderFieldTrait
 
     public function isSliderKeyboardSupport(bool $enable = true): self
     {
-        return $this->setSliderBoolAttr(self::OPTION_SLIDER_KEYBOARD_SUPPORT, $enable);
+        return $this->setDataAttr(self::OPTION_SLIDER_KEYBOARD_SUPPORT, $enable);
     }
 
     public function setSliderKeyboardPageMultiplier(float|int $multiplier): self
@@ -217,7 +189,7 @@ trait NoUiSliderFieldTrait
     public function setSliderPadding(float|int|array $padding): self
     {
         if (\is_array($padding)) {
-            return $this->setSliderJsonAttr(self::OPTION_SLIDER_PADDING, $padding);
+            return $this->setDataAttr(self::OPTION_SLIDER_PADDING, $padding);
         }
         $this->setHtmlAttribute(self::OPTION_SLIDER_PADDING, (string) $padding);
 
@@ -235,10 +207,10 @@ trait NoUiSliderFieldTrait
     public function isSliderSnap(bool|array $snap = true): self
     {
         if (\is_array($snap)) {
-            return $this->setSliderJsonAttr(self::OPTION_SLIDER_SNAP, array_values($snap));
+            return $this->setDataAttr(self::OPTION_SLIDER_SNAP, array_values($snap));
         }
 
-        return $this->setSliderBoolAttr(self::OPTION_SLIDER_SNAP, $snap);
+        return $this->setDataAttr(self::OPTION_SLIDER_SNAP, $snap);
     }
 
     /** Decimals used by the slider value formatter. */

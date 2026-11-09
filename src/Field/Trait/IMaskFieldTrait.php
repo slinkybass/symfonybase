@@ -2,9 +2,6 @@
 
 namespace App\Field\Trait;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
-
 /**
  * IMask options for `MaskField` (`data-mask-*`).
  *
@@ -64,31 +61,6 @@ trait IMaskFieldTrait
     public const COMMIT_TRIM = 'trim';
     public const COMMIT_PAD = 'pad';
 
-    protected function enableMappedPlugin(string $entry, string $flagAttr, bool $enable): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new($entry)->onlyOnForms());
-        }
-        $this->setHtmlAttribute($flagAttr, json_encode($enable));
-
-        return $this;
-    }
-
-    protected function setMaskBoolAttr(string $option, bool $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
-    protected function setMaskJsonAttr(string $option, mixed $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
     /**
      * @param string|list<string> $presets
      *
@@ -121,7 +93,7 @@ trait IMaskFieldTrait
     /** Treat `setPattern()` as a RegExp source (`data-mask-regex`). */
     public function isRegex(bool $regex = true): self
     {
-        return $this->setMaskBoolAttr(self::OPTION_MASK_REGEX, $regex);
+        return $this->setDataAttr(self::OPTION_MASK_REGEX, $regex);
     }
 
     /** IMask pattern or RegExp source (`data-mask-pattern`). Required unless type is number. */
@@ -138,7 +110,7 @@ trait IMaskFieldTrait
      */
     public function isLazy(bool $lazy = true): self
     {
-        return $this->setMaskBoolAttr(self::OPTION_MASK_LAZY, $lazy);
+        return $this->setDataAttr(self::OPTION_MASK_LAZY, $lazy);
     }
 
     /** Placeholder character (`data-mask-placeholder`). */
@@ -190,7 +162,7 @@ trait IMaskFieldTrait
     /** Skip keystrokes that do not match the mask (`data-mask-skip-invalid`). */
     public function isSkipInvalid(bool $skip = true): self
     {
-        return $this->setMaskBoolAttr(self::OPTION_MASK_SKIP_INVALID, $skip);
+        return $this->setDataAttr(self::OPTION_MASK_SKIP_INVALID, $skip);
     }
 
     /**
@@ -220,7 +192,7 @@ trait IMaskFieldTrait
     /** Force typed letters to uppercase (`prepare` preset `upper`). */
     public function isUppercase(bool $uppercase = true): self
     {
-        return $this->setMaskBoolAttr(self::OPTION_MASK_UPPERCASE, $uppercase);
+        return $this->setDataAttr(self::OPTION_MASK_UPPERCASE, $uppercase);
     }
 
     /** Force typed letters to lowercase (`prepare` preset `lower`). */
@@ -246,7 +218,7 @@ trait IMaskFieldTrait
     /** On submit, post `unmaskedValue` (no fixed separators) instead of the display value. */
     public function isUnmask(bool $unmask = true): self
     {
-        return $this->setMaskBoolAttr(self::OPTION_MASK_UNMASK, $unmask);
+        return $this->setDataAttr(self::OPTION_MASK_UNMASK, $unmask);
     }
 
     /**
@@ -256,7 +228,7 @@ trait IMaskFieldTrait
      */
     public function setDefinitions(?array $definitions): self
     {
-        return $this->setMaskJsonAttr(self::OPTION_MASK_DEFINITIONS, $definitions ?? []);
+        return $this->setDataAttr(self::OPTION_MASK_DEFINITIONS, $definitions ?? []);
     }
 
     /** Fractional digits for Number mask (`data-mask-scale`). */
@@ -286,13 +258,13 @@ trait IMaskFieldTrait
     /** Pad fractional zeros to `scale` length. */
     public function isPadFractionalZeros(bool $pad = true): self
     {
-        return $this->setMaskBoolAttr(self::OPTION_MASK_PAD_FRACTIONAL_ZEROS, $pad);
+        return $this->setDataAttr(self::OPTION_MASK_PAD_FRACTIONAL_ZEROS, $pad);
     }
 
     /** Normalize leading/trailing zeros on Number mask. */
     public function isNormalizeZeros(bool $normalize = true): self
     {
-        return $this->setMaskBoolAttr(self::OPTION_MASK_NORMALIZE_ZEROS, $normalize);
+        return $this->setDataAttr(self::OPTION_MASK_NORMALIZE_ZEROS, $normalize);
     }
 
     /** Minimum numeric value (`data-mask-min`). */
@@ -318,6 +290,6 @@ trait IMaskFieldTrait
      */
     public function setMapToRadix(?array $mapToRadix): self
     {
-        return $this->setMaskJsonAttr(self::OPTION_MASK_MAP_TO_RADIX, $mapToRadix ?? []);
+        return $this->setDataAttr(self::OPTION_MASK_MAP_TO_RADIX, $mapToRadix ?? []);
     }
 }

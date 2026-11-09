@@ -2,9 +2,6 @@
 
 namespace App\Field\Trait;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
-
 /**
  * slugify options for `SlugField` (`data-slug-*`).
  *
@@ -20,24 +17,6 @@ trait SlugifyFieldTrait
     public const OPTION_TRIM = 'data-slug-trim';
     public const OPTION_LOCALE = 'data-slug-locale';
     public const OPTION_REMOVE = 'data-slug-remove';
-
-    protected function enableMappedPlugin(string $entry, string $flagAttr, bool $enable): self
-    {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new($entry)->onlyOnForms());
-        }
-        $this->setHtmlAttribute($flagAttr, json_encode($enable));
-
-        return $this;
-    }
-
-    protected function setSlugBoolAttr(string $option, bool $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
 
     /** Unlock confirmation HTML (`data-slug-confirm-text`); Twig applies `|trans`. */
     public function setConfirmText(string $message): self
@@ -58,19 +37,19 @@ trait SlugifyFieldTrait
     /** Lowercase result (`lower`). Default `true`. */
     public function isLower(bool $lower = true): self
     {
-        return $this->setSlugBoolAttr(self::OPTION_LOWER, $lower);
+        return $this->setDataAttr(self::OPTION_LOWER, $lower);
     }
 
     /** Strip non-alphanumeric except spaces before replacement (`strict`). Default `true`. */
     public function isStrict(bool $strict = true): self
     {
-        return $this->setSlugBoolAttr(self::OPTION_STRICT, $strict);
+        return $this->setDataAttr(self::OPTION_STRICT, $strict);
     }
 
     /** Trim leading/trailing whitespace before replacement (`trim`). Default `true`. */
     public function isTrim(bool $trim = true): self
     {
-        return $this->setSlugBoolAttr(self::OPTION_TRIM, $trim);
+        return $this->setDataAttr(self::OPTION_TRIM, $trim);
     }
 
     /**

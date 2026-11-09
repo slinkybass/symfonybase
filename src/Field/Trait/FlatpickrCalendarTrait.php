@@ -99,7 +99,7 @@ trait FlatpickrCalendarTrait
     /** Show the current month as a short name (e.g. Sep). */
     public function isShorthandCurrentMonth(bool $enable = true): self
     {
-        return $this->setDateBoolAttr(self::OPTION_DATE_SHORTHAND_CURRENT_MONTH, $enable);
+        return $this->setDataAttr(self::OPTION_DATE_SHORTHAND_CURRENT_MONTH, $enable);
     }
 
     /** How many months to show at once. */
@@ -113,6 +113,6 @@ trait FlatpickrCalendarTrait
     /** Show ISO week numbers in the calendar. */
     public function isWeekNumbers(bool $enable = true): self
     {
-        return $this->setDateBoolAttr(self::OPTION_DATE_WEEK_NUMBERS, $enable);
+        return $this->setDataAttr(self::OPTION_DATE_WEEK_NUMBERS, $enable);
     }
 }

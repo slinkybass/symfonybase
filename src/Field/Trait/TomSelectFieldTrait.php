@@ -52,13 +52,6 @@ trait TomSelectFieldTrait
     public const SEARCH_AND = 'and';
     public const SEARCH_OR = 'or';
 
-    protected function setAutocompleteBoolAttr(string $option, bool $value): self
-    {
-        $this->setHtmlAttribute($option, json_encode($value));
-
-        return $this;
-    }
-
     /**
      * Toggle TomSelect (`data-ea-widget` via EA widget option + `data-autocomplete-field`).
      * Does not register a form-type asset — helper is loaded from `app.js`.
@@ -107,7 +100,7 @@ trait TomSelectFieldTrait
     /** Keep created items in the list after clear (`persist`). */
     public function isPersist(bool $persist = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_PERSIST, $persist);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_PERSIST, $persist);
     }
 
     /**
@@ -135,7 +128,7 @@ trait TomSelectFieldTrait
      */
     public function isOpenOnFocus(bool $open = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_OPEN_ON_FOCUS, $open);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_OPEN_ON_FOCUS, $open);
     }
 
     /**
@@ -144,7 +137,7 @@ trait TomSelectFieldTrait
      */
     public function isCloseAfterSelect(bool $close = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_CLOSE_AFTER_SELECT, $close);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_CLOSE_AFTER_SELECT, $close);
     }
 
     /**
@@ -153,37 +146,37 @@ trait TomSelectFieldTrait
      */
     public function isHideSelected(bool $hide = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_HIDE_SELECTED, $hide);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_HIDE_SELECTED, $hide);
     }
 
     /** Allow the same option more than once (`duplicates`). */
     public function isDuplicates(bool $allow = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_DUPLICATES, $allow);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_DUPLICATES, $allow);
     }
 
     /** Create the item when the control blurs (`createOnBlur`). */
     public function isCreateOnBlur(bool $enable = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_CREATE_ON_BLUR, $enable);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_CREATE_ON_BLUR, $enable);
     }
 
     /** Prefer adding a new item over selecting a match (`addPrecedence`). */
     public function isAddPrecedence(bool $enable = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_ADD_PRECEDENCE, $enable);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_ADD_PRECEDENCE, $enable);
     }
 
     /** Select the highlighted option with Tab (`selectOnTab`). */
     public function isSelectOnTab(bool $enable = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_SELECT_ON_TAB, $enable);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_SELECT_ON_TAB, $enable);
     }
 
     /** Match diacritics in search (`diacritics`). */
     public function isDiacritics(bool $enable = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_DIACRITICS, $enable);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_DIACRITICS, $enable);
     }
 
     /** Delimiter for paste / create (`delimiter`). */
@@ -217,24 +210,24 @@ trait TomSelectFieldTrait
     /** Force clear_button plugin on/off (default: on when not required/disabled). */
     public function showClearButton(bool $show = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_CLEAR_BUTTON, $show);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_CLEAR_BUTTON, $show);
     }
 
     /** Force remove_button plugin on/off (default: on when multiple). */
     public function showRemoveButton(bool $show = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_REMOVE_BUTTON, $show);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_REMOVE_BUTTON, $show);
     }
 
     /** dropdown_input plugin (default: on). */
     public function showDropdownInput(bool $show = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_DROPDOWN_INPUT, $show);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_DROPDOWN_INPUT, $show);
     }
 
     /** checkbox_options plugin (useful for multiple). */
     public function showCheckboxOptions(bool $show = true): self
     {
-        return $this->setAutocompleteBoolAttr(self::OPTION_AUTOCOMPLETE_CHECKBOX_OPTIONS, $show);
+        return $this->setDataAttr(self::OPTION_AUTOCOMPLETE_CHECKBOX_OPTIONS, $show);
     }
 }

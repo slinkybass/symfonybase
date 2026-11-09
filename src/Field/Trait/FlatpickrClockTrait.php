@@ -25,7 +25,7 @@ trait FlatpickrClockTrait
     /** Fill hour/minute with defaults when a date is picked with no time. */
     public function isAutoFillDefaultTime(bool $enable = true): self
     {
-        return $this->setDateBoolAttr(self::OPTION_DATE_AUTO_FILL_DEFAULT_TIME, $enable);
+        return $this->setDataAttr(self::OPTION_DATE_AUTO_FILL_DEFAULT_TIME, $enable);
     }
 
     /** Initial hour in the time spinner (0–23). */
@@ -55,7 +55,7 @@ trait FlatpickrClockTrait
     /** Show and post seconds (`HH:mm:ss`). */
     public function isEnableSeconds(bool $enable = true): self
     {
-        return $this->setDateBoolAttr(self::OPTION_DATE_ENABLE_SECONDS, $enable);
+        return $this->setDataAttr(self::OPTION_DATE_ENABLE_SECONDS, $enable);
     }
 
     /** Step for the hour spinner (scroll/arrows). */
@@ -93,6 +93,6 @@ trait FlatpickrClockTrait
     /** 24-hour clock without AM/PM. */
     public function isTime24hr(bool $enable = true): self
     {
-        return $this->setDateBoolAttr(self::OPTION_DATE_TIME_24HR, $enable);
+        return $this->setDataAttr(self::OPTION_DATE_TIME_24HR, $enable);
     }
 }

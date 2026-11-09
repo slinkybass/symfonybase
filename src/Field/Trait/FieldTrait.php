@@ -3,6 +3,8 @@
 namespace App\Field\Trait;
 
 use App\Security\VirtualPermission;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait as EasyTrait;
 
 /**
@@ -41,6 +43,31 @@ trait FieldTrait
     private function applyDefaults(): void
     {
         $this->setDefaultColumns(self::DEFAULT_COLUMNS);
+    }
+
+    /**
+     * Clear EA field assets and optionally load an AssetMapper entry + `data-*-field` flag.
+     * Pass `$flagAttr = null` when the theme owns the contract (e.g. collection) or attrs are set elsewhere (e.g. password repeated).
+     */
+    protected function enableMappedPlugin(string $entry, ?string $flagAttr, bool $enable): self
+    {
+        $this->dto->setAssets(new AssetsDto());
+        if ($enable) {
+            $this->addAssetMapperEntries(Asset::new($entry)->onlyOnForms());
+        }
+        if (null !== $flagAttr) {
+            $this->setHtmlAttribute($flagAttr, json_encode($enable));
+        }
+
+        return $this;
+    }
+
+    /** JSON-encode a value onto a `data-*` HTML attribute (bools, arrays, …). */
+    protected function setDataAttr(string $option, mixed $value): self
+    {
+        $this->setHtmlAttribute($option, json_encode($value));
+
+        return $this;
     }
 
     /** Whether the field is mapped to the underlying object (Symfony Form `mapped`). */

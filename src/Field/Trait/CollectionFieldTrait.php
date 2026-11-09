@@ -2,8 +2,6 @@
 
 namespace App\Field\Trait;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetsDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField as EasyCollectionField;
 
@@ -35,12 +33,7 @@ trait CollectionFieldTrait
      */
     public function enablePlugin(bool $enable = true): self
     {
-        $this->dto->setAssets(new AssetsDto());
-        if ($enable) {
-            $this->addAssetMapperEntries(Asset::new(self::COLLECTION_PLUGIN_ENTRY)->onlyOnForms());
-        }
-
-        return $this;
+        return $this->enableMappedPlugin(self::COLLECTION_PLUGIN_ENTRY, null, $enable);
     }
 
     /** Allow adding new entries (`allow_add`). Default `true`. */
