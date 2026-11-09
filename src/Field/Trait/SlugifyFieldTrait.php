@@ -18,6 +18,13 @@ trait SlugifyFieldTrait
     public const OPTION_LOCALE = 'data-slug-locale';
     public const OPTION_REMOVE = 'data-slug-remove';
 
+    /** Load the slugify plugin (`data-slug-field`). `false` keeps a plain text input. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin('form-type-slug', self::OPTION_PLUGIN, $enable);
+    }
+
+
     /** Unlock confirmation HTML (`data-slug-confirm-text`); Twig applies `|trans`. */
     public function setConfirmText(string $message): self
     {

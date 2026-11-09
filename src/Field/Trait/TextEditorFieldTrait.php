@@ -52,6 +52,13 @@ trait TextEditorFieldTrait
 
     public const DEFAULT_TOOLBAR = 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | link image media table | emoticons charmap | pagebreak anchor | codesample code | preview fullscreen';
 
+    /** Load TinyMCE (`data-texteditor-field`). `false` keeps a plain textarea. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin('form-type-texteditor', self::OPTION_PLUGIN, $enable);
+    }
+
+
     /**
      * Named TinyMCE option bundle (`data-texteditor-preset`).
      * `basic` = safe public content (undo/b/i/u/lists/link/emoticons/charmap/preview;

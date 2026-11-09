@@ -3,6 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
+use App\Field\Trait\PasswordFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField as EasyField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -15,12 +16,9 @@ class PasswordField implements FieldInterface
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use PasswordFieldTrait;
 
     private EasyField $innerField;
-
-    public const OPTION_PLUGIN = 'data-password-field';
-    public const OPTION_SWITCH = 'data-password-switch';
-    public const OPTION_GENERATOR = 'data-password-generator';
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -36,27 +34,6 @@ class PasswordField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->enablePlugin();
         $this->isRepeated(false);
-    }
-
-    /** Load the password plugin (`data-password-field`). `false` keeps a plain password input. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        // Flag via setPasswordAttr so RepeatedType gets both inputs; assets only here.
-        $this->enableMappedPlugin('form-type-password', null, $enable);
-
-        return $this->setPasswordAttr(self::OPTION_PLUGIN, json_encode($enable));
-    }
-
-    /** Eye button (`data-password-switch`). */
-    public function renderSwitch(bool $switch = true): self
-    {
-        return $this->setPasswordAttr(self::OPTION_SWITCH, json_encode($switch));
-    }
-
-    /** Generator button (`data-password-generator`). */
-    public function renderGenerator(bool $generator = true): self
-    {
-        return $this->setPasswordAttr(self::OPTION_GENERATOR, json_encode($generator));
     }
 
     public function checkIsRepeated(): bool
@@ -234,38 +211,5 @@ class PasswordField implements FieldInterface
         }
 
         return $this;
-    }
-
-    /** RepeatedType keeps `attr` on the compound form, so plugin attrs go on both inputs. */
-    private function setPasswordAttr(string $option, mixed $value): self
-    {
-        if (RepeatedType::class === $this->getAsDto()->getFormType()) {
-            $this->setFormTypeOption(RepeatField::OPTION_FIRST_OPTIONS.'.attr.'.$option, $value);
-            $this->setFormTypeOption(RepeatField::OPTION_SECOND_OPTIONS.'.attr.'.$option, $value);
-
-            return $this;
-        }
-
-        $this->setHtmlAttribute($option, $value);
-
-        return $this;
-    }
-
-    /** Move plugin attrs set before `isRepeated()` onto both inner inputs. */
-    private function adoptPasswordAttrsForRepeated(): void
-    {
-        $attr = $this->getAsDto()->getFormTypeOption('attr');
-        if (!\is_array($attr)) {
-            return;
-        }
-
-        foreach ([self::OPTION_PLUGIN, self::OPTION_SWITCH, self::OPTION_GENERATOR] as $name) {
-            if (\array_key_exists($name, $attr)) {
-                $this->setPasswordAttr($name, $attr[$name]);
-                unset($attr[$name]);
-            }
-        }
-
-        $this->setFormTypeOption('attr', $attr);
     }
 }

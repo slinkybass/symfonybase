@@ -33,11 +33,6 @@ class SlugField implements FieldInterface
         $this->enablePlugin();
     }
 
-    /** Load the slugify plugin (`data-slug-field`). `false` keeps a plain text input. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-slug', self::OPTION_PLUGIN, $enable);
-    }
 
     /** Source field name(s) whose values feed the slug (EasyAdmin `target` form option). */
     public function setTarget(string|array $target): self

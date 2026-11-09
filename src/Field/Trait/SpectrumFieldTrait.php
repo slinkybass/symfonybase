@@ -58,6 +58,13 @@ trait SpectrumFieldTrait
     public const COLOR_THEME_LIGHT = 'sp-light';
     public const COLOR_THEME_DARK = 'sp-dark';
 
+    /** Load Spectrum (`data-color-field`). `false` keeps a native color widget. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin('form-type-color', self::OPTION_PLUGIN, $enable);
+    }
+
+
     /**
      * Spectrum UI mode.
      *

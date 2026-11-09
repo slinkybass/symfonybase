@@ -61,6 +61,13 @@ trait IMaskFieldTrait
     public const COMMIT_TRIM = 'trim';
     public const COMMIT_PAD = 'pad';
 
+    /** Load IMask (`data-mask-field`). `false` keeps a plain text input. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin('form-type-mask', self::OPTION_PLUGIN, $enable);
+    }
+
+
     /**
      * @param string|list<string> $presets
      *

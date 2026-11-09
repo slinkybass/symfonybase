@@ -21,6 +21,8 @@ class DateTimeField implements FieldInterface
 
     private EasyField $innerField;
 
+    public const PLUGIN_ENTRY = 'form-type-datetime';
+
     public const OPTION_PLUGIN = 'data-datetime-field';
 
     /** EasyAdmin display tokens for `setFormat()`, not `data-date-format`. */
@@ -51,11 +53,6 @@ class DateTimeField implements FieldInterface
         return 'Y-m-d H:i:s';
     }
 
-    /** Load Flatpickr (`data-datetime-field`). `false` keeps a native/choice widget. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-datetime', self::OPTION_PLUGIN, $enable);
-    }
 
     /** Last selectable instant (`max` attribute, `Y-m-d H:i:s`). */
     public function setMax(\DateTimeInterface|string|null $max): self

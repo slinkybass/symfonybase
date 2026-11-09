@@ -32,10 +32,4 @@ class MaskField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->enablePlugin();
     }
-
-    /** Load IMask (`data-mask-field`). `false` keeps a plain text input. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-mask', self::OPTION_PLUGIN, $enable);
-    }
 }

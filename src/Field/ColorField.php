@@ -33,11 +33,6 @@ class ColorField implements FieldInterface
         $this->enablePlugin();
     }
 
-    /** Load Spectrum (`data-color-field`). `false` keeps a native color widget. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-color', self::OPTION_PLUGIN, $enable);
-    }
 
     /** EasyAdmin index/detail color swatch. */
     public function showSample(bool $show = true): self

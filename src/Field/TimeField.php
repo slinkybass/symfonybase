@@ -19,6 +19,8 @@ class TimeField implements FieldInterface
 
     private EasyField $innerField;
 
+    public const PLUGIN_ENTRY = 'form-type-time';
+
     public const OPTION_PLUGIN = 'data-time-field';
 
     /** EasyAdmin display tokens for `setFormat()`, not `data-date-format`. */
@@ -44,11 +46,6 @@ class TimeField implements FieldInterface
         $this->enablePlugin();
     }
 
-    /** Load Flatpickr (`data-time-field`). `false` keeps a native/choice widget. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-time', self::OPTION_PLUGIN, $enable);
-    }
 
     /** Latest selectable time. Writes `data-date-max-time`, not HTML `max`. */
     public function setMax(\DateTimeInterface|string|null $max): self

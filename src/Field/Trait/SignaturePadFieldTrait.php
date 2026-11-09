@@ -32,6 +32,13 @@ trait SignaturePadFieldTrait
     public const FORMAT_JPEG = 'image/jpeg';
     public const FORMAT_SVG = 'image/svg+xml';
 
+    /** Load SignaturePad (`data-signature-field`). `false` keeps a plain text input. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin('form-type-signature', self::OPTION_PLUGIN, $enable);
+    }
+
+
     /** Keep the backing input visible (`data-signature-show-input`). */
     public function showInput(bool $show = true): self
     {

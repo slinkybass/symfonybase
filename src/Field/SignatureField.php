@@ -37,10 +37,4 @@ class SignatureField implements FieldInterface
         $this->setFormTypeOption('block_prefix', self::DEFAULT_BLOCK_PREFIX);
         $this->setTemplatePath(self::DEFAULT_TEMPLATE_PATH);
     }
-
-    /** Load SignaturePad (`data-signature-field`). `false` keeps a plain text input. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-signature', self::OPTION_PLUGIN, $enable);
-    }
 }

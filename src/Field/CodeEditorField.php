@@ -32,10 +32,4 @@ class CodeEditorField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->enablePlugin();
     }
-
-    /** Load Ace (`data-codeeditor-field`). `false` keeps a plain textarea. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-codeeditor', self::OPTION_PLUGIN, $enable);
-    }
 }

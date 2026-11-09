@@ -19,6 +19,8 @@ class DateField implements FieldInterface
 
     private EasyField $innerField;
 
+    public const PLUGIN_ENTRY = 'form-type-date';
+
     public const OPTION_PLUGIN = 'data-date-field';
 
     /** EasyAdmin display tokens for `setFormat()`, not `data-date-format`. */
@@ -44,11 +46,6 @@ class DateField implements FieldInterface
         $this->enablePlugin();
     }
 
-    /** Load Flatpickr (`data-date-field`). `false` keeps a native/choice widget. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-date', self::OPTION_PLUGIN, $enable);
-    }
 
     /** Last selectable calendar day (`max` attribute, `Y-m-d`). */
     public function setMax(\DateTimeInterface|string|null $max): self

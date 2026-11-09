@@ -282,6 +282,13 @@ trait CodeEditorFieldTrait
     public const CODEEDITOR_LANGUAGE_ZEEK = 'zeek';
     public const CODEEDITOR_LANGUAGE_ZIG = 'zig';
 
+    /** Load Ace (`data-codeeditor-field`). `false` keeps a plain textarea. */
+    public function enablePlugin(bool $enable = true): self
+    {
+        return $this->enableMappedPlugin('form-type-codeeditor', self::OPTION_PLUGIN, $enable);
+    }
+
+
     /**
      * Ace theme for light app mode (`theme`). Without {@see setDarkTheme()}, stays fixed.
      * Omitting both follows default chrome / twilight with `data-bs-theme`.

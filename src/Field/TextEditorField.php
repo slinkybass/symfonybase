@@ -32,10 +32,4 @@ class TextEditorField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->enablePlugin();
     }
-
-    /** Load TinyMCE (`data-texteditor-field`). `false` keeps a plain textarea. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-texteditor', self::OPTION_PLUGIN, $enable);
-    }
 }

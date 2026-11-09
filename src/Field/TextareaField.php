@@ -3,6 +3,7 @@
 namespace App\Field;
 
 use App\Field\Trait\FieldTrait;
+use App\Field\Trait\TextareaFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -13,15 +14,11 @@ class TextareaField implements FieldInterface
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
+    use TextareaFieldTrait;
 
     private EasyField $innerField;
 
-    public const OPTION_PLUGIN = 'data-textarea-field';
-    public const OPTION_MAX_HEIGHT = 'data-textarea-max-height';
-    public const OPTION_RESIZEABLE = 'resizeable';
-
     public const DEFAULT_ROWS = 5;
-    public const DEFAULT_MAX_HEIGHT = '200px';
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -38,31 +35,6 @@ class TextareaField implements FieldInterface
         $this->enablePlugin();
         $this->setRows(self::DEFAULT_ROWS);
         $this->setMaxHeight(self::DEFAULT_MAX_HEIGHT);
-    }
-
-    /** Load the autogrow plugin (`data-textarea-field`). `false` keeps a plain textarea. */
-    public function enablePlugin(bool $enable = true): self
-    {
-        return $this->enableMappedPlugin('form-type-textarea', self::OPTION_PLUGIN, $enable);
-    }
-
-    /** CSS max-height while autogrowing (`data-textarea-max-height`). Default `200px`. */
-    public function setMaxHeight(string $maxHeight): self
-    {
-        $this->setHtmlAttribute(self::OPTION_MAX_HEIGHT, $maxHeight);
-
-        return $this;
-    }
-
-    /**
-     * Allow native CSS resize when the plugin is off (`resizeable` custom option → Twig).
-     * Ignored while autogrow is on (JS forces `resize: none`).
-     */
-    public function isResizeable(bool $resizeable = true): self
-    {
-        $this->setCustomOption(self::OPTION_RESIZEABLE, $resizeable);
-
-        return $this;
     }
 
     /** Visible rows (EasyAdmin `setNumOfRows`). */
