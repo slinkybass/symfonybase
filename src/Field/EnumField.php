@@ -2,6 +2,7 @@
 
 namespace App\Field;
 
+use App\Field\Trait\ChoiceControlTrait;
 use App\Field\Trait\FieldTrait;
 use App\Field\Trait\TomSelectFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
@@ -16,6 +17,7 @@ class EnumField implements FieldInterface
         applyDefaults as applyDefaultsTrait;
     }
     use TomSelectFieldTrait;
+    use ChoiceControlTrait;
 
     private EasyField $innerField;
 
@@ -34,27 +36,5 @@ class EnumField implements FieldInterface
         $this->enablePlugin();
         $this->setFormType(EnumType::class);
         $this->setFormTypeOption('choice_label', fn ($e) => $e->translationKey());
-    }
-
-    public function isMultiple(bool $multiple = true): self
-    {
-        $this->innerField->allowMultipleChoices($multiple);
-
-        return $this;
-    }
-
-    public function isExpanded(bool $expanded = true): self
-    {
-        $this->enablePlugin(!$expanded);
-        $this->innerField->renderExpanded($expanded);
-
-        return $this;
-    }
-
-    public function renderAsBadges(bool $badges = true): self
-    {
-        $this->innerField->renderAsBadges($badges);
-
-        return $this;
     }
 }

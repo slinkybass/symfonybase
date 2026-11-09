@@ -3,7 +3,7 @@
 namespace App\Field\Trait;
 
 /**
- * TinyMCE options for `TextEditorField` (`data-texteditor-*`).
+ * TinyMCE options for `TextEditorField` (`lib/tinymce.js`, `data-texteditor-*`).
  *
  * Placeholder / readonly use `FieldTrait::setPlaceholder()` and `isReadonly()`
  * (`placeholder` / `readonly` HTML attrs).
@@ -14,7 +14,7 @@ namespace App\Field\Trait;
  * Not mapped: setup/init callbacks; file_picker_callback; images_upload_*;
  * custom formats; skin/content_css (forced off for Tabler theme sync).
  */
-trait TextEditorFieldTrait
+trait TinyMceFieldTrait
 {
     public const OPTION_PLUGIN = 'data-texteditor-field';
     public const OPTION_PRESET = 'data-texteditor-preset';

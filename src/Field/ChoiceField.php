@@ -2,19 +2,21 @@
 
 namespace App\Field;
 
+use App\Field\Trait\ChoiceControlTrait;
 use App\Field\Trait\FieldTrait;
 use App\Field\Trait\TomSelectFieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `ChoiceField` wrapper with `FieldTrait` and TomSelect options (`TomSelectFieldTrait`). */
+/** EasyAdmin `ChoiceField` wrapper with TomSelect options (`TomSelectFieldTrait`). */
 class ChoiceField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
     use TomSelectFieldTrait;
+    use ChoiceControlTrait;
 
     private EasyField $innerField;
 
@@ -33,21 +35,6 @@ class ChoiceField implements FieldInterface
         $this->enablePlugin();
     }
 
-    public function isMultiple(bool $multiple = true): self
-    {
-        $this->innerField->allowMultipleChoices($multiple);
-
-        return $this;
-    }
-
-    public function isExpanded(bool $expanded = true): self
-    {
-        $this->enablePlugin(!$expanded);
-        $this->innerField->renderExpanded($expanded);
-
-        return $this;
-    }
-
     /**
      * @param array<mixed>|callable $choices
      */
@@ -64,13 +51,6 @@ class ChoiceField implements FieldInterface
     public function setTransChoices($choices): self
     {
         $this->innerField->setTranslatableChoices($choices);
-
-        return $this;
-    }
-
-    public function renderAsBadges(bool $badges = true): self
-    {
-        $this->innerField->renderAsBadges($badges);
 
         return $this;
     }

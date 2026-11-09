@@ -3,7 +3,7 @@
 namespace App\Field\Trait;
 
 /**
- * Ace options for `CodeEditorField` (`data-codeeditor-*`).
+ * Ace options for `CodeEditorField` (`lib/ace.js`, `data-codeeditor-*`).
  *
  * Placeholder / readonly use `FieldTrait::setPlaceholder()` and `isReadonly()`
  * (`placeholder` / `readonly` HTML attrs).
@@ -11,7 +11,7 @@ namespace App\Field\Trait;
  * Not mapped: Ace extensions (autocomplete, snippets, emmet, keybinding);
  * session/document APIs; annotations; custom commands; keyboardHandler.
  */
-trait CodeEditorFieldTrait
+trait AceFieldTrait
 {
     public const OPTION_PLUGIN = 'data-codeeditor-field';
 

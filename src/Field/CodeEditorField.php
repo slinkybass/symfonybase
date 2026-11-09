@@ -2,19 +2,19 @@
 
 namespace App\Field;
 
-use App\Field\Trait\CodeEditorFieldTrait;
+use App\Field\Trait\AceFieldTrait;
 use App\Field\Trait\FieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField as EasyField;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/** EasyAdmin `CodeEditorField` wrapper with Ace plugin options. */
+/** EasyAdmin `CodeEditorField` wrapper with Ace plugin options (`AceFieldTrait` / `lib/ace.js`). */
 class CodeEditorField implements FieldInterface
 {
     use FieldTrait {
         applyDefaults as applyDefaultsTrait;
     }
-    use CodeEditorFieldTrait;
+    use AceFieldTrait;
 
     private EasyField $innerField;
 
