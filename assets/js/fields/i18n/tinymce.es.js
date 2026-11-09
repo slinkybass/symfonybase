@@ -1,6 +1,7 @@
 /**
  * Extra Spanish strings for TinyMCE UI gaps in tinymce-i18n/langs/es.js.
  *
+ * App field i18n packs live under `assets/js/fields/i18n/`.
  * Sourced mainly from tinymce-i18n langs8 (missing from the vendor langs/es pack)
  * plus a few build-only labels. Merged via tinymce.addI18n("es", …).
  * Individual charmap/symbol glyph names are left in English on purpose.

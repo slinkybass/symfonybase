@@ -25,7 +25,7 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/index.js";
 import "flatpickr/dist/flatpickr.min.css";
-import { boolAttr, intAttr, strAttr } from "./plugin.js";
+import { appLocale, boolAttr, intAttr, strAttr } from "./plugin.js";
 
 export const ATTR = {
     DATE_PLUGIN: "data-date-field",
@@ -325,12 +325,28 @@ function applyDefaultClock(opts, clock) {
     }
 }
 
+/**
+ * @param {string|null|undefined} key
+ * @returns {object|undefined}
+ */
+function flatpickrLocalePack(key) {
+    if (!key) {
+        return undefined;
+    }
+    if (flatpickr.l10ns[key]) {
+        return flatpickr.l10ns[key];
+    }
+    const short = String(key).split(/[_-]/)[0];
+    return flatpickr.l10ns[short];
+}
+
 function applyLocale(el, opts, kind) {
     const defaultSep = opts.locale?.rangeSeparator ?? ", ";
     const rangeSep = kind === "time" ? defaultSep : strAttr(el, ATTR.RANGE_SEPARATOR, defaultSep);
     const localeKey = strAttr(el, ATTR.LOCALE);
-    if (localeKey && flatpickr.l10ns[localeKey]) {
-        opts.locale = { ...flatpickr.l10ns[localeKey], rangeSeparator: rangeSep };
+    const pack = flatpickrLocalePack(localeKey);
+    if (pack) {
+        opts.locale = { ...pack, rangeSeparator: rangeSep };
         return;
     }
     opts.locale = {
@@ -448,10 +464,9 @@ export function timePickerDefaults(el) {
 }
 
 export function localizeFlatpickr() {
-    const loc = moment.locale();
-    const locale = flatpickr.l10ns[loc];
-    if (locale) {
-        flatpickr.localize(locale);
+    const pack = flatpickrLocalePack(appLocale("es")) || flatpickrLocalePack(moment.locale());
+    if (pack) {
+        flatpickr.localize(pack);
     }
 }
 

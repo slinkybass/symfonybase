@@ -42,6 +42,21 @@ export function floatAttr(el, name, fallback) {
     return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+/**
+ * Short UI locale from moment (or fallback). Packs use `es`; moment may be `es-ES`.
+ *
+ * @param {string} [fallback="es"]
+ * @returns {string}
+ */
+export function appLocale(fallback = "es") {
+    let lang = fallback;
+    if (typeof moment !== "undefined" && typeof moment.locale === "function") {
+        lang = moment.locale() || fallback;
+    }
+    const short = String(lang).split(/[_-]/)[0];
+    return short || fallback;
+}
+
 /** DOMContentLoaded + ea.collection.item-added. */
 export function bindPlugin(init, { onReady } = {}) {
     document.addEventListener("DOMContentLoaded", () => {

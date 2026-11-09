@@ -15,13 +15,18 @@
  * container-class-name, replacer-class-name, theme, locale, cancel/choose/
  * toggle-palette-more/less/clear/no-color-selected text.
  *
+ * Locale: registers `es` from `fields/i18n/spectrum.es.js`; defaults via `appLocale()`.
+ *
  * Not mapped: beforeShow, move, change, show, hide (hooks), appendTo, offset,
  * disabled (native / FieldTrait), locale as object.
  */
 
 import Spectrum from "spectrum-vanilla";
 import "spectrum-vanilla/dist/spectrum.min.css";
-import { boolAttr, intAttr, strAttr } from "./plugin.js";
+import spectrumEs from "../i18n/spectrum.es.js";
+import { appLocale, boolAttr, intAttr, strAttr } from "./plugin.js";
+
+Spectrum.locale("es", spectrumEs);
 
 export const ATTR = {
     PLUGIN: "data-color-field",
@@ -162,6 +167,11 @@ export function pickerOptsFromElement(el, defaults = colorPickerDefaults()) {
     }
     if (opts.showPaletteOnly) {
         opts.showPalette = true;
+    }
+
+    // Vendor has no packed locales; we register `es` and default from the app locale.
+    if (!el.hasAttribute(ATTR.LOCALE) && opts.locale === undefined) {
+        opts.locale = appLocale("es");
     }
 
     return opts;

@@ -48,6 +48,7 @@ assets/
     │   ├── helpers/                # Helpers generales de formulario (no form-type-*)
     │   │   ├── autocomplete.js
     │   │   └── hierarchy-fields.js
+    │   ├── i18n/                   # Packs de UI propios (huecos del vendor, p. ej. tinymce.es / spectrum.es)
     │   └── lib/                    # Infra compartida de los form-type-*
     └── project/                    # JS del producto al clonar la base (vacío en el starter)
 ```

@@ -48,6 +48,7 @@ assets/
     │   ├── helpers/                # General form helpers (not form-type-*)
     │   │   ├── autocomplete.js
     │   │   └── hierarchy-fields.js
+    │   ├── i18n/                   # App UI locale packs (vendor gaps, e.g. tinymce.es / spectrum.es)
     │   └── lib/                    # Shared infra for form-type-*
     └── project/                    # Product JS when cloning the base (empty in the starter)
 ```

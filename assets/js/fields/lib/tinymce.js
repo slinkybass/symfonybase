@@ -42,7 +42,7 @@ import "tinymce/skins/ui/oxide/skin.min.css";
 import "tinymce/skins/ui/oxide-dark/skin.min.css";
 
 import "tinymce-i18n/langs/es.js";
-import esExtra from "./tinymce-es-extra.js";
+import esExtra from "../i18n/tinymce.es.js";
 
 import "tinymce/plugins/accordion";
 import "tinymce/plugins/advlist";
@@ -74,7 +74,7 @@ import "tinymce/plugins/visualblocks";
 import "tinymce/plugins/visualchars";
 import "tinymce/plugins/wordcount";
 
-import { boolAttr, intAttr, strAttr } from "./plugin.js";
+import { appLocale, boolAttr, intAttr, strAttr } from "./plugin.js";
 
 tinymce.addI18n("es", esExtra);
 
@@ -320,14 +320,7 @@ export function bindThemeSync() {
 }
 
 function defaultLanguage() {
-    let lang = "es";
-    if (typeof moment !== "undefined" && typeof moment.locale === "function") {
-        lang = moment.locale() || lang;
-    }
-    // TinyMCE packs use short codes (`es`); html/moment may be `es-ES` / `es_ES`.
-    const short = String(lang).split(/[_-]/)[0];
-
-    return short || "es";
+    return appLocale("es");
 }
 
 /**
