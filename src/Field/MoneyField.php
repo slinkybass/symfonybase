@@ -14,8 +14,11 @@ class MoneyField implements FieldInterface
         applyDefaults as applyDefaultsTrait;
     }
     private EasyField $innerField;
+
     public const DEFAULT_CURRENCY = 'EUR';
     public const DEFAULT_STORED_AS_CENTS = false;
+    public const DEFAULT_STEP = 0.01;
+    public const DEFAULT_HTML5 = true;
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -31,6 +34,32 @@ class MoneyField implements FieldInterface
         $this->applyDefaultsTrait();
         $this->setCurrency(self::DEFAULT_CURRENCY);
         $this->storedAsCents(self::DEFAULT_STORED_AS_CENTS);
+        $this->setStep(self::DEFAULT_STEP);
+        $this->setFormTypeOption(FloatField::OPTION_HTML5, self::DEFAULT_HTML5);
+    }
+
+    /** Highest allowed value (`max`). */
+    public function setMax(int|float|null $max): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_MAX, $max);
+
+        return $this;
+    }
+
+    /** Lowest allowed value (`min`). */
+    public function setMin(int|float|null $min): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_MIN, $min);
+
+        return $this;
+    }
+
+    /** Increment of the number input (`step`). Default `0.01` (matches EA `numDecimals` `2`). */
+    public function setStep(int|float|null $step): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_STEP, $step);
+
+        return $this;
     }
 
     /** ISO 4217 currency code. Default `EUR`. */
@@ -49,7 +78,7 @@ class MoneyField implements FieldInterface
         return $this;
     }
 
-    /** Decimal places shown. */
+    /** Decimal places shown. Pair with `setStep()` when changing scale (e.g. `setDecimals(0)->setStep(1)`). */
     public function setDecimals(int $decimals): self
     {
         $this->innerField->setNumDecimals($decimals);

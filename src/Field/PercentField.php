@@ -14,7 +14,10 @@ class PercentField implements FieldInterface
         applyDefaults as applyDefaultsTrait;
     }
     private EasyField $innerField;
+
     public const DEFAULT_STORED_AS_FRACTIONAL = false;
+    public const DEFAULT_STEP = 1;
+    public const DEFAULT_HTML5 = true;
 
     public static function new(string $propertyName, TranslatableInterface|string|bool|null $label = null): self
     {
@@ -29,9 +32,35 @@ class PercentField implements FieldInterface
     {
         $this->applyDefaultsTrait();
         $this->storedAsFractional(self::DEFAULT_STORED_AS_FRACTIONAL);
+        $this->setStep(self::DEFAULT_STEP);
+        $this->setFormTypeOption(FloatField::OPTION_HTML5, self::DEFAULT_HTML5);
     }
 
-    /** Decimal places shown. */
+    /** Highest allowed value (`max`). */
+    public function setMax(int|float|null $max): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_MAX, $max);
+
+        return $this;
+    }
+
+    /** Lowest allowed value (`min`). */
+    public function setMin(int|float|null $min): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_MIN, $min);
+
+        return $this;
+    }
+
+    /** Increment of the number input (`step`). Default `1` (matches EA `numDecimals` `0`). */
+    public function setStep(int|float|null $step): self
+    {
+        $this->setHtmlAttribute(FloatField::OPTION_STEP, $step);
+
+        return $this;
+    }
+
+    /** Decimal places shown. Pair with `setStep()` when allowing fractions (e.g. `setDecimals(2)->setStep(0.01)`). */
     public function setDecimals(int $decimals): self
     {
         $this->innerField->setNumDecimals($decimals);
